@@ -1,0 +1,173 @@
+# This docker-compose file will spin up an ACS cluster on a local host or on a server and it requires a minimum of 16GB Memory to distribute among containers.
+# Limit container memory and assign X percentage to JVM.  There are couple of ways to allocate JVM Memory for ACS Containers
+# For example: 'JAVA_OPTS: "$JAVA_OPTS -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"'
+# But, as per Oracle docs (https://docs.oracle.com/javase/9/gctuning/parallel-collector1.htm#JSGCT-GUID-CAB83393-3438-44ED-98F0-D15641B43C7D)
+# If container memory is not explicitly set, then the above flags will default max heap to 1/4th of container's memory which may not be ideal.
+# Hence, setting up explicit Container memory and then assigning a percentage of it to the JVM for performance tuning.
+
+# Note: The docker-compose file from github.com is a limited trial that goes into read-only mode after 2 days.
+# Get the latest docker-compose.yml file with a 30-day trial license by accessing the Alfresco Content Services trial download page at:
+# https://www.alfresco.com/platform/content-services-ecm/trial/download
+
+# Using version 2 as 3 does not support resource constraint options (cpu_*, mem_* limits) for non swarm mode in Compose
+version: "2.1"
+
+services:
+  # NginX sera configuré lorsque l'application sera dockerisée
+  #    nginx:
+  #        image: nginx:1.15
+  #        tty: true
+  #        ports:
+  #            - 80:80
+  #        environment:
+  #            - NGINX_HOST=localhost
+  #            - NGINX_PORT=80
+  #            - DOLLAR=$$
+  #        volumes:
+  #            - ./nginx/poc.template:/etc/nginx/conf.d/poc.template
+  #        command: /bin/bash -c "envsubst < /etc/nginx/conf.d/poc.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+
+
+  redis:
+    image: redis:5.0.3
+    mem_limit: 64m
+    tty: true
+    ports:
+      - 6379:6379
+
+
+  core:
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
+    mem_limit: 256m
+    tty: true
+    depends_on:
+      alfresco:
+        condition: service_healthy
+      flowable:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+
+
+  crypto:
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:latest
+    mem_limit: 256m
+    tty: true
+    ports:
+      - 8087:8087
+
+
+  alfresco:
+    image: alfresco/alfresco-content-repository-community:6.1.1
+    mem_limit: 1500m
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail http://127.0.0.1:8080/api-explorer"
+      interval: 10s
+      timeout: 5s
+      retries: 60
+    ports:
+      - 9000:8080
+    environment:
+      JAVA_OPTS: "
+                -Ddb.driver=org.postgresql.Driver
+                -Ddb.username=alfresco
+                -Ddb.password=alfresco
+                -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
+                -Dalfresco.host=localhost
+                -Dalfresco.port=8080
+                -Dalf.root=/var/lib/alfresco
+                -Dheartbeat.enabled=false
+                -Xms1g -Xmx1g
+                "
+    volumes:
+      - ./data/alfresco:/usr/local/tomcat/alf_data
+
+
+  postgres:
+    build: postgres
+    mem_limit: 1500m
+    tty: true
+    environment:
+      - POSTGRES_PASSWORD=libriciel2k18
+      - POSTGRES_USER=root
+      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
+    command: postgres -c max_connections=500 -c log_min_messages=LOG
+    healthcheck:
+      test: "pg_isready"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+
+  flowable-rest:
+    image: flowable/flowable-rest:6.4.1
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --quiet --tries=1 --spider http://localhost:8080/flowable-rest/docs || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 60
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
+      - SPRING_DATASOURCE_USERNAME=flowable
+      - SPRING_DATASOURCE_PASSWORD=flowable
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+      - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
+      - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
+    ports:
+      - 9999:8080
+
+
+  keycloak:
+    image: jboss/keycloak:6.0.1
+    tty: true
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=postgres
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=keycloak
+      - KEYCLOAK_IMPORT=/tmp/keycloak.json
+      - PROXY_ADDRESS_FORWARDING=true
+    volumes:
+      - ./resources/keycloak/keycloak.json:/tmp/keycloak.json
+    ports:
+      - 9090:8080
+
+
+  matomo:
+    image: matomo:3.9.1-apache
+    mem_limit: 128m
+    tty: true
+    depends_on:
+      - matomo-db
+    ports:
+      - 9010:80
+      - 9013:443
+    volumes:
+      - ./resources/matomo/config/:/var/www/html/config/
+      - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
+  matomo-db:
+    image: mariadb:10.3
+    mem_limit: 128m
+    tty: true
+    volumes:
+      - ./data/matomo-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=libriciel2k18
+      - MYSQL_DATABASE=matomo
+      - MYSQL_USER=matomo
+      - MYSQL_PASSWORD=matomo
