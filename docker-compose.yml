@@ -37,20 +37,20 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
     mem_limit: 256m
     tty: true
     depends_on:
       alfresco:
         condition: service_healthy
-      flowable:
+      flowable-rest:
         condition: service_healthy
     ports:
       - 8080:8080
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:latest
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
     mem_limit: 256m
     tty: true
     ports:
@@ -88,7 +88,7 @@ services:
 
 
   postgres:
-    build: postgres
+    build: resources/postgres
     mem_limit: 1500m
     tty: true
     environment:
