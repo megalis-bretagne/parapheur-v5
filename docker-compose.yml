@@ -13,48 +13,30 @@
 version: "2.1"
 
 services:
-  # NginX sera configuré lorsque l'application sera dockerisée
-  #    nginx:
-  #        image: nginx:1.15
-  #        tty: true
-  #        ports:
-  #            - 80:80
-  #        environment:
-  #            - NGINX_HOST=localhost
-  #            - NGINX_PORT=80
-  #            - DOLLAR=$$
-  #        volumes:
-  #            - ./nginx/poc.template:/etc/nginx/conf.d/poc.template
-  #        command: /bin/bash -c "envsubst < /etc/nginx/conf.d/poc.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
-
 
   redis:
     image: redis:5.0.3
     mem_limit: 64m
     tty: true
-    ports:
-      - 6379:6379
 
-
-  core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
-    mem_limit: 256m
-    tty: true
-    depends_on:
-      alfresco:
-        condition: service_healthy
-      flowable-rest:
-        condition: service_healthy
-    ports:
-      - 8080:8080
-
+  #  core:
+  ##    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
+  #    build: ../ip-core
+  #    mem_limit: 256m
+  #    tty: true
+  #    depends_on:
+  #      alfresco:
+  #        condition: service_healthy
+  #      flowable-rest:
+  #        condition: service_healthy
+  #    ports:
+  #      - 8080:8080
+  #
 
   crypto:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
     mem_limit: 256m
     tty: true
-    ports:
-      - 8087:8087
 
 
   alfresco:
@@ -69,8 +51,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 60
-    ports:
-      - 9000:8080
     environment:
       JAVA_OPTS: "
                 -Ddb.driver=org.postgresql.Driver
@@ -103,8 +83,6 @@ services:
       retries: 10
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
 
 
   flowable-rest:
@@ -125,8 +103,6 @@ services:
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
       - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
       - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
-    ports:
-      - 9999:8080
 
 
   keycloak:
@@ -144,8 +120,6 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./resources/keycloak/keycloak.json:/tmp/keycloak.json
-    ports:
-      - 9090:8080
 
 
   matomo:
@@ -154,9 +128,6 @@ services:
     tty: true
     depends_on:
       - matomo-db
-    ports:
-      - 9010:80
-      - 9013:443
     volumes:
       - ./resources/matomo/config/:/var/www/html/config/
       - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
