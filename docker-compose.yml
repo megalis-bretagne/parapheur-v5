@@ -10,33 +10,30 @@
 # https://www.alfresco.com/platform/content-services-ecm/trial/download
 
 # Using version 2 as 3 does not support resource constraint options (cpu_*, mem_* limits) for non swarm mode in Compose
-version: "2.1"
+version: '3.7'
 
 services:
 
-
   redis:
     image: redis:5.0.3
-    mem_limit: 64m
     tty: true
+    ports:
+      - 6379:6379
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
-    mem_limit: 256m
+    # image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
+    build: ../ip-core
     tty: true
     depends_on:
-      alfresco:
-        condition: service_healthy
-      flowable-rest:
-        condition: service_healthy
+      - alfresco
+      - flowable-rest
     ports:
       - 8080:8080
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
-    mem_limit: 256m
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.1.1
     tty: true
     ports:
       - 8087:8087
@@ -44,22 +41,13 @@ services:
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.1.1
-    mem_limit: 1500m
     tty: true
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: "curl --fail http://127.0.0.1:8080/api-explorer"
-      interval: 10s
-      timeout: 5s
-      retries: 60
     environment:
       JAVA_OPTS: "
                 -Ddb.driver=org.postgresql.Driver
                 -Ddb.username=alfresco
                 -Ddb.password=alfresco
-                -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
+                -Ddb.url=jdbc:postgresql://host.docker.internal:5432/alfresco
                 -Dalfresco.host=localhost
                 -Dalfresco.port=8080
                 -Dalf.root=/var/lib/alfresco
@@ -72,37 +60,26 @@ services:
       - 9000:8080
 
 
-  postgres:
-    build: resources/postgres
-    mem_limit: 1500m
-    tty: true
-    environment:
-      - POSTGRES_PASSWORD=libriciel2k18
-      - POSTGRES_USER=root
-      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
-    command: postgres -c max_connections=500 -c log_min_messages=LOG
-    healthcheck:
-      test: "pg_isready"
-      interval: 5s
-      timeout: 3s
-      retries: 10
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+    #  postgres:
+    #    build: resources/postgres
+    #    mem_limit: 1500m
+    #    tty: true
+    #    environment:
+    #      - POSTGRES_PASSWORD=libriciel2k18
+    #      - POSTGRES_USER=root
+    #      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
+    #    command: postgres -c max_connections=500 -c log_min_messages=LOG
+    #    volumes:
+    #      - ./data/postgres:/var/lib/postgresql/data
+    #    ports:
+    #      - 5432:5432
 
 
   flowable-rest:
     image: flowable/flowable-rest:6.4.1
     tty: true
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: "wget --quiet --tries=1 --spider http://localhost:8080/flowable-rest/docs || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 60
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
       - SPRING_DATASOURCE_USERNAME=flowable
       - SPRING_DATASOURCE_PASSWORD=flowable
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
@@ -119,7 +96,7 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - DB_VENDOR=postgres
-      - DB_ADDR=postgres
+      - DB_ADDR=host.docker.internal
       - DB_DATABASE=keycloak
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
@@ -133,16 +110,17 @@ services:
 
   matomo:
     image: matomo:3.9.1-apache
-    mem_limit: 128m
     tty: true
     depends_on:
       - matomo-db
     volumes:
       - ./resources/matomo/config/:/var/www/html/config/
       - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
+    ports:
+      - 9080:80
+      - 9083:443
   matomo-db:
     image: mariadb:10.3
-    mem_limit: 128m
     tty: true
     volumes:
       - ./data/matomo-db:/var/lib/mysql
