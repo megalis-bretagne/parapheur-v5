@@ -32,7 +32,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.1.1
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
     tty: true
     ports:
       - 8087:8087
@@ -51,7 +51,7 @@ services:
                 -Dalfresco.port=8080
                 -Dalf.root=/var/lib/alfresco
                 -Dheartbeat.enabled=false
-                -Xms1g -Xmx1g
+                -Xmx1g
                 "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
