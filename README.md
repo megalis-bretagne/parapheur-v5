@@ -87,12 +87,12 @@ $ cp /tmp/temp5.bpmn20.xml workflow_patched.bpmn20.xml
 
 #### Starting a workflow
 
-##### Uploading the workflow definition
+Uploading the workflow definition :
 ```bash
 $ curl --user rest-admin:test -F "file=@parallel_workflow.bpmn20.xml" http://localhost:8080/flowable-rest/service/repository/deployments
 ```
 
-##### Instantiating the workflow
+Instantiating the workflow :
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{"processDefinitionKey": "simple_workflow", "variables": [{"name":"workflow_instance_id", "value":"my_id"}]}' http://localhost:8080/flowable-rest/service/runtime/process-instances
 ```
