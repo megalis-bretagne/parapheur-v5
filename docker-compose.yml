@@ -18,11 +18,9 @@ services:
     tty: true
     volumes:
       - ./resources/nginx/:/etc/nginx/conf.d/
-    environment:
-      - APPLICATION_URL=iparapheur.dom.local
     depends_on:
-      - core
       - keycloak
+      - core
     ports:
       - 80:80
       - 443:443
