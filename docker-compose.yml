@@ -40,6 +40,8 @@ services:
     depends_on:
       - alfresco
       - flowable-rest
+    volumes:
+      - ./resources/core/application.yml:/application.yml
     ports:
       - 8080:8080
 
