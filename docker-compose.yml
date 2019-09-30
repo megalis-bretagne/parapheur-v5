@@ -16,9 +16,11 @@ services:
   nginx:
     image: nginx:1.17.1
     tty: true
+    restart: on-failure
     volumes:
       - ./resources/nginx/:/etc/nginx/conf.d/
     depends_on:
+      - web
       - keycloak
       - core
     ports:
@@ -29,28 +31,33 @@ services:
   redis:
     image: redis:5.0.3
     tty: true
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
     # build: ../ip-core
     tty: true
     depends_on:
+      - postgres
       - alfresco
       - flowable-rest
     volumes:
       - ./resources/core/application.yml:/application.yml
-    ports:
-      - 8080:8080
+
+
+  web:
+    image: ip-web:develop
+    tty: true
+    # build: ../ip-web
 
 
   crypto:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
     tty: true
-    ports:
-      - 8087:8087
+    # ports:
+    #   - 8087:8087
 
 
   alfresco:
@@ -58,20 +65,20 @@ services:
     tty: true
     environment:
       JAVA_OPTS: "
-                -Ddb.driver=org.postgresql.Driver
-                -Ddb.username=alfresco
-                -Ddb.password=alfresco
-                -Ddb.url=jdbc:postgresql://host.docker.internal:5432/alfresco
-                -Dalfresco.host=localhost
-                -Dalfresco.port=8080
-                -Dalf.root=/var/lib/alfresco
-                -Dheartbeat.enabled=false
-                -Xmx1g
-                "
+                  -Ddb.driver=org.postgresql.Driver
+                  -Ddb.username=alfresco
+                  -Ddb.password=alfresco
+                  -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
+                  -Dalfresco.host=alfresco
+                  -Dalfresco.port=8080
+                  -Dalf.root=/var/lib/alfresco
+                  -Dheartbeat.enabled=false
+                  -Xmx1g
+                  "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
-    ports:
-      - 9000:8080
+    # ports:
+    #   - 9000:8080
 
 
   postgres:
@@ -84,22 +91,22 @@ services:
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+  #    ports:
+  #      - 5432:5432
 
 
   flowable-rest:
     image: flowable/flowable-rest:6.4.1
     tty: true
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
       - SPRING_DATASOURCE_USERNAME=flowable
       - SPRING_DATASOURCE_PASSWORD=flowable
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
       - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
       - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
-    ports:
-      - 9999:8080
+    # ports:
+    #   - 9999:8080
 
 
   keycloak:
@@ -109,7 +116,7 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - DB_VENDOR=postgres
-      - DB_ADDR=host.docker.internal
+      - DB_ADDR=postgres
       - DB_DATABASE=keycloak
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
@@ -117,8 +124,8 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./resources/keycloak/keycloak.json:/tmp/keycloak.json
-    ports:
-      - 9090:8080
+    # ports:
+    #   - 9090:8080
 
 
   matomo:
@@ -129,9 +136,9 @@ services:
     volumes:
       - ./resources/matomo/config/:/var/www/html/config/
       - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
-    ports:
-      - 9080:80
-      - 9083:443
+    # ports:
+    #   - 9080:80
+    #   - 9083:443
   matomo-db:
     image: mariadb:10.3
     tty: true
