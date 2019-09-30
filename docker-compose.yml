@@ -45,6 +45,8 @@ services:
       - flowable-rest
     volumes:
       - ./resources/core/application.yml:/application.yml
+    external_links:
+      - nginx:iparapheur.dom.local
 
 
   web:
