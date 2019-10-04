@@ -1,4 +1,5 @@
-# i-Parapheur
+i-Parapheur
+================
 
 ## Installation
 

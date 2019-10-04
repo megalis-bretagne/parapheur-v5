@@ -19,8 +19,8 @@ services:
     restart: on-failure
     volumes:
       - ./resources/nginx/:/etc/nginx/conf.d/
+      - ./resources/nginx/ssl/:/etc/nginx/ssl/
     depends_on:
-      - web
       - keycloak
       - core
     ports:
@@ -36,7 +36,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
     # build: ../ip-core
     tty: true
     depends_on:
