@@ -145,8 +145,9 @@
       "clientId": "ipcore-api",
       "surrogateAuthRequired": false,
       "enabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [],
+      "redirectUris": [
+        "/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": true,
