@@ -14,15 +14,13 @@ version: '3.7'
 services:
 
   nginx:
-    image: nginx:1.17.1
+    image: nginx:alpine
     tty: true
-    restart: on-failure
+    depends_on:
+      - core
     volumes:
       - ./resources/nginx/:/etc/nginx/conf.d/
       - ./resources/nginx/ssl/:/etc/nginx/ssl/
-    depends_on:
-      - keycloak
-      - core
     ports:
       - 80:80
       - 443:443
