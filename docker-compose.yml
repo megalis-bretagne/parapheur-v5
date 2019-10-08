@@ -49,15 +49,18 @@ services:
 
   web:
     image: ip-web:develop
-    tty: true
     # build: ../ip-web
+    tty: true
 
 
   crypto:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
+    # build: ../ip-crypto
     tty: true
+    volumes:
+      - ./resources/crypto/application.yml:/application.yml
     # ports:
-    #   - 8087:8087
+    #   - 8085:8080
 
 
   alfresco:
@@ -91,8 +94,8 @@ services:
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-  #    ports:
-  #      - 5432:5432
+    # ports:
+    #   - 5432:5432
 
 
   flowable-rest:

@@ -25,7 +25,7 @@ services:
   crypto:
     provider: crypto
     host: crypto
-    port: 8087
+    port: 8080
   stats:
     provider: matomo
     host: matomo
