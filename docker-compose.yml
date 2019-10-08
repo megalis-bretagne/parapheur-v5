@@ -59,6 +59,7 @@ services:
     tty: true
     volumes:
       - ./resources/crypto/application.yml:/application.yml
+      - ./resources/crypto/sentry.properties:/sentry.properties
     # ports:
     #   - 8085:8080
 
