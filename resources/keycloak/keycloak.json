@@ -1,6 +1,6 @@
 {
   "id": "i-Parapheur",
-  "realm": "pocv5",
+  "realm": "api",
   "notBefore": 0,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,

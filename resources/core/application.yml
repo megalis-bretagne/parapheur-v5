@@ -1,5 +1,5 @@
 # contexte configuré dans nginx
-server.servlet.context-path: /poc5
+server.servlet.context-path: /api
 
 services:
   content:
@@ -37,7 +37,7 @@ services:
     port: 8080
     # Generate new ticket every 10 min
     ticket-delay: 60000
-    realm: pocv5
+    realm: api
     username: rest-admin
     password: admin
 
@@ -67,7 +67,7 @@ spring:
 
 keycloak:
   auth-server-url: http://iparapheur.dom.local/auth
-  realm: pocv5
+  realm: api
   resource: ipcore-api
   bearer-only: true
   # Uniquement nécéssaire si le domaine est différent
