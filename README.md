@@ -3,11 +3,40 @@ i-Parapheur
 
 ## Installation
 
-Install a postgreSQL database locally, and run :
-
 ```bash
 $ docker-compose up
 ```
+
+#### Matomo post-install setup
+
+`http://iparapheur.dom.local:9080` for the installation page.
+
+```
+DB url           : matomo-db
+DB user          : matomo
+DB pass          : matomo
+DB name          : matomo
+
+Matomo root user : admin
+Matomo root pass : *****
+
+Site name        : iparapheur
+Site url         : iparapheur.dom.local
+```
+
+* Administration (top-left cog)
+* Store (in the left menu)
+* Install plugin `Custom Dimensions`
+
+This plugin will be set by default in Matomo v.4.x, thus this step will not be necessary anymore.
+
+* Administration (top-left cog)
+* Custom Dimensions (in the left menu)
+* Action Dimensions : Configure a new dimension...
+  * Name : `Bureau`
+  * Active : ✓
+  * Save
+
 
 ## Sub-services
 

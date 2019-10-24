@@ -78,4 +78,6 @@ keycloak:
 # Pour l'authentification keycloak via swagger
 swagger.oauth2.client-id: ipcore-web
 
-logging.level.coop.libriciel.ipcore: trace
+logging.level:
+  org.jooq: warn
+  coop.libriciel.ipcore: info

@@ -34,8 +34,6 @@ services:
   nginx:
     image: nginx:alpine
     tty: true
-    depends_on:
-      - core
     volumes:
       - ./resources/nginx/:/etc/nginx/conf.d/
       - ./resources/nginx/ssl/:/etc/nginx/ssl/
@@ -159,9 +157,9 @@ services:
     volumes:
       - ./resources/matomo/config/:/var/www/html/config/
       - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
-    # ports:
-    #   - 9080:80
-    #   - 9083:443
+    ports:
+      - 9080:80
+      - 9083:443
   matomo-db:
     image: mariadb:10.3
     tty: true
