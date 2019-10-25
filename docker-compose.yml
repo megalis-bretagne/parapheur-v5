@@ -117,7 +117,7 @@ services:
 
 
   flowable-rest:
-    image: flowable/flowable-rest:6.4.1
+    image: flowable/flowable-rest:6.4.2
     tty: true
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable

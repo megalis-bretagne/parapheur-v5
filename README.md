@@ -1,5 +1,5 @@
 i-Parapheur
-================
+===========
 
 ## Installation
 
