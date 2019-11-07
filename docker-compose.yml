@@ -35,8 +35,8 @@ services:
     image: nginx:alpine
     tty: true
     volumes:
-      - ./resources/nginx/:/etc/nginx/conf.d/
-      - ./resources/nginx/ssl/:/etc/nginx/ssl/
+      - ./src/main/resources/nginx/:/etc/nginx/conf.d/
+      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
       - 443:443
@@ -75,8 +75,8 @@ services:
     # build: ../ip-crypto
     tty: true
     volumes:
-      - ./resources/crypto/application.yml:/application.yml
-      - ./resources/crypto/sentry.properties:/sentry.properties
+      - ./src/main/resources/crypto/application.yml:/application.yml
+      - ./src/main/resources/crypto/sentry.properties:/sentry.properties
     # ports:
     #   - 8085:8080
 
@@ -103,7 +103,7 @@ services:
 
 
   postgres:
-    build: resources/postgres
+    build: src/main/resources/postgres
     tty: true
     environment:
       - POSTGRES_PASSWORD=libriciel2k18
@@ -118,6 +118,11 @@ services:
 
   flowable-rest:
     image: flowable/flowable-rest:6.4.2
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
     tty: true
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
@@ -150,13 +155,13 @@ services:
 
 
   matomo:
-    image: matomo:3.9.1-apache
+    image: matomo:3.11-apache
     tty: true
     depends_on:
       - matomo-db
     volumes:
-      - ./resources/matomo/config/:/var/www/html/config/
-      - ./resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
+      - ./src/main/resources/matomo/config/:/var/www/html/config/
+      - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
     ports:
       - 9080:80
       - 9083:443
