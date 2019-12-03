@@ -15,28 +15,33 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package auth
 
-import java.util.Random
+package coop.libriciel.iparapheur
 
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef._
+import io.gatling.core.Predef.{jsonPath, scenario, _}
 import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef._
+import io.gatling.http.Predef.{http, status, _}
 import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.io.Source
 
 
-class UsersSimulation extends Simulation {
-
+object CoreApi {
 
   private val bufferedFirstNameList = Source.fromResource("lorem_first_names.csv")
-  private val firstNameList = bufferedFirstNameList.getLines.toList
-  bufferedFirstNameList.close()
-
   private val bufferedLastNameList = Source.fromResource("lorem_last_names.csv")
-  private val lastNameList = bufferedLastNameList.getLines.toList
+  private val bufferedRolesList = Source.fromResource("lorem_roles.csv")
+  private val bufferedCitiesList = Source.fromResource("lorem_cities.csv")
+
+  val FIRST_NAMES_LIST: List[String] = bufferedFirstNameList.getLines.toList
+  val LAST_NAMES_LIST: List[String] = bufferedLastNameList.getLines.toList
+  val CITIES_LIST: List[String] = bufferedCitiesList.getLines.toList
+  val ROLES_LIST: List[String] = bufferedRolesList.getLines.toList
+
+  bufferedCitiesList.close()
+  bufferedRolesList.close()
+  bufferedFirstNameList.close()
   bufferedLastNameList.close()
 
 
@@ -44,7 +49,7 @@ class UsersSimulation extends Simulation {
   private val port = ConfigFactory.load().getInt("core.port")
   private val login = ConfigFactory.load().getString("core.login")
   private val pass = ConfigFactory.load().getString("core.password")
-  private val repeatCount = ConfigFactory.load().getInt("tests.repeat_count")
+  val repeatCount: Int = ConfigFactory.load().getInt("tests.repeat_count")
 
 
   val httpConf: HttpProtocolBuilder = http.baseUrl("http://" + url + ":" + port + "/")
@@ -57,7 +62,7 @@ class UsersSimulation extends Simulation {
   val checkUp: ScenarioBuilder = scenario("Check up")
     .exec(
       http("Check up")
-        .post("auth/realms/api/protocol/openid-connect/token")
+        .post("/auth/realms/api/protocol/openid-connect/token")
         .formParam("client_id", "admin-cli")
         .formParam("username", login)
         .formParam("password", pass)
@@ -66,51 +71,5 @@ class UsersSimulation extends Simulation {
         .check(jsonPath("$.access_token").exists)
         .check(jsonPath("$.access_token").ofType[String].saveAs("authToken"))
     )
-
-
-  var createUser: ScenarioBuilder = scenario("Create")
-    .exec(session => {
-      val randomFirstName = firstNameList(new Random().nextInt(firstNameList.length))
-      val randomLastName = lastNameList(new Random().nextInt(lastNameList.length)).toString
-      println("User to create : " + randomFirstName + " " + randomLastName)
-      session.setAll(
-        ("randomFirstName", randomFirstName),
-        ("randomLastName", randomLastName)
-      )
-    })
-    .exec(
-      http("Create user")
-        .post("api/admin/user")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "userName" : "${randomFirstName}_${randomLastName}",
-              "email": "${randomFirstName}.${randomLastName}@dom.local",
-              "firstName": "${randomFirstName}",
-              "lastName": "${randomLastName}",
-              "password": "password"
-            }
-          """)).asJson
-        .check(status.is(201))
-    )
-
-
-  /**
-   * The simulations need to be in a file named *Simulation, and execute this.
-   * Every tests (Visa, Signature...) could be executed in a separate *Simulation file,
-   * but Gatling it would create a separate log and report for each.
-   *
-   * For such simple tests cases, everything is called from here, merging everything in one report/log.
-   */
-  setUp(
-
-    checkUp
-      .repeat(repeatCount) {
-        exec(createUser)
-      }
-
-      .inject(atOnceUsers(1))
-  ).protocols(httpConf)
 
 }
