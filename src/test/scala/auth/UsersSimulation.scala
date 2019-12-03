@@ -17,7 +17,7 @@
  */
 package auth
 
-import java.util.UUID
+import java.util.Random
 
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
@@ -25,14 +25,25 @@ import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 
-import scala.util.Random
+import scala.io.Source
 
 
 class UsersSimulation extends Simulation {
 
 
-  private val url = ConfigFactory.load().getString("keycloak.host")
-  private val port = ConfigFactory.load().getInt("keycloak.port")
+  private val bufferedFirstNameList = Source.fromResource("lorem_first_names.csv")
+  private val firstNameList = bufferedFirstNameList.getLines.toList
+  bufferedFirstNameList.close()
+
+  private val bufferedLastNameList = Source.fromResource("lorem_last_names.csv")
+  private val lastNameList = bufferedLastNameList.getLines.toList
+  bufferedLastNameList.close()
+
+
+  private val url = ConfigFactory.load().getString("core.host")
+  private val port = ConfigFactory.load().getInt("core.port")
+  private val login = ConfigFactory.load().getString("core.login")
+  private val pass = ConfigFactory.load().getString("core.password")
   private val repeatCount = ConfigFactory.load().getInt("tests.repeat_count")
 
 
@@ -48,8 +59,8 @@ class UsersSimulation extends Simulation {
       http("Check up")
         .post("auth/realms/api/protocol/openid-connect/token")
         .formParam("client_id", "admin-cli")
-        .formParam("username", "rest-admin")
-        .formParam("password", "admin")
+        .formParam("username", login)
+        .formParam("password", pass)
         .formParam("grant_type", "password")
         .check(status.is(200))
         .check(jsonPath("$.access_token").exists)
@@ -57,29 +68,31 @@ class UsersSimulation extends Simulation {
     )
 
 
-  var createDesk: ScenarioBuilder = scenario("Create")
+  var createUser: ScenarioBuilder = scenario("Create")
+    .exec(session => {
+      val randomFirstName = firstNameList(new Random().nextInt(firstNameList.length))
+      val randomLastName = lastNameList(new Random().nextInt(lastNameList.length)).toString
+      println("User to create : " + randomFirstName + " " + randomLastName)
+      session.setAll(
+        ("randomFirstName", randomFirstName),
+        ("randomLastName", randomLastName)
+      )
+    })
     .exec(
-      http("Create")
-        .post("auth/admin/realms/api/groups")
+      http("Create user")
+        .post("api/admin/user")
         .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(_ =>
-          s"""
-              {
-                  "name" : "name_${UUID.randomUUID.toString}"
-              }
-           """)).asJson
+        .body(StringBody(
+          """
+            {
+              "userName" : "${randomFirstName}_${randomLastName}",
+              "email": "${randomFirstName}.${randomLastName}@dom.local",
+              "firstName": "${randomFirstName}",
+              "lastName": "${randomLastName}",
+              "password": "password"
+            }
+          """)).asJson
         .check(status.is(201))
-    )
-
-
-  var listDesk: ScenarioBuilder = scenario("List")
-    .exec(
-      http("Create")
-        .get("auth/admin/realms/api/groups")
-        .header("Authorization", "bearer ${authToken}")
-        .queryParam("first", Random.nextInt(repeatCount))
-        .queryParam("max", 100)
-        .check(status.is(200))
     )
 
 
@@ -94,8 +107,7 @@ class UsersSimulation extends Simulation {
 
     checkUp
       .repeat(repeatCount) {
-        exec(createDesk)
-          .exec(listDesk)
+        exec(createUser)
       }
 
       .inject(atOnceUsers(1))
