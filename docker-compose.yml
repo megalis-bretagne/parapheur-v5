@@ -42,32 +42,35 @@ services:
       - 443:443
 
 
-  redis:
-    image: redis:5.0.3
-    tty: true
-    # ports:
-    #   - 6379:6379
+  #  core:
+  #    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
+  #    # build: ../ip-core
+  #    tty: true
+  #    depends_on:
+  #      - postgres
+  #      - alfresco
+  #      - flowable-rest
+  #    volumes:
+  #      - ./src/main/resources/core/application.yml:/application.yml
+  #      - ./src/main/resources/core/sentry.properties:/sentry.properties
+  #    external_links:
+  #      - nginx:iparapheur.dom.local
 
 
-  core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
-    # build: ../ip-core
-    tty: true
-    depends_on:
-      - postgres
-      - alfresco
-      - flowable-rest
-    volumes:
-      - ./resources/core/application.yml:/application.yml
-      - ./resources/core/sentry.properties:/sentry.properties
-    external_links:
-      - nginx:iparapheur.dom.local
+  #  web:
+  #    image: ip-web:develop
+  #    # build: ../ip-web
+  #    tty: true
 
 
-  web:
-    image: ip-web:develop
-    # build: ../ip-web
-    tty: true
+  #  workflow:
+  #    image: gitlab.libriciel.fr:4567/outils/workflow:develop
+  #    tty: true
+  #    volumes:
+  #      - ./src/main/resources/workflow/application.yml:/application.yml
+  #      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
+  #    ports:
+  #      - 10080:8080
 
 
   crypto:
@@ -77,8 +80,8 @@ services:
     volumes:
       - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
-    # ports:
-    #   - 8085:8080
+    ports:
+      - 8085:8080
 
 
   alfresco:
@@ -98,8 +101,8 @@ services:
                   "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
-    # ports:
-    #   - 9000:8080
+    ports:
+      - 9000:8080
 
 
   postgres:
@@ -112,27 +115,8 @@ services:
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-    # ports:
-    #   - 5432:5432
-
-
-  flowable-rest:
-    image: flowable/flowable-rest:6.4.2
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-    tty: true
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
-      - SPRING_DATASOURCE_USERNAME=flowable
-      - SPRING_DATASOURCE_PASSWORD=flowable
-      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
-      - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
-      - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
-    # ports:
-    #   - 9999:8080
+    ports:
+      - 5432:5432
 
 
   keycloak:
@@ -149,19 +133,24 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak.json
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
-      - ./resources/keycloak/keycloak.json:/tmp/keycloak.json
-    # ports:
-    #   - 9090:8080
+      - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
+    ports:
+      - 9090:8080
 
 
   matomo:
-    image: matomo:3.11-apache
+    image: matomo:3.13.0-apache
     tty: true
     depends_on:
       - matomo-db
     volumes:
       - ./src/main/resources/matomo/config/:/var/www/html/config/
       - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
+    environment:
+      - MATOMO_DATABASE_HOST=matomo-db
+      - MATOMO_DATABASE_USERNAME=matomo
+      - MATOMO_DATABASE_PASSWORD=matomo
+      - MATOMO_DATABASE_DBNAME=matomo
     ports:
       - 9080:80
       - 9083:443

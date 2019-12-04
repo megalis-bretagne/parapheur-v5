@@ -9,14 +9,10 @@ $ docker-compose up
 
 #### Matomo post-install setup
 
-`http://iparapheur.dom.local:9080` for the installation page.
+`http://iparapheur.dom.local:9080` for the installation page.  
+Click "Next" on the firsts pages. Values are set by Docker's environment variables.  
 
 ```
-DB url           : matomo-db
-DB user          : matomo
-DB pass          : matomo
-DB name          : matomo
-
 Matomo root user : admin
 Matomo root pass : *****
 
