@@ -15,79 +15,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package auth
+package coop.libriciel.iparapheur.auth
 
 import java.util.Random
 
-import com.typesafe.config.ConfigFactory
+import coop.libriciel.iparapheur.CoreApi
+import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, ROLES_LIST}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 
-import scala.io.Source
-
 
 class DesksSimulation extends Simulation {
 
 
-
-
-  private val url = ConfigFactory.load().getString("core.host")
-  private val port = ConfigFactory.load().getInt("core.port")
-  private val login = ConfigFactory.load().getString("core.login")
-  private val pass = ConfigFactory.load().getString("core.password")
-  private val repeatCount = ConfigFactory.load().getInt("tests.repeat_count")
-
-
-  val httpConf: HttpProtocolBuilder = http.baseUrl("http://" + url + ":" + port + "/")
-    .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-    .acceptEncodingHeader("gzip, deflate")
-    .acceptLanguageHeader("en-US,en;q=0.5")
-    .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
-
-
-  val checkUp: ScenarioBuilder = scenario("Check up")
-    .exec(
-      http("Check up")
-        .post("auth/realms/api/protocol/openid-connect/token")
-        .formParam("client_id", "admin-cli")
-        .formParam("username", login)
-        .formParam("password", pass)
-        .formParam("grant_type", "password")
-        .check(status.is(200))
-        .check(jsonPath("$.access_token").exists)
-        .check(jsonPath("$.access_token").ofType[String].saveAs("authToken"))
-    )
-
-
-  var createUser: ScenarioBuilder = scenario("Create user")
-    .exec(session => {
-      session.set("cityName", citiesList(new Random().nextInt(citiesList.length)))
-    })
-    .exec(
-      http("Create")
-        .post("api/admin/user")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "userName" : "${cityName}",
-              "email": "${randomFirstName}.${randomLastName}@dom.local",
-              "firstName": "${randomFirstName}",
-              "lastName": "${randomLastName}",
-              "password": "password"
-            }
-          """)).asJson
-        .check(status.is(201))
-    )
-
-
-  var createDesk: ScenarioBuilder = scenario("Create")
+  var createDesk: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
-        ("randomRole", rolesList(new Random().nextInt(rolesList.length))),
-        ("randomCity", citiesList(new Random().nextInt(citiesList.length)))
+        ("randomRole", ROLES_LIST(new Random().nextInt(ROLES_LIST.length))),
+        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
       )
     })
     .exec(
@@ -98,7 +45,7 @@ class DesksSimulation extends Simulation {
           """
             {
               "name" : "${randomRole} de ${randomCity}",
-              "description": "Test"
+              "description": "Gatling de ${randomRole} de ${randomCity}"
             }
           """)).asJson
         .check(status.is(201))
@@ -113,13 +60,11 @@ class DesksSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-
-    checkUp
-      .repeat(repeatCount) {
+    CoreApi.checkUp
+      .repeat(CoreApi.repeatCount) {
         exec(createDesk)
       }
-
       .inject(atOnceUsers(1))
-  ).protocols(httpConf)
+  ).protocols(CoreApi.httpConf)
 
 }
