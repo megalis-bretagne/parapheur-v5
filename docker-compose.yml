@@ -120,7 +120,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:6.0.1
+    image: jboss/keycloak:8.0.1
     tty: true
     environment:
       - KEYCLOAK_USER=admin
