@@ -63,12 +63,12 @@ services:
   #    tty: true
 
 
-  #  workflow:
-  #    image: gitlab.libriciel.fr:4567/outils/workflow:develop
-  #    tty: true
-  #    volumes:
-  #      - ./src/main/resources/workflow/application.yml:/application.yml
-  #      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
+  workflow:
+    image: gitlab.libriciel.fr:4567/outils/workflow:develop
+    tty: true
+    volumes:
+      - ./src/main/resources/workflow/application.yml:/application.yml
+      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
   #    ports:
   #      - 10080:8080
 
@@ -82,6 +82,15 @@ services:
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
     ports:
       - 8085:8080
+
+
+  pdf-stamp:
+    image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
+    # build: ../ip-crypto
+    tty: true
+    volumes:
+      - ./src/main/resources/pdf-stamp/application.yml:/application.yml
+      # - ./src/main/resources/pdf-stamp/sentry.properties:/sentry.properties
 
 
   alfresco:
