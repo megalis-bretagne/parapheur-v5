@@ -64,7 +64,7 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/outils/workflow:develop
+    image: gitlab.libriciel.fr:4567/outils/workflow:latest
     tty: true
     volumes:
       - ./src/main/resources/workflow/application.yml:/application.yml
@@ -86,7 +86,6 @@ services:
 
   pdf-stamp:
     image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
-    # build: ../ip-crypto
     tty: true
     volumes:
       - ./src/main/resources/pdf-stamp/application.yml:/application.yml
@@ -129,7 +128,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:8.0.1
+    image: jboss/keycloak:8.0.2
     tty: true
     environment:
       - KEYCLOAK_USER=admin
