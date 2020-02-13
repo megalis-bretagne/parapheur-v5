@@ -1,4 +1,19 @@
-# contexte configuré dans nginx
+# i-Parapheur Core
+# Copyright (C) 2018-2020 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 server.servlet.context-path: /api
 
 services:
@@ -11,8 +26,8 @@ services:
     # Generate new ticket every 10 min
     ticket-delay: 600000
   workflow:
-    provider: flowable
-    host: flowable-rest
+    provider: workflow
+    host: workflow
     port: 8080
     username: kermit
     password: kermit
@@ -31,6 +46,10 @@ services:
     host: matomo
     token: ca46afa897d02da9f44bb876360b0017
     port: 80
+  pdfstamp:
+    provider: pdfstamp
+    host: pdf-stamp
+    port: 8080
   auth:
     provider: keycloak
     host: keycloak
@@ -40,13 +59,19 @@ services:
     realm: api
     username: rest-admin
     password: admin
+    db:
+      host: postgres
+      port: 5432
+      name: keycloak
+      login: keycloak
+      password: keycloak
 
 spring:
-  cache:
-    type: redis
-  redis:
-    host: redis
-    port: 6379
+  #cache:
+  #  type: redis
+  #redis:
+  #  host: redis
+  #  port: 6379
   servlet.multipart:
     maxFileSize: 5GB
     maxRequestSize: 5GB
