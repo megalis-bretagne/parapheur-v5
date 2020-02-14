@@ -59,7 +59,7 @@ services:
 
 
   web:
-    image: ip-web:develop
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-web:develop
     restart: always
     tty: true
     #ports:
@@ -91,6 +91,7 @@ services:
 
   pdf-stamp:
     image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
+    # build: ../pdf-stamp
     restart: always
     tty: true
     #port:
