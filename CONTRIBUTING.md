@@ -15,7 +15,7 @@ For integration tests, we use Gatling with a dedicated `src/test` folder.
 Every test can be started with the command :
 ```bash
 $ mvn gatling:test
-$ mvn gatling:test -Dgatling.simulationClass=computerdatabase.BasicSimulation
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation
 ```
 
 ## Performance test

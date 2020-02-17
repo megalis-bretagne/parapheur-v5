@@ -79,7 +79,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:latest
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2.1
     restart: always
     tty: true
     volumes:
@@ -90,8 +90,8 @@ services:
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
-    # build: ../pdf-stamp
+    # image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
+    build: ../pdf-stamp
     restart: always
     tty: true
     #port:
