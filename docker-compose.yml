@@ -44,7 +44,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:latest
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:0.2
     restart: always
     tty: true
     depends_on:
@@ -79,7 +79,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2.1
+    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2
     restart: always
     tty: true
     volumes:
@@ -94,7 +94,7 @@ services:
     build: ../pdf-stamp
     restart: always
     tty: true
-    #port:
+    #ports:
     #  - 8888:8080
 
 
@@ -136,7 +136,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:8.0.2
+    image: jboss/keycloak:9.0.0
     restart: always
     tty: true
     environment:
@@ -151,7 +151,9 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
-    #ports:
+      # Fixing this bug, temporarly : https://issues.redhat.com/browse/KEYCLOAK-12896
+      # TODO : Remove it when keycloak 9.0.2 will be released.
+      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
     #  - 9090:8080
 
 
