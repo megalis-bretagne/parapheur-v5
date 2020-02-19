@@ -36,7 +36,7 @@ services:
     restart: always
     tty: true
     volumes:
-      - ./src/main/resources/nginx/:/etc/nginx/conf.d/
+      - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
