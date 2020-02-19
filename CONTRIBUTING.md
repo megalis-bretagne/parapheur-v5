@@ -15,15 +15,15 @@ Some system-dependant override files are available, to expose every container's 
 The system-dependant `dev-XXX` compose should be chained right after the production one :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-macos.yml up
 ```
 
 Useful tip : You might you want to start one of the sub-services natively, on your system.  
 Or simply removing a heavy one that you won't use (like Matomo and its db)...   
-Scale down those services to 0, to prevent docker-compose from starting those :
+To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up \
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-macos.yml up \
       --scale core=0 \
       --scale web=0 \
       --scale matomo=0 \
