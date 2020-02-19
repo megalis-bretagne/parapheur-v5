@@ -11,22 +11,22 @@ The `src/test` folder contains everything for the integration/load tests.
 
 ## Docker overriding
 
-Some system-dependant override files is available, to expose every container's ports, and serve appropriate configuration files.  
+Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
 The system-dependant `develop-XXX` compose should be chained immediatly after the production one :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.develop-macos.yml up
+$ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up
 ```
 
-Some `disable-XXX` files are available, if you want to start one of the sub-services natively on your system.  
-Those can be daisy-chained like so :
+Useful tip : If you want to start one of the sub-services natively, on your system.
+You can scale those services to 0, to prevent docker from starting those :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.develop-macos.yml \
-    -f docker-compose.override.disable-matomo.yml \
-    -f docker-compose.override.disable-web.yml \
-    -f docker-compose.override.disable-core.yml \
-        up
+$ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up \
+      --scale core=0 \
+      --scale web=0 \
+      --scale matomo=0 \
+      --scale matomo-db=0
 ```
 
 
