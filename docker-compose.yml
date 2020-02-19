@@ -62,9 +62,6 @@ services:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-web:develop
     restart: always
     tty: true
-    #ports:
-    #  - 4200:4200
-    #  - 80:80
 
 
   workflow:
@@ -74,8 +71,6 @@ services:
     volumes:
       - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
-    #ports:
-    #  - 10080:8080
 
 
   crypto:
@@ -85,8 +80,6 @@ services:
     volumes:
       - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
-    #ports:
-    #  - 8085:8080
 
 
   pdf-stamp:
@@ -94,8 +87,6 @@ services:
     build: ../pdf-stamp
     restart: always
     tty: true
-    #ports:
-    #  - 8888:8080
 
 
   alfresco:
@@ -116,8 +107,6 @@ services:
                   "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
-    #ports:
-    #  - 9000:8080
 
 
   postgres:
@@ -131,8 +120,6 @@ services:
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-    #ports:
-    #  - 5432:5432
 
 
   keycloak:
@@ -152,9 +139,9 @@ services:
     volumes:
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
       # Fixing this bug, temporarly : https://issues.redhat.com/browse/KEYCLOAK-12896
+      # The problematic line was just commented out
       # TODO : Remove it when keycloak 9.0.2 will be released.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
-    #  - 9090:8080
 
 
   matomo:
@@ -170,9 +157,6 @@ services:
       - MATOMO_DATABASE_USERNAME=matomo
       - MATOMO_DATABASE_PASSWORD=matomo
       - MATOMO_DATABASE_DBNAME=matomo
-    #ports:
-    #  - 9080:80
-    #  - 9083:443
   matomo-db:
     image: mariadb:10.3
     tty: true
