@@ -12,14 +12,15 @@ The `src/test` folder contains everything for the integration/load tests.
 ## Docker overriding
 
 Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
-The system-dependant `develop-XXX` compose should be chained immediatly after the production one :
+The system-dependant `dev-XXX` compose should be chained right after the production one :
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up
 ```
 
-Useful tip : If you want to start one of the sub-services natively, on your system.
-You can scale those services to 0, to prevent docker from starting those :
+Useful tip : You might you want to start one of the sub-services natively, on your system.  
+Or simply removing a heavy one that you won't use (like Matomo and its db)...   
+Scale down those services to 0, to prevent docker-compose from starting those :
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.overdrive.dev-macos.yml up \
