@@ -61,9 +61,9 @@ class DesksSimulation extends Simulation {
    */
   setUp(
     CoreApi.checkUp
-//      .repeat(CoreApi.repeatCount) {
-//        exec(createDesk)
-//      }
+      .repeat(CoreApi.repeatCount) {
+        exec(createDesk)
+      }
       .inject(atOnceUsers(1))
   ).protocols(CoreApi.httpConf)
 

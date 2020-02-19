@@ -9,6 +9,27 @@ Every needed configuration files are set in the `src/main/resources` folder.
 The `src/test` folder contains everything for the integration/load tests.  
 
 
+## Docker overriding
+
+Some system-dependant override files is available, to expose every container's ports, and serve appropriate configuration files.  
+The system-dependant `develop-XXX` compose should be chained immediatly after the production one :
+
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose.override.develop-macos.yml up
+```
+
+Some `disable-XXX` files are available, if you want to start one of the sub-services natively on your system.  
+Those can be daisy-chained like so :
+
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose.override.develop-macos.yml \
+    -f docker-compose.override.disable-matomo.yml \
+    -f docker-compose.override.disable-web.yml \
+    -f docker-compose.override.disable-core.yml \
+        up
+```
+
+
 ## Integration tests
 
 For integration tests, we use Gatling with a dedicated `src/test` folder.  
