@@ -3,9 +3,18 @@ i-Parapheur
 
 ## Installation
 
+The following command will serve a working i-Parapheur.
+
 ```bash
 $ docker-compose up
 ```
+
+To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
+```
+127.0.0.1    iparapheur.dom.local
+```
+And open the URL : http://iparapheur.dom.local
+
 
 #### Matomo post-install setup
 

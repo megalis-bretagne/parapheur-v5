@@ -21,6 +21,9 @@ services:
 
   nginx:
     image: nginx:alpine
+    # TODO : Remove this network_mode (and possibly this entire `develop-linux` file)
+    #        once this feature will be closed : https://github.com/docker/for-linux/issues/264
+    network_mode: host
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
@@ -39,7 +42,7 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/outils/workflow:latest
+    image: gitlab.libriciel.fr:4567/outils/workflow:develop
     ports:
       - 10080:8080
 
