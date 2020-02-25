@@ -11,19 +11,31 @@ The `src/test` folder contains everything for the integration/load tests.
 
 ## Docker overriding
 
-Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
-The system-dependant `dev-XXX` compose should be chained right after the production one :
+#### Linux only
 
-```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-macos.yml up
+You should declare two URLs in your `/etc/hosts` :
+```
+127.0.0.1     host.docker.internal
+127.0.0.1     iparapheur.dom.local
 ```
 
-Useful tip : You might you want to start one of the sub-services natively, on your system.  
+#### Launching development mode
+
+Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
+The system-dependant `override.dev-XXX` docker-compose should be chained right after the production one :
+
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
+```
+
+#### Useful tip :
+
+You might you want to start one of the sub-services natively, on your system.  
 Or simply removing a heavy one that you won't use (like Matomo and its db)...   
 To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-macos.yml up \
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
       --scale core=0 \
       --scale web=0 \
       --scale matomo=0 \
