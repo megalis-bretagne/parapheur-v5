@@ -31,6 +31,7 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
+    command: ["ip -4 route list match 0/0 | awk '{print $$3 \" iparapheur.dom.local\"}' >> /etc/hosts"]
     ports:
       - 8080:8080
 
