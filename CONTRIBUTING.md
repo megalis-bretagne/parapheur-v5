@@ -15,7 +15,8 @@ The `src/test` folder contains everything for the integration/load tests.
 
 You should declare two URLs in your `/etc/hosts` :
 ```
-127.0.0.1     host.docker.intenal
+127.0.0.1     host.docker.internal
+127.0.0.1     iparapheur.dom.local
 ```
 
 #### Launching development mode
