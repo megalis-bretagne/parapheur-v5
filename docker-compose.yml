@@ -64,6 +64,12 @@ services:
     tty: true
 
 
+  libersign:
+    image: gitlab.libriciel.fr:4567/i-parapheur/signature/libersign:1.9.10
+    restart: always
+    tty: true
+
+
   workflow:
     image: gitlab.libriciel.fr:4567/outils/workflow:latest
     restart: always
