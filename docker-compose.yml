@@ -29,12 +29,35 @@
 
 version: '3.7'
 
+
+# <editor-fold desc="Anchors">
+
+x-commons: &commons
+  restart: always
+  tty: true
+
+x-nginx_memory_limit: &nginx_memory_limit
+  deploy:
+    resources:
+      limits:
+        memory: 64M
+
+x-springboot_memory_limit: &springboot_memory_limit
+  deploy:
+    resources:
+      limits:
+        memory: 256M
+
+# </editor-fold desc="Anchors">
+
+
 services:
+
 
   nginx:
     image: nginx:1.16.1-alpine
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *nginx_memory_limit
     volumes:
       - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
@@ -45,8 +68,8 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:0.2
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *springboot_memory_limit
     depends_on:
       - postgres
       - alfresco
@@ -60,20 +83,20 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-web:develop
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *nginx_memory_limit
 
 
   libersign:
     image: gitlab.libriciel.fr:4567/i-parapheur/signature/libersign:1.9.10
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *nginx_memory_limit
 
 
   workflow:
     image: gitlab.libriciel.fr:4567/outils/workflow:latest
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *springboot_memory_limit
     volumes:
       - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
@@ -81,24 +104,26 @@ services:
 
   crypto:
     image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2
-    restart: always
-    tty: true
+    <<: *commons
+    <<: *springboot_memory_limit
     volumes:
       - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
   pdf-stamp:
-    # image: gitlab.libriciel.fr:4567/i-parapheur/outils/pdf-stamp:develop
-    build: ../pdf-stamp
-    restart: always
-    tty: true
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
+    <<: *commons
+    <<: *springboot_memory_limit
 
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.1.1
-    restart: always
-    tty: true
+    <<: *commons
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     environment:
       JAVA_OPTS: "
                   -Ddb.driver=org.postgresql.Driver
@@ -117,8 +142,11 @@ services:
 
   postgres:
     build: src/main/resources/postgres
-    restart: always
-    tty: true
+    <<: *commons
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       - POSTGRES_PASSWORD=libriciel2k18
       - POSTGRES_USER=root
@@ -130,8 +158,12 @@ services:
 
   keycloak:
     image: jboss/keycloak:9.0.0
-    restart: always
-    tty: true
+    <<: *commons
+    deploy:
+      resources:
+        limits:
+          # https://www.keycloak.org/docs/latest/server_installation/
+          memory: 512M
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
@@ -152,7 +184,13 @@ services:
 
   matomo:
     image: matomo:3.13.0-apache
-    tty: true
+    <<: *commons
+    deploy:
+      resources:
+        limits:
+          # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
+          # We're assuming a generous 1G for the service, and a little bit for the DB.
+          memory: 1G
     depends_on:
       - matomo-db
     volumes:
@@ -165,7 +203,11 @@ services:
       - MATOMO_DATABASE_DBNAME=matomo
   matomo-db:
     image: mariadb:10.3
-    tty: true
+    <<: *commons
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     volumes:
       - ./data/matomo-db:/var/lib/mysql
     environment:
