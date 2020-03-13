@@ -70,7 +70,6 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:latest
     ports:
       - 9090:8080
 
