@@ -78,6 +78,11 @@ services:
       - 9000:8080
 
 
+  #libreoffice:
+  #  ports:
+  #    - 8090:8090
+
+
   postgres:
     ports:
       - 5432:5432

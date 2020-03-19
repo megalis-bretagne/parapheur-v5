@@ -118,14 +118,18 @@ services:
 
 
   alfresco:
-    image: alfresco/alfresco-content-repository-community:6.1.1
+    image: alfresco/alfresco-content-repository-community:6.2.0-ga
     <<: *commons
     deploy:
       resources:
         limits:
-          memory: 1G
+          memory: 1536M
     environment:
+      # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
       JAVA_OPTS: "
+                  -XX:+UseContainerSupport
+                  -Ddeployment.method=DOCKER_COMPOSE
+
                   -Ddb.driver=org.postgresql.Driver
                   -Ddb.username=alfresco
                   -Ddb.password=alfresco
@@ -133,11 +137,25 @@ services:
                   -Dalfresco.host=alfresco
                   -Dalfresco.port=8080
                   -Dalf.root=/var/lib/alfresco
+
                   -Dheartbeat.enabled=false
-                  -Xmx1g
+                  -Dtransform.service.enabled=false
+                  -Dlocal.transform.service.enabled=false
+                  -Dlegacy.transform.service.enabled=false
+                  -Dmessaging.subsystem.autoStart=false
                   "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
+
+
+  #libreoffice:
+  #  image: alfresco/alfresco-libreoffice:2.1.1
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 1024M
+  #  environment:
+  #    JAVA_OPTS: "-XX:+UseContainerSupport"
 
 
   postgres:
@@ -190,7 +208,7 @@ services:
         limits:
           # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
           # We're assuming a generous 1G for the service, and a little bit for the DB.
-          memory: 1G
+          memory: 1024M
     depends_on:
       - matomo-db
     volumes:
