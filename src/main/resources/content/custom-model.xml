@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  i-Parapheur
+  Copyright (C) 2020 Libriciel.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+  <description>i-Parapheur internal custom models</description>
+  <version>0.1</version>
+
+  <imports>
+    <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+  </imports>
+
+  <namespaces>
+    <namespace uri="http://libriciel.fr" prefix="iparapheur"/>
+  </namespaces>
+
+  <types>
+    <type name="iparapheur:document">
+      <title>i-Parapheur internal document model</title>
+      <parent>cm:content</parent>
+      <properties>
+        <property name="iparapheur:isMainDocument">
+          <title>Main document</title>
+          <type>d:boolean</type>
+        </property>
+        <property name="iparapheur:documentOrder">
+          <title>Document order</title>
+          <type>d:int</type>
+        </property>
+      </properties>
+      <!-- <mandatory-aspects> -->
+      <!--   <aspect>acme:businesses</aspect> -->
+      <!-- </mandatory-aspects> -->
+    </type>
+  </types>
+
+  <aspects>
+  </aspects>
+
+</model>
