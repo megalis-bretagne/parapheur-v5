@@ -146,6 +146,10 @@ services:
                   "
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
+      # DOC: file needs to end in -context.xml and to be in this location.
+      # Details on (Deployment - App Server) -> https://docs.alfresco.com/6.2/references/dev-extension-points-content-model-define-and-deploy.html
+      - ./src/main/resources/content/customAIContentModel.xml:/usr/local/tomcat/shared/classes/alfresco/extension/customAIContentModel.xml
+      - ./src/main/resources/content/custom-ai-content-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-ai-content-model-context.xml
 
 
   #libreoffice:

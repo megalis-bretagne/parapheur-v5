@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="acme:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+  <description>Custom Content Model for Artificial Intelligence extension</description>
+  <version>1.2</version>
+
+  <imports>
+    <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+    <import uri="http://www.alfresco.org/model/site/1.0" prefix="st"/>
+    <import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+  </imports>
+
+  <namespaces>
+    <namespace uri="http://acme.org" prefix="acme"/>
+  </namespaces>
+
+  <types>
+    <type name="acme:document">
+      <title>Base document type</title>
+      <parent>cm:content</parent>
+      <properties>
+        <property name="acme:documentId">
+          <title>Document Identification Number</title>
+          <type>d:text</type>
+        </property>
+      </properties>
+      <mandatory-aspects>
+        <aspect>acme:businesses</aspect>
+      </mandatory-aspects>
+    </type>
+  </types>
+
+  <aspects>
+    <aspect name="acme:businesses">
+      <title>AI Businesses</title>
+      <properties>
+        <property name="acme:business">
+          <title>Businesses</title>
+          <type>d:text</type>
+          <multiple>true</multiple>
+          <index enabled="true">
+            <tokenised>both</tokenised>
+            <facetable>true</facetable>
+          </index>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="acme:sports">
+      <title>AI Sports</title>
+      <properties>
+        <property name="acme:sport">
+          <title>Sports</title>
+          <type>d:text</type>
+          <multiple>true</multiple>
+          <index enabled="true">
+            <tokenised>both</tokenised>
+            <facetable>true</facetable>
+          </index>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="acme:categories">
+      <title>AI Categories</title>
+      <properties>
+        <property name="acme:category">
+          <title>AI Category</title>
+          <type>d:text</type>
+          <multiple>true</multiple>
+          <index enabled="true">
+            <tokenised>both</tokenised>
+            <facetable>true</facetable>
+          </index>
+        </property>
+      </properties>
+    </aspect>
+  </aspects>
+</model>
