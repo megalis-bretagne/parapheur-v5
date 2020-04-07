@@ -31,6 +31,17 @@
     <namespace uri="http://libriciel.fr" prefix="iparapheur"/>
   </namespaces>
 
+  <constraints>
+    <constraint name="iparapheur:documentOrderConstraint" type="MINMAX">
+      <parameter name='minValue'>
+        <value>0</value>
+      </parameter>
+      <parameter name='maxValue'>
+        <value>100</value>
+      </parameter>
+    </constraint>
+  </constraints>
+
   <types>
     <type name="iparapheur:document">
       <title>i-Parapheur internal document model</title>
@@ -43,11 +54,11 @@
         <property name="iparapheur:documentOrder">
           <title>Document order</title>
           <type>d:int</type>
+          <constraints>
+            <constraint ref="iparapheur:documentOrderConstraint"/>
+          </constraints>
         </property>
       </properties>
-      <!-- <mandatory-aspects> -->
-      <!--   <aspect>acme:businesses</aspect> -->
-      <!-- </mandatory-aspects> -->
     </type>
   </types>
 
