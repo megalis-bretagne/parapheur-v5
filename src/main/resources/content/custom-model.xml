@@ -32,7 +32,7 @@
   </namespaces>
 
   <constraints>
-    <constraint name="iparapheur:documentOrderConstraint" type="MINMAX">
+    <constraint name="iparapheur:indexConstraint" type="MINMAX">
       <parameter name='minValue'>
         <value>0</value>
       </parameter>
@@ -51,11 +51,11 @@
           <title>Main document</title>
           <type>d:boolean</type>
         </property>
-        <property name="iparapheur:documentOrder">
+        <property name="iparapheur:index">
           <title>Document order</title>
           <type>d:int</type>
           <constraints>
-            <constraint ref="iparapheur:documentOrderConstraint"/>
+            <constraint ref="iparapheur:indexConstraint"/>
           </constraints>
         </property>
       </properties>
