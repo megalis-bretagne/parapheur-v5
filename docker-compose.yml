@@ -67,7 +67,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:0.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.2
     <<: *commons
     <<: *springboot_memory_limit
     depends_on:
@@ -103,7 +103,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:1.2
     <<: *commons
     <<: *springboot_memory_limit
     volumes:

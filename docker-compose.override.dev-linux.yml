@@ -30,7 +30,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     command: ["ip -4 route list match 0/0 | awk '{print $$3 \" iparapheur.dom.local\"}' >> /etc/hosts"]
     ports:
       - 8080:8080
@@ -49,7 +49,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     ports:
       - 8085:8080
 
