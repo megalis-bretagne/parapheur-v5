@@ -37,13 +37,13 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     ports:
       - 4200:80
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/outils/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
     ports:
       - 10080:8080
 
