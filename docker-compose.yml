@@ -67,7 +67,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-core:0.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.2
     <<: *commons
     <<: *springboot_memory_limit
     depends_on:
@@ -82,19 +82,19 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     <<: *commons
     <<: *nginx_memory_limit
 
 
-  libersign:
-    image: gitlab.libriciel.fr:4567/i-parapheur/signature/libersign:1.9.10
-    <<: *commons
-    <<: *nginx_memory_limit
+  # libersign:
+  #  image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.9.10
+  #  <<: *commons
+  #  <<: *nginx_memory_limit
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/outils/workflow:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:latest
     <<: *commons
     <<: *springboot_memory_limit
     volumes:
@@ -103,7 +103,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/i-parapheur/components/ip-crypto:1.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:1.2
     <<: *commons
     <<: *springboot_memory_limit
     volumes:
