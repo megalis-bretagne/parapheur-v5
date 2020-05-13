@@ -87,10 +87,10 @@ services:
     <<: *nginx_memory_limit
 
 
-  libersign:
-    image: gitlab.libriciel.fr:4567/i-parapheur/signature/libersign:1.9.10
-    <<: *commons
-    <<: *nginx_memory_limit
+  # libersign:
+  #  image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.9.10
+  #  <<: *commons
+  #  <<: *nginx_memory_limit
 
 
   workflow:
