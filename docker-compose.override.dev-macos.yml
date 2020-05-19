@@ -75,7 +75,7 @@ services:
 
   alfresco:
     ports:
-      - 9000:8080
+      - 9009:8080
 
 
   #libreoffice:

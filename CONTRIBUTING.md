@@ -31,7 +31,7 @@ $ docker-compose --compatibility -f docker-compose.yml -f docker-compose.overrid
 #### Useful tip :
 
 You might you want to start one of the sub-services natively, on your system.  
-Or simply removing a heavy one that you won't use (like Matomo and its db)...   
+Or simply removing a heavy one you won't use (like Matomo and its db)...   
 To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
@@ -55,7 +55,7 @@ $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.User
 ## Performance test
 
 Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
-This value can be overridden (increased), to turn those integration into performance tests :
+This value can be overridden (increased), to turn those integrations into performance tests :
 ```bash
 $ mvn gatling:test -Dtests.repeat_count=1000000
 ```
