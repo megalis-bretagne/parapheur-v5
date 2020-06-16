@@ -43,6 +43,15 @@ $ docker-compose --compatibility -f docker-compose.yml -f docker-compose.overrid
 ```
 
 
+## Connect to DB
+
+```bash
+$ docker exec -it i-parapheur_postgres_1 /bin/sh
+$ psql --username "ipcore" --dbname "ipcore"
+$ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
+```
+
+
 ## Integration tests
 
 For integration tests, we use Gatling with a dedicated `src/test` folder.  
