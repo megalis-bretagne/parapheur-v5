@@ -163,7 +163,7 @@ services:
 
 
   postgres:
-    build: src/main/resources/postgres
+    image: postgres:10.1
     <<: *commons
     deploy:
       resources:
@@ -176,6 +176,7 @@ services:
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+      - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
 
 
   keycloak:
