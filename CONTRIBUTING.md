@@ -43,7 +43,7 @@ $ docker-compose --compatibility -f docker-compose.yml -f docker-compose.overrid
 ```
 
 
-## Connect to DB
+## Connecting to local DB
 
 ```bash
 $ docker exec -it i-parapheur_postgres_1 /bin/sh
@@ -60,6 +60,7 @@ Every test can be started with the command :
 $ mvn gatling:test
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation
 ```
+
 
 ## Performance test
 

@@ -57,4 +57,4 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
 
 EOSQL
 
-echo "Core linked data set"
+echo "Core-Keycloak linked data set"
