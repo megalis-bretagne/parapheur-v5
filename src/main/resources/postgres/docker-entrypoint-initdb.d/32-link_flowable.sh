@@ -49,6 +49,7 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
     CREATE FOREIGN TABLE act_ru_identitylink(
         id_ VARCHAR(64),
         group_id_ VARCHAR(255),
+        type_ VARCHAR(255),
         task_id_ VARCHAR(255),
         proc_inst_id_ VARCHAR(255)
       )
@@ -101,9 +102,28 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       SERVER flowable
       OPTIONS (schema_name 'public', table_name 'act_hi_procinst');
 
+    CREATE FOREIGN TABLE act_ru_variable(
+        id_ VARCHAR(64),
+        type_ VARCHAR(255),
+        name_ VARCHAR(255),
+        execution_id_ VARCHAR(64),
+        proc_inst_id_ VARCHAR(64),
+        task_id_ VARCHAR(64),
+        var_type_ VARCHAR(100),
+        bytearray_id_ VARCHAR(64),
+        double_ DOUBLE PRECISION,
+        long_ BIGINT,
+        text_ VARCHAR(4000),
+        text2_ VARCHAR(4000)
+      )
+      SERVER flowable
+      OPTIONS (schema_name 'public', table_name 'act_ru_variable');
+
+
     ALTER FOREIGN TABLE act_ru_task OWNER TO ipcore;
     ALTER FOREIGN TABLE act_ru_identitylink OWNER TO ipcore;
     ALTER FOREIGN TABLE act_ru_execution OWNER TO ipcore;
+    ALTER FOREIGN TABLE act_ru_variable OWNER TO ipcore;
     ALTER FOREIGN TABLE act_hi_varinst OWNER TO ipcore;
     ALTER FOREIGN TABLE act_hi_procinst OWNER TO ipcore;
 
