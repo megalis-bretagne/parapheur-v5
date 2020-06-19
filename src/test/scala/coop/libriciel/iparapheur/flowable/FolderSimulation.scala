@@ -18,8 +18,8 @@
 package coop.libriciel.iparapheur.flowable
 
 import java.util.Random
-import coop.libriciel.iparapheur.CoreApi
 
+import coop.libriciel.iparapheur.CoreApi
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
@@ -46,7 +46,9 @@ class FolderSimulation extends Simulation {
         .get("api/admin/typology/test_type")
         .header("Authorization", "bearer ${authToken}")
         .check(status.is(200))
+        .check(jsonPath("$.id").exists)
         .check(jsonPath("$.id").saveAs("typeId"))
+        .check(jsonPath("$.subtypes[*].id").ofType[String].exists)
         .check(jsonPath("$.subtypes[*].id").ofType[String].findRandom.saveAs("subtypeId"))
     )
     .exec(session => {
