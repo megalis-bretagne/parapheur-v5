@@ -47,10 +47,12 @@ This plugin will be set by default in Matomo v.4.x, thus this step will not be n
 
 ### Flowable
 
+
 #### Standalone run
 
 Download and run it, according to the [official documentation](http://www.flowable.org/docs/userguide/index.html#download).  
 Or use the official Docker image : `docker run -p8080:8080 flowable/flowable-rest`.
+
 
 #### Uploading basic tasks definitions
 
@@ -106,6 +108,7 @@ $ xsltproc src/main/resources/patches/callActivity_undo.xslt workflow.bpmn20.xml
 ```
 *Note : This patch removes the existing BPMN diagram : Since it adds elements, it will most likely break it anyway.*
 
+
 ##### TL;DR
 Name your tasks `{visa|signature} target_desk` and do that :
 
@@ -132,7 +135,9 @@ Instantiating the workflow :
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{"processDefinitionKey": "simple_workflow", "variables": [{"name":"workflow_instance_id", "value":"my_id"}]}' http://localhost:8080/flowable-rest/service/runtime/process-instances
 ```
 
+
 #### Listing tasks by candidates
+
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "candidateGroup" : "Emetteur" }' http://localhost:8080/flowable-rest/service/query/tasks
 ```
@@ -154,7 +159,9 @@ $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ 
 }
 ```
 
+
 #### Performing tasks
+
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "action" : "complete", "variables" : [ { "name" : "approved", "value" : true}, { "name" : "action", "value" : "'visa'"} ]  }' http://localhost:8080/flowable-rest/service/runtime/tasks/6255
 ```
