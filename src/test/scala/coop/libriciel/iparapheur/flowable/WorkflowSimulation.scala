@@ -15,68 +15,58 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.auth
+package coop.libriciel.iparapheur.flowable
 
 import java.util.Random
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, ROLES_LIST}
+
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
-import io.gatling.http.protocol.HttpProtocolBuilder
 
 
-class DesksSimulation extends Simulation {
+class WorkflowSimulation extends Simulation {
 
 
-  var getUserId: ScenarioBuilder = scenario(getClass.getName)
+  var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/user")
-        .header("Authorization", "bearer ${authToken}")
+        .get("api/admin/desk")
         .queryParam("page", 0)
-        .queryParam("pageSize", 1)
-        .queryParam("searchTerm", "sample-user@example")
+        .queryParam("pageSize", 250)
         .check(status.is(200))
         .check(jsonPath("$.total").exists)
         .check(jsonPath("$.data").exists)
         .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("userId"))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
     )
-
-
-  var createDesk: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
-        ("randomRole", ROLES_LIST(new Random().nextInt(ROLES_LIST.length))),
-        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
+        ("randomSimpleWorkflowValue", new Random().nextInt(250000))
       )
     })
     .exec(
-      http("Create desk")
-        .post("api/admin/desk")
+      http("Create")
+        .post("api/admin/workflowDefinition")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
             {
-              "name" : "${randomRole} de ${randomCity}",
-              "description": "Gatling de ${randomRole} de ${randomCity}"
+              "deploymentChildrenCount": 0,
+              "deploymentId": "simple_workflow_${randomSimpleWorkflowValue}",
+              "id": "simple_workflow_${randomSimpleWorkflowValue}",
+              "key": "simple_workflow_${randomSimpleWorkflowValue}",
+              "name": "Simple workflow ${randomSimpleWorkflowValue}",
+              "steps": [
+                {
+                  "type": "VISA",
+                  "validators": [ "${deskId}" ]
+                }
+              ]
             }
           """)).asJson
         .check(status.is(201))
-        .check(jsonPath("$.id").ofType[String].saveAs("deskId"))
-    )
-    .exec(
-      http("Put")
-        .put("api/admin/desk/${deskId}/users")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "userIdList": [ "${userId}" ]
-            }
-          """)).asJson
     )
 
 
@@ -89,11 +79,10 @@ class DesksSimulation extends Simulation {
    */
   setUp(
     CoreApi.checkUp
-        .exec(getUserId)
-        .repeat(CoreApi.repeatCount) {
-          exec(createDesk)
-        }
-        .inject(atOnceUsers(1))
+      .repeat(CoreApi.repeatCount) {
+        exec(createWorkflow)
+      }
+      .inject(atOnceUsers(1))
   ).protocols(CoreApi.httpConf)
 
 }

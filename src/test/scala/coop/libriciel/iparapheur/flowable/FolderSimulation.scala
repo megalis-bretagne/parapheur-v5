@@ -15,68 +15,53 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.auth
+package coop.libriciel.iparapheur.flowable
 
 import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, ROLES_LIST}
+
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
-import io.gatling.http.protocol.HttpProtocolBuilder
 
 
-class DesksSimulation extends Simulation {
+class FolderSimulation extends Simulation {
 
 
-  var getUserId: ScenarioBuilder = scenario(getClass.getName)
+  var createInstance: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/user")
+        .get("api/admin/desk")
         .header("Authorization", "bearer ${authToken}")
         .queryParam("page", 0)
-        .queryParam("pageSize", 1)
-        .queryParam("searchTerm", "sample-user@example")
+        .queryParam("pageSize", 250)
         .check(status.is(200))
         .check(jsonPath("$.total").exists)
         .check(jsonPath("$.data").exists)
         .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("userId"))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
     )
-
-
-  var createDesk: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/admin/typology/test_type")
+        .header("Authorization", "bearer ${authToken}")
+        .check(status.is(200))
+        .check(jsonPath("$.id").saveAs("typeId"))
+        .check(jsonPath("$.subtypes[*].id").ofType[String].findRandom.saveAs("subtypeId"))
+    )
     .exec(session => {
       session.setAll(
-        ("randomRole", ROLES_LIST(new Random().nextInt(ROLES_LIST.length))),
-        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
+        ("randomNameValue", new Random().nextInt(250000))
       )
     })
     .exec(
-      http("Create desk")
-        .post("api/admin/desk")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "name" : "${randomRole} de ${randomCity}",
-              "description": "Gatling de ${randomRole} de ${randomCity}"
-            }
-          """)).asJson
+      http("Create")
+        .post("api/desk/${deskId}/draft")
+        .queryParam("typeId", "${typeId}")
+        .queryParam("subtypeId", "${subtypeId}")
+        .queryParam("name", "Folder ${randomNameValue}")
+        .formUpload("file", "dummy.pdf")
         .check(status.is(201))
-        .check(jsonPath("$.id").ofType[String].saveAs("deskId"))
-    )
-    .exec(
-      http("Put")
-        .put("api/admin/desk/${deskId}/users")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "userIdList": [ "${userId}" ]
-            }
-          """)).asJson
     )
 
 
@@ -88,12 +73,12 @@ class DesksSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-        .exec(getUserId)
-        .repeat(CoreApi.repeatCount) {
-          exec(createDesk)
-        }
-        .inject(atOnceUsers(1))
+    CoreApi
+      .checkUp
+      .repeat(CoreApi.repeatCount) {
+        exec(createInstance)
+      }
+      .inject(atOnceUsers(1))
   ).protocols(CoreApi.httpConf)
 
 }

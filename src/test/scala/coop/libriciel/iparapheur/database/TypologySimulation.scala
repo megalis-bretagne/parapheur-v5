@@ -56,6 +56,7 @@ class TypologySimulation extends Simulation {
     .exec(
       http("Get")
         .get("api/admin/typology/type")
+        .header("Authorization", "bearer ${authToken}")
         .queryParam("page", 0)
         .queryParam("pageSize", 250)
         .check(status.is(200))
@@ -63,6 +64,18 @@ class TypologySimulation extends Simulation {
         .check(jsonPath("$.data").exists)
         .check(jsonPath("$.total").ofType[Int].gte(1))
         .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("typeId"))
+    )
+    .exec(
+      http("Get")
+        .get("api/admin/workflowDefinition")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", 250)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].key").ofType[String].findRandom.saveAs("workflowKey"))
     )
     .exec(session => {
       session.setAll(
@@ -78,6 +91,7 @@ class TypologySimulation extends Simulation {
             {
               "id" : "subtype_${randomSubypeValue}",
               "name" : "SubType ${randomSubypeValue}",
+              "workflowId" : "${workflowKey}",
               "description" : "Gatling generated type with randomSubypeValue:${randomSubypeValue}",
               "isDigitalSignatureMandatory" : false,
               "isReadingMandatory" : true,
