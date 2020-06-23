@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-version: '3.7'
+version: '2.4'
 
 services:
 
@@ -53,10 +53,7 @@ services:
   flowable-rest:
     image: flowable/flowable-rest:6.5.0
     tty: true
-    deploy:
-      resources:
-        limits:
-          memory: 512M
+    mem_limit: 512M
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
       - SPRING_DATASOURCE_USERNAME=flowable
