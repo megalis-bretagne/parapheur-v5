@@ -25,7 +25,7 @@ Some system-dependant override files are available, to expose every container's 
 The system-dependant `override.dev-XXX` docker-compose should be chained right after the production one :
 
 ```bash
-$ docker-compose --compatibility -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
 ```
 
 #### Useful tip :
@@ -35,7 +35,7 @@ Or simply removing a heavy one you won't use (like Matomo and its db)...
 To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
-$ docker-compose --compatibility -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
       --scale core=0 \
       --scale web=0 \
       --scale matomo=0 \

@@ -27,28 +27,7 @@
 # Get the latest docker-compose.yml file with a 30-day trial license by accessing the Alfresco Content Services trial download page at:
 # https://www.alfresco.com/platform/content-services-ecm/trial/download
 
-version: '3.7'
-
-
-# <editor-fold desc="Anchors">
-
-x-commons: &commons
-  restart: always
-  tty: true
-
-x-nginx_memory_limit: &nginx_memory_limit
-  deploy:
-    resources:
-      limits:
-        memory: 64M
-
-x-springboot_memory_limit: &springboot_memory_limit
-  deploy:
-    resources:
-      limits:
-        memory: 256M
-
-# </editor-fold desc="Anchors">
+version: '2.4'
 
 
 services:
@@ -56,8 +35,9 @@ services:
 
   nginx:
     image: nginx:1.16.1-alpine
-    <<: *commons
-    <<: *nginx_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 64M
     volumes:
       - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
@@ -68,12 +48,16 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.2
-    <<: *commons
-    <<: *springboot_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 256M
     depends_on:
-      - postgres
-      - alfresco
-      - workflow
+      postgres:
+        condition: service_healthy
+      alfresco:
+        condition: service_started
+      workflow:
+        condition: service_started
     volumes:
       - ./src/main/resources/core/application.yml:/application.yml
       - ./src/main/resources/core/sentry.properties:/sentry.properties
@@ -83,8 +67,9 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
-    <<: *commons
-    <<: *nginx_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 64M
 
 
   # libersign:
@@ -95,8 +80,12 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:latest
-    <<: *commons
-    <<: *springboot_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 256M
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
@@ -104,8 +93,9 @@ services:
 
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:1.2
-    <<: *commons
-    <<: *springboot_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 256M
     volumes:
       - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
@@ -113,17 +103,16 @@ services:
 
   pdf-stamp:
     image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
-    <<: *commons
-    <<: *springboot_memory_limit
+    restart: always
+    tty: true
+    mem_limit: 256M
 
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
-    <<: *commons
-    deploy:
-      resources:
-        limits:
-          memory: 1536M
+    restart: always
+    tty: true
+    mem_limit: 1536M
     environment:
       # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
       JAVA_OPTS: "
@@ -144,6 +133,9 @@ services:
                   -Dlegacy.transform.service.enabled=false
                   -Dmessaging.subsystem.autoStart=false
                   "
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
       # DOC: file needs to end in -context.xml and to be in this location.
@@ -164,16 +156,19 @@ services:
 
   postgres:
     image: postgres:10.1
-    <<: *commons
-    deploy:
-      resources:
-        limits:
-          memory: 512M
+    restart: always
+    tty: true
+    mem_limit: 512M
     environment:
       - POSTGRES_PASSWORD=libriciel2k18
       - POSTGRES_USER=root
       - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
     command: postgres -c max_connections=500 -c log_min_messages=LOG
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
@@ -181,12 +176,10 @@ services:
 
   keycloak:
     image: jboss/keycloak:9.0.0
-    <<: *commons
-    deploy:
-      resources:
-        limits:
-          # https://www.keycloak.org/docs/latest/server_installation/
-          memory: 512M
+    restart: always
+    tty: true
+    # https://www.keycloak.org/docs/latest/server_installation/
+    mem_limit: 512M
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
@@ -207,13 +200,11 @@ services:
 
   matomo:
     image: matomo:3.13.0-apache
-    <<: *commons
-    deploy:
-      resources:
-        limits:
-          # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
-          # We're assuming a generous 1G for the service, and a little bit for the DB.
-          memory: 1024M
+    restart: always
+    tty: true
+    # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
+    # We're assuming a generous 1G for the service, and a little bit for the DB.
+    mem_limit:  1024M
     depends_on:
       - matomo-db
     volumes:
@@ -226,11 +217,9 @@ services:
       - MATOMO_DATABASE_DBNAME=matomo
   matomo-db:
     image: mariadb:10.3
-    <<: *commons
-    deploy:
-      resources:
-        limits:
-          memory: 256M
+    restart: always
+    tty: true
+    mem_limit: 256M
     volumes:
       - ./data/matomo-db:/var/lib/mysql
     environment:
