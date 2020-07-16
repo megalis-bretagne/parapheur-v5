@@ -55,19 +55,19 @@ services:
       - 8085:8080
 
 
-  flowable-rest:
-    image: flowable/flowable-rest:6.5.0
-    tty: true
-    mem_limit: 512M
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
-      - SPRING_DATASOURCE_USERNAME=flowable
-      - SPRING_DATASOURCE_PASSWORD=flowable
-      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
-      - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
-      - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
-    ports:
-      - 9988:8080
+  #  flowable-rest:
+  #    image: flowable/flowable-rest:6.5.0
+  #    tty: true
+  #    mem_limit: 512M
+  #    environment:
+  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
+  #      - SPRING_DATASOURCE_USERNAME=flowable
+  #      - SPRING_DATASOURCE_PASSWORD=flowable
+  #      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+  #      - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
+  #      - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
+  #    ports:
+  #      - 9988:8080
 
 
   pdf-stamp:
