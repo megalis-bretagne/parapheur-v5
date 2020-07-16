@@ -77,6 +77,7 @@ class DesksSimulation extends Simulation {
               "userIdList": [ "${userId}" ]
             }
           """)).asJson
+        .check(status.in(200, 507))
     )
 
 
@@ -89,11 +90,11 @@ class DesksSimulation extends Simulation {
    */
   setUp(
     CoreApi.checkUp
-        .exec(getUserId)
-        .repeat(CoreApi.repeatCount) {
-          exec(createDesk)
-        }
-        .inject(atOnceUsers(1))
+      .exec(getUserId)
+      .repeat(CoreApi.repeatCount) {
+        exec(createDesk)
+      }
+      .inject(atOnceUsers(1))
   ).protocols(CoreApi.httpConf)
 
 }
