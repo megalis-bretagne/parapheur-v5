@@ -77,6 +77,8 @@ services:
     restart: always
     tty: true
     mem_limit: 256M
+    volumes:
+      - ./data/pes-viewer/pesPJ:/pesPJ/
 
 
   # libersign:
