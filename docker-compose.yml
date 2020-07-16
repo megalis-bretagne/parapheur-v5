@@ -199,7 +199,7 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
-      # Fixing this bug, temporarly : https://issues.redhat.com/browse/KEYCLOAK-12896
+      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
       # The problematic line was just commented out
       # TODO : Remove it when keycloak 9.0.2 will be released.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh

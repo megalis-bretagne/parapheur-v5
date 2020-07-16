@@ -91,7 +91,8 @@ class TypologySimulation extends Simulation {
             {
               "id" : "subtype_${randomSubypeValue}",
               "name" : "SubType ${randomSubypeValue}",
-              "workflowId" : "${workflowKey}",
+              "creationWorkflowId" : null,
+              "validationWorkflowId" : "${workflowKey}",
               "description" : "Gatling generated type with randomSubypeValue:${randomSubypeValue}",
               "isDigitalSignatureMandatory" : false,
               "isReadingMandatory" : true,

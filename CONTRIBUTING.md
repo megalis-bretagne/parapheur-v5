@@ -43,6 +43,15 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml 
 ```
 
 
+## Connecting to local DB
+
+```bash
+$ docker exec -it i-parapheur_postgres_1 /bin/sh
+$ psql --username "ipcore" --dbname "ipcore"
+$ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
+```
+
+
 ## Integration tests
 
 For integration tests, we use Gatling with a dedicated `src/test` folder.  
@@ -51,6 +60,7 @@ Every test can be started with the command :
 $ mvn gatling:test
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation
 ```
+
 
 ## Performance test
 
@@ -63,8 +73,8 @@ $ mvn gatling:test -Dtests.repeat_count=1000000
 Full run :
 ```bash
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=10
-    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
 ```
