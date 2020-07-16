@@ -63,8 +63,8 @@ $ mvn gatling:test -Dtests.repeat_count=1000000
 Full run :
 ```bash
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=10
-      && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-      && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-      && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-      && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
+    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
+    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
+    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
+    && mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
 ```

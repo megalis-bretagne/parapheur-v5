@@ -38,6 +38,11 @@ services:
       - 4200:80
 
 
+  pes-viewer:
+    ports:
+      - 8889:8888
+
+
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
     ports:

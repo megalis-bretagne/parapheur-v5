@@ -72,6 +72,13 @@ services:
     mem_limit: 64M
 
 
+  pes-viewer:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:maven-to-gradle
+    restart: always
+    tty: true
+    mem_limit: 256M
+
+
   # libersign:
   #  image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.9.10
   #  <<: *commons
