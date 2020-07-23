@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.3</version>
+    <version>0.4</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -42,6 +42,16 @@
                 <value>100</value>
             </parameter>
         </constraint>
+
+        <constraint name="iparapheur:isNodeUuid" type="REGEX">
+            <parameter name='expression'>
+                <value>[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}</value>
+            </parameter>
+            <parameter name='requiresMatch'>
+                <value>true</value>
+            </parameter>
+        </constraint>
+
     </constraints>
 
     <types>
@@ -61,23 +71,20 @@
                         <constraint ref="iparapheur:indexConstraint"/>
                     </constraints>
                 </property>
+                <!--
+                  Secondary children are not indexed, nor queryable.
+                  Adding the PDF visual id as a simple property is not the proper modelization,
+                  the proper way for later requests.
+                  -->
+                <property name="iparapheur:pdfVisual">
+                    <title>PDF visual</title>
+                    <type>d:text</type>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
+                    </constraints>
+                </property>
             </properties>
 
-            <associations>
-                <child-association name="iparapheur:pdfVisual">
-                    <source>
-                        <mandatory>true</mandatory>
-                        <many>false</many>
-                    </source>
-                    <target>
-                        <class>cm:content</class>
-                        <mandatory>false</mandatory>
-                        <many>false</many>
-                    </target>
-                    <duplicate>false</duplicate>
-                    <propagateTimestamps>false</propagateTimestamps>
-                </child-association>
-            </associations>
         </type>
     </types>
 
