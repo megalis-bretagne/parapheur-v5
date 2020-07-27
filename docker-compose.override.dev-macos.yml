@@ -39,6 +39,7 @@ services:
 
 
   pes-viewer:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:maven-to-gradle
     ports:
       - 8889:8888
 
@@ -50,7 +51,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:upgrading-libs
     ports:
       - 8085:8080
 

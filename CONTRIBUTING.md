@@ -9,6 +9,18 @@ Every needed configuration files are set in the `src/main/resources` folder.
 The `src/test` folder contains everything for the integration/load tests.  
 
 
+## Windows 10 VirtualBox redirect
+
+Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.  
+The easier way seems to start a Win10 VM in NAT network (the default one) :   
+https://developer.microsoft.com/fr-fr/windows/downloads/virtual-machines/  
+
+Editing the `C:/Windows/system32/drivers/etc/hosts`, to redirect everything onto the host :
+```
+10.0.2.2     iparapheur.dom.local
+```
+
+
 ## Docker overriding
 
 #### Linux only
@@ -18,6 +30,7 @@ You should declare two URLs in your `/etc/hosts` :
 127.0.0.1     host.docker.internal
 127.0.0.1     iparapheur.dom.local
 ```
+
 
 #### Launching development mode
 
@@ -58,16 +71,6 @@ For integration tests, we use Gatling with a dedicated `src/test` folder.
 Every test can be started with the command :
 ```bash
 $ mvn gatling:test
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation
-```
-
-
-## Performance test
-
-Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
-This value can be overridden (increased), to turn those integrations into performance tests :
-```bash
-$ mvn gatling:test -Dtests.repeat_count=1000000
 ```
 
 Full run :
@@ -77,4 +80,14 @@ $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.Desk
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
+```
+
+
+## Performance test
+
+Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
+This value can be overridden (increased), to turn those integrations into performance tests :
+
+```bash
+$ mvn gatling:test -Dtests.repeat_count=1000000
 ```
