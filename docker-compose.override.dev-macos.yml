@@ -56,6 +56,10 @@ services:
       - 8085:8080
 
 
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+
+
   #  flowable-rest:
   #    image: flowable/flowable-rest:6.5.0
   #    tty: true
