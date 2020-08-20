@@ -47,7 +47,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.3
     restart: always
     tty: true
     mem_limit: 256M
@@ -66,14 +66,27 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:0.1
     restart: always
     tty: true
     mem_limit: 64M
 
 
+  workflow:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:0.2
+    restart: always
+    tty: true
+    mem_limit: 256M
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/workflow/application.yml:/application.yml
+      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
+
+
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:maven-to-gradle
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:1.2.11
     restart: always
     tty: true
     mem_limit: 256M
@@ -88,21 +101,8 @@ services:
     mem_limit: 64M
 
 
-  workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:latest
-    restart: always
-    tty: true
-    mem_limit: 256M
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - ./src/main/resources/workflow/application.yml:/application.yml
-      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
-
-
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:1.2
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:2.1.0
     restart: always
     tty: true
     mem_limit: 256M
