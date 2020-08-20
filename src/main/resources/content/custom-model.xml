@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  i-Parapheur
+  Copyright (C) 2020 Libriciel.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!--suppress CheckTagEmptyBody -->
+<model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <description>i-Parapheur internal custom models</description>
+    <version>0.4</version>
+
+    <imports>
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+    </imports>
+
+    <namespaces>
+        <namespace uri="http://libriciel.fr" prefix="iparapheur"/>
+    </namespaces>
+
+    <constraints>
+
+        <constraint name="iparapheur:indexConstraint" type="MINMAX">
+            <parameter name='minValue'>
+                <value>0</value>
+            </parameter>
+            <parameter name='maxValue'>
+                <value>100</value>
+            </parameter>
+        </constraint>
+
+        <constraint name="iparapheur:isNodeUuid" type="REGEX">
+            <parameter name='expression'>
+                <value>[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}</value>
+            </parameter>
+            <parameter name='requiresMatch'>
+                <value>true</value>
+            </parameter>
+        </constraint>
+
+    </constraints>
+
+    <types>
+        <type name="iparapheur:document">
+            <title>i-Parapheur internal document model</title>
+            <parent>cm:content</parent>
+
+            <properties>
+                <property name="iparapheur:isMainDocument">
+                    <title>Main document</title>
+                    <type>d:boolean</type>
+                </property>
+                <property name="iparapheur:index">
+                    <title>Document order</title>
+                    <type>d:int</type>
+                    <constraints>
+                        <constraint ref="iparapheur:indexConstraint"/>
+                    </constraints>
+                </property>
+                <!--
+                  Secondary children are not indexed, nor queryable.
+                  Adding the PDF visual id as a simple property is not the proper modelization,
+                  the proper way for later requests.
+                  -->
+                <property name="iparapheur:pdfVisual">
+                    <title>PDF visual</title>
+                    <type>d:text</type>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
+                    </constraints>
+                </property>
+            </properties>
+
+        </type>
+    </types>
+
+    <aspects>
+    </aspects>
+
+</model>

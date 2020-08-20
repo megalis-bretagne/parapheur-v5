@@ -1,0 +1,15 @@
+
+\.DS_Store
+
+\.idea/
+\.gradle/
+build/
+gradle/
+target/
+
+data/
+
+src/main/resources/matomo/config/
+src/main/resources/matomo/plugins/
+
+*.iml

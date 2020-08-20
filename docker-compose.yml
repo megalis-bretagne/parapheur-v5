@@ -1,0 +1,239 @@
+# i-Parapheur
+# Copyright (C) 2019-2020 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# ========================================================================
+
+# This docker-compose file will spin up an ACS cluster on a local host or on a server and it requires a minimum of 16GB Memory to distribute among containers.
+# Limit container memory and assign X percentage to JVM.  There are couple of ways to allocate JVM Memory for ACS Containers
+# For example: 'JAVA_OPTS: "$JAVA_OPTS -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"'
+# But, as per Oracle docs (https://docs.oracle.com/javase/9/gctuning/parallel-collector1.htm#JSGCT-GUID-CAB83393-3438-44ED-98F0-D15641B43C7D)
+# If container memory is not explicitly set, then the above flags will default max heap to 1/4th of container's memory which may not be ideal.
+# Hence, setting up explicit Container memory and then assigning a percentage of it to the JVM for performance tuning.
+
+# Note: The docker-compose file from github.com is a limited trial that goes into read-only mode after 2 days.
+# Get the latest docker-compose.yml file with a 30-day trial license by accessing the Alfresco Content Services trial download page at:
+# https://www.alfresco.com/platform/content-services-ecm/trial/download
+
+version: '2.4'
+
+
+services:
+
+
+  nginx:
+    image: nginx:1.16.1-alpine
+    restart: always
+    tty: true
+    mem_limit: 64M
+    volumes:
+      - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
+      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
+    ports:
+      - 80:80
+      - 443:443
+
+
+  core:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.2
+    restart: always
+    tty: true
+    mem_limit: 256M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      alfresco:
+        condition: service_started
+      workflow:
+        condition: service_started
+    volumes:
+      - ./src/main/resources/core/application.yml:/application.yml
+      - ./src/main/resources/core/sentry.properties:/sentry.properties
+    external_links:
+      - nginx:iparapheur.dom.local
+
+
+  web:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+    restart: always
+    tty: true
+    mem_limit: 64M
+
+
+  pes-viewer:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:maven-to-gradle
+    restart: always
+    tty: true
+    mem_limit: 256M
+    volumes:
+      - ./data/pes-viewer/pesPJ:/pesPJ/
+
+
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
+    restart: always
+    tty: true
+    mem_limit: 64M
+
+
+  workflow:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:latest
+    restart: always
+    tty: true
+    mem_limit: 256M
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/workflow/application.yml:/application.yml
+      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
+
+
+  crypto:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:1.2
+    restart: always
+    tty: true
+    mem_limit: 256M
+    volumes:
+      - ./src/main/resources/crypto/application.yml:/application.yml
+      - ./src/main/resources/crypto/sentry.properties:/sentry.properties
+
+
+  pdf-stamp:
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
+    restart: always
+    tty: true
+    mem_limit: 256M
+
+
+  alfresco:
+    image: alfresco/alfresco-content-repository-community:6.2.0-ga
+    restart: always
+    tty: true
+    mem_limit: 1536M
+    environment:
+      # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+      JAVA_OPTS: "
+                  -XX:+UseContainerSupport
+                  -Ddeployment.method=DOCKER_COMPOSE
+
+                  -Ddb.driver=org.postgresql.Driver
+                  -Ddb.username=alfresco
+                  -Ddb.password=alfresco
+                  -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
+                  -Dalfresco.host=alfresco
+                  -Dalfresco.port=8080
+                  -Dalf.root=/var/lib/alfresco
+
+                  -Dheartbeat.enabled=false
+                  -Dtransform.service.enabled=false
+                  -Dlocal.transform.service.enabled=false
+                  -Dlegacy.transform.service.enabled=false
+                  -Dmessaging.subsystem.autoStart=false
+                  "
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data/alfresco:/usr/local/tomcat/alf_data
+      # DOC: file needs to end in -context.xml and to be in this location.
+      # Details on (Deployment - App Server) -> https://docs.alfresco.com/6.2/references/dev-extension-points-content-model-define-and-deploy.html
+      - ./src/main/resources/content/custom-model.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model.xml
+      - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
+
+
+  #libreoffice:
+  #  image: alfresco/alfresco-libreoffice:2.1.1
+  #  deploy:
+  #    resources:
+  #      limits:
+  #        memory: 1024M
+  #  environment:
+  #    JAVA_OPTS: "-XX:+UseContainerSupport"
+
+
+  postgres:
+    image: postgres:10.1
+    restart: always
+    tty: true
+    mem_limit: 512M
+    environment:
+      - POSTGRES_PASSWORD=libriciel2k18
+      - POSTGRES_USER=root
+      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
+    command: postgres -c max_connections=500 -c log_min_messages=LOG
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+
+
+  keycloak:
+    image: jboss/keycloak:9.0.0
+    restart: always
+    tty: true
+    # https://www.keycloak.org/docs/latest/server_installation/
+    mem_limit: 512M
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=postgres
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=keycloak
+      - KEYCLOAK_IMPORT=/tmp/keycloak.json
+      - PROXY_ADDRESS_FORWARDING=true
+    volumes:
+      - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
+      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
+      # The problematic line was just commented out
+      # TODO : Remove it when keycloak 9.0.2 will be released.
+      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
+
+
+  matomo:
+    image: matomo:3.13.0-apache
+    restart: always
+    tty: true
+    # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
+    # We're assuming a generous 1G for the service, and a little bit for the DB.
+    mem_limit:  1024M
+    depends_on:
+      - matomo-db
+    volumes:
+      - ./src/main/resources/matomo/config/:/var/www/html/config/
+      - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
+    environment:
+      - MATOMO_DATABASE_HOST=matomo-db
+      - MATOMO_DATABASE_USERNAME=matomo
+      - MATOMO_DATABASE_PASSWORD=matomo
+      - MATOMO_DATABASE_DBNAME=matomo
+  matomo-db:
+    image: mariadb:10.3
+    restart: always
+    tty: true
+    mem_limit: 256M
+    volumes:
+      - ./data/matomo-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=libriciel2k18
+      - MYSQL_DATABASE=matomo
+      - MYSQL_USER=matomo
+      - MYSQL_PASSWORD=matomo
