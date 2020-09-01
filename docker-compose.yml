@@ -185,7 +185,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:9.0.0
+    image: jboss/keycloak:9.0.3
     restart: always
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
@@ -202,10 +202,6 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
-      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
-      # The problematic line was just commented out
-      # TODO : Remove it when keycloak 9.0.2 will be released.
-      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 
 
   matomo:
