@@ -175,7 +175,7 @@ services:
       - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -202,6 +202,10 @@ services:
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
+      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
+      # The problematic line was just commented out
+      # TODO : Remove it when keycloak 9.0.2 will be released.
+      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 
 
   matomo:
@@ -210,7 +214,7 @@ services:
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
     # We're assuming a generous 1G for the service, and a little bit for the DB.
-    mem_limit:  1024M
+    mem_limit: 1024M
     depends_on:
       - matomo-db
     volumes:
