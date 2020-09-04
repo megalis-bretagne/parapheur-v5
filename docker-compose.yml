@@ -73,7 +73,7 @@ services:
 
 
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:maven-to-gradle
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:1.3.0
     restart: always
     tty: true
     mem_limit: 256M
