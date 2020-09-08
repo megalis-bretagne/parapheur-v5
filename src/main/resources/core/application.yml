@@ -50,6 +50,10 @@ services:
     provider: pdfstamp
     host: pdf-stamp
     port: 8080
+  pesviewer:
+    provider: pesviewer
+    host: pes-viewer
+    port: 8888
   auth:
     provider: keycloak
     host: keycloak
