@@ -53,6 +53,9 @@ services:
     ports:
       - 8085:8080
 
+  pes-viewer:
+    ports:
+      - 8889:8888
 
   pdf-stamp:
     ports:
