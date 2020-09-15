@@ -172,7 +172,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=libriciel2k18
       - POSTGRES_USER=root
-      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
+      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore,quartz
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
