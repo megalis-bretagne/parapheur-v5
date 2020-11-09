@@ -29,6 +29,12 @@ services:
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
 
 
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     command: ["ip -4 route list match 0/0 | awk '{print $$3 \" iparapheur.dom.local\"}' >> /etc/hosts"]

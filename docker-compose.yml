@@ -184,6 +184,13 @@ services:
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
 
 
+  redis:
+    image: redis:6.0.9-alpine
+    restart: always
+    tty: true
+    mem_limit: 128M
+
+
   keycloak:
     image: jboss/keycloak:9.0.3
     restart: always

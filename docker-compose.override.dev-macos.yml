@@ -26,6 +26,12 @@ services:
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
 
 
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     ports:
@@ -51,7 +57,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:upgrading-libs
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     ports:
       - 8085:8080
 
