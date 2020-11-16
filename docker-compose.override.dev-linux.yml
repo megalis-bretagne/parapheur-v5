@@ -32,6 +32,8 @@ services:
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     command: ["ip -4 route list match 0/0 | awk '{print $$3 \" iparapheur.dom.local\"}' >> /etc/hosts"]
+    volumes:
+      - ./src/main/resources/core/application-dev.yml:/application.yml
     ports:
       - 8080:8080
 
