@@ -89,6 +89,9 @@ spring:
     database-platform: org.hibernate.dialectPostgreSQL9Dialect
     hibernate.ddl-auto: update
   main.allow-bean-definition-overriding: true
+  quartz.properties.org.quartz:
+    dataSource.quartzDS:
+      URL: jdbc:postgresql://postgres:5432/quartz
 
 keycloak:
   auth-server-url: http://iparapheur.dom.local/auth
