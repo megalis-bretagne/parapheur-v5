@@ -112,7 +112,7 @@ services:
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:text_annotations
     restart: always
     tty: true
     mem_limit: 256M
