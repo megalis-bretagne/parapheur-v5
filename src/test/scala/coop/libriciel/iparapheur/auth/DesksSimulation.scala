@@ -17,14 +17,13 @@
  */
 package coop.libriciel.iparapheur.auth
 
-import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, ROLES_LIST}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
-import io.gatling.http.protocol.HttpProtocolBuilder
+
+import java.util.Random
 
 
 class DesksSimulation extends Simulation {
@@ -33,7 +32,7 @@ class DesksSimulation extends Simulation {
   var getUserId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/user")
+        .post(s"api/admin/tenant/${CoreApi.tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .queryParam("page", 0)
         .queryParam("pageSize", 1)
@@ -49,13 +48,14 @@ class DesksSimulation extends Simulation {
   var createDesk: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
+        ("tenantId", CoreApi.tenantId),
         ("randomRole", ROLES_LIST(new Random().nextInt(ROLES_LIST.length))),
         ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
       )
     })
     .exec(
       http("Create desk")
-        .post("api/admin/desk")
+        .post("api/admin/tenant/${tenantId}/desk")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
@@ -69,7 +69,7 @@ class DesksSimulation extends Simulation {
     )
     .exec(
       http("Put")
-        .put("api/admin/desk/${deskId}/users")
+        .post("api/admin/tenant/{tenantId}/desk/${deskId}/users")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

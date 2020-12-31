@@ -32,13 +32,14 @@ class UsersSimulation extends Simulation {
   var createUser: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
+        ("tenantId", CoreApi.tenantId),
         ("randomFirstName", FIRST_NAMES_LIST(new Random().nextInt(FIRST_NAMES_LIST.length))),
         ("randomLastName", LAST_NAMES_LIST(new Random().nextInt(LAST_NAMES_LIST.length)))
       )
     })
     .exec(
       http("Create")
-        .post(s"api/admin/tenant/${CoreApi.tenantId}/user")
+        .post("api/admin/tenant/${tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
