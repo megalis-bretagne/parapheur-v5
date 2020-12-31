@@ -17,14 +17,13 @@
  */
 package coop.libriciel.iparapheur.auth
 
-import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi.{FIRST_NAMES_LIST, LAST_NAMES_LIST}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
-import io.gatling.http.protocol.HttpProtocolBuilder
+
+import java.util.Random
 
 
 class UsersSimulation extends Simulation {
@@ -39,7 +38,7 @@ class UsersSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/user")
+        .post(s"api/admin/tenant/${CoreApi.tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

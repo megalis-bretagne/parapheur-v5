@@ -75,11 +75,12 @@ $ mvn gatling:test
 
 Full run :
 ```bash
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
+$ TENANT_ID=tenant_id
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=100
 ```
 
 

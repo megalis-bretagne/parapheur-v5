@@ -49,7 +49,9 @@ object CoreApi {
   private val port = ConfigFactory.load().getInt("core.port")
   private val login = ConfigFactory.load().getString("core.login")
   private val pass = ConfigFactory.load().getString("core.password")
+
   val repeatCount: Int = ConfigFactory.load().getInt("tests.repeat_count")
+  val tenantId: String = ConfigFactory.load().getString("tests.tenant_id")
 
 
   val httpConf: HttpProtocolBuilder = http.baseUrl("http://" + url + ":" + port + "/")
