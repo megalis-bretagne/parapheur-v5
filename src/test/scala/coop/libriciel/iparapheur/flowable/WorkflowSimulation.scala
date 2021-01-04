@@ -17,22 +17,23 @@
  */
 package coop.libriciel.iparapheur.flowable
 
-import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
-
+import coop.libriciel.iparapheur.CoreApi.{checkUp, getRandomTenantId, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
+
+import java.util.Random
 
 
 class WorkflowSimulation extends Simulation {
 
 
   var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
+    .exec(getRandomTenantId)
     .exec(
       http("Get")
-        .get("api/admin/desk")
+        .get("api/admin/tenant/${tenantId}/desk")
         .queryParam("page", 0)
         .queryParam("pageSize", 250)
         .check(status.is(200))
@@ -48,7 +49,7 @@ class WorkflowSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/workflowDefinition")
+        .post("api/admin/tenant/${tenantId}/workflowDefinition")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
@@ -78,11 +79,11 @@ class WorkflowSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-      .repeat(CoreApi.repeatCount) {
+    checkUp
+      .repeat(repeatCount) {
         exec(createWorkflow)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }
