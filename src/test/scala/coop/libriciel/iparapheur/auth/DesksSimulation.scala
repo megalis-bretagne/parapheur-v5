@@ -18,7 +18,7 @@
 package coop.libriciel.iparapheur.auth
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, ROLES_LIST}
+import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
@@ -32,7 +32,7 @@ class DesksSimulation extends Simulation {
   var getUserId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .post(s"api/admin/tenant/${CoreApi.tenantId}/user")
+        .get("api/admin/tenant/${tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .queryParam("page", 0)
         .queryParam("pageSize", 1)
@@ -46,9 +46,10 @@ class DesksSimulation extends Simulation {
 
 
   var createDesk: ScenarioBuilder = scenario(getClass.getName)
+    .exec(getRandomTenantId)
+    .exec(getUserId)
     .exec(session => {
       session.setAll(
-        ("tenantId", CoreApi.tenantId),
         ("randomRole", ROLES_LIST(new Random().nextInt(ROLES_LIST.length))),
         ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
       )
@@ -69,7 +70,7 @@ class DesksSimulation extends Simulation {
     )
     .exec(
       http("Put")
-        .post("api/admin/tenant/{tenantId}/desk/${deskId}/users")
+        .put("api/admin/tenant/${tenantId}/desk/${deskId}/users")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
@@ -89,12 +90,11 @@ class DesksSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-      .exec(getUserId)
-      .repeat(CoreApi.repeatCount) {
+    checkUp
+      .repeat(repeatCount) {
         exec(createDesk)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }
