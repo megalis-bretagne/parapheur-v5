@@ -18,7 +18,7 @@
 package coop.libriciel.iparapheur.auth
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.{FIRST_NAMES_LIST, LAST_NAMES_LIST}
+import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
@@ -30,9 +30,9 @@ class UsersSimulation extends Simulation {
 
 
   var createUser: ScenarioBuilder = scenario(getClass.getName)
+    .exec(getRandomTenantId)
     .exec(session => {
       session.setAll(
-        ("tenantId", CoreApi.tenantId),
         ("randomFirstName", FIRST_NAMES_LIST(new Random().nextInt(FIRST_NAMES_LIST.length))),
         ("randomLastName", LAST_NAMES_LIST(new Random().nextInt(LAST_NAMES_LIST.length)))
       )
@@ -63,11 +63,11 @@ class UsersSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-      .repeat(CoreApi.repeatCount) {
+    checkUp
+      .repeat(repeatCount) {
         exec(createUser)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }

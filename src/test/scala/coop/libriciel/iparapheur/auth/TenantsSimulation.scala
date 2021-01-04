@@ -18,7 +18,7 @@
 package coop.libriciel.iparapheur.auth
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.CITIES_LIST
+import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, checkUp, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
@@ -59,11 +59,11 @@ class TenantsSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-      .repeat(CoreApi.repeatCount) {
+    checkUp
+      .repeat(repeatCount) {
         exec(createTenant)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }

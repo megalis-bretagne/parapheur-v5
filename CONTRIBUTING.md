@@ -6,35 +6,35 @@ Contributing
 This project contains a main `docker-compose.yml` file, that should start an i-Parapheur properly.  
 Every needed configuration files are set in the `src/main/resources` folder.
 
-The `src/test` folder contains everything for the integration/load tests.  
-
+The `src/test` folder contains everything for the integration/load tests.
 
 ## Windows 10 VirtualBox redirect
 
 Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.  
 The easier way seems to start a Win10 VM in NAT network (the default one) :   
-https://developer.microsoft.com/fr-fr/windows/downloads/virtual-machines/  
+https://developer.microsoft.com/fr-fr/windows/downloads/virtual-machines/
 
 Editing the `C:/Windows/system32/drivers/etc/hosts`, to redirect everything onto the host :
+
 ```
 10.0.2.2     iparapheur.dom.local
 ```
-
 
 ## Docker overriding
 
 #### Linux only
 
 You should declare two URLs in your `/etc/hosts` :
+
 ```
 127.0.0.1     host.docker.internal
 127.0.0.1     iparapheur.dom.local
 ```
 
-
 #### Launching development mode
 
-Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
+Some system-dependant override files are available, to expose every container's ports, and serve appropriate
+configuration files.  
 The system-dependant `override.dev-XXX` docker-compose should be chained right after the production one :
 
 ```bash
@@ -55,7 +55,6 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml 
       --scale matomo-db=0
 ```
 
-
 ## Connecting to local DB
 
 ```bash
@@ -64,25 +63,26 @@ $ psql --username "ipcore" --dbname "ipcore"
 $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ```
 
-
 ## Integration tests
 
 For integration tests, we use Gatling with a dedicated `src/test` folder.  
 Every test can be started with the command :
+
 ```bash
 $ mvn gatling:test
 ```
 
 Full run :
+
 ```bash
 $ TENANT_ID=tenant_id
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=10
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.tenant_id=$TENANT_ID -Dtests.repeat_count=100
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=100
 ```
-
 
 ## Performance test
 
