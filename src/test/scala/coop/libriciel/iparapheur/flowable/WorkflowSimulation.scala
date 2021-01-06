@@ -18,7 +18,7 @@
 package coop.libriciel.iparapheur.flowable
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi.{checkUp, getRandomTenantId, httpConf, repeatCount}
+import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
@@ -31,17 +31,7 @@ class WorkflowSimulation extends Simulation {
 
   var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
     .exec(getRandomTenantId)
-    .exec(
-      http("Get")
-        .get("api/admin/tenant/${tenantId}/desk")
-        .queryParam("page", 0)
-        .queryParam("pageSize", 250)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
-    )
+    .exec(getRandomDeskId)
     .exec(session => {
       session.setAll(
         ("randomSimpleWorkflowValue", new Random().nextInt(250000))
