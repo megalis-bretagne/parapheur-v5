@@ -30,8 +30,7 @@ class FolderSimulation extends Simulation {
 
 
   var createInstance: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(getRandomDeskId)
+    .exec(getRandomDeskIdAsUser)
     .exec(getRandomTypeId)
     .exec(getRandomSubtypeId)
     .exec(session => {
@@ -45,7 +44,6 @@ class FolderSimulation extends Simulation {
         .queryParam("typeId", "${typeId}")
         .queryParam("subtypeId", "${subtypeId}")
         .queryParam("name", "Folder ${randomNameValue}")
-        .queryParam("tenantId", "${tenantId}")
         .formUpload("file", "dummy.pdf")
         .check(status.is(201))
     )

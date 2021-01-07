@@ -90,7 +90,7 @@ object CoreApi {
     )
 
 
-  val getRandomDeskId: ScenarioBuilder = scenario(getClass.getName)
+  val getRandomDeskIdAsAdmin: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
         .get("api/admin/tenant/${tenantId}/desk")
@@ -104,6 +104,19 @@ object CoreApi {
         .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
     )
 
+  val getRandomDeskIdAsUser: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/desk")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
+    )
 
   val getRandomTypeId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
