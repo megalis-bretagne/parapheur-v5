@@ -43,6 +43,15 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       SERVER keycloak
       OPTIONS (schema_name 'public', table_name 'user_entity');
 
+    CREATE FOREIGN TABLE user_attribute(
+        name VARCHAR(255),
+        value VARCHAR(255),
+        user_id VARCHAR(36),
+        id VARCHAR(36)
+      )
+      SERVER keycloak
+      OPTIONS (schema_name 'public', table_name 'user_attribute');
+
     CREATE FOREIGN TABLE keycloak_role(
         id VARCHAR(36),
         description VARCHAR(255),
@@ -54,6 +63,7 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
 
     ALTER FOREIGN TABLE user_entity OWNER TO ipcore;
     ALTER FOREIGN TABLE keycloak_role OWNER TO ipcore;
+    ALTER FOREIGN TABLE user_attribute OWNER TO ipcore;
 
 EOSQL
 
