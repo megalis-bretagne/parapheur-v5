@@ -17,13 +17,13 @@
  */
 package coop.libriciel.iparapheur.database
 
-import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
-
+import coop.libriciel.iparapheur.CoreApi.{checkUp, getRandomTenantId, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
+
+import java.util.Random
 
 
 class TypologySimulation extends Simulation {
@@ -37,7 +37,7 @@ class TypologySimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/typology/type")
+        .post("api/admin/tenant/${tenantId}/typology/type")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
@@ -49,25 +49,15 @@ class TypologySimulation extends Simulation {
             }
           """)).asJson
         .check(status.is(201))
+        .check(jsonPath("$.id").exists)
+        .check(jsonPath("$.id").ofType[String].saveAs("typeId"))
     )
 
 
   var createSubtype: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/typology/type")
-        .header("Authorization", "bearer ${authToken}")
-        .queryParam("page", 0)
-        .queryParam("pageSize", 250)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("typeId"))
-    )
-    .exec(
-      http("Get")
-        .get("api/admin/workflowDefinition")
+        .get("api/admin/tenant/${tenantId}/workflowDefinition")
         .header("Authorization", "bearer ${authToken}")
         .queryParam("page", 0)
         .queryParam("pageSize", 250)
@@ -79,21 +69,22 @@ class TypologySimulation extends Simulation {
     )
     .exec(session => {
       session.setAll(
-        ("randomSubypeValue", new Random().nextInt(250000))
+        ("randomSubtypeValue", new Random().nextInt(250000))
       )
     })
     .exec(
       http("Create")
-        .post("api/admin/typology/type/${typeId}/subtype")
+        .post("api/admin/tenant/${tenantId}/typology/type/${typeId}/subtype")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
             {
-              "id" : "subtype_${randomSubypeValue}",
-              "name" : "SubType ${randomSubypeValue}",
+              "id" : "subtype_${randomSubtypeValue}",
+              "name" : "SubType ${randomSubtypeValue}",
+              "tenantId" : "${tenantId}",
               "creationWorkflowId" : null,
               "validationWorkflowId" : "${workflowKey}",
-              "description" : "Gatling generated type with randomSubypeValue:${randomSubypeValue}",
+              "description" : "Gatling generated type with randomSubtypeValue:${randomSubtypeValue}",
               "isDigitalSignatureMandatory" : false,
               "isReadingMandatory" : true,
               "isMultiDocuments" : true
@@ -111,12 +102,13 @@ class TypologySimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi.checkUp
-      .repeat(CoreApi.repeatCount) {
-        exec(createType)
+    checkUp
+      .repeat(repeatCount) {
+        exec(getRandomTenantId)
+          .exec(createType)
           .exec(createSubtype)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }

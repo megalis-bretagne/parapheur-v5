@@ -17,40 +17,22 @@
  */
 package coop.libriciel.iparapheur.flowable
 
-import java.util.Random
-
 import coop.libriciel.iparapheur.CoreApi
+import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
+
+import java.util.Random
 
 
 class FolderSimulation extends Simulation {
 
 
   var createInstance: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/admin/desk")
-        .header("Authorization", "bearer ${authToken}")
-        .queryParam("page", 0)
-        .queryParam("pageSize", 250)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
-    )
-    .exec(
-      http("Get")
-        .get("api/admin/typology/test_type")
-        .header("Authorization", "bearer ${authToken}")
-        .check(status.is(200))
-        .check(jsonPath("$.id").exists)
-        .check(jsonPath("$.id").saveAs("typeId"))
-        .check(jsonPath("$.subtypes[*].id").ofType[String].exists)
-        .check(jsonPath("$.subtypes[*].id").ofType[String].findRandom.saveAs("subtypeId"))
-    )
+    .exec(getRandomDeskIdAsUser)
+    .exec(getRandomTypeId)
+    .exec(getRandomSubtypeId)
     .exec(session => {
       session.setAll(
         ("randomNameValue", new Random().nextInt(250000))
@@ -77,10 +59,10 @@ class FolderSimulation extends Simulation {
   setUp(
     CoreApi
       .checkUp
-      .repeat(CoreApi.repeatCount) {
+      .repeat(repeatCount) {
         exec(createInstance)
       }
       .inject(atOnceUsers(1))
-  ).protocols(CoreApi.httpConf)
+  ).protocols(httpConf)
 
 }

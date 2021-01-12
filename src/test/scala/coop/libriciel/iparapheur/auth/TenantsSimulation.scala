@@ -15,46 +15,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.flowable
+package coop.libriciel.iparapheur.auth
 
 import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, checkUp, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 
-import java.util.Random
+import java.util.{Random, UUID}
 
 
-class WorkflowSimulation extends Simulation {
+class TenantsSimulation extends Simulation {
 
 
-  var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(getRandomDeskIdAsAdmin)
+  var createTenant: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
-        ("randomSimpleWorkflowValue", new Random().nextInt(250000))
+        ("randomId", UUID.randomUUID().toString),
+        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
       )
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/workflowDefinition")
+        .post("api/admin/tenant")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
             {
-              "deploymentChildrenCount": 0,
-              "deploymentId": "simple_workflow_${randomSimpleWorkflowValue}",
-              "id": "simple_workflow_${randomSimpleWorkflowValue}",
-              "key": "simple_workflow_${randomSimpleWorkflowValue}",
-              "name": "Simple workflow ${randomSimpleWorkflowValue}",
-              "steps": [
-                {
-                  "type": "VISA",
-                  "validators": [ "${deskId}" ]
-                }
-              ]
+              "id" : "${randomId}",
+              "name": "${randomCity}"
             }
           """)).asJson
         .check(status.is(201))
@@ -71,7 +61,7 @@ class WorkflowSimulation extends Simulation {
   setUp(
     checkUp
       .repeat(repeatCount) {
-        exec(createWorkflow)
+        exec(createTenant)
       }
       .inject(atOnceUsers(1))
   ).protocols(httpConf)

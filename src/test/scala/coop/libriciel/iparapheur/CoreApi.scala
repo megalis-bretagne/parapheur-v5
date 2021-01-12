@@ -49,6 +49,7 @@ object CoreApi {
   private val port = ConfigFactory.load().getInt("core.port")
   private val login = ConfigFactory.load().getString("core.login")
   private val pass = ConfigFactory.load().getString("core.password")
+
   val repeatCount: Int = ConfigFactory.load().getInt("tests.repeat_count")
 
 
@@ -71,5 +72,80 @@ object CoreApi {
         .check(jsonPath("$.access_token").exists)
         .check(jsonPath("$.access_token").ofType[String].saveAs("authToken"))
     )
+
+
+  val getRandomTenantId: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/tenant")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .queryParam("withAdminRights", true)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("tenantId"))
+    )
+
+
+  val getRandomDeskIdAsAdmin: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/admin/tenant/${tenantId}/desk")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
+    )
+
+  val getRandomDeskIdAsUser: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/desk")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
+    )
+
+  val getRandomTypeId: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/desk/${deskId}/types")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("typeId"))
+    )
+
+
+  val getRandomSubtypeId: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/desk/${deskId}/types/${typeId}/subtypes")
+        .header("Authorization", "bearer ${authToken}")
+        .queryParam("page", 0)
+        .queryParam("pageSize", Integer.MAX_VALUE)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("subtypeId"))
+    )
+
 
 }
