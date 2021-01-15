@@ -81,7 +81,7 @@ $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.User
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=30
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=30
 $ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=30
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=200
+$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
 ```
 
 ## Performance test
