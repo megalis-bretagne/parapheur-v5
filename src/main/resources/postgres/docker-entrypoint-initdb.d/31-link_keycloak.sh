@@ -61,9 +61,33 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       SERVER keycloak
       OPTIONS (schema_name 'public', table_name 'keycloak_role');
 
+    CREATE FOREIGN TABLE component(
+        id character varying(36) NOT NULL,
+        name character varying(255),
+        parent_id character varying(36),
+        provider_id character varying(36),
+        provider_type character varying(255),
+        realm_id character varying(36),
+        sub_type character varying(255)
+      )
+      SERVER keycloak
+      OPTIONS (schema_name 'public', table_name 'component');
+
+    CREATE FOREIGN TABLE component_config (
+        id character varying(36) NOT NULL,
+        component_id character varying(36) NOT NULL,
+        name character varying(255) NOT NULL,
+        value character varying(4000)
+      )
+      SERVER keycloak
+      OPTIONS (schema_name 'public', table_name 'component_config');
+
+
     ALTER FOREIGN TABLE user_entity OWNER TO ipcore;
     ALTER FOREIGN TABLE keycloak_role OWNER TO ipcore;
     ALTER FOREIGN TABLE user_attribute OWNER TO ipcore;
+    ALTER FOREIGN TABLE component OWNER TO ipcore;
+    ALTER FOREIGN TABLE component_config OWNER TO ipcore;
 
 EOSQL
 
