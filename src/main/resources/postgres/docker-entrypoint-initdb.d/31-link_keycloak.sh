@@ -66,7 +66,6 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
 
     CREATE FOREIGN TABLE component(
         id character varying(36) NOT NULL,
-        name character varying(255),
         parent_id character varying(36),
         provider_id character varying(36),
         provider_type character varying(255),
@@ -85,12 +84,20 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       SERVER keycloak
       OPTIONS (schema_name 'public', table_name 'component_config');
 
+    CREATE FOREIGN TABLE user_role_mapping (
+          role_id character varying(255) NOT NULL,
+          user_id character varying(36) NOT NULL
+      )
+      SERVER keycloak
+      OPTIONS (schema_name 'public', table_name 'user_role_mapping');
+
 
     ALTER FOREIGN TABLE user_entity OWNER TO ipcore;
     ALTER FOREIGN TABLE keycloak_role OWNER TO ipcore;
     ALTER FOREIGN TABLE user_attribute OWNER TO ipcore;
     ALTER FOREIGN TABLE component OWNER TO ipcore;
     ALTER FOREIGN TABLE component_config OWNER TO ipcore;
+    ALTER FOREIGN TABLE user_role_mapping OWNER TO ipcore;
 
 EOSQL
 
