@@ -32,13 +32,16 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
 
 
     CREATE FOREIGN TABLE user_entity(
-        id VARCHAR(36),
-        email VARCHAR(255),
-        enabled BOOLEAN,
-        first_name VARCHAR(255),
-        last_name VARCHAR(255),
-        realm_id VARCHAR(255),
-        username VARCHAR(255)
+        id character varying(36) NOT NULL,
+        email character varying(255),
+        email_constraint character varying(255),
+        email_verified boolean DEFAULT false NOT NULL,
+        enabled boolean DEFAULT false NOT NULL,
+        federation_link character varying(255),
+        first_name character varying(255),
+        last_name character varying(255),
+        realm_id character varying(255),
+        username character varying(255)
       )
       SERVER keycloak
       OPTIONS (schema_name 'public', table_name 'user_entity');
