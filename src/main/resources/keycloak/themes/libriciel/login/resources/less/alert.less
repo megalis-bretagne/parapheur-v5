@@ -1,0 +1,63 @@
+@import "colors";
+
+.alert {
+  padding: 5px 15px 5px 15px;
+
+  border: 1px solid;
+  border-radius: 3px;
+
+  margin-bottom: 20px;
+  line-height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.alert-error {
+    color: @alert-error-text-color;
+    background-color: @alert-error-back-color;
+    border-color: @alert-error-bord-color;
+  }
+
+  &.alert-info {
+    color: @alert-info-text-color;
+    background-color: @alert-info-back-color;
+    border-color: @alert-info-bord-color;
+  }
+
+  &.alert-success {
+    color: @alert-success-text-color;
+    background-color: @alert-success-back-color;
+    border-color: @alert-success-bord-color;
+  }
+
+  &.alert-warning {
+    color: @alert-warning-text-color;
+    background-color: @alert-warning-back-color;
+    border-color: @alert-warning-bord-color;
+  }
+
+  &.alert-left-align {
+    justify-content: left;
+
+    i {
+      padding: 0 15px 0 5px;
+    }
+  }
+
+  &.fixed-message {
+    position: absolute;
+    top: 15px;
+    left: 10%;
+    right: 10%;
+  }
+
+  i {
+    font-size: 25px !important;
+  }
+
+  span {
+    text-align: left;
+    padding-left: 30px;
+  }
+}

@@ -1,0 +1,45 @@
+@import "colors";
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 14px;
+  color: @text-color;
+
+  margin: 0;
+  // min-height and height are for IE 11
+  min-height: 100vh;
+  height: 100px;
+}
+
+a {
+  color: @libriciel-blue;
+  text-decoration: none;
+
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+
+  transition-duration: 0.1s;
+
+  padding: 0 10px 0 10px;
+
+  &:hover {
+    background-color: lighten(@libriciel-blue, 35%);
+  }
+
+  i {
+    padding-right: 5px;
+  }
+}
+
+.left-panel {
+  background-color: @left-panel-back-color;
+  flex-direction: column;
+
+  p {
+    text-align: center;
+    padding: 0 30px 0 30px;
+  }
+}
+

@@ -1,0 +1,107 @@
+@import "colors";
+
+input {
+  height: auto;
+  border: 1px solid @input-bord-color;
+  border-radius: 5px;
+  padding-left: 10px;
+
+  transition-duration: 0.2s;
+
+  &:focus {
+    box-shadow:   0 0 4px 1px @input-focus-color;
+    border-color: @input-focus-color;
+  }
+
+  // Force height and width for all input except checkbox
+  &:not([type=checkbox]) {
+    height: 30px;
+    width: calc(100% - 10px); // 10px = padding-left
+  }
+
+  // Disable IE icons for clear and reveal in inputs
+  &::-ms-clear, &::-ms-reveal {
+    display: none;
+  }
+}
+
+button {
+  display: flex;
+  align-items: center;
+
+  border-radius: 5px;
+  height: 34px;
+
+  padding:0 15px 0 10px;
+
+  border-style: none;
+  cursor: pointer;
+
+  transition-duration: 0.2s;
+
+  i {
+    font-size: 20px !important;
+    padding-right: 7px;
+  }
+
+
+  &.btn-default {
+    background-color: @libriciel-blue;
+    color: white;
+
+    &:hover {
+      background-color: darken(@libriciel-blue, 15%);
+    }
+    &:active {
+      box-sizing: border-box;
+
+      box-shadow:0 0 0 4px darken(@libriciel-blue, 25%) inset;
+      background-color: darken(@libriciel-blue, 20%);
+    }
+  }
+}
+
+.input-group {
+  position: relative;
+  height: 34px;
+
+  span {
+    position: absolute;
+
+    background-color: @input-group-back-color;
+    color: @input-group-color;
+
+    height: 99%;
+    width:36px;
+
+    border-radius: 5px 0 0 5px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input {
+    padding-left: 42px;
+    width: calc(100% - 42px);
+  }
+
+  .visibility {
+    position:absolute;
+    transition-duration: 0.1s;
+    color: lighten(@input-group-back-color, 30%);
+    right: 7px;
+    top: 7px;
+    font-size: 17px;
+
+    &:hover {
+      cursor: pointer;
+      color: @input-group-back-color;
+    }
+
+    & + input {
+      padding-right: 32px;
+      width: calc(100% - 42px - 31px);
+    }
+  }
+}
