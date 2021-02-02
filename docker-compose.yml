@@ -213,6 +213,8 @@ services:
       # The problematic line was just commented out
       # TODO : Remove it when keycloak 9.0.2 will be released.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
+      # Resources to retrieve from iparapheur-theme pipeline artifact,
+      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
       - ./src/main/resources/keycloak/themes/libriciel:/opt/jboss/keycloak/themes/libriciel
       - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
 
