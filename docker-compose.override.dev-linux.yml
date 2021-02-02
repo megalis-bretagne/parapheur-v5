@@ -113,3 +113,9 @@ services:
     ports:
       - 9080:80
       - 9083:443
+
+
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    ports:
+      - 8079:80
