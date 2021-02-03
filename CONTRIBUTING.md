@@ -92,3 +92,8 @@ This value can be overridden (increased), to turn those integrations into perfor
 ```bash
 $ mvn gatling:test -Dtests.repeat_count=1000000
 ```
+
+### Other resources
+
+The login page is provided directly by the keycloak container (as required in recommended practices).   
+Therefore we provide a customized login page theme, which is added to the keycloak container resources. The gitlab project allowing to build those themed login page is here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
