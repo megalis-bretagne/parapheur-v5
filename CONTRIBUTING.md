@@ -75,7 +75,6 @@ $ gradle gatlingRun
 Full run :
 
 ```bash
-$ TENANT_ID=tenant_id
 $ gradle gatlingRun-coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
 $ gradle gatlingRun-coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=30
 $ gradle gatlingRun-coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=30
@@ -90,7 +89,7 @@ Every Integration test should use the `src/gatling/application.yml`'s `tests.rep
 This value can be overridden (increased), to turn those integrations into performance tests :
 
 ```bash
-$ ./gradlew gatlingRun -Dtests.repeat_count=1000000
+$ gradle gatlingRun -Dtests.repeat_count=1000000
 ```
 
 ### Other resources
