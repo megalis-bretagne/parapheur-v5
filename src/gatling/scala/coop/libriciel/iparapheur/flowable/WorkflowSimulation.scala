@@ -17,7 +17,6 @@
  */
 package coop.libriciel.iparapheur.flowable
 
-import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder

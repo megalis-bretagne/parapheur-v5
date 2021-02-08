@@ -17,7 +17,6 @@
  */
 package coop.libriciel.iparapheur.database
 
-import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi.{checkUp, getRandomTenantId, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder

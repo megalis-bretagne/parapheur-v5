@@ -17,38 +17,33 @@
  */
 package coop.libriciel.iparapheur.auth
 
-import coop.libriciel.iparapheur.CoreApi
-import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, checkUp, httpConf, repeatCount}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 
-import java.util.Random
+import java.util.{Random, UUID}
 
 
-class UsersSimulation extends Simulation {
+class TenantsSimulation extends Simulation {
 
 
-  var createUser: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
+  var createTenant: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
-        ("randomFirstName", FIRST_NAMES_LIST(new Random().nextInt(FIRST_NAMES_LIST.length))),
-        ("randomLastName", LAST_NAMES_LIST(new Random().nextInt(LAST_NAMES_LIST.length)))
+        ("randomId", UUID.randomUUID().toString),
+        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
       )
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/user")
+        .post("api/admin/tenant")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
             {
-              "userName" : "${randomFirstName}_${randomLastName}",
-              "email": "${randomFirstName}.${randomLastName}@dom.local",
-              "firstName": "${randomFirstName}",
-              "lastName": "${randomLastName}",
-              "password": "password"
+              "id" : "${randomId}",
+              "name": "${randomCity}"
             }
           """)).asJson
         .check(status.is(201))
@@ -65,7 +60,7 @@ class UsersSimulation extends Simulation {
   setUp(
     checkUp
       .repeat(repeatCount) {
-        exec(createUser)
+        exec(createTenant)
       }
       .inject(atOnceUsers(1))
   ).protocols(httpConf)
