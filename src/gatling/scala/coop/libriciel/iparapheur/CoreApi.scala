@@ -34,10 +34,10 @@ object CoreApi {
   private val bufferedRolesList = Source.fromResource("lorem_roles.csv")
   private val bufferedCitiesList = Source.fromResource("lorem_cities.csv")
 
-  val FIRST_NAMES_LIST: List[String] = bufferedFirstNameList.getLines.toList
-  val LAST_NAMES_LIST: List[String] = bufferedLastNameList.getLines.toList
-  val CITIES_LIST: List[String] = bufferedCitiesList.getLines.toList
-  val ROLES_LIST: List[String] = bufferedRolesList.getLines.toList
+  val FIRST_NAMES_LIST: List[String] = bufferedFirstNameList.getLines().toList
+  val LAST_NAMES_LIST: List[String] = bufferedLastNameList.getLines().toList
+  val CITIES_LIST: List[String] = bufferedCitiesList.getLines().toList
+  val ROLES_LIST: List[String] = bufferedRolesList.getLines().toList
 
   bufferedCitiesList.close()
   bufferedRolesList.close()
