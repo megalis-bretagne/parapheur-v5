@@ -69,19 +69,19 @@ For integration tests, we use Gatling with a dedicated `src/test` folder.
 Every test can be started with the command :
 
 ```bash
-$ mvn gatling:test
+$ ./gradlew gatlingRun
 ```
 
 Full run :
 
 ```bash
 $ TENANT_ID=tenant_id
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=30
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=30
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=30
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=30
-$ mvn gatling:test -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=30
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=30
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=30
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=30
+$ ./gradlew gatlingRun -Dgatling.simulationClass=coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
 ```
 
 ## Performance test
@@ -90,7 +90,7 @@ Every Integration test should use the `src/gatling/application.yml`'s `tests.rep
 This value can be overridden (increased), to turn those integrations into performance tests :
 
 ```bash
-$ mvn gatling:test -Dtests.repeat_count=1000000
+$ ./gradlew gatlingRun -Dtests.repeat_count=1000000
 ```
 
 ### Other resources
