@@ -37,6 +37,7 @@
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
   "internationalizationEnabled": false,
+  "loginTheme": "iparapheur",
   "supportedLocales": [
     "fr"
   ],
