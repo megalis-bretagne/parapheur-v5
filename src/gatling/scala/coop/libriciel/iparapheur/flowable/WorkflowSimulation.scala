@@ -17,7 +17,6 @@
  */
 package coop.libriciel.iparapheur.flowable
 
-import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi._
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
@@ -30,8 +29,7 @@ class WorkflowSimulation extends Simulation {
 
 
   var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(getRandomDeskIdAsAdmin)
+    .exec(getRandomTenantId, getRandomDeskIdAsAdmin)
     .exec(session => {
       session.setAll(
         ("randomSimpleWorkflowValue", new Random().nextInt(250000))
