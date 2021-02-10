@@ -91,6 +91,11 @@ services:
       - 9009:8080
 
 
+  solr6:
+    ports:
+      - 8083:8983
+
+
   #libreoffice:
   #  ports:
   #    - 8090:8090
