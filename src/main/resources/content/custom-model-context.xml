@@ -26,7 +26,7 @@
     <bean id="org.alfresco.ai.dictionaryBootstrap" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
         <property name="models">
             <list>
-                <value>alfresco/extension/custom-model.xml</value>
+                <value>alfresco/extension/ip-custom-models.xml</value>
             </list>
         </property>
     </bean>

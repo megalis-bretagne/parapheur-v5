@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.4</version>
+    <version>0.5</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -71,12 +71,28 @@
                         <constraint ref="iparapheur:indexConstraint"/>
                     </constraints>
                 </property>
+                <property name="iparapheur:pdfVisualFor">
+                    <title>PDF visual</title>
+                    <type>d:text</type>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
+                    </constraints>
+                </property>
+            </properties>
+
+        </type>
+
+        <type name="iparapheur:folder">
+            <title>i-Parapheur internal folder model</title>
+            <parent>cm:folder</parent>
+
+            <properties>
                 <!--
                   Secondary children are not indexed, nor queryable.
-                  Adding the PDF visual id as a simple property is not the proper modelization,
-                  the proper way for later requests.
+                  Adding the PREMIS node id as a simple property is not the proper modelization,
+                  but is the proper way for later requests.
                   -->
-                <property name="iparapheur:pdfVisual">
+                <property name="iparapheur:premisNodeId">
                     <title>PDF visual</title>
                     <type>d:text</type>
                     <constraints>
