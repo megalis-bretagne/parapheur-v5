@@ -28,6 +28,22 @@ import java.util.Random
 class TypologySimulation extends Simulation {
 
 
+  var getRandomWorkflowId: ScenarioBuilder = scenario(getClass.getName)
+    .exec(
+      http("Get")
+        .get("api/admin/tenant/${tenantId}/workflowDefinition")
+        .header("Authorization", "bearer ${authToken}")
+        .header("Accept", "application/json")
+        .queryParam("page", 0)
+        .queryParam("pageSize", 250)
+        .check(status.is(200))
+        .check(jsonPath("$.total").exists)
+        .check(jsonPath("$.data").exists)
+        .check(jsonPath("$.total").ofType[Int].gte(1))
+        .check(jsonPath("$.data[*].key").ofType[String].findRandom.saveAs("workflowKey"))
+    )
+
+
   var createType: ScenarioBuilder = scenario(getClass.getName)
     .exec(session => {
       session.setAll(
@@ -38,6 +54,7 @@ class TypologySimulation extends Simulation {
       http("Create")
         .post("api/admin/tenant/${tenantId}/typology/type")
         .header("Authorization", "bearer ${authToken}")
+        .header("Accept", "application/json")
         .body(StringBody(
           """
             {
@@ -54,18 +71,7 @@ class TypologySimulation extends Simulation {
 
 
   var createSubtype: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/admin/tenant/${tenantId}/workflowDefinition")
-        .header("Authorization", "bearer ${authToken}")
-        .queryParam("page", 0)
-        .queryParam("pageSize", 250)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].key").ofType[String].findRandom.saveAs("workflowKey"))
-    )
+    .exec(getRandomWorkflowId)
     .exec(session => {
       session.setAll(
         ("randomSubtypeValue", new Random().nextInt(250000))
