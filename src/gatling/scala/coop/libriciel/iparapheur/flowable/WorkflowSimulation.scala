@@ -29,7 +29,8 @@ class WorkflowSimulation extends Simulation {
 
 
   var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId, getRandomDeskIdAsAdmin)
+    .exec(getRandomTenantId)
+    .exec(getRandomDeskIdAsAdmin)
     .exec(session => {
       session.setAll(
         ("randomSimpleWorkflowValue", new Random().nextInt(250000))

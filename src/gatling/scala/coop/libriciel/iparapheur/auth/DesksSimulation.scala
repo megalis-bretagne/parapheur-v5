@@ -33,6 +33,7 @@ class DesksSimulation extends Simulation {
       http("Get")
         .get("api/admin/tenant/${tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
+        .header("Accept", "application/json")
         .queryParam("page", 0)
         .queryParam("pageSize", 1)
         .queryParam("searchTerm", "sample-user@example")
