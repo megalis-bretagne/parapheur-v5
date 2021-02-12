@@ -148,6 +148,7 @@ services:
                   -Dlocal.transform.service.enabled=false
                   -Dlegacy.transform.service.enabled=false
                   -Dmessaging.subsystem.autoStart=false
+                  -Dsystem.workflow.engine.activiti.enabled=false
                   "
     depends_on:
       postgres:
