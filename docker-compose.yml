@@ -173,7 +173,10 @@ services:
       - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
       - ALFRESCO_SECURE_COMMS=none
       - "SOLR_JAVA_MEM=-Xms2g -Xmx2g"
-
+    volumes:
+      # https://hub.alfresco.com/t5/alfresco-content-services-blog/managing-alfresco-search-services-1-4-storage/ba-p/300972
+      - ./data/solr/contentstore:/opt/alfresco-search-services/contentstore
+      - ./data/solr/data:/opt/alfresco-search-services/data
 
   #libreoffice:
   #  image: alfresco/alfresco-libreoffice:2.1.1
