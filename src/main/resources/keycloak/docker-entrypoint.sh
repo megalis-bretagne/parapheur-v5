@@ -104,6 +104,12 @@ if echo "$@" | grep -E -v -- '-c |-c=|--server-config |--server-config='; then
     SYS_PROPS+=" -c=standalone-ha.xml"
 fi
 
+######################
+# JVM random source #
+######################
+SYS_PROPS+=" -Djava.security.egd=file:/dev/urandom"
+
+
 ############
 # DB setup #
 ############
