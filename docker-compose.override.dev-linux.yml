@@ -124,3 +124,9 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
     ports:
       - 8079:80
+
+
+  vault:
+    ports:
+      - 8200:8200
+

@@ -10,16 +10,34 @@ $ docker-compose up
 ```
 
 To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
+
 ```
 127.0.0.1    iparapheur.dom.local
 ```
+
 And open the URL : http://iparapheur.dom.local
 
+#### Vault post-install setup
+
+`http://iparapheur.dom.local:8200` for the UI page.  
+Most of the initialization can be in the command line, that will return keys to store :
+
+```bash
+$ docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1
+   # Unseal Key 1:       <unseal_key>
+   # Initial Root Token: <token>
+$ docker exec -it compose_vault_1 vault operator unseal <unseal_key>
+$ docker exec -it compose_vault_1 vault login token=<token>
+$ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
+```
+
+- Save the 2 values into the Core's `application.yml` file, at `services.vault.unseal_key` and `token`, or the corresponding environment variables.
+- Restart the Core service.
 
 #### Matomo post-install setup
 
 `http://iparapheur.dom.local:9080` for the installation page.  
-Click "Next" on the firsts pages. Values are set by Docker's environment variables.  
+Click "Next" on the firsts pages. Values are set by Docker's environment variables.
 
 ```
 Matomo root user : admin
@@ -38,21 +56,18 @@ This plugin will be set by default in Matomo v.4.x, thus this step will not be n
 * Administration (top-left cog)
 * Custom Dimensions (in the left menu)
 * Action Dimensions : Configure a new dimension...
-  * Name : `Bureau`
-  * Active : ✓
-  * Save
-
+    * Name : `Bureau`
+    * Active : ✓
+    * Save
 
 ## Sub-services
 
 ### Flowable
 
-
 #### Standalone run
 
 Download and run it, according to the [official documentation](http://www.flowable.org/docs/userguide/index.html#download).  
 Or use the official Docker image : `docker run -p8080:8080 flowable/flowable-rest`.
-
 
 #### Uploading basic tasks definitions
 
@@ -74,12 +89,12 @@ Predefined tasks should be `callActivity` tasks, by convention, we name them `vi
 
 ... And download the `bpmn20.xml` file.
 
-
 ##### Defining the sub-activity
 
-Every sub-activities should call as `visa` or a `signature` activity.  
+Every sub-activities should call as `visa` or a `signature` activity.
 
 An `xslt` patcher can define those steps automatically, if their names is set properly (starting with `visa` or `signature`) :
+
 ```bash
 $ xsltproc src/main/resources/patches/callActivity_attributes.xslt workflow.bpmn20.xml
 ```
@@ -87,10 +102,12 @@ $ xsltproc src/main/resources/patches/callActivity_attributes.xslt workflow.bpmn
 ##### Defining user candidates
 
 Every sub-activities can manage their candidates with input variables. Two should be defined as `In parameters` :
+
 - `current_candidate_groups`, the main task candidate(s)
 - `previous_candidate_groups`, the previous main one who can call the undo task.
 
 An `xslt` patcher can define those steps automatically, if their names is set properly (starting with `visa` or `signature`) :
+
 ```bash
 $ xsltproc src/main/resources/patches/callActivity_candidates.xslt workflow.bpmn20.xml
 ```
@@ -102,14 +119,16 @@ For now, only consecutive steps can be undone. Intermediate events (like parrale
 
 ![GitHub Logo](markdown_resources/workflow_undo_catches.png)
 
-An `xslt` patcher can define those steps automatically :  
+An `xslt` patcher can define those steps automatically :
+
 ```bash
 $ xsltproc src/main/resources/patches/callActivity_undo.xslt workflow.bpmn20.xml
 ```
+
 *Note : This patch removes the existing BPMN diagram : Since it adds elements, it will most likely break it anyway.*
 
-
 ##### TL;DR
+
 Name your tasks `{visa|signature} target_desk` and do that :
 
 ```bash
@@ -122,32 +141,33 @@ $ xsltproc src/main/resources/patches/callActivity_undo.xslt       /tmp/temp4.bp
 $ cp /tmp/temp5.bpmn20.xml workflow_patched.bpmn20.xml
 ```
 
-
 #### Starting a workflow
 
 Uploading the workflow definition :
+
 ```bash
 $ curl --user rest-admin:test -F "file=@parallel_workflow.bpmn20.xml" http://localhost:8080/flowable-rest/service/repository/deployments
 ```
 
 Instantiating the workflow :
+
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{"processDefinitionKey": "simple_workflow", "variables": [{"name":"workflow_instance_id", "value":"my_id"}]}' http://localhost:8080/flowable-rest/service/runtime/process-instances
 ```
-
 
 #### Listing tasks by candidates
 
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "candidateGroup" : "Emetteur" }' http://localhost:8080/flowable-rest/service/query/tasks
 ```
+
 ```json
 {
   "data": [
     {
       "id": "6255",
       "url": "http://localhost:8080/flowable-rest/service/runtime/tasks/6255",
-      "category": "my_id",
+      "category": "my_id"
       /*...*/
     }
   ],
@@ -159,10 +179,10 @@ $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ 
 }
 ```
 
-
 #### Performing tasks
 
 ```bash
 $ curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "action" : "complete", "variables" : [ { "name" : "approved", "value" : true}, { "name" : "action", "value" : "'visa'"} ]  }' http://localhost:8080/flowable-rest/service/runtime/tasks/6255
 ```
+
 *Reusing the previous task ID, returned in the list request.*
