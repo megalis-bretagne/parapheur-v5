@@ -31,19 +31,11 @@ services:
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
 
 
-  redis:
-    image: redis:6.0-alpine
-    mem_limit: 64M
-    memswap_limit: 64m
-    ports:
-      - 6379:6379
-
-
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     command: ["ip -4 route list match 0/0 | awk '{print $$3 \" iparapheur.dom.local\"}' >> /etc/hosts"]
-    mem_limit: 256M
-    memswap_limit: 256m
+    mem_limit: 512M
+    memswap_limit: 512m
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
     ports:
@@ -73,6 +65,13 @@ services:
     ports:
       - 8085:8080
 
+
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    ports:
+      - 8079:80
+
+
   pes-viewer:
     mem_limit: 256M
     memswap_limit: 256m
@@ -86,14 +85,18 @@ services:
       - 8888:8080
 
 
+# Non-libriciel services
+
   alfresco:
-    mem_limit: 1536M
-    memswap_limit: 1536m
+    mem_limit: 1024M
+    memswap_limit: 1024m
     ports:
       - 9009:8080
 
 
   solr6:
+    mem_limit: 1536M
+    memswap_limit: 1536m
     ports:
       - 8983:8983
 
@@ -120,10 +123,13 @@ services:
       - 9083:443
 
 
-  libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+
+  redis:
+    image: redis:6.0-alpine
+    mem_limit: 64M
+    memswap_limit: 64m
     ports:
-      - 8079:80
+      - 6379:6379
 
 
   vault:

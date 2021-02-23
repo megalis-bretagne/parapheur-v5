@@ -56,9 +56,9 @@ This plugin will be set by default in Matomo v.4.x, thus this step will not be n
 * Administration (top-left cog)
 * Custom Dimensions (in the left menu)
 * Action Dimensions : Configure a new dimension...
-    * Name : `Bureau`
-    * Active : ✓
-    * Save
+  * Name : `Bureau`
+  * Active : ✓
+  * Save
 
 ## Sub-services
 
