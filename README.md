@@ -23,6 +23,9 @@ And open the URL : http://iparapheur.dom.local
 Most of the initialization can be in the command line, that will return keys to store :
 
 ```bash
+$ docker-compose up -d vault
+  # note that the container name prefix depends
+  # on the local project's directory name - here it is "compose"
 $ docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1
    # Unseal Key 1:       <unseal_key>
    # Initial Root Token: <token>
