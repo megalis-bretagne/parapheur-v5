@@ -96,3 +96,11 @@ $ ./gradlew clean gatlingRun -Dtests.repeat_count=1000000
 
 The login page is provided directly by the keycloak container (as required in recommended practices).   
 Therefore we provide a customized login page theme, which is added to the keycloak container resources. The gitlab project allowing to build those themed login page is here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
+
+## Flowable potential exploitation problem
+If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.
+
+In such cases this command in flowable DB can be useful :
+```sql 
+UPDATE DATABASECHANGELOGLOCK SET LOCKED=FALSE, LOCKGRANTED=null, LOCKEDBY=null where ID=1;
+```
