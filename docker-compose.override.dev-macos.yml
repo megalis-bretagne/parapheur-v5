@@ -66,21 +66,6 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
 
 
-  #  flowable-rest:
-  #    image: flowable/flowable-rest:6.5.0
-  #    tty: true
-  #    mem_limit: 512M
-  #    environment:
-  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/flowable
-  #      - SPRING_DATASOURCE_USERNAME=flowable
-  #      - SPRING_DATASOURCE_PASSWORD=flowable
-  #      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
-  #      - FLOWABLE_REST_APP_ADMIN_USER-ID=kermit
-  #      - FLOWABLE_REST_APP_ADMIN_PASSWORD=kermit
-  #    ports:
-  #      - 9988:8080
-
-
   pdf-stamp:
     ports:
       - 8888:8080
@@ -94,11 +79,6 @@ services:
   solr6:
     ports:
       - 8983:8983
-
-
-  #libreoffice:
-  #  ports:
-  #    - 8090:8090
 
 
   postgres:
