@@ -91,11 +91,6 @@ services:
       - 9090:8080
 
 
-  matomo:
-    ports:
-      - 9080:80
-      - 9083:443
-
   vault:
     ports:
       - 8200:8200

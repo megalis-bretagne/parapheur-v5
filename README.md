@@ -39,8 +39,8 @@ $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret k
 
 #### Matomo post-install setup
 
-`http://iparapheur.dom.local:9080` for the installation page.  
-Click "Next" on the firsts pages. Values are set by Docker's environment variables.
+`http://iparapheur.dom.local/matomo/` for the installation page.  
+Click "Next" on the firsts pages. Values should already set by Docker's environment variables.
 
 ```
 Matomo root user : admin
@@ -51,10 +51,6 @@ Site url         : iparapheur.dom.local
 ```
 
 * Administration (top-left cog)
-* Store (in the left menu)
-* Install plugin `Custom Dimensions`
-
-This plugin will be set by default in Matomo v.4.x, thus this step will not be necessary anymore.
 
 * Administration (top-left cog)
 * Custom Dimensions (in the left menu)

@@ -118,10 +118,6 @@ services:
   matomo:
     mem_limit: 512M
     memswap_limit: 512m
-    ports:
-      - 9080:80
-      - 9083:443
-
 
 
   redis:

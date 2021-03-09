@@ -30,6 +30,11 @@
 version: '2.4'
 
 
+volumes:
+  matomo:
+    external: false
+
+
 services:
 
 
@@ -44,6 +49,12 @@ services:
     ports:
       - 80:80
       - 443:443
+    volumes_from:
+      - matomo
+    links:
+      - matomo
+    depends_on:
+      - matomo
 
 
   core:
@@ -245,17 +256,16 @@ services:
 
 
   matomo:
-    image: matomo:3.13.0-apache
+    image: matomo:4.2.1-fpm
     restart: always
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
     # We're assuming a generous 1G for the service, and a little bit for the DB.
     mem_limit: 1024M
+    volumes:
+      - matomo:/var/www/html
     depends_on:
       - matomo-db
-    volumes:
-      - ./src/main/resources/matomo/config/:/var/www/html/config/
-      - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
     environment:
       - MATOMO_DATABASE_HOST=matomo-db
       - MATOMO_DATABASE_USERNAME=matomo
