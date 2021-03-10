@@ -51,11 +51,9 @@ Site url         : iparapheur.dom.local
 ```
 
 * Administration (top-left cog)
+* User (in the left menu)
+* Security (in the left menu)
+* Authentication token : Create a new one, named `ipcore`
 
-* Administration (top-left cog)
-* Custom Dimensions (in the left menu)
-* Action Dimensions : Configure a new dimension...
-  * Name : `Bureau`
-  * Active : ✓
-  * Save
-
+- Save the token value into the Core's `application.yml` file, at `services.stats.token`, or the corresponding environment variables.
+- Restart the Core service.
