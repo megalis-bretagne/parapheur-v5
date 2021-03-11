@@ -44,10 +44,12 @@ Click "Next" on the firsts pages. Values should already set by Docker's environm
 
 ```
 Matomo root user : admin
-Matomo root pass : *****
+Matomo root pass : **********
+Matomo root mail : admin@dom.local
 
-Site name        : iparapheur
+Site name        : i-Parapheur - Général
 Site url         : iparapheur.dom.local
+Locale           : France
 ```
 
 * Administration (top-left cog)
