@@ -51,6 +51,9 @@ services:
     restart: always
     tty: true
     mem_limit: 256M
+    environment:
+      - VAULT_UNSEAL_KEY
+      - VAULT_TOKEN
     depends_on:
       postgres:
         condition: service_healthy
