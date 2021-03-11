@@ -101,6 +101,6 @@ Therefore we provide a customized login page theme, which is added to the keyclo
 If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.
 
 In such cases this command in Flowable DB can be useful :
-```sql 
-UPDATE DATABASECHANGELOGLOCK SET LOCKED=FALSE, LOCKGRANTED=null, LOCKEDBY=null where ID=1;
+```sql
+UPDATE public.flw_ev_databasechangeloglock SET locked=FALSE, lockgranted=null, lockedby=null WHERE id=1;
 ```
