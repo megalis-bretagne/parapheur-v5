@@ -54,7 +54,8 @@ services:
     links:
       - matomo
     depends_on:
-      - matomo
+      matomo:
+        condition: service_healthy
 
 
   core:
@@ -276,6 +277,11 @@ services:
       - MATOMO_DATABASE_USERNAME=matomo
       - MATOMO_DATABASE_PASSWORD=matomo
       - MATOMO_DATABASE_DBNAME=matomo
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   matomo-db:
     image: mariadb:10.3
     restart: always
