@@ -31,8 +31,7 @@ version: '2.4'
 
 
 volumes:
-  matomo:
-    external: false
+  matomo_internal_files: {}
 
 
 services:
@@ -44,18 +43,16 @@ services:
     tty: true
     mem_limit: 64M
     volumes:
+      - matomo_internal_files:/var/www/html
+      - ./data/matomo/config/:/var/www/html/config/
+      - ./data/matomo/plugins/:/var/www/html/plugins/
       - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
       - 443:443
-    volumes_from:
-      - matomo
     links:
       - matomo
-    depends_on:
-      matomo:
-        condition: service_healthy
 
 
   core:
@@ -175,6 +172,7 @@ services:
       - ./src/main/resources/content/ip-custom-models.xml:/usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
       - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
 
+
   solr6:
     image: alfresco/alfresco-search-services:2.0.1
     mem_limit: 2g
@@ -267,7 +265,7 @@ services:
     # We're assuming a generous 1G for the service, and a little bit for the DB.
     mem_limit: 1024M
     volumes:
-      - matomo:/var/www/html
+      - matomo_internal_files:/var/www/html
       - ./data/matomo/config/:/var/www/html/config/
       - ./data/matomo/plugins/:/var/www/html/plugins/
     depends_on:
