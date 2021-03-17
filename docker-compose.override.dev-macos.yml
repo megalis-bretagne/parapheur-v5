@@ -56,6 +56,12 @@ services:
       - 10080:8080
 
 
+  external-signature-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+    ports:
+      - 8080:8080
+
+
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     ports:
