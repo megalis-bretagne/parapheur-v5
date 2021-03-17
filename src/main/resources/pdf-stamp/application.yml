@@ -1,2 +1,0 @@
-# contexte configuré dans nginx
-server.servlet.context-path: /pdf-stamp

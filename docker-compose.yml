@@ -71,7 +71,6 @@ services:
       workflow:
         condition: service_started
     volumes:
-      - ./src/main/resources/core/application.yml:/application.yml
       - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
       - nginx:iparapheur.dom.local
@@ -93,7 +92,6 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
@@ -119,7 +117,6 @@ services:
     tty: true
     mem_limit: 256M
     volumes:
-      - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
