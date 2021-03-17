@@ -76,13 +76,13 @@ services:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
-      - 8889:8888
+      - 8888:8888
 
   pdf-stamp:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
-      - 8888:8080
+      - 8889:8080
 
 
 # Non-libriciel services

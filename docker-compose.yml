@@ -224,6 +224,8 @@ services:
     restart: always
     tty: true
     mem_limit: 128M
+    volumes:
+      - ./data/redis:/data
 
 
   keycloak:
