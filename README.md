@@ -3,6 +3,13 @@ i-Parapheur
 
 ## Installation
 
+### Prerequisites
+
+The dev mode on Linux now requires Docker engine 20.10+ to work.
+It is not standard on Ubuntu 18.04's apt repository, so one should install it from docker's official repository.
+
+
+
 The following command will serve a working i-Parapheur.
 
 ```bash
@@ -16,6 +23,9 @@ To access it on a Linux machine, you may add this resolution in your `/etc/hosts
 ```
 
 And open the URL : http://iparapheur.dom.local
+
+
+
 
 #### Vault post-install setup
 
