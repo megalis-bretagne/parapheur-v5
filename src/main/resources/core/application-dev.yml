@@ -49,10 +49,7 @@ services:
     host: iparapheur.dom.local
     port: 8085
   stats:
-    provider: matomo
-    host: matomo
-    token: ca46afa897d02da9f44bb876360b0017
-    port: 80
+    provider: none
   pdfstamp:
     provider: pdfstamp
     host: pdf-stamp
@@ -77,8 +74,8 @@ spring:
   #cache:
   #  type: redis
   redis:
-   host: iparapheur.dom.local
-   port: 6379
+    host: iparapheur.dom.local
+    port: 6379
   servlet.multipart:
     maxFileSize: 5GB
     maxRequestSize: 5GB

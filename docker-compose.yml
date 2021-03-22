@@ -30,6 +30,10 @@
 version: '2.4'
 
 
+volumes:
+  matomo_internal_files: {}
+
+
 services:
 
 
@@ -39,11 +43,16 @@ services:
     tty: true
     mem_limit: 64M
     volumes:
+      - matomo_internal_files:/var/www/html
+      - ./data/matomo/config/:/var/www/html/config/
+      - ./data/matomo/plugins/:/var/www/html/plugins/
       - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
       - 443:443
+    links:
+      - matomo
 
 
   core:
@@ -62,7 +71,6 @@ services:
       workflow:
         condition: service_started
     volumes:
-      - ./src/main/resources/core/application.yml:/application.yml
       - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
       - nginx:iparapheur.dom.local
@@ -84,7 +92,6 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
@@ -110,7 +117,6 @@ services:
     tty: true
     mem_limit: 256M
     volumes:
-      - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
@@ -162,6 +168,7 @@ services:
       # Details on (Deployment - App Server) -> https://docs.alfresco.com/6.2/references/dev-extension-points-content-model-define-and-deploy.html
       - ./src/main/resources/content/ip-custom-models.xml:/usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
       - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
+
 
   solr6:
     image: alfresco/alfresco-search-services:2.0.1
@@ -250,22 +257,28 @@ services:
 
 
   matomo:
-    image: matomo:3.13.0-apache
+    image: matomo:4.2.1-fpm
     restart: always
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
     # We're assuming a generous 1G for the service, and a little bit for the DB.
     mem_limit: 1024M
+    volumes:
+      - matomo_internal_files:/var/www/html
+      - ./data/matomo/config/:/var/www/html/config/
+      - ./data/matomo/plugins/:/var/www/html/plugins/
     depends_on:
       - matomo-db
-    volumes:
-      - ./src/main/resources/matomo/config/:/var/www/html/config/
-      - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
     environment:
       - MATOMO_DATABASE_HOST=matomo-db
       - MATOMO_DATABASE_USERNAME=matomo
       - MATOMO_DATABASE_PASSWORD=matomo
       - MATOMO_DATABASE_DBNAME=matomo
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   matomo-db:
     image: mariadb:10.3
     restart: always
