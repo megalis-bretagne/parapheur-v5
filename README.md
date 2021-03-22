@@ -8,6 +8,30 @@ i-Parapheur
 The dev mode on Linux now requires Docker engine 20.10+ to work.
 It is not standard on Ubuntu 18.04's apt repository, so one should install it from docker's official repository.
 
+Remove older versions of Docker (if needed)
+
+```bash
+sudo apt remove docker docker-engine docker.io containerd runc
+```
+
+Import Docker repository GPG key:
+
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+Add Docker CE repository to Ubuntu:
+
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+```
+
+Install latest packages
+```bash
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+```
 
 
 The following command will serve a working i-Parapheur.
