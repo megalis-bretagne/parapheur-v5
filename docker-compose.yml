@@ -127,6 +127,15 @@ services:
     mem_limit: 256M
 
 
+  external-signature-connector:
+    build:
+      context: ../external-signature-connector
+    restart: always
+    tty: true
+    volumes:
+      - ./src/main/resources/external-signature-connector/application.properties:/application.properties
+
+
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
     restart: always

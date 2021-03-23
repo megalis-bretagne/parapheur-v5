@@ -57,6 +57,10 @@ services:
     ports:
       - 10080:8080
 
+  external-signature-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+    ports:
+      - 2757:8080
 
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
@@ -124,8 +128,6 @@ services:
     image: redis:6.0-alpine
     mem_limit: 64M
     memswap_limit: 64m
-    ports:
-      - 6379:6379
 
 
   vault:
