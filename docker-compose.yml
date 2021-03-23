@@ -128,8 +128,7 @@ services:
 
 
   external-signature-connector:
-    build:
-      context: ../external-signature-connector
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
     restart: always
     tty: true
     volumes:
