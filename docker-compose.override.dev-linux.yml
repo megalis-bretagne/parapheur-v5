@@ -128,6 +128,8 @@ services:
     image: redis:6.0-alpine
     mem_limit: 64M
     memswap_limit: 64m
+    ports:
+      - 6379:6379
 
 
   vault:
