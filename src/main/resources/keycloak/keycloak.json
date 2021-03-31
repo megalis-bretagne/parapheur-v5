@@ -1,6 +1,6 @@
 {
   "id": "i-Parapheur",
-  "realm": "api",
+  "realm": "${KEYCLOAK_REALM}",
   "notBefore": 0,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -74,7 +74,7 @@
   ],
   "scopeMappings": [
     {
-      "client": "ipcore-web",
+      "client": "${KEYCLOAK_CLIENT_ID}",
       "roles": [
         "user"
       ]
@@ -83,7 +83,7 @@
   "clientScopeMappings": {
     "account": [
       {
-        "client": "ipcore-web",
+        "client": "${KEYCLOAK_CLIENT_ID}",
         "roles": [
           "view-profile"
         ]
@@ -143,7 +143,7 @@
   ],
   "clients": [
     {
-      "clientId": "ipcore-api",
+      "clientId": "${KEYCLOAK_CLIENT_ID}",
       "surrogateAuthRequired": false,
       "enabled": true,
       "redirectUris": [
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "clientId": "ipcore-web",
+      "clientId": "${KEYCLOAK_CLIENT_ID}",
       "baseUrl": "/",
       "surrogateAuthRequired": false,
       "enabled": true,

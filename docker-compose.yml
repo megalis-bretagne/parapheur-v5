@@ -244,6 +244,8 @@ services:
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
     mem_limit: 512M
+    env_file:
+      - .env
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
