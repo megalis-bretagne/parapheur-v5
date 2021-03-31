@@ -62,6 +62,8 @@ services:
     restart: always
     tty: true
     mem_limit: 256M
+    env_file:
+      - .env
     environment:
       - VAULT_UNSEAL_KEY
       - VAULT_TOKEN
