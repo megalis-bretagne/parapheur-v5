@@ -31,7 +31,7 @@ version: '2.4'
 
 
 volumes:
-  matomo_internal_files: {}
+  matomo_internal_files: { }
 
 
 services:
@@ -85,6 +85,8 @@ services:
     restart: always
     tty: true
     mem_limit: 64M
+    env_file:
+      - .env
 
 
   workflow:
