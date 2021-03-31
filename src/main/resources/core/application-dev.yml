@@ -54,6 +54,11 @@ services:
     provider: pdfstamp
     host: pdf-stamp
     port: 8080
+  externalsignature:
+    provider: externalsignature
+    host: localhost
+    port: 2757
+    cron: 0 */20 * * * *
   auth:
     provider: keycloak
     host: keycloak
