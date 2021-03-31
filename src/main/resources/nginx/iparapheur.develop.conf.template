@@ -17,7 +17,7 @@
 server {
 
   listen 80;
-  server_name iparapheur.dom.local;
+  server_name ${APPLICATION_URL};
 
   # ssl on;
   # ssl_certificate /etc/nginx/ssl/iparapheur.dom.local.crt;

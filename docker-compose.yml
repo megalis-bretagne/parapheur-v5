@@ -38,15 +38,17 @@ services:
 
 
   nginx:
-    image: nginx:1.16.1-alpine
+    image: nginx:1.19.9-alpine
     restart: always
     tty: true
     mem_limit: 64M
+    env_file:
+      - .env
     volumes:
       - matomo_internal_files:/var/www/html
       - ./data/matomo/config/:/var/www/html/config/
       - ./data/matomo/plugins/:/var/www/html/plugins/
-      - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
+      - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
