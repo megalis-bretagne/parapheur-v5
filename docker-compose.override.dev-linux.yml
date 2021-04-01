@@ -38,6 +38,10 @@ services:
     memswap_limit: 512m
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
+    environment:
+      - VAULT_UNSEAL_KEY
+      - VAULT_TOKEN
+      - MATOMO_TOKEN
     ports:
       - 8080:8080
 
