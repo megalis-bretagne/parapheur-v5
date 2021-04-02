@@ -31,7 +31,7 @@ version: '2.4'
 
 
 volumes:
-  matomo_internal_files: {}
+  matomo_internal_files: { }
 
 
 services:
@@ -81,6 +81,11 @@ services:
     restart: always
     tty: true
     mem_limit: 64M
+    environment:
+      - APPLICATION_URL=${APPLICATION_URL}
+      - KEYCLOAK_URL=${KEYCLOAK_URL}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
 
 
   workflow:
