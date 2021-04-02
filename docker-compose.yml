@@ -61,8 +61,8 @@ services:
     tty: true
     mem_limit: 256M
     environment:
-      - VAULT_UNSEAL_KEY
-      - VAULT_TOKEN
+      - VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}
+      - VAULT_TOKEN=${VAULT_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
@@ -82,8 +82,8 @@ services:
     tty: true
     mem_limit: 64M
     environment:
-      - APPLICATION_URL=${APPLICATION_URL}
-      - KEYCLOAK_URL=${KEYCLOAK_URL}
+      - APPLICATION_URL=${APPLICATION_HOST}
+      - KEYCLOAK_URL=${AUTH_SERVER_URL}
       - KEYCLOAK_REALM=${KEYCLOAK_REALM}
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
 
@@ -218,9 +218,9 @@ services:
     tty: true
     mem_limit: 512M
     environment:
-      - POSTGRES_PASSWORD=libriciel2k18
-      - POSTGRES_USER=root
-      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore,quartz
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -248,13 +248,13 @@ services:
     # https://www.keycloak.org/docs/latest/server_installation/
     mem_limit: 512M
     environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloak
-      - DB_PASSWORD=keycloak
+      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
+      - DB_USER=${KEYCLOAK_DB_USER}
+      - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KEYCLOAK_IMPORT=/tmp/keycloak.json
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
@@ -284,9 +284,9 @@ services:
       - matomo-db
     environment:
       - MATOMO_DATABASE_HOST=matomo-db
-      - MATOMO_DATABASE_USERNAME=matomo
-      - MATOMO_DATABASE_PASSWORD=matomo
-      - MATOMO_DATABASE_DBNAME=matomo
+      - MATOMO_DATABASE_USERNAME=${MATOMO_DB_USER}
+      - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD}
+      - MATOMO_DATABASE_DBNAME=${MATOMO_DB_DATABASE}
     healthcheck:
       test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
       interval: 10s
@@ -300,10 +300,10 @@ services:
     volumes:
       - ./data/matomo-db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=libriciel2k18
-      - MYSQL_DATABASE=matomo
-      - MYSQL_USER=matomo
-      - MYSQL_PASSWORD=matomo
+      - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
+      - MYSQL_USER=${MATOMO_DB_USER}
+      - MYSQL_PASSWORD=${MATOMO_DB_PASSWORD}
 
 
   vault:
