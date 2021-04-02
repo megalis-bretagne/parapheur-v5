@@ -33,7 +33,7 @@ services:
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     extra_hosts:
-      - "iparapheur.dom.local:host-gateway"
+      - "${APPLICATION_HOST}:host-gateway"
     mem_limit: 512M
     memswap_limit: 512m
     volumes:
