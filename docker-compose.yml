@@ -77,7 +77,7 @@ services:
     volumes:
       - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
-      - nginx:${APPLICATION_HOST}
+      - nginx:iparapheur.dom.local
 
 
   web:
