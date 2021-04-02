@@ -17,7 +17,7 @@
 server {
 
   listen 80;
-  server_name ${APPLICATION_URL};
+  server_name ${APPLICATION_HOST};
 
   # ssl on;
   # ssl_certificate /etc/nginx/ssl/iparapheur.dom.local.crt;
@@ -33,7 +33,7 @@ server {
   proxy_http_version 1.1;
 
   location /auth {
-    proxy_pass http://${KEYCLOAK_URL}:8080/auth;
+    proxy_pass http://${KEYCLOAK_HOST}:8080/auth;
   }
 
   location /api {
