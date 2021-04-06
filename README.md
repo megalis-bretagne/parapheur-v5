@@ -36,12 +36,12 @@ $ sudo apt install docker-ce docker-ce-cli containerd.io
 
 ### System settings
 
-By default, the application will start on the http://iparapheur.dom.local URL.  
-This parameter, and other system-specific parameters can be updated in this file :
-
+Application settings are defined in a `.env` file located at the root of the project. First, copy the example file :
 ```bash
-$ vim ./data/.env
+$ cp ./.env.dist .env
 ```
+By default, the application will start on the http://iparapheur.dom.local URL.
+You can edit the `.env` file to change the passwords or urls among others.
 
 ## Start
 
@@ -76,7 +76,7 @@ $ docker exec -it compose_vault_1 vault login token=<token>
 $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 ```
 
-- Save the 2 values into the Core's `application.yml` file, at `services.vault.unseal_key` and `token`, or the corresponding environment variables.
+- Save the 2 values into your `.env` ̀file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
 - Restart the Core service.
 
 #### Matomo post-install setup
