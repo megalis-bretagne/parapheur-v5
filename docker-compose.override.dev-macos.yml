@@ -34,10 +34,6 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
-    environment:
-      - VAULT_UNSEAL_KEY
-      - VAULT_TOKEN
-      - MATOMO_TOKEN
     ports:
       - 8080:8080
 

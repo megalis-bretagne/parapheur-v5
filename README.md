@@ -76,7 +76,7 @@ $ docker exec -it compose_vault_1 vault login token=<token>
 $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 ```
 
-- Save the 2 values into your `.env` ̀file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
+- Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
 - Restart the Core service.
 
 #### Matomo post-install setup
@@ -99,5 +99,5 @@ Locale           : France
 * Security (in the left menu)
 * Authentication token : Create a new one, named `ipcore`
 
-- Save the token value into the Core's `application.yml` file, at `services.stats.token`, or the corresponding environment variables.
+- Save the token value into your `.env` file in the variables `MATOMO_TOKEN`
 - Restart the Core service.

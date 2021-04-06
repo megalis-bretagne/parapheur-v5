@@ -42,8 +42,9 @@ services:
     restart: always
     tty: true
     mem_limit: 64M
-    env_file:
-      - .env
+    environment:
+      - APPLICATION_HOST
+      - KEYCLOAK_HOST
     volumes:
       - matomo_internal_files:/var/www/html
       - ./data/matomo/config/:/var/www/html/config/
@@ -62,10 +63,16 @@ services:
     restart: always
     tty: true
     mem_limit: 256M
-    env_file:
-      - .env
     environment:
       - POSTGRES_HOST=postgres
+      - MATOMO_TOKEN
+      - VAULT_UNSEAL_KEY
+      - VAULT_TOKEN
+      - APPLICATION_PROTOCOL
+      - APPLICATION_HOST
+      - KEYCLOAK_HOST=keycloak
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
     depends_on:
       postgres:
         condition: service_healthy
@@ -250,9 +257,9 @@ services:
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
     mem_limit: 512M
-    env_file:
-      - .env
     environment:
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
       - DB_VENDOR=postgres
@@ -325,4 +332,3 @@ services:
       - ./src/main/resources/vault/config:/vault/config
       - ./src/main/resources/vault/policies:/vault/policies
       - ./data/vault/data:/vault/data
-
