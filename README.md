@@ -43,21 +43,15 @@ $ cp ./.env.dist .env
 By default, the application will start on the http://iparapheur.dom.local URL.
 You can edit the `.env` file to change the passwords or urls among others.
 
-## Start
-
-The following command will serve a working i-Parapheur.
+#### Create data directories
 
 ```bash
-$ docker-compose up
+sudo mkdir -m 757 -p ./data/solr/data
+sudo mkdir -m 757 -p ./data/solr/contentstore
+sudo mkdir -m 757 -p ./data/vault/data
+sudo mkdir -m 757 -p ./data/alfresco
+sudo mkdir -m 757 -p ./data/postgres
 ```
-
-To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
-
-```
-127.0.0.1    iparapheur.dom.local
-```
-
-And open the URL : http://iparapheur.dom.local
 
 #### Vault post-install setup
 
@@ -77,9 +71,12 @@ $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret k
 ```
 
 - Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
-- Restart the Core service.
 
 #### Matomo post-install setup
+
+```bash
+docker-compose up -d nginx matomo
+```
 
 `http://iparapheur.dom.local/matomo/` for the installation page.  
 Click "Next" on the firsts pages. Values should already set by Docker's environment variables.
@@ -100,4 +97,22 @@ Locale           : France
 * Authentication token : Create a new one, named `ipcore`
 
 - Save the token value into your `.env` file in the variables `MATOMO_TOKEN`
-- Restart the Core service.
+
+## Start
+
+The following command will serve a working i-Parapheur.
+
+```bash
+$ docker-compose up
+```
+
+To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
+
+```
+127.0.0.1    iparapheur.dom.local
+```
+
+And open the URL : http://iparapheur.dom.local
+
+
+
