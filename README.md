@@ -51,7 +51,8 @@ sudo mkdir -m 757 -p ./data/solr/contentstore
 sudo mkdir -m 757 -p ./data/vault/data
 sudo mkdir -m 757 -p ./data/alfresco
 sudo mkdir -m 757 -p ./data/postgres
-sudo mkdir -m 757 -p ./data/matomo
+sudo mkdir -m 757 -p ./data/matomo/plugins
+sudo mkdir -m 757 -p ./data/matomo/config
 ```
 
 #### Vault post-install setup
