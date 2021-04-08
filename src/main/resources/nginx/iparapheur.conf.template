@@ -17,7 +17,7 @@
 server {
 
   listen 80;
-  server_name iparapheur.dom.local;
+  server_name ${APPLICATION_HOST};
 
   # ssl on;
   # ssl_certificate /etc/nginx/ssl/iparapheur.dom.local.crt;
@@ -33,27 +33,39 @@ server {
   proxy_http_version 1.1;
 
   location /auth {
-    proxy_pass http://keycloak:8080/auth;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_keycloak keycloak;
+    proxy_pass http://$upstream_keycloak:8080/auth;
   }
 
   location /api {
-    proxy_pass http://core:8080/api;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_core core;
+    proxy_pass http://$upstream_core:8080/api;
   }
 
   location /crypto {
-    proxy_pass http://crypto:8080/crypto;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_crypto crypto;
+    proxy_pass http://$upstream_crypto:8080/crypto;
   }
 
   location /workflow {
-    proxy_pass http://workflow:8080/workflow;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_workflow workflow;
+    proxy_pass http://$upstream_workflow:8080/crypto;
   }
 
   location /pdf-stamp {
-    proxy_pass http://pdf-stamp:8080/pdf-stamp;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_pdf_stamp pdf-stamp;
+    proxy_pass http://$upstream_pdf_stamp:8080/pdf-stamp;
   }
 
   location /libersign {
-    proxy_pass http://libersign:80/libersign;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_libersign libersign;
+    proxy_pass http://$upstream_libersign:80/libersign;
   }
 
   location = /matomo/index.php {
@@ -83,7 +95,9 @@ server {
 
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
-      proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
+      resolver 127.0.0.11 valid=30s;
+      set $upstream_pes_viewer pes-viewer;
+      proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
   }
 
   # location /libersign {
@@ -91,11 +105,13 @@ server {
   # }
 
   location ^~ / {
-    proxy_pass http://web:80/;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_web web;
+    proxy_pass http://$upstream_web:80/;
   }
 
   location ^~ /sockjs-node {
-    proxy_pass http://web:80/sockjs-node;
+    proxy_pass http://$upstream_web:80/sockjs-node;
   }
 
 }

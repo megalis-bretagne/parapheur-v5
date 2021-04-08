@@ -20,9 +20,9 @@ services:
 
 
   nginx:
-    image: nginx:mainline-alpine
+    image: nginx:alpine
     volumes:
-      - ./src/main/resources/nginx/iparapheur.develop.conf:/etc/nginx/conf.d/iparapheur.conf
+      - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
 
 

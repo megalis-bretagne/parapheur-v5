@@ -5,51 +5,55 @@ i-Parapheur
 
 ### Prerequisites
 
-The dev mode on Linux now requires Docker engine 20.10+ to work.
-It is not standard on Ubuntu 18.04's apt repository, so one should install it from docker's official repository.
+The dev mode on Linux now requires Docker engine 20.10+ to work. It is not standard on Ubuntu 18.04's apt repository, so one should install it from docker's
+official repository.
 
 Remove older versions of Docker (if needed)
 
 ```bash
-sudo apt remove docker docker-engine docker.io containerd runc
+$ sudo apt remove docker docker-engine docker.io containerd runc
 ```
 
 Import Docker repository GPG key:
 
 ```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 
 Add Docker CE repository to Ubuntu:
 
 ```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 ```
 
 Install latest packages
-```bash
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io
-```
-
-
-The following command will serve a working i-Parapheur.
 
 ```bash
-$ docker-compose up
+$ sudo apt update
+$ sudo apt install docker-ce docker-ce-cli containerd.io
 ```
 
-To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
+### System settings
 
+Application settings are defined in a `.env` file located at the root of the project. First, copy the example file :
+```bash
+$ cp ./.env.dist .env
 ```
-127.0.0.1    iparapheur.dom.local
+By default, the application will start on the http://iparapheur.dom.local URL.
+You can edit the `.env` file to change the passwords or urls among others.
+
+#### Create data directories
+
+```bash
+sudo mkdir -m 757 -p ./data/solr/data
+sudo mkdir -m 757 -p ./data/solr/contentstore
+sudo mkdir -m 757 -p ./data/vault/data
+sudo mkdir -m 757 -p ./data/alfresco
+sudo mkdir -m 757 -p ./data/postgres
+sudo mkdir -m 757 -p ./data/matomo/plugins
+sudo mkdir -m 757 -p ./data/matomo/config
 ```
-
-And open the URL : http://iparapheur.dom.local
-
-
-
 
 #### Vault post-install setup
 
@@ -68,10 +72,13 @@ $ docker exec -it compose_vault_1 vault login token=<token>
 $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 ```
 
-- Save the 2 values into the Core's `application.yml` file, at `services.vault.unseal_key` and `token`, or the corresponding environment variables.
-- Restart the Core service.
+- Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
 
 #### Matomo post-install setup
+
+```bash
+docker-compose up -d nginx matomo
+```
 
 `http://iparapheur.dom.local/matomo/` for the installation page.  
 Click "Next" on the firsts pages. Values should already set by Docker's environment variables.
@@ -91,5 +98,23 @@ Locale           : France
 * Security (in the left menu)
 * Authentication token : Create a new one, named `ipcore`
 
-- Save the token value into the Core's `application.yml` file, at `services.stats.token`, or the corresponding environment variables.
-- Restart the Core service.
+- Save the token value into your `.env` file in the variables `MATOMO_TOKEN`
+
+## Start
+
+The following command will serve a working i-Parapheur.
+
+```bash
+$ docker-compose up
+```
+
+To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
+
+```
+127.0.0.1    iparapheur.dom.local
+```
+
+And open the URL : http://iparapheur.dom.local
+
+
+
