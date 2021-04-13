@@ -142,9 +142,15 @@ services:
     mem_limit: 256M
 
 
+  pastell-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    restart: unless-stopped
+    tty: true
+
+
   external-signature-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
-    restart: always
+    restart: unless-stopped
     tty: true
     volumes:
       - ./src/main/resources/external-signature-connector/application.properties:/application.properties
