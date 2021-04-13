@@ -146,6 +146,10 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
     restart: unless-stopped
     tty: true
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST:redis
+      - REDIS_PORT:6379
 
 
   external-signature-connector:
