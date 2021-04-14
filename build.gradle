@@ -28,7 +28,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 
 
 dependencies {
-    testCompile group: 'com.intuit.karate', name: 'karate-junit4', version: '1.0.1'
+    testImplementation group: 'com.intuit.karate', name: 'karate-junit4', version: '1.0.1'
 }
 
 
