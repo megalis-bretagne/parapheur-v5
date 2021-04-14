@@ -64,7 +64,48 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 
 ## Integration tests
 
-For integration tests, we use Gatling with a dedicated `src/test` folder.  
+### All tests
+
+```bash
+$ ./gradlew clean test
+# Tests run: 105, Failures: 71, Errors: 0, Skipped: 0
+```
+
+### API (_ip-core_)
+
+| Which tests              | Command                                                                                                  | Results 09/04/2021 09:00:00                           |
+| ---                      | ---                                                                                                      | ---                                                   |
+| All tests                | `mvn clean test -Dtest=api.v1.ApiV1Test`                                                                 | `Tests run: 100, Failures: 71, Errors: 0, Skipped: 0` |
+| Setup only (@fixme)      | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@check-setup"`                   | `Tests run: 12, Failures: 0, Errors: 0, Skipped: 0`   |
+| Passing tests only       | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core"` | `Tests run: 29, Failures: 0, Errors: 0, Skipped: 0`   |
+| Failing tests only       | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@fixme-ip-core"`                 | `Tests run: 73, Failures: 67, Errors: 0, Skipped: 0`  |
+| @todo-ip-core tests only | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@todo-ip-core"`                  | `Tests run: 10, Failures: 4, Errors: 0, Skipped: 0`   |
+
+### UI (_ip-web_)
+
+```bash
+# @fixme: change path, see executable: "/usr/bin/chromium-browser"
+$ mvn clean test -Dtest=web.WebTest
+```
+
+### WIP
+
+```bash
+$ mvn clean test -Dkarate.options="--tags @wip"
+```
+
+## @todo
+
+- [ ] Covered API routes
+    - Get from [Swagger UI](http://iparapheur.dom.local/api/swagger-ui/#/)
+        - `$x('//h4//span//text()') + $x('//h4//small//text()')`
+        - `$x('//div[contains(@class, "opblock-summary")]')`
+    - [@todo: JSON](http://iparapheur.dom.local/api/v2/api-docs)
+
+## References
+
+- [Karate](https://intuit.github.io/karate/)
+- [Karate UI](https://intuit.github.io/karate/karate-core/)
 
 
 ## Performance tests

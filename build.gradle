@@ -17,12 +17,23 @@
  */
 
 plugins {
-    id 'io.gatling.gradle' version "3.5.1"
+    id 'io.gatling.gradle' version '3.5.1'
 }
 
 group = 'coop.libriciel'
 version = '5.0'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
+
+
+dependencies {
+
+    def karate_version = '1.0.1'
+    testCompile group: 'com.intuit.karate', name: 'karate-junit5', version: karate_version
+    testCompile group: 'com.intuit.karate', name: 'karate-gatling', version: karate_version
+
+    testCompile group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '2.22.2'
+
+}
 
 gatling {
     // WARNING: options below only work when logback config file isn't provided
