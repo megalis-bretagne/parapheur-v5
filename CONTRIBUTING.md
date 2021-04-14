@@ -67,31 +67,31 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ### All tests
 
 ```bash
-$ gradle clean test
+$ gradle test
 # Tests run: 105, Failures: 71, Errors: 0, Skipped: 0
 ```
 
 ### API (_ip-core_)
 
-| Which tests              | Command                                                                                                  | Results 09/04/2021 09:00:00                           |
-| ---                      | ---                                                                                                      | ---                                                   |
-| All tests                | `mvn clean test -Dtest=api.v1.ApiV1Test`                                                                 | `Tests run: 100, Failures: 71, Errors: 0, Skipped: 0` |
-| Setup only (@fixme)      | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@check-setup"`                   | `Tests run: 12, Failures: 0, Errors: 0, Skipped: 0`   |
-| Passing tests only       | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core"` | `Tests run: 29, Failures: 0, Errors: 0, Skipped: 0`   |
-| Failing tests only       | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@fixme-ip-core"`                 | `Tests run: 73, Failures: 67, Errors: 0, Skipped: 0`  |
-| @todo-ip-core tests only | `mvn clean test -Dtest=api.v1.ApiV1Test -Dkarate.options="--tags @setup,@todo-ip-core"`                  | `Tests run: 10, Failures: 4, Errors: 0, Skipped: 0`   |
+| Which tests              | Command                                                                                         | Results 09/04/2021 09:00:00                           |
+| ---                      | ---                                                                                             | ---                                                   |
+| All tests                | `gradle test --tests ApiV1Test`                                                                 | `Tests run: 100, Failures: 71, Errors: 0, Skipped: 0` |
+| Setup only (@fixme)      | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@check-setup"`                   | `Tests run: 12, Failures: 0, Errors: 0, Skipped: 0`   |
+| Passing tests only       | `gradle test --tests ApiV1Test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core"` | `Tests run: 29, Failures: 0, Errors: 0, Skipped: 0`   |
+| Failing tests only       | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@fixme-ip-core"`                 | `Tests run: 73, Failures: 67, Errors: 0, Skipped: 0`  |
+| @todo-ip-core tests only | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@todo-ip-core"`                  | `Tests run: 10, Failures: 4, Errors: 0, Skipped: 0`   |
 
 ### UI (_ip-web_)
 
 ```bash
 # @fixme: change path, see executable: "/usr/bin/chromium-browser"
-$ gradle clean test -Dtest=web.WebTest
+$ gradle test --tests WebTest
 ```
 
 ### WIP
 
 ```bash
-$ gradle clean test -Dkarate.options="--tags @wip"
+$ gradle test -Dkarate.options="--tags @wip"
 ```
 
 ## @todo
@@ -143,7 +143,7 @@ here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycl
 
 ## Flowable potential exploitation problem
 
-If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.
+If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.  
 In such cases this command in Flowable DB can be useful :
 
 ```sql

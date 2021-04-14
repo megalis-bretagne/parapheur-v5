@@ -20,23 +20,28 @@ plugins {
     id 'io.gatling.gradle' version '3.5.1'
 }
 
+apply plugin: 'java'
+
 group = 'coop.libriciel'
 version = '5.0'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_11
 
 
 dependencies {
-
-    def karate_version = '1.0.1'
-    testCompile group: 'com.intuit.karate', name: 'karate-junit5', version: karate_version
-    testCompile group: 'com.intuit.karate', name: 'karate-gatling', version: karate_version
-
-    testCompile group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '2.22.2'
-
+    testCompile group: 'com.intuit.karate', name: 'karate-junit4', version: '1.0.1'
 }
+
 
 gatling {
     // WARNING: options below only work when logback config file isn't provided
     logLevel = 'WARN' // logback root level
     logHttp = 'NONE' // set to 'ALL' for all HTTP traffic in TRACE, 'FAILURES' for failed HTTP traffic in DEBUG
+}
+
+test {
+    // Pulling karate options/env at runtime
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    // Ensuring that the tests are always run, prevent us to add `clear` on every task
+    outputs.upToDateWhen { false }
 }
