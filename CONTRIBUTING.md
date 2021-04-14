@@ -33,8 +33,7 @@ You should declare two URLs in your `/etc/hosts` :
 
 #### Launching development mode
 
-Some system-dependant override files are available, to expose every container's ports, and serve appropriate
-configuration files.  
+Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
 The system-dependant `override.dev-XXX` docker-compose should be chained right after the production one :
 
 ```bash
@@ -66,10 +65,22 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ## Integration tests
 
 For integration tests, we use Gatling with a dedicated `src/test` folder.  
+
+
+## Performance tests
+
+For stress tests, we use Gatling with a dedicated `src/gatling` folder.  
 Every test can be started with the command :
 
 ```bash
 $ ./gradlew clean gatlingRun
+```
+
+Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
+This value can be overridden (increased), to turn those integrations into performance tests :
+
+```bash
+$ ./gradlew clean gatlingRun -Dtests.repeat_count=1000000
 ```
 
 Full run :
@@ -83,24 +94,25 @@ $ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.database.TypologySimulati
 $ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
 ```
 
-## Performance test
-
-Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
-This value can be overridden (increased), to turn those integrations into performance tests :
-
-```bash
-$ ./gradlew clean gatlingRun -Dtests.repeat_count=1000000
-```
-
 ### Other resources
 
 The login page is provided directly by the keycloak container (as required in recommended practices).   
-Therefore we provide a customized login page theme, which is added to the keycloak container resources. The gitlab project allowing to build those themed login page is here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
+Therefore we provide a customized login page theme, which is added to the keycloak container resources. The gitlab project allowing to build those themed login
+page is
+here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
 
 ## Flowable potential exploitation problem
+
 If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.
 
 In such cases this command in Flowable DB can be useful :
+
 ```sql
-UPDATE public.flw_ev_databasechangeloglock SET locked=FALSE, lockgranted=null, lockedby=null WHERE id=1;
+-- noinspection SqlNoDataSourceInspectionForFile,SqlResolve
+
+UPDATE public.flw_ev_databasechangeloglock
+SET locked= FALSE,
+    lockgranted=null,
+    lockedby=null
+WHERE id = 1;
 ```
