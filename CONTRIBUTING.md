@@ -3,10 +3,11 @@ Contributing
 
 ## Project structure
 
-This project contains a main `docker-compose.yml` file, that should start an i-Parapheur properly.  
-Every needed configuration files are set in the `src/main/resources` folder.
+This project contains a main `docker-compose.yml` file, that should start an i-Parapheur properly.
 
-The `src/test` folder contains everything for the integration/load tests.
+* `src/main/resources` every needed configuration files
+* `src/test` files for the integration tests (Karate)
+* `src/gatling` files for the performance tests (Gatling)
 
 ## Windows 10 VirtualBox redirect
 
@@ -64,6 +65,10 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 
 ## Integration tests
 
+### Prerequisites
+
+* Gradle 7.0+ for direct commands. Alternatively, the local gradle-wrapper can be used on CLI.
+
 ### All tests
 
 ```bash
@@ -94,7 +99,7 @@ $ gradle test --tests WebTest
 $ gradle test -Dkarate.options="--tags @wip"
 ```
 
-## @todo
+### @todo
 
 - [ ] Covered API routes
     - Get from [Swagger UI](http://iparapheur.dom.local/api/swagger-ui/#/)
@@ -102,7 +107,7 @@ $ gradle test -Dkarate.options="--tags @wip"
         - `$x('//div[contains(@class, "opblock-summary")]')`
     - [@todo: JSON](http://iparapheur.dom.local/api/v2/api-docs)
 
-## References
+### References
 
 - [Karate](https://intuit.github.io/karate/)
 - [Karate UI](https://intuit.github.io/karate/karate-core/)
