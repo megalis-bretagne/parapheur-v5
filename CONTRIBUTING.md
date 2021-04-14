@@ -67,7 +67,7 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ### All tests
 
 ```bash
-$ ./gradlew clean test
+$ gradle clean test
 # Tests run: 105, Failures: 71, Errors: 0, Skipped: 0
 ```
 
@@ -85,13 +85,13 @@ $ ./gradlew clean test
 
 ```bash
 # @fixme: change path, see executable: "/usr/bin/chromium-browser"
-$ mvn clean test -Dtest=web.WebTest
+$ gradle clean test -Dtest=web.WebTest
 ```
 
 ### WIP
 
 ```bash
-$ mvn clean test -Dkarate.options="--tags @wip"
+$ gradle clean test -Dkarate.options="--tags @wip"
 ```
 
 ## @todo
@@ -107,45 +107,43 @@ $ mvn clean test -Dkarate.options="--tags @wip"
 - [Karate](https://intuit.github.io/karate/)
 - [Karate UI](https://intuit.github.io/karate/karate-core/)
 
-
 ## Performance tests
 
 For stress tests, we use Gatling with a dedicated `src/gatling` folder.  
 Every test can be started with the command :
 
 ```bash
-$ ./gradlew clean gatlingRun
+$ gradle clean gatlingRun
 ```
 
 Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
 This value can be overridden (increased), to turn those integrations into performance tests :
 
 ```bash
-$ ./gradlew clean gatlingRun -Dtests.repeat_count=1000000
+$ gradle clean gatlingRun -Dtests.repeat_count=1000000
 ```
 
 Full run :
 
 ```bash
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=200
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-$ ./gradlew clean gatlingRun-coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=200
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
 ```
 
 ### Other resources
 
 The login page is provided directly by the keycloak container (as required in recommended practices).   
-Therefore we provide a customized login page theme, which is added to the keycloak container resources. The gitlab project allowing to build those themed login
-page is
+Therefore we provide a customized login page theme, which is added to the keycloak container resources.  
+The gitlab project allowing to build those themed login page is
 here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
 
 ## Flowable potential exploitation problem
 
 If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.
-
 In such cases this command in Flowable DB can be useful :
 
 ```sql
