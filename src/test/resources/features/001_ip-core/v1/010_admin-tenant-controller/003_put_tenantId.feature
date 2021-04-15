@@ -1,3 +1,4 @@
+@ip-core @api-v1
 Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
 
     @permissions

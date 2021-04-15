@@ -1,3 +1,4 @@
+@ip-web
 Feature: Mot de passe oublié
 
     Background:

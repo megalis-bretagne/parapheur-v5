@@ -1,3 +1,4 @@
+@ip-core @api-v1
 Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 
 	Background:

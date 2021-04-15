@@ -1,3 +1,4 @@
+@setup
 Feature: Basic setup
 
 	Scenario Outline: Create tenants "Libriciel SCOP" and "Montpellier Méditerranée Métropole"
@@ -47,7 +48,8 @@ Feature: Basic setup
 			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             |
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
 
-	@fixme-404-when-parentDeskId-is-not-null
+	# 404 when-parentDeskId is not null
+	@todo-karate
 	Scenario Outline: Create desks and associate them to users
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
@@ -81,7 +83,8 @@ Feature: Basic setup
 			| Default tenant | Translucide | stranslucide@dom.local |
 			| Default tenant | Transparent | ltransparent@dom.local |
 
-	@fixme-mail-400-api-or-ui
+	@todo-karate
+	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
 	Scenario Outline: Create one step workflows and associate them to desks
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
@@ -124,7 +127,7 @@ Feature: Basic setup
 			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE |
 			| Default tenant | Transparent - Visa              | Transparent | VISA               |
 
-	@todo-more @fixme-signature-format
+	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java
 	Scenario Outline: Create types
 		* api_v1.auth.login('user', 'password')
@@ -154,7 +157,7 @@ Feature: Basic setup
 			| Default tenant | SIGN_PKCS7  | Signature PKCS7   | PKCS7           |
 			| Default tenant | VISA        | Visa              | PADES           |
 
-	@todo-more @fixme-signature-format
+	@todo-karate @signature-format
 	Scenario Outline: Create subtypes
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')

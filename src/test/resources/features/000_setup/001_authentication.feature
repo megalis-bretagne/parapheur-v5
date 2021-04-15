@@ -1,4 +1,4 @@
-@check-setup
+@setup @check-setup
 Feature: POST /auth/realms/api/protocol/openid-connect/token (Authentication)
 
 	@authentication

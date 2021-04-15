@@ -42,6 +42,7 @@ test {
     // Pulling karate options/env at runtime
     systemProperty "karate.options", System.properties.getProperty("karate.options")
     systemProperty "karate.env", System.properties.getProperty("karate.env")
+    systemProperty "karate.headless", System.properties.getProperty("karate.headless")
     // Ensuring that the tests are always run, prevent us to add `clear` on every task
     outputs.upToDateWhen { false }
 }

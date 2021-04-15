@@ -6,7 +6,12 @@ function fn(config) {
      **/
     config.ui['driver'] = {};
     // @see https://github.com/intuit/karate/blob/master/karate-demo/src/test/java/driver/demo/demo-01.feature
-    config.ui.driver['configure'] = { type: 'chrome', showDriverLog: false, executable: "/usr/bin/chromium-browser" };
+    config.ui.driver['configure'] = {
+        executable: config.CHROME_BIN,
+        headless: config.headless,
+        showDriverLog: false,
+        type: 'chrome'
+    };
 
     /**
      * Locator

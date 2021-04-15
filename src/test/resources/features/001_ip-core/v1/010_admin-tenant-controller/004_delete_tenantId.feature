@@ -1,3 +1,4 @@
+@ip-core @api-v1
 Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 
 	@permissions @fixme-ip-core

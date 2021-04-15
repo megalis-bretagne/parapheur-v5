@@ -68,36 +68,93 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ### Prerequisites
 
 * Gradle 7.0+ for direct commands. Alternatively, the local gradle-wrapper can be used on CLI.
+* Make sure the following environment variables are set and correct (see `./.env.dist`)
+    * `APPLICATION_PROTOCOL`
+    * `APPLICATION_HOST`
+* UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set.
+* Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
 
-### All tests
+### Files
+
+#### Test files
+
+| Path                 | Description                                           |
+| ---                  | ---                                                   |
+| `src/test/java/`     | Java test classes (you shouldn't need to modify them) |
+| `src/test/resources` | Karate tests, environment, helpers, ...               |
+
+#### Test results
+
+| Path                                       | Description                           |
+| ---                                        | ---                                   |
+| `build/karate-reports/karate-summary.html` | Karate results, with details          |
+| `build/reports/tests/test/index.html`      | Gradle results, with way less details |
+
+### Running the tests
+
+For more information, have a look below at "Command-line switches" and "Tags".
+
+### Run all tests
 
 ```bash
 $ gradle test
-# Tests run: 105, Failures: 71, Errors: 0, Skipped: 0
 ```
 
-### API (_ip-core_)
+#### Command-line switches
 
-| Which tests              | Command                                                                                         | Results 09/04/2021 09:00:00                           |
-| ---                      | ---                                                                                             | ---                                                   |
-| All tests                | `gradle test --tests ApiV1Test`                                                                 | `Tests run: 100, Failures: 71, Errors: 0, Skipped: 0` |
-| Setup only (@fixme)      | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@check-setup"`                   | `Tests run: 12, Failures: 0, Errors: 0, Skipped: 0`   |
-| Passing tests only       | `gradle test --tests ApiV1Test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core"` | `Tests run: 29, Failures: 0, Errors: 0, Skipped: 0`   |
-| Failing tests only       | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@fixme-ip-core"`                 | `Tests run: 73, Failures: 67, Errors: 0, Skipped: 0`  |
-| @todo-ip-core tests only | `gradle test --tests ApiV1Test -Dkarate.options="--tags @setup,@todo-ip-core"`                  | `Tests run: 10, Failures: 4, Errors: 0, Skipped: 0`   |
+| Switch                           | Description                                                                                               |
+| ---                              | ---                                                                                                       |
+| `--info`                         | Verbosity, print some informations while running the tests (use to see `karate.log()` output)             |
+| `--debug`                        | Verbosity, print more informations while running the tests (use to see `karate.log()` output)             |
+| `-Dkarate.headless=false`        | When running ip-web tests, don't use headless chrome, so you will see the Chrome UI, ideal for developing |
+| `-Dkarate.options="--tags @..."` | Use tags to filter out tests, see "Tags" below                                                            |
 
-### UI (_ip-web_)
+#### Tags
+
+#### Working with tags
+
+| Tags                                                                                                         | Description                                                                                                               |
+| ---                                                                                                          | ---                                                                                                                       |
+| `-Dkarate.options="--tags @permissions"`                                                                     | Run tests tagged with `@permissions` only                                                                                 |
+| `-Dkarate.options="--tags ~@fixme-ip-core"`                                                                  | Run tests __not__ tagged with `@fixme-ip-core`                                                                            |
+| `-Dkarate.options="--tags @permissions,@searching"`                                                          | Run tests tagged with `@permissions` __or__ `@searching`                                                                  |
+| `-Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"` | Run currently passing tests (not tagged with either `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
+
+#### Examples
 
 ```bash
-# @fixme: change path, see executable: "/usr/bin/chromium-browser"
-$ gradle test --tests WebTest
+# Run all currently passing tests
+$ gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"
+# Setup only (currently using ip-core API v. 1)
+$ gradle test -Dkarate.options="--tags @setup"
+# Run ip-core API v. 1 tests only
+$ gradle test -Dkarate.options="--tags @ip-core --tags @api-v1"
+# Run ip-web tests
+$ gradle test -Dkarate.options="--tags @ip-web"
+# Run the test(s) tagged with the @wip tag with a visible Chrome or Chromium web browser and show some informations in the console
+$ gradle test --info -Dkarate.options="--tags @wip" -Dkarate.headless=false
 ```
 
-### WIP
+#### Available tags
 
-```bash
-$ gradle test -Dkarate.options="--tags @wip"
-```
+| Tag                | Description                                                                                                          |
+| ---                | ---                                                                                                                  |
+| `@api-v1`          | Tests for `ip-core` API v. 1 (same as `@ip-core` for the time being)                                                 |
+| `@authentication`  | Tests about authentication                                                                                           |
+| `@data-validation` | Tests about data validation                                                                                          |
+| `@fixme-ip-core`   | Currently failing `ip-core` tests                                                                                    |
+| `@fixme-ip-web`    | Currently failing `ip-web` tests                                                                                     |
+| `@ip-core`         | Tests for `ip-core` API v. 1 (same as `@api-v1` for the time being)                                                  |
+| `@ip-web`          | Tests for `ip-web`                                                                                                   |
+| `@l10n`            | Tests about localization                                                                                             |
+| `@permissions`     | Tests about permissions                                                                                              |
+| `@proposal`        | Proposals to be made to the IP team (used with `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
+| `@searching`       | Tests about searching, filtering, sorting                                                                            |
+| `@setup`           | Setting up some data for subsequent tests                                                                            |
+| `@todo-ip-core`    | An issue is to be filled on the `ip-core` project                                                                    |
+| `@todo-ip-web`     | An issue is to be filled on the `ip-web` project                                                                     |
+| `@todo-karate`     | Karate tests needed                                                                                                  |
+| `@wip`             | Currently unused, use this tag to mark and filter the current test you're working on                                 |
 
 ### @todo
 

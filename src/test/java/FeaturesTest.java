@@ -1,4 +1,4 @@
-package web;/*
+package features;/*
  * i-Parapheur
  * Copyright (C) 2019-2020 Libriciel-SCOP
  *
@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 
 
 @RunWith(Karate.class)
-@CucumberOptions(features = "src/test/resources/web")
-public class WebTest {
+@CucumberOptions(features = "src/test/resources/features")
+public class FeaturesTest {
 
 }

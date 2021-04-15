@@ -1,3 +1,4 @@
+@ip-core @api-v1
 Feature: POST /api/admin/tenant (Create tenant)
 
 	@permissions
