@@ -17,15 +17,32 @@
  */
 
 plugins {
-    id 'io.gatling.gradle' version "3.5.1"
+    id 'io.gatling.gradle' version '3.5.1'
 }
+
+apply plugin: 'java'
 
 group = 'coop.libriciel'
 version = '5.0'
-sourceCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_11
+
+
+dependencies {
+    testImplementation group: 'com.intuit.karate', name: 'karate-junit4', version: '1.0.1'
+}
+
 
 gatling {
     // WARNING: options below only work when logback config file isn't provided
     logLevel = 'WARN' // logback root level
     logHttp = 'NONE' // set to 'ALL' for all HTTP traffic in TRACE, 'FAILURES' for failed HTTP traffic in DEBUG
+}
+
+test {
+    // Pulling karate options/env at runtime
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    systemProperty "karate.headless", System.properties.getProperty("karate.headless")
+    // Ensuring that the tests are always run, prevent us to add `clear` on every task
+    outputs.upToDateWhen { false }
 }

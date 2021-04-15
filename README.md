@@ -37,6 +37,7 @@ $ sudo apt install docker-ce docker-ce-cli containerd.io
 ### System settings
 
 Application settings are defined in a `.env` file located at the root of the project. First, copy the example file :
+
 ```bash
 $ cp ./.env.dist .env
 ```
@@ -46,13 +47,13 @@ You can edit the `.env` file to change the passwords or urls among others.
 #### Create data directories
 
 ```bash
-sudo mkdir -m 757 -p ./data/solr/data
-sudo mkdir -m 757 -p ./data/solr/contentstore
-sudo mkdir -m 757 -p ./data/vault/data
-sudo mkdir -m 757 -p ./data/alfresco
-sudo mkdir -m 757 -p ./data/postgres
-sudo mkdir -m 757 -p ./data/matomo/plugins
-sudo mkdir -m 757 -p ./data/matomo/config
+$ sudo mkdir -m 757 -p ./data/solr/data
+$ sudo mkdir -m 757 -p ./data/solr/contentstore
+$ sudo mkdir -m 757 -p ./data/vault/data
+$ sudo mkdir -m 757 -p ./data/alfresco
+$ sudo mkdir -m 757 -p ./data/postgres
+$ sudo mkdir -m 757 -p ./data/matomo/plugins
+$ sudo mkdir -m 757 -p ./data/matomo/config
 ```
 
 #### Vault post-install setup
@@ -77,7 +78,7 @@ $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret k
 #### Matomo post-install setup
 
 ```bash
-docker-compose up -d nginx matomo
+$ docker-compose up -d nginx matomo
 ```
 
 `http://iparapheur.dom.local/matomo/` for the installation page.  
@@ -115,6 +116,4 @@ To access it on a Linux machine, you may add this resolution in your `/etc/hosts
 ```
 
 And open the URL : http://iparapheur.dom.local
-
-
 
