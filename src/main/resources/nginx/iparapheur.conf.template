@@ -56,6 +56,12 @@ server {
     proxy_pass http://$upstream_workflow:8080/crypto;
   }
 
+  location /pastell-connector {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_pastell_connector pastell-connector;
+    proxy_pass http://$upstream_pastell_connector:8080/pastell-connector;
+  }
+
   location /pdf-stamp {
     resolver 127.0.0.11 valid=30s;
     set $upstream_pdf_stamp pdf-stamp;

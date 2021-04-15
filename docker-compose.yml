@@ -142,9 +142,19 @@ services:
     mem_limit: 256M
 
 
+  pastell-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    restart: unless-stopped
+    tty: true
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST:redis
+      - REDIS_PORT:6379
+
+
   external-signature-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
-    restart: always
+    restart: unless-stopped
     tty: true
     volumes:
       - ./src/main/resources/external-signature-connector/application.properties:/application.properties
@@ -230,7 +240,7 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz
+      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz,pastellconnector
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
