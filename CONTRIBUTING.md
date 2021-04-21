@@ -9,6 +9,17 @@ This project contains a main `docker-compose.yml` file, that should start an i-P
 * `src/test` files for the integration tests (Karate)
 * `src/gatling` files for the performance tests (Gatling)
 
+## URLs
+
+| URL                                           | Description |
+| ---                                           | ---         |
+| http://iparapheur.dom.local/                  | IP web UI   |
+| http://iparapheur.dom.local:9009/             | Alfresco    |
+| http://iparapheur.dom.local:9090/             | Keycloak    |
+| http://iparapheur.dom.local/matomo/           | Matomo      |
+| http://iparapheur.dom.local/api/swagger-ui/#/ | Swagger UI  |
+| http://iparapheur.dom.local:8200/             | Vault       |
+
 ## Windows 10 VirtualBox redirect
 
 Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.  
@@ -55,6 +66,19 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml 
       --scale matomo-db=0
 ```
 
+#### Resetting partially for development mode
+
+Leaving the vault and matomo configured as they are.
+
+```bash
+$ export $(grep -v "^\(#.*\|\s*$\)" .env | xargs) \
+  && docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml down -v \
+  && sudo find ./data -mindepth 1 -maxdepth 1 -regextype posix-extended ! -regex '^.*/(matomo|matomo-db|vault)$' -type d -exec sudo rm -rf {} + \
+  && sudo mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data} \
+  && sudo chmod -R 0757 ./data \
+  && docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
+```
+
 ## Connecting to local DB
 
 ```bash
@@ -68,11 +92,12 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ### Prerequisites
 
 * Gradle 7.0+ for direct commands. Alternatively, the local gradle-wrapper can be used on CLI.
-* Make sure the following environment variables are set and correct (see `./.env.dist`)
-    * `APPLICATION_PROTOCOL`
-    * `APPLICATION_HOST`
-* UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set.
-* Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
+* For the time being, values below are hard-coded in `src/test/resources/karate-config.js`
+    * Make sure the following environment variables are set and correct (see `./.env.dist`)
+        * `APPLICATION_PROTOCOL`
+        * `APPLICATION_HOST`
+    * UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set: `export CHROME_BIN=/usr/bin/chromium-browser`.
+    * Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
 
 ### Files
 
