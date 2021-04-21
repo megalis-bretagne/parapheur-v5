@@ -25,6 +25,13 @@
   "rememberMe": false,
   "verifyEmail": false,
   "loginWithEmailAllowed": true,
+  "smtpServer": {
+    "host": "smtp",
+    "from": "no-reply@dom.local",
+    "starttls": "",
+    "auth": "",
+    "ssl": ""
+  },
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
   "editUsernameAllowed": false,
@@ -94,7 +101,7 @@
     {
       "username": "rest-admin",
       "enabled": true,
-      "email": "rest-admin@example",
+      "email": "rest-admin@dom.local",
       "firstName": "Rest",
       "lastName": "Admin",
       "credentials": [
@@ -121,7 +128,7 @@
     {
       "username": "user",
       "enabled": true,
-      "email": "sample-user@example",
+      "email": "sample-user@dom.local",
       "firstName": "Sample",
       "lastName": "User",
       "credentials": [

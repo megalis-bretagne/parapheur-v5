@@ -140,6 +140,12 @@ services:
       - 6379:6379
 
 
+  smtp:
+    image: tophfr/mailcatcher:0.6.5_3
+    ports:
+      - "1080:80"
+
+
   vault:
     ports:
       - 8200:8200
