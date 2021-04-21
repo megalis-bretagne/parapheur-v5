@@ -9,14 +9,14 @@ Feature: Mot de passe oublié
     Scenario: Accéder à la page de mot de passe oublié
         Given driver baseUrl
         And waitFor('form')
-        When click('{^*}Forgot Password?')
-        Then match html('body') contains 'Forgot Your Password?'
+        When click('{^*}Mot de passe oublié ?')
+        Then match html('body') contains 'Un e-mail va vous être envoyé'
 
     Scenario: Retour à la page de connexion après avoir accédé à la page de mot de passe oublié
         Given driver baseUrl
             And waitFor('form')
-        When click('{^*}Forgot Password?')
-            And match html('body') contains 'Forgot Your Password?'
+        When click('{^*}Mot de passe oublié ?')
+            And match html('body') contains 'Un e-mail va vous être envoyé'
             # @fixme
             And click('a:first-of-type')
         Then match html('body') contains 'Bienvenue sur la page de connexion iParapheur'
