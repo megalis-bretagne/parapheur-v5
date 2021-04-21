@@ -1,4 +1,4 @@
-@ip-core @api-v1 @todo
+@ip-core @api-v1
 Feature: POST /api/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
 
     Background:
