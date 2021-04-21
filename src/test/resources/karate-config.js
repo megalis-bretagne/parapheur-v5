@@ -8,8 +8,11 @@ function fn() {
 
     var config = {
         env: env,
-        baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
-        CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
+        //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
+        //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
+        baseUrl: 'http://iparapheur.dom.local/',
+        // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
+        CHROME_BIN: '/usr/bin/chromium-browser',
         headless: String(karate.properties['karate.headless']).toLowerCase() !== 'false'
     };
 
