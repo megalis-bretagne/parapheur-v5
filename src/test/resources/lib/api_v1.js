@@ -191,6 +191,14 @@ function fn(config) {
             'element': karate.read('classpath:lib/schemas/workflow.element.json'),
             // 'index': karate.read('classpath:lib/schemas/workflow.index.json')
         },
+        'type': {
+            'element': karate.read('classpath:lib/schemas/type.element.json'),
+            // 'index': karate.read('classpath:lib/schemas/type.index.json')
+        },
+        'subtype': {
+            'element': karate.read('classpath:lib/schemas/subtype.element.json'),
+            // 'index': karate.read('classpath:lib/schemas/type.index.json')
+        },
     };
 
     /**
@@ -222,7 +230,7 @@ function fn(config) {
             filtered = [];
         } else {
             if (containing === true) {
-                filtered = [karate.jsonPath(response.body, "$.data[1]")];//@todo: still filter, but reduce results
+                filtered = [karate.jsonPath(response.body, "$.data[0]")];//@todo: still filter, but reduce results
             } else {
                 filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
             }
