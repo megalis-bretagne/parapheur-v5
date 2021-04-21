@@ -56,6 +56,10 @@ function fn(config) {
         var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'desk', 'name', name, containing);
         return element['id'];
     };
+    config.api_v1.desk['getNonExistingId'] = function () {
+        // @todo: check if it really does not exist
+        return '00000000-0000-0000-0000-000000000000';
+    };
 
     /**
      * entity
@@ -203,7 +207,7 @@ function fn(config) {
         },
         'desk': {
             'element': karate.read('classpath:lib/schemas/desk.element.json'),
-            // 'index': karate.read('classpath:lib/schemas/desk.index.json')
+            'index': karate.read('classpath:lib/schemas/desk.index.json')
         },
         'workflow': {
             'element': karate.read('classpath:lib/schemas/workflow.element.json'),
