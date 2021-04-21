@@ -11,5 +11,5 @@ Feature: Authentication lib
 		    And header Content-Type = 'application/x-www-form-urlencoded; charset=utf-8'
 		When method POST
 		Then status 200
-            And match $ == schemas.auth.success
+            And match $ == schemas.auth.post_200
             #And def access_token = $.access_token
