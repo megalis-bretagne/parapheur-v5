@@ -6,52 +6,24 @@ function fn(config) {
      */
     config.api_v1['auth'] = {};
     // @todo: as pure javascript functions
-    config.api_v1.auth['login'] = function(username, password, success = true) {
-        if (username === '' || success !== true) {
-            return karate.call('classpath:lib/auth/failure.feature', { username: username, password: password });
-        } else {
-            return karate.call('classpath:lib/auth/success.feature', { username: username, password: password });
+    config.api_v1.auth['login'] = function (username, password, status = null) {
+        if (status === true || status === null) {
+            status = 200;
+        } else if (status === false || username === '') {
+            status = 401;
         }
+
+        return karate.call('classpath:lib/auth/post_' + String(status) + '.feature', {
+            username: username,
+            password: password
+        });
     };
-    /*
-    // karate.toJava(kittens)
-    config.api_v1.auth['login'] = function(username, password, success = true) {
-        data = {
-            'client_id': 'admin-cli',
-            'username': username,
-            'password': password,
-            'grant_type': 'password'
-        }
-        response = karate
-            .http(baseUrl)
-            .path('/auth/realms/api/protocol/openid-connect/token')
-            .header('Accept', 'application/json')
-            .header('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-            .post();
-// karate.log(JSON.stringify(data));
-// karate.log(response);
-        if (username === '' || success !== true) {
-            if (response.status !== 401) {
-                karate.fail('Connection not failed: got status code ' + response.status + ' while trying to connect with username "' + username + '" and password "' + password + '"');
-            } else {
-                // And match $ == { "error":"invalid_grant","error_description":"Invalid user credentials" }
-            }
-        } else {
-            if (response.status !== 200) {
-                karate.fail('Connection failed: got status code ' + response.status + ' while trying to connect with username "' + username + '" and password "' + password + '"');
-            } else {
-                // And match $.access_token == '#string'
-                // And def access_token = $.access_token
-            }
-        }
-    };
-    */
 
     /**
      * desk
      */
     config.api_v1['desk'] = {};
-    config.api_v1.desk['getIdByName'] = function(tenantId, name) {
+    config.api_v1.desk['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant/' + tenantId + '/desk')
@@ -63,30 +35,21 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting desk id by its tenantId and name');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.name=='" + name + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No desk named "' + name + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' desks named "' + name + '" found: ' + JSON.stringify(filtered));
-        } else if ('id' in filtered[0] === false) {
-            karate.fail('Desk with name "' + name + '" has no "id" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['id'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'desk', 'name', name, containing);
+        return element['id'];
     };
 
     /**
      * entity
-     * @fixme: rename as tenant
+     * @todo: rename as tenant
      */
     config.api_v1['entity'] = {};
-    config.api_v1.entity['createTemporary'] = function() {
+    config.api_v1.entity['createTemporary'] = function () {
         var name = 'tmp-' + java.util.UUID.randomUUID() + '';
-        karate.call('classpath:lib/tenant/createTemporary.feature', { name : name });
+        karate.call('classpath:lib/tenant/createTemporary.feature', {name: name});
         return api_v1.entity.getIdByName(name);
     };
-    config.api_v1.entity['getIdByName'] = function(name) {
+    config.api_v1.entity['getIdByName'] = function (name, containing = false) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant')
@@ -102,19 +65,10 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting entity id by its name');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.name=='" + name + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No entity named "' + name + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' entities named "' + name + '" found: ' + JSON.stringify(filtered));
-        } else if ('id' in filtered[0] === false) {
-            karate.fail('Entity named "' + name + '" has no "id" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['id'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'entity', 'name', name, containing);
+        return element['id'];
     };
-    config.api_v1.entity['getNameById'] = function(id) {
+    config.api_v1.entity['getNameById'] = function (id) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant')
@@ -129,19 +83,10 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting entity name by its id');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.id=='" + id + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No entity with id "' + id + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' entities with id "' + id + '" found: ' + JSON.stringify(filtered));
-        } else if ('name' in filtered[0] === false) {
-            karate.fail('Entity with id "' + id + '" has no "name" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['name'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'entity', 'id', id);
+        return element['name'];
     };
-    config.api_v1.entity['getNonExistingId'] = function() {
+    config.api_v1.entity['getNonExistingId'] = function () {
         // @todo: check if it really does not exist
         return '00000000-0000-0000-0000-000000000000';
     };
@@ -150,11 +95,11 @@ function fn(config) {
      * user
      */
     config.api_v1['user'] = {};
-    config.api_v1.user['createTemporary'] = function(tenantId) {
+    config.api_v1.user['createTemporary'] = function (tenantId) {
         var unique = 'tmp-' + java.util.UUID.randomUUID() + '';
         var email = unique + '@test';
         var data = {
-            userName : unique,
+            userName: unique,
             email: email,
             firstName: 'tmp',
             lastName: 'tmp',
@@ -169,7 +114,7 @@ function fn(config) {
         return api_v1.user.getIdByEmail(tenantId, email);
     };
     // @fixme-ip-core: user-controller, /api/currentUser -> 404
-    config.api_v1.user['getCurrentUserId'] = function() {
+    config.api_v1.user['getCurrentUserId'] = function () {
         response = karate
             .http(baseUrl)
             .path('/api/currentUser')
@@ -182,7 +127,7 @@ function fn(config) {
 
         return response.body['id'];
     };
-    config.api_v1.user['getById'] = function(tenantId, userId) {
+    config.api_v1.user['getById'] = function (tenantId, userId) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant/' + tenantId + '/user/' + userId)
@@ -195,7 +140,7 @@ function fn(config) {
 
         return response.body;
     };
-    config.api_v1.user['getIdByEmail'] = function(tenantId, email) {
+    config.api_v1.user['getIdByEmail'] = function (tenantId, email, containing = false) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant/' + tenantId + '/user')
@@ -207,19 +152,10 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting user id by its tenantId and email');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.email=='" + email + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No user with email "' + email + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' user with email "' + email + '" found: ' + JSON.stringify(filtered));
-        } else if ('id' in filtered[0] === false) {
-            karate.fail('User with email "' + email + '" has no "id" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['id'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'user', 'email', email, containing);
+        return element['id'];
     };
-    config.api_v1.user['getNonExistingId'] = function() {
+    config.api_v1.user['getNonExistingId'] = function () {
         // @todo: check if it really does not exist
         return '00000000-0000-0000-0000-000000000000';
     };
@@ -236,8 +172,8 @@ function fn(config) {
      */
     config['schemas'] = {
         'auth': {
-            'failure': karate.read('classpath:lib/schemas/auth.failure.json'),
-            'success': karate.read('classpath:lib/schemas/auth.success.json')
+            'post_200': karate.read('classpath:lib/schemas/auth/post_200.json'),
+            'post_401': karate.read('classpath:lib/schemas/auth/post_401.json'),
         },
         'tenant': {
             'element': karate.read('classpath:lib/schemas/tenant.element.json'),
@@ -246,56 +182,70 @@ function fn(config) {
         'user': {
             'element': karate.read('classpath:lib/schemas/user.element.json'),
             'index': karate.read('classpath:lib/schemas/user.index.json')
-        }
+        },
+        'desk': {
+            'element': karate.read('classpath:lib/schemas/desk.element.json'),
+            // 'index': karate.read('classpath:lib/schemas/desk.index.json')
+        },
+        'workflow': {
+            'element': karate.read('classpath:lib/schemas/workflow.element.json'),
+            // 'index': karate.read('classpath:lib/schemas/workflow.index.json')
+        },
     };
 
     /**
      * type
      */
     config.api_v1['type'] = {};
-    config.api_v1.type['getIdByName'] = function(tenantId, name) {
+    config.api_v1.type['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
             .param('searchTerm', name)
             .get();
-karate.log(response);
+
         if (response.status !== 200) {
             karate.fail('Got status code ' + response.status + ' while getting type by its tenantId and name');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.name=='" + name + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No type named "' + name + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' types named "' + name + '" found: ' + JSON.stringify(filtered));
-        } else if ('id' in filtered[0] === false) {
-            karate.fail('Type named "' + name + '" has no "id" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['id'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
+        return element['id'];
     };
 
     /**
      * utils
-     * @todo -> common ?
      */
-    config['utils'] = {};
-    config.utils['getUUID'] = function (length = 32) {
-        // @see https://github.com/intuit/karate#commonly-needed-utilities
-        return java.util.UUID.randomUUID() + '';
-    };
-    config.utils['getUniqueName'] = function(prefix) {
-        return String(prefix) + Date.now();
+    config.api_v1['utils'] = {};
+    config.api_v1.utils['filterSingleElementFromGetResponse'] = function (response, entity, field, value, containing = false) {
+        if (response.body.total === 0) {
+            filtered = [];
+        } else {
+            if (containing === true) {
+                filtered = [karate.jsonPath(response.body, "$.data[1]")];//@todo: still filter, but reduce results
+            } else {
+                filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
+            }
+        }
+
+        var matching = containing === true ? 'containing' : 'matching', message;
+
+        if (filtered.length === 0) {
+            message = 'No ' + entity + ' found ' + matching + ' field ' + field + ' ' + '""' + value + '""';
+            karate.fail(message);
+        } else if (filtered.length > 1) {
+            message = filtered.length + ' ' + entity + ' found ' + matching + ' field ' + field + ' ' + '""' + value + '"": ' + JSON.stringify(filtered);
+            karate.fail(message);
+        }
+
+        return filtered[0];
     };
 
     /**
      * workflow
      */
     config.api_v1['workflow'] = {};
-    config.api_v1.workflow['getKeyByName'] = function(tenantId, name) {
+    config.api_v1.workflow['getKeyByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
             .path('/api/admin/tenant/' + tenantId + '/workflowDefinition')
@@ -307,17 +257,8 @@ karate.log(response);
             karate.fail('Got status code ' + response.status + ' while getting workflow by its tenantId and name');
         }
 
-        filtered = karate.jsonPath(response.body, "$.data[?(@.name=='" + name + "')]");
-
-        if (filtered.length === 0) {
-            karate.fail('No workflow named "' + name + '" found');
-        } else if (filtered.length > 1) {
-            karate.fail(filtered.length + ' workflows named "' + name + '" found: ' + JSON.stringify(filtered));
-        } else if ('id' in filtered[0] === false) {
-            karate.fail('Workflow named "' + name + '" has no "id" field: ' + JSON.stringify(filtered[0]));
-        }
-
-        return filtered[0]['key'];
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'workflow', 'name', name, containing);
+        return element['key'];
     };
 
     return config;
