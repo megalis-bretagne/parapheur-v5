@@ -2,18 +2,18 @@
 Feature: POST /auth/realms/api/protocol/openid-connect/token (Authentication)
 
 	@authentication
-	Scenario Outline: Successful authentication
-		* api_v1.auth.login('<username>', '<password>')
+	Scenario Outline: Successful authentication for role "${role}" with "${username}" and "${password}"
+		* api_v1.auth.login('<username>', '<password>', 200)
 
 		Examples:
-			| username     | password |
-			| cnoir        | a123456  |
-			| ablanc       | a123456  |
-			| ltransparent | a123456  |
+			| role             | username     | password |
+			| ADMIN            | cnoir        | a123456  |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  |
+			| NONE             | ltransparent | a123456  |
 
 	@authentication
-	Scenario Outline: Unsuccessful authentication
-		* api_v1.auth.login('<username>', '<password>', false)
+	Scenario Outline: Unsuccessful authentication with "${username === null ? '' : username}" and "${password === null ? '' : password}"
+		* api_v1.auth.login('<username>', '<password>', 401)
 
 		Examples:
 			| username  | password      |

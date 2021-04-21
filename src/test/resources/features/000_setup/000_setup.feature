@@ -1,7 +1,7 @@
 @setup
 Feature: Basic setup
 
-	Scenario Outline: Create tenants "Libriciel SCOP" and "Montpellier Méditerranée Métropole"
+	Scenario Outline: Create tenant "${name}"
 		* api_v1.auth.login('user', 'password')
 
 		Given url baseUrl
@@ -18,7 +18,7 @@ Feature: Basic setup
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
-	Scenario Outline: Create users with each role value in the "Default tenant"
+	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
@@ -50,7 +50,7 @@ Feature: Basic setup
 
 	# 404 when-parentDeskId is not null
 	@todo-karate
-	Scenario Outline: Create desks and associate them to users
+	Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
@@ -85,7 +85,7 @@ Feature: Basic setup
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
-	Scenario Outline: Create one step workflows and associate them to desks
+	Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 		* def deskId = api_v1.desk.getIdByName(tenantId, '<deskName>')
@@ -129,7 +129,7 @@ Feature: Basic setup
 
 	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java
-	Scenario Outline: Create types
+	Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
@@ -158,7 +158,7 @@ Feature: Basic setup
 			| Default tenant | VISA        | Visa              | PADES           |
 
 	@todo-karate @signature-format
-	Scenario Outline: Create subtypes
+	Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 		* def workflowKey = api_v1.workflow.getKeyByName(tenantId, '<workflow>')

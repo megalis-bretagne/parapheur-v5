@@ -60,7 +60,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 			And header Accept = 'application/json'
 			And request { name: ''}
 		When method POST
-		Then status 200
+		Then status 201
 		# proposal
 		# Then status 400
 
@@ -78,7 +78,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 			And header Accept = 'application/json'
 			And request { name: '#(name)'}
 		When method POST
-		Then status 200
+		Then status 201
 		# proposal
 		# Then status 400
 

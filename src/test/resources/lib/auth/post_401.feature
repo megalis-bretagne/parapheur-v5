@@ -11,4 +11,4 @@ Feature: Authentication lib
 			And header Content-Type = 'application/x-www-form-urlencoded; charset=utf-8'
 		When method POST
 		Then status 401
-			And match $ == schemas.auth.failure
+			And match $ == schemas.auth.post_401

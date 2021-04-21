@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "validators": "#[] #uuid",
+      "validationMode": "#regex (AND|OR|SIMPLE)",
+      "name": "#string",
+      "type": "#regex (EXTERNAL_SIGNATURE|MAIL|SEAL|SIGNATURE|VISA)",
+      "parallelType": "#regex (OR)"
+    }
+  ],
+  "name": "#string",
+  "id": "#uuid",
+  "key": "#string",
+  "deploymentId": "#string"
+}
