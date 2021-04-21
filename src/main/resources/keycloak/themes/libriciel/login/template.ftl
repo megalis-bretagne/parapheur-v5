@@ -1,7 +1,8 @@
 <#macro registrationLayout bodyClass="" displayInfo=false displayMessage=true displayWide=false>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" class="${properties.kcHtmlClass!}">
+<html class="${properties.kcHtmlClass!}" lang="${locale.currentLanguageTag!"fr"}"
+    xml:lang="${locale.currentLanguageTag!"fr"}" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -40,7 +41,7 @@
 
 <main class="main">
     <div class="left-panel">
-        <img src="${url.resourcesPath}/images/${properties.logoImage}" alt="Logo de la collectivité"/>
+        <img src="${url.resourcesPath}/images/${properties.logoImage}" alt="${properties.productName}"/>
         <p>${properties.logoMessage}</p>
     </div>
     <div class="right-panel">
@@ -94,7 +95,7 @@
         </div>
     </div>
 </main>
-<ls-footer class="ls-login-footer"></ls-footer>
+<ls-footer class="ls-login-footer" application_name="${properties.productName} ${properties.productVersion!}" active="${properties.productActiveFooter!}"></ls-footer>
 <#--<footer class="footer">-->
         <#--<#include "footer.ftl">-->
 <#--</footer>-->

@@ -11,19 +11,19 @@ Feature: Connexion
         Given driver baseUrl
             And waitFor('form')
         Then match html('body') contains 'Bienvenue sur la page de connexion iParapheur'
-            And match html('body') contains 'doLogInInfo'
-            And match html('body') contains 'Username or email'
-            And match html('body') contains 'Password'
-            And match html('body') contains 'Forgot Password?'
-            And match html('body') contains 'Log In'
+            And match html('body') contains 'Veuillez saisir vos identifiants de connexion'
+            And match html('body') contains 'Identifiant ou courriel'
+            And match html('body') contains 'Mot de passe'
+            And match html('body') contains 'Mot de passe oublié ?'
+            And match html('body') contains 'Se connecter'
 
     @fixme-ip-web @l10n
         Scenario: Connexion réussie pour un utilisateur "ADMIN"
         Given driver baseUrl
             And waitFor('form')
-            And input(ui.locator.input('Username or email'), 'cnoir')
-            And input(ui.locator.input('Password'), 'a123456')
-        When submit().click(ui.locator.button('Log In'))
+            And input(ui.locator.input('Identifiant ou courriel'), 'cnoir')
+            And input(ui.locator.input('Mot de passe'), 'a123456')
+        When submit().click(ui.locator.button('Se connecter'))
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -37,9 +37,9 @@ Feature: Connexion
         Scenario: Connexion réussie pour un utilisateur "FUNCTIONAL_ADMIN"
         Given driver baseUrl
             And waitFor('form')
-            And input(ui.locator.input('Username or email'), 'ablanc')
-            And input(ui.locator.input('Password'), 'a123456')
-        When submit().click(ui.locator.button('Log In'))
+            And input(ui.locator.input('Identifiant ou courriel'), 'ablanc')
+            And input(ui.locator.input('Mot de passe'), 'a123456')
+        When submit().click(ui.locator.button('Se connecter'))
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -54,9 +54,9 @@ Feature: Connexion
         Scenario: Connexion réussie pour un utilisateur "NONE"
         Given driver baseUrl
             And waitFor('form')
-            And input(ui.locator.input('Username or email'), 'ltransparent')
-            And input(ui.locator.input('Password'), 'a123456')
-        When submit().click(ui.locator.button('Log In'))
+            And input(ui.locator.input('Identifiant ou courriel'), 'ltransparent')
+            And input(ui.locator.input('Mot de passe'), 'a123456')
+        When submit().click(ui.locator.button('Se connecter'))
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -71,7 +71,7 @@ Feature: Connexion
         Scenario: Connexion ratée
         Given driver baseUrl
             And waitFor('form')
-            And input(ui.locator.input('Username or email'), '')
-            And input(ui.locator.input('Password'), '')
-        When submit().click(ui.locator.button('Log In'))
-        Then match html('body') contains 'Invalid username or password'
+            And input(ui.locator.input('Identifiant ou courriel'), '')
+            And input(ui.locator.input('Mot de passe'), '')
+        When submit().click(ui.locator.button('Se connecter'))
+        Then match html('body') contains 'Identifiant ou mot de passe invalide'
