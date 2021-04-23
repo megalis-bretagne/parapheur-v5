@@ -25,10 +25,12 @@ function fn(config) {
     config.api_v1['auth'] = {};
     // @todo: as pure javascript functions
     config.api_v1.auth['login'] = function (username, password, status = null) {
-        if (status === true || status === null) {
-            status = 200;
-        } else if (status === false || username === '') {
-            status = 401;
+        if (utils.isInteger(status) === false) {
+            if (status === true || (status === null && username !== '')) {
+                status = 200;
+            } else if (status === false || (status === null && username === '')) {
+                status = 401;
+            }
         }
 
         return karate.call('classpath:lib/auth/post_' + String(status) + '.feature', {
