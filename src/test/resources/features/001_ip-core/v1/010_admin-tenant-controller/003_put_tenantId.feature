@@ -1,129 +1,52 @@
 @ip-core @api-v1
 Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
 
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can edit an existing tenant
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing tenant
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
         * def id = api_v1.entity.createTemporary()
         * def name = 'tmp-' + utils.getUUID()
 
 		# Try to edit it
-        * api_v1.auth.login('cnoir', 'a123456')
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', id
             And header Accept = 'application/json'
             And request { name: '#(name)'}
         When method PUT
-        Then status 200
-            And match $ == schemas.tenant.element
-            And match $ contains { id: '#(id)', name: '#(name)' }
+        Then status <status>
+            And if (<status> === 201) karate.match("$ == schemas.tenant.element")
+            And if (<status> === 201) karate.match("$ contains { id: '#(id)', name: '#(name)' }")
 
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role cannot edit a non-existing tenant
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot edit a non-existing tenant
         * def id = api_v1.entity.getNonExistingId()
         * def name = 'tmp-' + utils.getUUID()
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', id
             And header Accept = 'application/json'
             And request { name: '#(name)'}
         When method PUT
-        Then status 404
+        Then status <status>
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot edit an existing tenant
-        # Create a temporary tenant
-        * api_v1.auth.login('user', 'password')
-        * def id = api_v1.entity.createTemporary()
-        * def name = 'tmp-' + utils.getUUID()
-
-		# Try to edit it
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot edit a non-existing tenant
-        * def id = api_v1.entity.getNonExistingId()
-        * def name = 'tmp-' + utils.getUUID()
-
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot edit an existing tenant
-        # Create a temporary tenant
-        * api_v1.auth.login('user', 'password')
-        * def id = api_v1.entity.createTemporary()
-        * def name = 'tmp-' + utils.getUUID()
-
-		# Try to edit it
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot edit a non-existing tenant
-        * def id = api_v1.entity.getNonExistingId()
-        * def name = 'tmp-' + utils.getUUID()
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot edit an existing tenant
-        # Create a temporary tenant
-        * api_v1.auth.login('user', 'password')
-        * def id = api_v1.entity.createTemporary()
-        * def name = 'tmp-' + utils.getUUID()
-
-		# Try to edit it
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot edit a non-existing tenant
-        * def id = api_v1.entity.getNonExistingId()
-        * def name = 'tmp-' + utils.getUUID()
-
-        * api_v1.auth.login('', '')
-        Given url baseUrl
-            And path '/api/admin/tenant/', id
-            And header Accept = 'application/json'
-            And request { name: '#(name)'}
-        When method PUT
-        Then status 401
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @data-validation @proposal @todo-ip-core
     Scenario: Data validation - a user with an "ADMIN" role cannot edit a tenant with an empty name

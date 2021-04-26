@@ -1,23 +1,9 @@
 @ip-core @api-v1
 Feature: POST /api/admin/tenant (Create tenant)
 
-	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role can create a tenant
-		* api_v1.auth.login('cnoir', 'a123456')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 201
-			And match $ == schemas.tenant.element
-			And match $.name == '#(name)'
-
 	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot create a tenant
-		* api_v1.auth.login('ablanc', 'a123456')
+	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a tenant
+		* api_v1.auth.login('<username>', '<password>')
 		* def name = 'tmp-' + utils.getUUID()
 
 		Given url baseUrl
@@ -25,31 +11,16 @@ Feature: POST /api/admin/tenant (Create tenant)
 			And header Accept = 'application/json'
 			And request { name: '#(name)'}
 		When method POST
-		Then status 403
+		Then status <status>
+			And if (<status> === 201) karate.match("$ == schemas.tenant.element")
+			And if (<status> === 201) karate.match("$.name == '#(name)'")
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot create a tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot create a tenant
-		* api_v1.auth.login('', '')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 401
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 201    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
 
 	@data-validation @proposal @todo-ip-core
 	Scenario: Data validation - a user with an "ADMIN" role cannot create a tenant with an empty name
