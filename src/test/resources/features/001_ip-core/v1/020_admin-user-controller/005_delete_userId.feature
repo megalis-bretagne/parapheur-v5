@@ -9,122 +9,70 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
         * def userData = api_v1.user.getById(existingTenantId, existingUserId)
 
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can delete an existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method DELETE
-        Then status 204
+        Then status <status>
 
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role cannot delete an existing user from a non-existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 204    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method DELETE
-        Then status 404
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "ADMIN" role cannot delete a non-existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method DELETE
-        Then status 404
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot delete an existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method DELETE
-        Then status 403
+        Then status <status>
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot delete an existing user from a non-existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot delete a non-existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot delete an existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot delete an existing user from a non-existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot delete a non-existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot delete an existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot delete an existing user from a non-existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot delete a non-existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status 401
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
