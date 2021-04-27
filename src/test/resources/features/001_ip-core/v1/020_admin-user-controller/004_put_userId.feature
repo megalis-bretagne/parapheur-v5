@@ -7,152 +7,90 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingUserId = api_v1.user.createTemporary(existingTenantId)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
-        * def userData = api_v1.user.getById(existingTenantId, existingUserId)
+        * def existingUserData = api_v1.user.getById(existingTenantId, existingUserId)
 
-    @permissions @proposal
-    Scenario: Permissions - a user with an "ADMIN" role can edit an existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 200
-
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role cannot edit an existing user from a non-existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 404
-
-
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role cannot edit a non-existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 404
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot edit an existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
+    @permissions @proposal @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing user from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
-            And request userData
+            And request existingUserData
         When method PUT
-        Then status 403
+        Then status <status>
+            And if (<status> === 201) karate.match("$ == schemas.tenant.element")
+            And if (<status> === 201) karate.match("$ contains { id: '#(id)', name: '#(name)' }")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot edit an existing user from a non-existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @proposal @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing user from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
-            And request userData
+            And request existingUserData
         When method PUT
-        Then status 403
+        Then status <status>
 
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot edit a non-existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
+    @permissions @proposal @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit a non-existing user from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
+            And header Accept = 'application/json'
+            And request existingUserData
+        When method PUT
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @proposal @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit a non-existing user from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
-            And request userData
+            And request existingUserData
         When method PUT
-        Then status 403
+        Then status <status>
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot edit an existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot edit an existing user from a non-existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 403
-
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot edit a non-existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot edit an existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot edit an existing user from a non-existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 401
-
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot edit a non-existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-            And request userData
-        When method PUT
-        Then status 401
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @data-validation @proposal
     Scenario: Data validation - a user with an "ADMIN" role cannot edit a user with empty values
-    * api_v1.auth.login('cnoir', 'a123456')
+        * api_v1.auth.login('cnoir', 'a123456')
 
-    Given url baseUrl
-        And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-        And header Accept = 'application/json'
-        And request
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And header Accept = 'application/json'
+            And request
 """
 {
     userName : '',
@@ -165,8 +103,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
     notificationsRedirectionMail: ''
 }
 """
-    When method PUT
-    Then status 400
+        When method PUT
+        Then status 400
 
     @data-validation @fixme-ip-core @proposal
     Scenario: Data validation - a user with an "ADMIN" role cannot edit a user with already existing userName or email values

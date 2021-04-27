@@ -4,7 +4,6 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
     Background:
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def unique = 'tmp-' + utils.getUUID()
         * def email = unique + '@test'
         * def uniqueRequestData =
@@ -21,9 +20,9 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 }
 """
 
-    @permissions @proposal
-    Scenario: Permissions - a user with an "ADMIN" role can create a user in an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    @permissions @fixme-ip-core @proposal
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a user in an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/user'
@@ -31,14 +30,25 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             And request uniqueRequestData
 
         When method POST
-        Then status 201
-            And match response == ''
+        Then status <status>
+            And if (<status> === 201) karate.match("response == ''")
             # proposal: response body should be not null ?
             # And match $ == schemas.user.element
 
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role cannot create a user in an non-existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 201    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot create a user in a non-existing tenant
+        * api_v1.auth.login('user', 'password')
+        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
+
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', nonExistingTenantId, '/user'
@@ -46,79 +56,14 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             And request uniqueRequestData
 
         When method POST
-        Then status 404
+        Then status <status>
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot create a user in an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot create a user in an non-existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot create a user in an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with a "NONE" role cannot create a user in an non-existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot create a user in an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot create a user in an non-existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request uniqueRequestData
-
-        When method POST
-        Then status 401
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @data-validation @proposal
     # @fixme: status 400 missing from swagger
@@ -168,8 +113,8 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         Then status 400
         * print response
 
-    @data-validation @fixme-ip-core @proposal @fixme-cbu
-    Scenario: Data validation - a user with an "ADMIN" role cannot create a user with @fixme
+    @data-validation @fixme-ip-core @proposal
+    Scenario: Data validation - a user with an "ADMIN" role cannot create a user with invalid data
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl

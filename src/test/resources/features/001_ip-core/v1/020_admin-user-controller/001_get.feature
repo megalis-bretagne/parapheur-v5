@@ -1,96 +1,54 @@
 @ip-core @api-v1
 Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 
-	Background:
+	@permissions @fixme-ip-core
+	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get the list from an existing tenant
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+
+		* api_v1.auth.login('<username>', '<password>')
+
+		Given url baseUrl
+			And path '/api/admin/tenant/', existingTenantId, '/user'
+			And header Accept = 'application/json'
+		When method GET
+		Then status <status>
+			And if (<status> === 200) karate.match("$ == schemas.user.index")
+			And if (<status> === 200) karate.match("$.total == 5")
+			And if (<status> === 200) karate.match("$.data[*].userName == [ 'ablanc', 'cnoir', 'stranslucide', 'ltransparent', 'user' ]")
+
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 200    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
+
+	@permissions @fixme-ip-core
+	Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get the list from a non-existing tenant
+		* api_v1.auth.login('user', 'password')
 		* def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
-	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role can get the list from an existing tenant
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 200
-			And match $ == schemas.user.index
-			And match $.total == 5
-			And match $.data[*].userName == [ 'ablanc', 'cnoir', 'stranslucide', 'ltransparent', 'user' ]
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with an "ADMIN" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('cnoir', 'a123456')
+		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
 			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
 			And header Accept = 'application/json'
 		When method GET
-		Then status 404
+		Then status <status>
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot get the list from an existing tenant
-		* api_v1.auth.login('ablanc', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('ablanc', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot get the list from an existing tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot get the list from an existing tenant
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 401
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot get the list from a non-existing tenant
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 401
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 404    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
 
 	@searching
-	Scenario: Searching - a user with an "ADMIN" role can filter and sort the list based on the username
+	Scenario: Searching - a user with an "ADMIN" role can filter and sort the list from an existing tenant based on the username
+		* api_v1.auth.login('user', 'password')
+		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
