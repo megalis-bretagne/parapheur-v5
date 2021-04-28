@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: POST /api/admin/tenant (Create tenant)
 
-	@permissions @fixme-ip-core
+	@permissions
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a tenant
 		* api_v1.auth.login('<username>', '<password>')
 		* def name = 'tmp-' + utils.getUUID()
@@ -18,6 +18,9 @@ Feature: POST /api/admin/tenant (Create tenant)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 201    |
+		@fixme-ip-core
+		Examples:
+			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
