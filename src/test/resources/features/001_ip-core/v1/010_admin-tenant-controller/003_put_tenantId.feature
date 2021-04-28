@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing tenant
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
@@ -23,11 +23,14 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core
+        Examples:
+            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot edit a non-existing tenant
         * def id = api_v1.entity.getNonExistingId()
         * def name = 'tmp-' + utils.getUUID()
@@ -44,6 +47,9 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
+            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

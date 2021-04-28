@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: GET /api/admin/tenant (List tenants)
 
-	@permissions @fixme-ip-core
+	@permissions
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get the tenant list
 		* api_v1.auth.login('<username>', '<password>')
 
@@ -17,6 +17,9 @@ Feature: GET /api/admin/tenant (List tenants)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 200    |
+		@fixme-ip-core
+		Examples:
+			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
