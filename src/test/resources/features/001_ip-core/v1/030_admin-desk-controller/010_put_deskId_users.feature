@@ -6,40 +6,110 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def unique = 'tmp-' + utils.getUUID()
-        * def uniqueRequestData =
+
+    @permissions
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} associate an existing desk to an existing user
+        # Create a temporary desk
+        * api_v1.auth.login('user', 'password')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And header Accept = 'application/json'
+            And request
 """
 {
     'name': '#(unique)',
-    'description': '#(unique)',
+    'description': 'Bureau #(unique)',
     'parentDeskId': null
-}
-"""
-
-    @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can associate a desk to users
-        * api_v1.auth.login('cnoir', 'a123456')
-        * def tenantId = api_v1.entity.getIdByName('Default tenant')
-
-        Given url baseUrl
-        And path '/api/admin/tenant/', tenantId, '/desk'
-        And header Accept = 'application/json'
-        And request
-"""
-{
-'name': '#(unique)',
-'description': 'Bureau #(unique)',
-'parentDeskId': null
 }
 """
         When method POST
         Then status 201
 
-      * def deskId = $.id
-      * def userId = api_v1.user.getIdByEmail(tenantId, 'ltransparent@dom.local')
+        * def existingDeskId = $.id
+        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
-      Given url baseUrl
-          And path '/api/admin/tenant/', tenantId, '/desk/', deskId, '/users'
-          And header Accept = 'application/json'
-          And request { "userIdList": ["#(userId)"] }
-      When method PUT
-      Then status 200
+        # Associate an existing user to the temporary desk created above
+        * api_v1.auth.login('<username>', '<password>')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And header Accept = 'application/json'
+            And request { "userIdList": ["#(existingUserId)"] }
+        When method PUT
+        Then status <status>
+            # @proposal: return at least the id of the created element in JSON
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core
+        Examples:
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate an existing desk to a non-existing user
+        # Create a temporary desk
+        * api_v1.auth.login('user', 'password')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And header Accept = 'application/json'
+            And request
+"""
+{
+    'name': '#(unique)',
+    'description': 'Bureau #(unique)',
+    'parentDeskId': null
+}
+"""
+        When method POST
+        Then status 201
+
+        * def existingDeskId = $.id
+        * def nonExistingUserId = api_v1.user.getNonExistingId()
+
+        # Associate a non-existing user to the temporary desk created above
+        * api_v1.auth.login('<username>', '<password>')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And header Accept = 'application/json'
+            And request { "userIdList": ["#(nonExistingUserId)"] }
+        When method PUT
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 400    |
+        @fixme-ip-core
+        Examples:
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate a non-existing desk to an existing user
+        # Get data
+        * api_v1.auth.login('user', 'password')
+        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
+        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+
+        # Associate an existing user to non-existing desk
+        * api_v1.auth.login('<username>', '<password>')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId, '/users'
+            And header Accept = 'application/json'
+            And request { "userIdList": ["#(existingUserId)"] }
+        When method PUT
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
