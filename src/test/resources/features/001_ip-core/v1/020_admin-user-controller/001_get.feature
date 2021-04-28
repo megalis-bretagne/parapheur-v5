@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 
-	@permissions @fixme-ip-core
+	@permissions
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get the list from an existing tenant
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -20,11 +20,13 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 200    |
+		@fixme-ip-core
+		Examples:
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
-	@permissions @fixme-ip-core
+	@permissions
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get the list from a non-existing tenant
 		* api_v1.auth.login('user', 'password')
 		* def nonExistingTenantId = api_v1.entity.getNonExistingId()
@@ -40,6 +42,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 404    |
+		@fixme-ip-core
+		Examples:
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
