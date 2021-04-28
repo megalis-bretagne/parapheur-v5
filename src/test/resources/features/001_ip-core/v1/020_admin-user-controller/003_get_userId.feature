@@ -8,7 +8,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@example')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get an existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -23,11 +23,13 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -40,11 +42,13 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get an existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -57,11 +61,13 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -74,6 +80,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

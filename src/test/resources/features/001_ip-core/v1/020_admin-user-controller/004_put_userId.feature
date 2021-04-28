@@ -9,7 +9,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
         * def existingUserData = api_v1.user.getById(existingTenantId, existingUserId)
 
-    @permissions @proposal @fixme-ip-core
+    @permissions @todo-proposal
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -25,11 +25,13 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @proposal @fixme-ip-core
+    @permissions @todo-proposal
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -43,11 +45,13 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @proposal @fixme-ip-core
+    @permissions @todo-proposal
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit a non-existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -61,11 +65,13 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @proposal @fixme-ip-core
+    @permissions @todo-proposal
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit a non-existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -79,6 +85,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

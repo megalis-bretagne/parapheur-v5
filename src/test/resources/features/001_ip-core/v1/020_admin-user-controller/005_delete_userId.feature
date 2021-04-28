@@ -9,7 +9,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
         * def userData = api_v1.user.getById(existingTenantId, existingUserId)
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -22,11 +22,13 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 204    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -39,11 +41,13 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -56,11 +60,13 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -73,6 +79,8 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

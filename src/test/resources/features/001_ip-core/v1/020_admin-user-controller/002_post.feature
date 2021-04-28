@@ -20,7 +20,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 }
 """
 
-    @permissions @fixme-ip-core @proposal
+    @permissions @todo-proposal
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a user in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -38,12 +38,14 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot create a user in a non-existing tenant
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
@@ -61,6 +63,8 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
