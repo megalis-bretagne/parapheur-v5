@@ -9,44 +9,75 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
 
     @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can get an existing desk from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get an existing desk from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId
             And header Accept = 'application/json'
         When method GET
-        Then status 200
-            And match $ == schemas.desk.element
-            And match $ contains { 'name': 'Transparent' }
+        Then status <status>
+            And if (<status> === 200) karate.match("$ == schemas.desk.element")
+            And if (<status> === 200) karate.match("$ contains { 'name': 'Transparent' }")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "ADMIN" role cannot get a non-existing desk from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core
+        Examples:
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing desk from an existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId
             And header Accept = 'application/json'
         When method GET
-        Then status 404
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+        @fixme-ip-core
+        Examples:
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "ADMIN" role cannot get a desk from an non-existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get an existing desk from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', nonExistingTenantId, '/desk/', existingDeskId
             And header Accept = 'application/json'
         When method GET
-        Then status 404
+        Then status <status>
 
-    # @todo @permissions @fixme-karate-functional-admin-should-have-rights-?
-    # Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get an existing desk from an existing tenant
-    # Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get a non-existing desk from an existing tenant
-    # Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get a desk from an non-existing tenant
-    # Scenario: Permissions - a user with an "NONE" role cannot get an existing desk from an existing tenant
-    # Scenario: Permissions - a user with an "NONE" role cannot get a non-existing desk from an existing tenant
-    # Scenario: Permissions - a user with an "NONE" role cannot get a desk from an non-existing tenant
-    # Scenario: Permissions - an unauthenticated user cannot get an existing desk from an existing tenant
-    # Scenario: Permissions - an unauthenticated user cannot get a non-existing desk from an existing tenant
-    # Scenario: Permissions - an unauthenticated user cannot get a desk from an non-existing tenant
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions @fixme-ip-core
+    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing desk from a non-existing tenant
+        * api_v1.auth.login('<username>', '<password>')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/', nonExistingTenantId, '/desk/', nonExistingDeskId
+            And header Accept = 'application/json'
+        When method GET
+        Then status <status>
+
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
