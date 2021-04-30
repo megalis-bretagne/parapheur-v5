@@ -64,9 +64,9 @@ Feature: My feature
         * api_v1.auth.login('user', 'password')
         * def tenantId = function(exists, name = 'Default tenant') { return exists == true ? api_v1.entity.getIdByName(name) : api_v1.entity.getNonExistingId() }
         * def userId = function(exists, name = 'ltransparent@dom.local', tenant = 'Default tenant') { return exists == true ? api_v1.user.getIdByEmail(tenantId(tenant), name) : api_v1.user.getNonExistingId() }
-        #* @todo: dekId
+        #* @todo: deskId
 
-    @wip
+    @x-wip
     Scenario Outline: ... ${title.role(role)} ${title.can(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
         * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
 #        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk/', + deskId(tenant_exists)  +, '/users'
