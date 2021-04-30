@@ -43,7 +43,7 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
-  "internationalizationEnabled": false,
+  "internationalizationEnabled": true,
   "loginTheme": "iparapheur",
   "supportedLocales": [
     "fr"
