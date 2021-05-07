@@ -25,7 +25,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
-	@data-validation @proposal @fixme-ip
+	@data-validation @proposal @fixme-ip-core
 	Scenario Outline: Data validation - a user with an "ADMIN" role cannot create a tenant with ${wrong_data}
 		* api_v1.auth.login('cnoir', 'a123456')
 
@@ -50,6 +50,6 @@ Feature: POST /api/admin/tenant (Create tenant)
 		Examples:
 			| status | name!                            | wrong_data                 |
 			| 400    | ''                               | an empty name              |
-			| 400    | ' '                              | an space as a name         |
+			| 400    | ' '                              | a space as a name          |
 			| 400    | 'tmp-' + '0123456789'.repeat(30) | a name that is too long    |
 			| 409    | 'Default tenant'                 | a name that already exists |
