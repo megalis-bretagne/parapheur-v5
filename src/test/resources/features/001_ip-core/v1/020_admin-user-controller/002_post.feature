@@ -44,7 +44,6 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-
     @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot create a user in a non-existing tenant
         * api_v1.auth.login('user', 'password')
@@ -69,74 +68,62 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @data-validation @proposal
     # @fixme: status 400 missing from swagger
-    Scenario: Data validation - a user with an "ADMIN" role cannot create a user with empty data
+    @data-validation @proposal @wip
+    Scenario Outline: Data validation - a user with an "ADMIN" role cannot create a user with ${wrong_data}
         * api_v1.auth.login('cnoir', 'a123456')
+        * def requestData = uniqueRequestData
+        * requestData[field] = value
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/user'
             And header Accept = 'application/json'
-            And request
+            And request requestData
+
+        When method POST
+        Then status <status>
+            And match $ ==
 """
 {
-    userName : '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    privilege: '',
-    notificationsCronFrequency: '',
-    notificationsRedirectionMail: ''
+	"path":"#string",
+	"error":"##string",
+	"message":"#string",
+	"timestamp":"#string",
+	"status":#number
 }
 """
-        When method POST
-        Then status 400
 
-    @data-validation @fixme-ip-core @proposal
-    Scenario: Data validation - a user with an "ADMIN" role cannot create a user with already existing userName or email values
-        * api_v1.auth.login('cnoir', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request
-"""
-{
-    userName : 'cnoir',
-    email: 'cnoir@dom.local',
-    firstName: 'Christian',
-    lastName: 'Noir',
-    password: 'a123456',
-    privilege: 'NONE',
-    notificationsCronFrequency: '',
-    notificationsRedirectionMail: 'cnoir@dom.local'
-}
-"""
-        When method POST
-        Then status 400
-        * print response
-
-    @data-validation @fixme-ip-core @proposal
-    Scenario: Data validation - a user with an "ADMIN" role cannot create a user with invalid data
-        * api_v1.auth.login('cnoir', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
-            And header Accept = 'application/json'
-            And request
-"""
-{
-    userName : 'é',
-    email: 'é',
-    firstName: 'é',
-    lastName: 'é',
-    password: 'é',
-    privilege: 'NONE',
-    notificationsCronFrequency: '',
-    notificationsRedirectionMail: 'é'
-}
-"""
-        When method POST
-        Then status 400
-        * print response
+        Examples:
+            | status | field                        | value!                                          | wrong_data                                          |
+            | 400    | userName                     | ''                                              | an empty userName                                   |
+            | 400    | userName                     | ' '                                             | a space as a userName                               |
+            | 400    | userName                     | 'tmp-' + '0123456789'.repeat(30)                | a userName that is too long                         |
+            | 409    | userName                     | 'user'                                          | a userName that already exists                      |
+            | 400    | email                        | 'tmp-' + '0123456789'.repeat(30) + '@dom.local' | an email that is too long                           |
+            | 409    | email                        | 'sample-user@dom.local'                         | an email that already exists                        |
+            | 400    | firstName                    | 'tmp-' + '0123456789'.repeat(30)                | a first name that is too long                       |
+            | 400    | lastName                     | 'tmp-' + '0123456789'.repeat(30)                | a last name that is too long                        |
+            | 400    | privilege                    | ''                                              | an empty privilege                                  |
+            | 400    | privilege                    | ' '                                             | a space as privilege                                |
+            | 400    | privilege                    | 'foo'                                           | a privilege that is not amongst the accepted values |
+            | 400    | privilege                    | 'tmp-' + '0123456789'.repeat(30)                | a privilege that is too long                        |
+        @fixme-ip-core
+        Examples:
+            | status | field                        | value!                                          | wrong_data                                          |
+            | 400    | email                        | ''                                              | an empty email                                      |
+            | 400    | email                        | ' '                                             | a space as email                                    |
+            | 400    | email                        | 'foo'                                           | a value that is not an email                        |
+            | 400    | firstName                    | ''                                              | an empty first name                                 |
+            | 400    | firstName                    | ' '                                             | a space as a first name                             |
+            | 400    | lastName                     | ''                                              | an empty last name                                  |
+            | 400    | lastName                     | ' '                                             | a space as last name                                |
+            | 400    | password                     | ''                                              | an empty password                                   |
+            | 400    | password                     | ' '                                             | a space as password                                 |
+            | 400    | password                     | 'tmp-' + '0123456789'.repeat(30)                | a password that is too long                         |
+            | 400    | notificationsCronFrequency   | ''                                              | an empty frequency                                  |
+            | 400    | notificationsCronFrequency   | ' '                                             | a space as frequency                                |
+            | 400    | notificationsCronFrequency   | 'foo'                                           | a frequency that is not amongst the accepted values |
+            | 400    | notificationsCronFrequency   | 'tmp-' + '0123456789'.repeat(30)                | a frequency that is too long                        |
+            | 400    | notificationsRedirectionMail | ' '                                             | a space as notification email                       |
+            | 400    | notificationsRedirectionMail | 'foo'                                           | a value that is not a notification email            |
+            | 400    | notificationsRedirectionMail | 'tmp-' + '0123456789'.repeat(30) + '@dom.local' | a notification email that is too long               |
