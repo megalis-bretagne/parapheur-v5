@@ -41,9 +41,12 @@ function fn(config) {
      */
     config['utils'] = {};
     config.utils['eval'] = function (value) {
-        var matches = (''+value).match(/^karate\.eval\((.*)\)/);
-        karate.log(matches === null ? value : matches[0]);
-        return matches === null ? value : matches[0];
+        var matches = (''+value).match(/^eval\((.*)\)$/),
+            result = value;
+        if (matches !== null) {
+            result = karate.eval(matches[1]);//@todo: try/catch
+        }
+        return result;
     };
     // @see https://stackoverflow.com/a/14794066
     config.utils['isInteger'] = function (value) {

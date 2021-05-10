@@ -5,6 +5,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing tenant
 		* api_v1.auth.login('user', 'password')
 		* def id = api_v1.entity.createTemporary()
+
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
@@ -16,11 +17,11 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 204    |
-		@fixme-ip-core
+		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-			| NONE             | ltransparent | a123456  | 403    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
 			|                  |              |          | 401    |
 
 	@permissions
@@ -37,9 +38,9 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 404    |
-		@fixme-ip-core
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
+		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
