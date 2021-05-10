@@ -17,14 +17,14 @@ Feature: GET /api/admin/tenant (List tenants)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 200    |
-		@fixme-ip-core
+		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
-	@searching @fixme-ip-core
+	@searching @fixme-ip-core @issue-ip-core-todo
 	Scenario: Searching - a user with an "ADMIN" role can filter and sort the list based on the tenant name
 		* api_v1.auth.login('cnoir', 'a123456')
 
