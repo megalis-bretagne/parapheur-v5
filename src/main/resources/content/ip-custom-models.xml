@@ -88,6 +88,7 @@
                 </property>
                 <property name="iparapheur:targetTaskId">
                     <title>Target task ID</title>
+                    <type>d:text</type>
                     <constraints>
                         <constraint ref="iparapheur:isNodeUuid"/>
                     </constraints>
