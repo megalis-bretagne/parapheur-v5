@@ -5,7 +5,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@example')
+        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
@@ -18,15 +18,16 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         When method GET
         Then status <status>
             And if (<status> === 200) karate.match("$ == schemas.user.element")
-            And if (<status> === 200) karate.match("$ contains { 'email': 'sample-user@example' }")
+            And if (<status> === 200) karate.match("$ contains { 'email': 'sample-user@dom.local' }")
 
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
-        @fixme-ip-core
+        @fixme-ip-core @issue-ip-core-78
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
     @permissions
@@ -39,13 +40,12 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         When method GET
         Then status <status>
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core
-        Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
     @permissions
@@ -61,10 +61,11 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
     @permissions
@@ -77,11 +78,10 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         When method GET
         Then status <status>
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core
-        Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
