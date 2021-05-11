@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.7</version>
+    <version>0.8</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -79,20 +79,18 @@
             <parent>cm:content</parent>
 
             <properties>
-                <property name="iparapheur:targetDocument">
-                    <title>Target document</title>
+                <property name="iparapheur:targetDocumentId">
+                    <title>Target document ID</title>
                     <type>d:text</type>
                     <constraints>
                         <constraint ref="iparapheur:isNodeUuid"/>
                     </constraints>
                 </property>
-                <property name="iparapheur:workflowIndex">
-                    <title>Workflow index</title>
-                    <type>d:int</type>
-                </property>
-                <property name="iparapheur:stepIndex">
-                    <title>Step index</title>
-                    <type>d:int</type>
+                <property name="iparapheur:targetTaskId">
+                    <title>Target task ID</title>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
+                    </constraints>
                 </property>
             </properties>
         </type>
