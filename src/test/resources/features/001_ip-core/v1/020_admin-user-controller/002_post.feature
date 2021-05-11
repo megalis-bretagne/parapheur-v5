@@ -20,7 +20,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 }
 """
 
-    @permissions @todo-proposal
+    @permissions @issue-ip-core-todo
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a user in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -32,16 +32,16 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         When method POST
         Then status <status>
             And if (<status> === 201) karate.match("response == ''")
-            # proposal: response body should be not null ?
-            # And match $ == schemas.user.element
+            # @issue-ip-core-todo: response body should be not null: id or schemas.user.element
 
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
-        @fixme-ip-core
+        @fixme-ip-core @issue-ip-core-78
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
     @permissions
@@ -62,14 +62,15 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+        @fixme-ip-core @issue-ip-core-78
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | role             | username     | password | status |
             |                  |              |          | 401    |
 
     # @fixme: status 400 missing from swagger
-    @data-validation @proposal
+    @data-validation
     Scenario Outline: Data validation - a user with an "ADMIN" role cannot create a user with ${wrong_data}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = uniqueRequestData
@@ -108,7 +109,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             | 400    | privilege                    | ' '                                                        | a space as privilege                                |
             | 400    | privilege                    | 'foo'                                                      | a privilege that is not amongst the accepted values |
             | 400    | privilege                    | eval(utils.string.getByLength(257, 'tmp-'))                | a privilege that is too long                        |
-        @fixme-ip-core
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field                        | value!                                                     | wrong_data                                          |
             | 400    | email                        | ''                                                         | an empty email                                      |

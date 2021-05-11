@@ -20,10 +20,11 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 200    |
-		@fixme-ip-core
+		@fixme-ip-core @issue-ip-core-78
 		Examples:
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-			| NONE             | ltransparent | a123456  | 403    |
+			| role             | username     | password | status |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
 			|                  |              |          | 401    |
 
 	@permissions
@@ -42,10 +43,11 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 404    |
-		@fixme-ip-core
+		@fixme-ip-core @issue-ip-core-78
 		Examples:
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-			| NONE             | ltransparent | a123456  | 403    |
+			| role             | username     | password | status |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
 			|                  |              |          | 401    |
 
 	@searching
