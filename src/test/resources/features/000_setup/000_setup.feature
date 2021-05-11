@@ -134,9 +134,9 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
 		Given url baseUrl
-		And path '/api/admin/tenant/', tenantId, '/typology/type'
-		And header Accept = 'application/json'
-		And request
+			And path '/api/admin/tenant/', tenantId, '/typology/type'
+			And header Accept = 'application/json'
+			And request
 """
 {
 	"name": "<name>",
@@ -165,9 +165,9 @@ Feature: Basic setup
 		* def typeId = api_v1.type.getIdByName(tenantId, '<type>')
 
 		Given url baseUrl
-		And path 'api/admin/tenant/', tenantId, 'typology/type/', typeId, '/subtype'
-		And header Accept = 'application/json'
-		And request
+			And path 'api/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
+			And header Accept = 'application/json'
+			And request
 """
 {
 	"name" : "<name>",
