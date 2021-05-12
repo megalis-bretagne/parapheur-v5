@@ -14,12 +14,10 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		When method DELETE
 		Then status <status>
 
+		@fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 204    |
-		@fixme-ip-core @issue-ip-core-78
-		Examples:
-			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
 			| NONE             | ltransparent | a123456  | 404    |
 			|                  |              |          | 401    |

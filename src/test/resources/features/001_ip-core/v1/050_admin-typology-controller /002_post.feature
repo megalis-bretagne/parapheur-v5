@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @karate-todo
 Feature: POST /api/admin/tenant/{tenantId}/typology/type (Create type)
 
     Background:

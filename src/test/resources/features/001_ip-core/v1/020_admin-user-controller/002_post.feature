@@ -84,16 +84,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And match $ ==
-"""
-{
-	"path":"#string",
-	"error":"##string",
-	"message":"#string",
-	"timestamp":"#string",
-	"status":#number
-}
-"""
+            And match $ == schemas.error
 
         Examples:
             | status | field                        | value!                                                     | wrong_data                                          |

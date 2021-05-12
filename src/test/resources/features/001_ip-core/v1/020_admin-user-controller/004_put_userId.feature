@@ -93,7 +93,6 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
             | role             | username     | password | status |
             |                  |              |          | 401    |
 
-    # @todo: adapt POST
     #-------------------------------------------------------------------------------------------------------------------
     # @fixme: status 400 missing from swagger
     @data-validation
@@ -110,16 +109,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
 
         When method PUT
         Then status <status>
-        And match $ ==
-"""
-{
-	"path":"#string",
-	"error":"##string",
-	"message":"#string",
-	"timestamp":"#string",
-	"status":#number
-}
-"""
+            And match $ == schemas.error
+
 
         Examples:
             | status | field                        | value!                                                     | wrong_data                                          |
