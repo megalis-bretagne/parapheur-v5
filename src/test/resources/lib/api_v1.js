@@ -25,6 +25,32 @@ function fn(config) {
      * desk
      */
     config.api_v1['desk'] = {};
+    config.api_v1.desk['createTemporary'] = function (tenantId) {
+        var unique = 'tmp-' + java.util.UUID.randomUUID() + '';
+        var description = 'Bureau ' + unique;
+        var data = {
+            name: unique,
+            description: description,
+            parentDeskId: null,
+            tenantId: tenantId
+        };
+        karate.call('classpath:lib/desk/createTemporary.feature', data);
+
+        return api_v1.desk.getIdByName(tenantId, unique);
+    };
+    config.api_v1.desk['getById'] = function (tenantId, deskId) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/admin/tenant/' + tenantId + '/desk/' + deskId)
+            .header('Accept', 'application/json')
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting desk id by its tenantId and deskId');
+        }
+
+        return response.body;
+    };
     config.api_v1.desk['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)

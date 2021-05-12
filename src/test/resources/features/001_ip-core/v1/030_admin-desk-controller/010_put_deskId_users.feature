@@ -43,10 +43,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
-        @fixme-ip-core
+        @fixme-ip-core @issue-ip-core-78
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
     @permissions
@@ -81,16 +82,15 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         When method PUT
         Then status <status>
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 400    |
-        @fixme-ip-core
-        Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate a non-existing desk to an existing user in an existing tenant
         # Get data
         * api_v1.auth.login('user', 'password')
@@ -107,14 +107,15 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         When method PUT
         Then status <status>
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate a non-existing desk to a non-existing user in an existing tenant
         # Get data
         * api_v1.auth.login('user', 'password')
@@ -130,9 +131,10 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         When method PUT
         Then status <status>
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
