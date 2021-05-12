@@ -250,6 +250,10 @@ function fn(config) {
             // 'index': karate.read('classpath:lib/schemas/type.index.json')
         },
         'error': karate.read('classpath:lib/schemas/error.json'),
+        'sealCertificate': {
+            'element': karate.read('classpath:lib/schemas/sealCertificate.element.json'),
+            'index': karate.read('classpath:lib/schemas/sealCertificate.index.json')
+        },
     };
 
     /**
