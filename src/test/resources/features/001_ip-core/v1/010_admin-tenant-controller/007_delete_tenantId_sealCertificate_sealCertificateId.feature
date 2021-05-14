@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE POST /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
+Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
     @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing seal certificate in an existing tenant
