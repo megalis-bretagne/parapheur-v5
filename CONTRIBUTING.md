@@ -158,6 +158,8 @@ $ gradle test -Dkarate.options="--tags @ip-core --tags @api-v1"
 $ gradle test -Dkarate.options="--tags @ip-web"
 # Run the test(s) tagged with the @wip tag with a visible Chrome or Chromium web browser and show some informations in the console
 $ gradle test --info -Dkarate.options="--tags @wip" -Dkarate.headless=false
+# Run all tests, except the ones covered by known issues (98 passed, 68 failed, 166 scenarios, 59 % passing)
+$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78" --info
 ```
 
 #### Available tags

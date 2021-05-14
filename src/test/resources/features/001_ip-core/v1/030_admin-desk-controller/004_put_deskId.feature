@@ -9,7 +9,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
         * def existingDeskData = api_v1.desk.getById(existingTenantId, existingDeskId)
 
-    @permissions
+    @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} edit an existing desk from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -22,7 +22,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And if (<status> === 200) karate.match("$ == schemas.desk.element")
             And if (<status> === 200) karate.match("$ contains { id: '#(existingDeskData.id)', name: '#(existingDeskData.name)' }")
 
-        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
@@ -51,7 +51,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             | role             | username     | password | status |
             |                  |              |          | 401    |
 
-    @permissions
+    @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot edit a non-existing desk from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -62,7 +62,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         When method PUT
         Then status <status>
 
-        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
@@ -81,15 +81,17 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         When method PUT
         Then status <status>
 
-        @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
             | NONE             | ltransparent | a123456  | 404    |
+        @fixme-ip-core @issue-ip-core-78
+        Examples:
+            | role             | username     | password | status |
             |                  |              |          | 401    |
 
-    @data-validation
+    @data-validation @fixme-ip-core @issue-ip-core-todo
     Scenario Outline: Data validation - a user with an "ADMIN" role cannot edit a desk with ${wrong_data}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = existingDeskData
@@ -104,7 +106,6 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         Then status <status>
             And match $ == schemas.error
 
-        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field        | value!                                      | wrong_data                       |
             | 400    | name         | ''                                          | an empty name                    |

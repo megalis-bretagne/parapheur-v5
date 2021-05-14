@@ -34,7 +34,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
             | NONE             | ltransparent | a123456  | 404    |
             |                  |              |          | 401    |
 
-    @permissions
+    @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot import a new seal certificate in a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -54,7 +54,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
             | ADMIN            | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
             | NONE             | ltransparent | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
+        @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             |                  |              |          | 401    |
