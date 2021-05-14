@@ -23,7 +23,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
             And if (<status> === 201) karate.match("$ contains expected")
 
         # @fixme: it's not really imported ?
-        @issue-ip-core-todo
+        @issue-ip-core-144
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
