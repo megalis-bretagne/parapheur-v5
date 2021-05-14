@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 
-	@permissions
+	@permissions @fixme-ip-core
 	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing tenant
 		* api_v1.auth.login('user', 'password')
 		* def id = api_v1.entity.createTemporary()
@@ -14,10 +14,13 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		When method DELETE
 		Then status <status>
 
-		@fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+		@issue-ip-core-todo
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 204    |
+		@issue-ip-core-78
+		Examples:
+			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
 			| NONE             | ltransparent | a123456  | 404    |
 			|                  |              |          | 401    |
