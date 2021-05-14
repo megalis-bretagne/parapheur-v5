@@ -5,31 +5,29 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        #* def unique = 'tmp-' + utils.getUUID()
 
-    @permissions
+    @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} import a new seal certificate in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
-#            And multipart file file = { read: 'classpath:lib/schemas/auth/post_200.json', filename: 'certificate.p12', 'contentType': 'application/x-pkcs12' }
             And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
-            # @fixme ?: name from file name (multiple occurences OK)
-            # And multipart field name = '#(unique)'
             And multipart field password = 'christian.buffin@libriciel.coop'
+            And def expected = {'name':'Christian Buffin - Preparation recette IP 5','expirationDate':'2024-02-25T12:11:44.000+00:00'}
 
         When method POST
         Then status <status>
             And if (<status> === 201) karate.match("$ == schemas.sealCertificate.element")
+            And if (<status> === 201) karate.match("$ contains expected")
 
-        # The seal certificate doesn't seem visible anywhere ?
-        @fixme-ip-core @issue-ip-core-todo
+        # @fixme: it's not really imported ?
+        @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
-        @fixme-ip-core @issue-ip-core-78
+        @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
