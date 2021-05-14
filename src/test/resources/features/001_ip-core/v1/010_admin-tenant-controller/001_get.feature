@@ -40,7 +40,7 @@ Feature: GET /api/admin/tenant (List tenants)
 			And match $.total == <total>
 			And match $.data[*]['<field>'] == <value>
 
-		@fixme-ip-core @issue-ip-core-todo
+		@fixme-ip-core @issue-ip-core-142
 		Examples:
 			| searchTerm | sortBy | asc   | total | field | value!                                                     |
 			| foo        | NAME   | false | 0     | name  | []                                                         |

@@ -14,7 +14,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		When method DELETE
 		Then status <status>
 
-		@issue-ip-core-todo
+		@issue-ip-core-143
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 204    |
