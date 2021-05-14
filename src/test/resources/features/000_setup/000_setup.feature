@@ -189,3 +189,20 @@ Feature: Basic setup
 			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |
 			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |
 			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |
+
+	@todo-karate @todo-karate-title
+	Scenario Outline: ...
+		* api_v1.auth.login('user', 'password')
+		* def existingTenantId = api_v1.entity.getIdByName('<tenant>')
+		* def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
+
+		Given url baseUrl
+			And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+			And header Accept = 'application/json'
+			And multipart file file = { read: '<path>', 'contentType': 'image/png' }
+		When method POST
+		Then status 201
+
+		Examples:
+			| tenant         | email                  | path                                         |
+			| Default tenant | ltransparent@dom.local | classpath:files/signature - ltransparent.png |
