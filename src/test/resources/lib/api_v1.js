@@ -239,6 +239,15 @@ function fn(config) {
     };
 
     /**
+     * sealCertificate
+     */
+    config.api_v1['sealCertificate'] = {};
+    config.api_v1.sealCertificate['getNonExistingId'] = function () {
+        // @todo: check if it really does not exist
+        return '00000000-0000-0000-0000-000000000000';
+    };
+
+    /**
      * type
      */
     config.api_v1['type'] = {};
