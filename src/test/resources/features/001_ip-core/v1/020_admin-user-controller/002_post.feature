@@ -20,7 +20,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 }
 """
 
-    @permissions @issue-ip-core-todo
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a user in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
