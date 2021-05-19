@@ -59,7 +59,14 @@ function fn(config) {
     config.utils['getUniqueName'] = function(prefix) {
         return String(prefix) + Date.now();
     };
-
+    config.utils['assert'] = function(string) {
+        var result = karate.match(string)
+        karate.log(result);
+        if (result.pass !== true) {
+            karate.fail(result.message);
+        }
+        return result;
+    };
     /**
      * utils.string
      */

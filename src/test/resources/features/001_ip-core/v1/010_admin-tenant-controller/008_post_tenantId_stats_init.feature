@@ -4,7 +4,7 @@ Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stat
     @permissions @fixme-ip-core
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create or recreate a stats entry for an existing tenant
         * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = api_v1.entity.createTemporary()
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -12,7 +12,7 @@ Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stat
             And header Accept = 'application/json'
         When method POST
         Then status <status>
-            And if (<status> === 204) karate.match("response == ''")
+            And if (<status> === 204) utils.assert("response == ''")
 
         @issue-ip-core-todo
         Examples:

@@ -14,13 +14,13 @@ Feature: POST /api/admin/tenant/{tenantId}/user/signatureImage (Create user's si
             And multipart file file = { read: '<path>', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            And if (<status> === 201) karate.match("response == ''")
-@wip
+            And if (<status> === 201) utils.assert("response == ''")
+
         Examples:
             | role             | username     | password | email                  | path                                         | status |
             # @todo: when the image already exists...
             | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 409    |
-        @fixme-ip-core @issue-ip-core-todo @wip
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | email                  | path                                         | status |
             | ADMIN            | cnoir        | a123456  | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 201    |

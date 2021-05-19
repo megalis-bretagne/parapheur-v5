@@ -6,7 +6,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} import a new seal certificate in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
@@ -19,15 +19,13 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
 
         When method POST
         Then status <status>
-            And if (<status> === 201) karate.match("$ == schemas.sealCertificate.element")
-            And if (<status> === 201) karate.match("$ contains expected")
+            And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
+            And if (<status> === 201) utils.assert("$ contains expected")
 
-        # @fixme: it's not really imported ?
-        @issue-ip-core-144
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
-        @issue-ip-core-78
+        @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |

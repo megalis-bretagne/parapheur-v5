@@ -27,9 +27,9 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) karate.match("$ == schemas.desk.element")
-            And if (<status> === 201) karate.match("$.name == unique")
-            And if (<status> === 201) karate.match("$.description == description")
+            And if (<status> === 201) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 201) utils.assert("$.name == unique")
+            And if (<status> === 201) utils.assert("$.description == description")
 
         Examples:
             | role             | username     | password | status |

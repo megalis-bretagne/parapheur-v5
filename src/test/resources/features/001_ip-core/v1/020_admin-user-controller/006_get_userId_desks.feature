@@ -17,8 +17,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) karate.match("$ == schemas.desk.index")
-            And if (<status> === 200) karate.match("$.data[*].name == <name>")
+            And if (<status> === 200) utils.assert("$ == schemas.desk.index")
+            And if (<status> === 200) utils.assert("$.data[*].name == <name>")
 
         Examples:
             | role             | username     | password | email                  | status | name!             |

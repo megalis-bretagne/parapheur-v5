@@ -15,9 +15,9 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) karate.match("$ == schemas.desk.index")
-            And if (<status> === 200) karate.match("$.total == 2")
-            And if (<status> === 200) karate.match("$.data[*].name == [ 'Translucide', 'Transparent' ]")
+            And if (<status> === 200) utils.assert("$ == schemas.desk.index")
+            And if (<status> === 200) utils.assert("$.total == 2")
+            And if (<status> === 200) utils.assert("$.data[*].name == [ 'Translucide', 'Transparent' ]")
 
         Examples:
             | role             | username     | password | status |
@@ -48,7 +48,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 401    |
 
     @searching
-    Scenario Outline: Searching - a user with an "ADMIN" role can filter the desk list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
+    Scenario Outline: Searching - a user with an "ADMIN" role can filter the desk list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl

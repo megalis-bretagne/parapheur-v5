@@ -19,8 +19,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            And if (<status> === 200) karate.match("$ == schemas.desk.element")
-            And if (<status> === 200) karate.match("$ contains { id: '#(existingDeskData.id)', name: '#(existingDeskData.name)' }")
+            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 200) utils.assert("$ contains { id: '#(existingDeskData.id)', name: '#(existingDeskData.name)' }")
 
         @issue-ip-core-78 @issue-ip-core-todo
         Examples:

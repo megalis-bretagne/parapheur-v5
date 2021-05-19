@@ -13,9 +13,9 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
-			And if (<status> === 200) karate.match("$ == schemas.user.index")
-			And if (<status> === 200) karate.match("$.total == 5")
-			And if (<status> === 200) karate.match("$.data[*].userName == [ 'ablanc', 'cnoir', 'stranslucide', 'ltransparent', 'user' ]")
+			And if (<status> === 200) utils.assert("$ == schemas.user.index")
+			And if (<status> === 200) utils.assert("$.total == 5")
+			And if (<status> === 200) utils.assert("$.data[*].userName == [ 'ablanc', 'cnoir', 'stranslucide', 'ltransparent', 'user' ]")
 
 		Examples:
 			| role             | username     | password | status |
@@ -49,7 +49,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: Searching - a user with an "ADMIN" role can filter the user list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
+	Scenario Outline: Searching - a user with an "ADMIN" role can filter the user list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 		* api_v1.auth.login('cnoir', 'a123456')

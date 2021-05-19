@@ -31,7 +31,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) karate.match("response == ''")
+#            And if (<status> === 201) utils.assert("response == ''")
             # @issue-ip-core-todo: response body should be not null: id or schemas.user.element
 
         Examples:

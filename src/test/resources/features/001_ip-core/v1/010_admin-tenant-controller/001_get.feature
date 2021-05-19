@@ -10,9 +10,9 @@ Feature: GET /api/admin/tenant (List tenants)
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
-			And if (<status> === 200) karate.match("$ == schemas.tenant.index")
-			And if (<status> === 200) karate.match("$.total == 3")
-			And if (<status> === 200) karate.match("$.data[*].name == [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]")
+			And if (<status> === 200) utils.assert("$ == schemas.tenant.index")
+			And if (<status> === 200) utils.assert("$.total == 3")
+			And if (<status> === 200) utils.assert("$.data[*].name == [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]")
 
 		Examples:
 			| role             | username     | password | status |
@@ -25,7 +25,7 @@ Feature: GET /api/admin/tenant (List tenants)
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: Searching - a user with an "ADMIN" role can filter the tenant list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
+	Scenario Outline: Searching - a user with an "ADMIN" role can filter the tenant list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl

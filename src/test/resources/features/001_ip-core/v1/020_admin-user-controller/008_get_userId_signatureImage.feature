@@ -17,8 +17,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) karate.match("header Content-Type == 'image/png;charset=UTF-8'")
-            And if (<status> === 200) karate.match("response == read('<path>')")
+            And if (<status> === 200) utils.assert("header Content-Type == 'image/png;charset=UTF-8'")
+            And if (<status> === 200) utils.assert("response == read('<path>')")
 
         Examples:
             | role             | username     | password | email                  | status | path                                         |
