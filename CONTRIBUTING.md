@@ -66,17 +66,32 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml 
       --scale matomo-db=0
 ```
 
-#### Resetting partially for development mode
-
-Leaving the vault and matomo configured as they are.
+#### Resetting everything and launching Karate tests
 
 ```bash
-$ export $(grep -v "^\(#.*\|\s*$\)" .env | xargs) \
-  && docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml down -v \
-  && sudo find ./data -mindepth 1 -maxdepth 1 -regextype posix-extended ! -regex '^.*/(matomo|matomo-db|vault)$' -type d -exec sudo rm -rf {} + \
-  && sudo mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data} \
-  && sudo chmod -R 0757 ./data \
-  && docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
+# ~ 2 min
+$ ./dev-reset-and-setup.sh --force
+# INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
+```
+
+```bash
+# 665 tests completed, 254 failed
+$ gradle test --info
+```
+
+```bash
+# 300 tests completed, 75 failed
+$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info
+```
+
+```bash
+# 156 tests completed, 13 failed
+$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info
+```
+
+```bash
+# 142 tests completed
+$ gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate --tags ~@ip-web" --info
 ```
 
 ## Connecting to local DB
