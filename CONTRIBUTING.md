@@ -66,34 +66,6 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml 
       --scale matomo-db=0
 ```
 
-#### Resetting everything and launching Karate tests
-
-```bash
-# ~ 2 min
-$ ./dev-reset-and-setup.sh --force
-# INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
-```
-
-```bash
-# 665 tests completed, 254 failed
-$ gradle test --info
-```
-
-```bash
-# 300 tests completed, 75 failed
-$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info
-```
-
-```bash
-# 156 tests completed, 13 failed
-$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info
-```
-
-```bash
-# 142 tests completed
-$ gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate --tags ~@ip-web" --info
-```
-
 ## Connecting to local DB
 
 ```bash
@@ -103,6 +75,33 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 ```
 
 ## Integration tests
+
+### Quick and dirty
+
+#### Resetting the development data
+
+```bash
+# ~ 2 min
+$ ./dev-reset-and-setup.sh --force
+# INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
+```
+
+#### Launching Karate tests
+
+Some issues are yet to be created or closed before some tests can succeed.
+
+- [ip-core - issue #78](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-core/-/issues/78)
+- data validation and some other issues (search for `@issue-ip-core...`, `@issue-ip-web...`, ...) are yet to be created
+- some karate issues (search for `@fixme-karate...`, `@proposal`) should still be fixed
+
+| Command                                                                                                                | Description                                                                                                  | Completed | Failed |
+| ---                                                                                                                    | ---                                                                                                          | ---       | ---    |
+| `gradle test -Dkarate.options="--tags @setup"`                                                                         | Setup only (currently using ip-core API v. 1)                                                                | 32        | 0      |
+| `gradle test --info`                                                                                                   | Run setup and all tests                                                                                      | 665       | 245    |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info`                                      | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 | 300       | 75     |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info`             | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes | 156       | 13     |
+| `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate --tags ~@ip-web" --info` | Run setup and all passing tests                                                                              | 142       | 0      |
+
 
 ### Prerequisites
 
