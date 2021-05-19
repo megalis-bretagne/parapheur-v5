@@ -1,7 +1,7 @@
 @ip-core @api-v1
 Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing seal certificate in an existing tenant
         # Create a temporary seal certificate
         * api_v1.auth.login('user', 'password')
@@ -24,11 +24,11 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         When method DELETE
         Then status <status>
 
-        @issue-ip-core-todo
+        @x-issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 204    |
-        @issue-ip-core-78
+        @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |

@@ -21,8 +21,8 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
             And request cleanRequestData
         When method PUT
         Then status <status>
-            And if (<status> === 201) karate.match("$ == schemas.tenant.element")
-            And if (<status> === 201) karate.match("$ contains { id: '#(id)', name: '#(name)' }")
+            And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+            And if (<status> === 201) utils.assert("$ contains { id: '#(id)', name: '#(name)' }")
 
         Examples:
             | role             | username     | password | status |

@@ -19,8 +19,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
             And request existingUserData
         When method PUT
         Then status <status>
-            And if (<status> === 201) karate.match("$ == schemas.tenant.element")
-            And if (<status> === 201) karate.match("$ contains { id: '#(id)', name: '#(name)' }")
+            And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+            And if (<status> === 201) utils.assert("$ contains { id: '#(id)', name: '#(name)' }")
 
         Examples:
             | role             | username     | password | status |

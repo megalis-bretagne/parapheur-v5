@@ -17,8 +17,8 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) karate.match("$ == schemas.desk.element")
-            And if (<status> === 200) karate.match("$ contains { 'name': 'Transparent' }")
+            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 200) utils.assert("$ contains { 'name': 'Transparent' }")
 
         Examples:
             | role             | username     | password | status |

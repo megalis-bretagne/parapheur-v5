@@ -83,6 +83,18 @@ Feature: Basic setup
 			| Default tenant | Translucide | stranslucide@dom.local |
 			| Default tenant | Transparent | ltransparent@dom.local |
 
+	Scenario: Create a seal certificate in "Default tenant"
+		* api_v1.auth.login('user', 'password')
+		* def tenantId = api_v1.entity.getIdByName('Default tenant')
+
+		Given url baseUrl
+			And path '/api/admin/tenant/', tenantId, '/sealCertificate'
+			And header Accept = 'application/json'
+			And multipart file file = { read: 'classpath:files/Default tenant - Seal Certificate.p12', 'contentType': 'application/x-pkcs12' }
+			And multipart field password = 'christian.buffin@libriciel.coop'
+		When method POST
+		Then status 201
+
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
 	Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
