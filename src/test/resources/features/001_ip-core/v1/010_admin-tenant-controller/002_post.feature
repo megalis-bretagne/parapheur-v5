@@ -17,8 +17,8 @@ Feature: POST /api/admin/tenant (Create tenant)
 
 		When method POST
 		Then status <status>
-			And if (<status> === 201) karate.match("$ == schemas.tenant.element")
-			And if (<status> === 201) karate.match("$.name == '#(cleanRequestData.name)'")
+			And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+			And if (<status> === 201) utils.assert("$.name == '#(cleanRequestData.name)'")
 
 		Examples:
 			| role             | username     | password | status |

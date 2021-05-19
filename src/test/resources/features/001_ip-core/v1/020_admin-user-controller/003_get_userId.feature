@@ -17,8 +17,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) karate.match("$ == schemas.user.element")
-            And if (<status> === 200) karate.match("$ contains { 'email': 'sample-user@dom.local' }")
+            And if (<status> === 200) utils.assert("$ == schemas.user.element")
+            And if (<status> === 200) utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
 
         Examples:
             | role             | username     | password | status |
