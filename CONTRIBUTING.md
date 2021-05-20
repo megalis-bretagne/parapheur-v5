@@ -86,6 +86,23 @@ $ ./dev-reset-and-setup.sh --force
 # INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
 ```
 
+##### Required software
+
+Developed and tested with the below softwares and versions.
+
+| Software        | Version                |
+| ---             | ---                    |
+| bash            | 4.4.20                 |
+| curl            | 7.58.0                 |
+| docker          | 20.10.5, build 55c4c88 |
+| docker-compose  | 1.27.4, build 40524192 |
+| gradle          | 4.4.1                  |
+| grep (GNU grep) | 3.1                    |
+| openjdk         | 11.0.11 2021-04-20     |
+| python          | 3.6.9                  |
+| sed (GNU sed)   | 4.4                    |
+| ubuntu          | 18.04.5 LTS            |
+
 #### Launching Karate tests
 
 Some issues are yet to be created or closed before some tests can succeed.
@@ -94,13 +111,13 @@ Some issues are yet to be created or closed before some tests can succeed.
 - data validation and some other issues (search for `@issue-ip-core...`, `@issue-ip-web...`, ...) are yet to be created
 - some karate issues (search for `@fixme-karate...`, `@proposal`) should still be fixed
 
-| Command                                                                                                                | Description                                                                                                  | Completed | Failed |
-| ---                                                                                                                    | ---                                                                                                          | ---       | ---    |
-| `gradle test -Dkarate.options="--tags @setup"`                                                                         | Setup only (currently using ip-core API v. 1)                                                                | 32        | 0      |
-| `gradle test --info`                                                                                                   | Run setup and all tests                                                                                      | 665       | 245    |
-| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info`                                      | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 | 300       | 75     |
-| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info`             | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes | 156       | 13     |
-| `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate --tags ~@ip-web" --info` | Run setup and all passing tests                                                                              | 142       | 0      |
+| Command                                                                                                    | Description                                                                                                  | Completed | Failed |
+| ---                                                                                                        | ---                                                                                                          | ---       | ---    |
+| `gradle test -Dkarate.options="--tags @setup"`                                                             | Setup only (currently using ip-core API v. 1)                                                                | 32        | 0      |
+| `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate" --info`     | Run setup and all passing tests (ip-core and ip-web)                                                         | 149       | 0      |
+| `gradle test --info`                                                                                       | Run setup and all tests                                                                                      | 665       | 254    |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info`                          | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 | 300       | 75     |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info` | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes | 156       | 13     |
 
 
 ### Prerequisites
