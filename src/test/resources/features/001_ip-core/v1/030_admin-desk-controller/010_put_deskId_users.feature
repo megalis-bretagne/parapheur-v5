@@ -46,8 +46,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -86,8 +86,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 400    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -111,8 +111,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -135,6 +135,6 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

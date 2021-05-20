@@ -23,8 +23,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-			| NONE             | ltransparent | a123456  | 404    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
 	@permissions
@@ -44,12 +44,12 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| role             | username     | password | status |
 			| ADMIN            | cnoir        | a123456  | 404    |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-			| NONE             | ltransparent | a123456  | 404    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: Searching - a user with an "ADMIN" role can filter the user list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
+	Scenario Outline: Searching - a user with an "ADMIN" role can filter the user list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 		* api_v1.auth.login('cnoir', 'a123456')
@@ -67,7 +67,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 			And match $.data[*]['<field>'] == <value>
 
         Examples:
-			| searchTerm | sortBy     | asc   | total | field     | value!                                           |
+			| searchTerm | sortBy     | asc!  | total | field     | value!                                           |
 			| foo        | USERNAME   | false | 0     | userName  | []                                               |
 			| la         | EMAIL      | true  | 2     | email     | [ 'ablanc@dom.local', 'ltransparent@dom.local' ] |
 			| la         | EMAIL      | false | 2     | email     | [ 'ltransparent@dom.local', 'ablanc@dom.local' ] |

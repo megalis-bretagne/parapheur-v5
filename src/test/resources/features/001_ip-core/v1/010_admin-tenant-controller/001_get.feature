@@ -25,7 +25,7 @@ Feature: GET /api/admin/tenant (List tenants)
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: Searching - a user with an "ADMIN" role can filter the tenant list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
+	Scenario Outline: Searching - a user with an "ADMIN" role can filter the tenant list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
@@ -42,7 +42,7 @@ Feature: GET /api/admin/tenant (List tenants)
 
 		@fixme-ip-core @issue-ip-core-142
 		Examples:
-			| searchTerm | sortBy | asc   | total | field | value!                                                     |
+			| searchTerm | sortBy | asc!  | total | field | value!                                                     |
 			| foo        | NAME   | false | 0     | name  | []                                                         |
 			| el         | NAME   | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
 			| el         | NAME   | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ] |
