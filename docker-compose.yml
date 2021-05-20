@@ -344,3 +344,21 @@ services:
       - ./src/main/resources/vault/config:/vault/config
       - ./src/main/resources/vault/policies:/vault/policies
       - ./data/vault/data:/vault/data
+
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    volumes:
+      - ./src/main/resources/prometheus/:/etc/prometheus/
+
+  grafana:
+    image: grafana/grafana:6.7.2
+    restart: always
+    volumes:
+      - ./src/main/resources/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./src/main/resources/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./data/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+      - GF_USERS_ALLOW_SIGN_UP=false

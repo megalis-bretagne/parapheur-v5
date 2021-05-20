@@ -31,7 +31,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:dashBoard
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     mem_limit: 512M
@@ -150,3 +150,10 @@ services:
     ports:
       - 8200:8200
 
+  prometheus:
+    ports:
+      - 9091:9090
+
+  grafana:
+    ports:
+      - 3000:3000
