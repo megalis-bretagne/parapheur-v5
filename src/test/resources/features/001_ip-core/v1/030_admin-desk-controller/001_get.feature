@@ -25,8 +25,8 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -43,12 +43,12 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @searching
-    Scenario Outline: Searching - a user with an "ADMIN" role can filter the desk list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc == "true" ? 'ascending' : 'descending'}
+    Scenario Outline: Searching - a user with an "ADMIN" role can filter the desk list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
@@ -64,11 +64,11 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             And match $.data[*]['<field>'] == <value>
 
         Examples:
-            | searchTerm | sortBy | asc   | total | field | value!                           |
+            | searchTerm | sortBy | asc!  | total | field | value!                           |
             | foo        | NAME   | false | 0     | name  | []                               |
             | lucide     | NAME   | true  | 1     | name  | [ 'Translucide' ]                |
             | trans      | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
-            | searchTerm | sortBy | asc   | total | field | value!                           |
+            | searchTerm | sortBy | asc!  | total | field | value!                           |
             | trans      | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |

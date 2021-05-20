@@ -27,6 +27,6 @@ Feature: POST /api/admin/tenant/{tenantId}/user/signatureImage (Create user's si
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | path                                         | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 404    |
-            | NONE             | ltransparent | a123456  | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 403    |
+            | NONE             | ltransparent | a123456  | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 403    |
             |                  |              |          | ltransparent@dom.local | classpath:files/signature - ltransparent.png | 401    |

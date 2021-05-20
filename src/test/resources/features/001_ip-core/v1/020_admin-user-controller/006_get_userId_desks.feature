@@ -27,8 +27,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status | name!             |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 404    |                   |
-            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 404    |                   |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                   |
+            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |                   |
             |                  |              |          | ltransparent@dom.local | 401    |                   |
 
     @permissions @fixme-ip-core
@@ -48,8 +48,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
@@ -70,8 +70,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
@@ -91,6 +91,6 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
