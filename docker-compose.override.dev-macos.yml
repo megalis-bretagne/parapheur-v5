@@ -113,3 +113,10 @@ services:
     ports:
       - 8200:8200
 
+  prometheus:
+    ports:
+      - 9091:9090
+
+  grafana:
+    ports:
+      - 3000:3000
