@@ -2,7 +2,7 @@
 Feature: POST /api/admin/tenant/{tenantId}/user/signatureImage (Create user's signature image)
 
     @permissions @karate-todo @karate-todo-title-when-the-signature-already-exists
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create an existing user signature image in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} create an existing user signature image in an existing tenant
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')

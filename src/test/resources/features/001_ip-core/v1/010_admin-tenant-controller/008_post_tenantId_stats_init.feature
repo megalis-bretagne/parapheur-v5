@@ -2,7 +2,7 @@
 Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stats entry for the given tenant)
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create or recreate a stats entry for an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} create or recreate a stats entry for an existing tenant
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.createTemporary()
         * api_v1.auth.login('<username>', '<password>')
@@ -26,7 +26,7 @@ Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stat
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot create or recreate a stats entry for a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot create or recreate a stats entry for a non-existing tenant
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 

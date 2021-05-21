@@ -7,7 +7,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get the list from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get the list from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -30,7 +30,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get the list from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get the list from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

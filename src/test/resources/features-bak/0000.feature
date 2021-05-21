@@ -35,7 +35,7 @@ Feature: My feature
 #        * def tenantId = function(exists, name = 'Default tenant') { return exists == true ? api_v1.entity.getIdByName(name) : api_v1.entity.getNonExistingId() }
 #
 #    @wip
-#    Scenario Outline: ... ${title.role(role)} ${title.can(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
+#    Scenario Outline: ... ${title.role(role)} ${scenario.title.status(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
 #        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
 #        * match <status> == '#number'
 #
@@ -67,7 +67,7 @@ Feature: My feature
         #* @todo: deskId
 
     @x-wip
-    Scenario Outline: ... ${title.role(role)} ${title.can(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
+    Scenario Outline: ... ${title.role(role)} ${scenario.title.status(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
         * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
 #        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk/', + deskId(tenant_exists)  +, '/users'
 #        * print userId(user_exists)

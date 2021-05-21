@@ -1,8 +1,8 @@
-@ip-core @api-v1
+@ip-core @api-v1 @666
 Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing seal certificate in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing seal certificate in an existing tenant
         # Create a temporary seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -36,7 +36,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot delete a non-existing seal certificate in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot delete a non-existing seal certificate in an existing tenant
         # Get informations
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -63,7 +63,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot delete an existing seal certificate in a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot delete an existing seal certificate in a non-existing tenant
         # Create a temporary seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -98,7 +98,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot delete a non-existing seal certificate in a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot delete a non-existing seal certificate in a non-existing tenant
         # Create a seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')

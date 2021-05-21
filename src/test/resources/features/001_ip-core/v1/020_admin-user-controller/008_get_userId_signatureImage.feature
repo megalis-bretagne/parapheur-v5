@@ -8,7 +8,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get an existing user's signature image from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get an existing user's signature image from an existing tenant
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -32,7 +32,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             |                  |              |          | ltransparent@dom.local | 401    |                                              |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing user's signature image from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user's signature image from an existing tenant
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -54,7 +54,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get an existing user's signature image from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get an existing user's signature image from a non-existing tenant
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -76,7 +76,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             |                  |              |          | ltransparent@dom.local | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot get a non-existing user's signature image from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user's signature image from a non-existing tenant
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
