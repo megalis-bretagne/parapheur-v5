@@ -357,7 +357,6 @@ services:
     volumes:
       - ./src/main/resources/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./src/main/resources/grafana/provisioning/:/etc/grafana/provisioning/
-      - ./data/grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=grafana
       - GF_SECURITY_ADMIN_PASSWORD=grafana
