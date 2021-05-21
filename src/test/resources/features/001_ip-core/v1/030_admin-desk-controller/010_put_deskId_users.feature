@@ -8,7 +8,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * def unique = 'tmp-' + utils.getUUID()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} associate an existing desk to an existing user in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} associate an existing desk to an existing user in an existing tenant
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
 
@@ -51,7 +51,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate an existing desk to a non-existing user in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot associate an existing desk to a non-existing user in an existing tenant
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
 
@@ -91,7 +91,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate a non-existing desk to an existing user in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot associate a non-existing desk to an existing user in an existing tenant
         # Get data
         * api_v1.auth.login('user', 'password')
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
@@ -116,7 +116,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot associate a non-existing desk to a non-existing user in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot associate a non-existing desk to a non-existing user in an existing tenant
         # Get data
         * api_v1.auth.login('user', 'password')
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()

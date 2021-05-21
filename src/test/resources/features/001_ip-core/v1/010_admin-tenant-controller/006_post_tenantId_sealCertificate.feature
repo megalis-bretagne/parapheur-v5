@@ -7,7 +7,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} import a new seal certificate in an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'import a new seal certificate into an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -21,6 +21,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         Then status <status>
             And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
             And if (<status> === 201) utils.assert("$ contains expected")
+            And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -33,7 +34,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot import a new seal certificate in a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'import a new seal certificate into a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -44,7 +45,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
 
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         @issue-ip-core-todo
         Examples:
@@ -58,22 +59,26 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: Data validation - a user with an "ADMIN" role cannot import a new seal certificate with ${wrong_data}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
+            And multipart file file = { read: '<path>', 'contentType': 'application/x-pkcs12' }
             And multipart field <field> = utils.eval(value)
 
         When method POST
         Then status <status>
-        And match $ == schemas.error
+            And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
+            And if (<status> === 201) utils.assert("$ contains expected")
+            And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
-            | status | field    | value!                                       | wrong_data                  |
-            | 400    | password | ''                                           | an empty password           |
-            | 400    | password | ' '                                          | a space as a password       |
-            | 400    | password | 'foobarbaz'                                  | a wrong password            |
-            | 400    | password | eval(utils.string.getByLength(1025, 'tmp-')) | a password that is too long |
+            | status | field    | value!                                       | data                                    | path                                         | expected!                                                                                               |
+            | 201    | password | 'christian.buffin@libriciel.coop'            | a correct certificate file and password | classpath:files/certificate.p12              | {'name':'Christian Buffin - Preparation recette IP 5','expirationDate':'2024-02-25T12:11:44.000+00:00'} |
+            | 400    | password | 'christian.buffin@libriciel.coop'            | a file that is not a certificate        | classpath:files/signature - ltransparent.png |                                                                                                         |
+            | 400    | password | ''                                           | an empty password                       | classpath:files/certificate.p12              |                                                                                                         |
+            | 400    | password | ' '                                          | a space as a password                   | classpath:files/certificate.p12              |                                                                                                         |
+            | 400    | password | 'foobarbaz'                                  | a wrong password                        | classpath:files/certificate.p12              |                                                                                                         |
+            | 400    | password | eval(utils.string.getByLength(1025, 'tmp-')) | a password that is too long             | classpath:files/certificate.p12              |                                                                                                         |

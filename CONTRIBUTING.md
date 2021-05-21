@@ -176,7 +176,26 @@ $ gradle test
 | `-Dkarate.options="--tags @permissions,@searching"`                                                          | Run tests tagged with `@permissions` __or__ `@searching`                                                                  |
 | `-Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"` | Run currently passing tests (not tagged with either `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
 
+##### Getting the tags list
+
+```bash
+# Get the list of all tags used in feature files.
+find ./src/test/resources/features \
+      -type f \
+      -iname *.feature \
+      -exec grep "^\s*@" {} \; \
+      | sed 's/\(^\s*\|\s*$\)//g' \
+      | sed 's/\s\+/\n/g' \
+      | sort \
+      | uniq
+#      | grep "\(fixme\|todo\)" \
+```
+
 #### Examples
+
+| `-Dkarate.options="..."` |||
+? | `--tags '@setup or (ip-core and api-v1)'` |||
+| `--tags @ip-core --tags ~@issue-ip-core-78` |||
 
 ```bash
 # Run all currently passing tests

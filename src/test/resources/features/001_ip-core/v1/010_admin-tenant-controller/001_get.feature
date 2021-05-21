@@ -2,7 +2,7 @@
 Feature: GET /api/admin/tenant (List tenants)
 
 	@permissions
-	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} get the tenant list
+	Scenario Outline: ${scenario.title.permissions(role, 'get the tenant list', status)}
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
@@ -10,9 +10,6 @@ Feature: GET /api/admin/tenant (List tenants)
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
-			And if (<status> === 200) utils.assert("$ == schemas.tenant.index")
-			And if (<status> === 200) utils.assert("$.total == 3")
-			And if (<status> === 200) utils.assert("$.data[*].name == [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]")
 
 		Examples:
 			| role             | username     | password | status |
@@ -25,7 +22,7 @@ Feature: GET /api/admin/tenant (List tenants)
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: Searching - a user with an "ADMIN" role can filter the tenant list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
+	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
@@ -40,9 +37,12 @@ Feature: GET /api/admin/tenant (List tenants)
 			And match $.total == <total>
 			And match $.data[*]['<field>'] == <value>
 
+		Examples:
+			| searchTerm | sortBy | asc!  | total | field | value!                                                                       |
+			|            | NAME   | true  | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
+			|            | NAME   | false | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
 		@fixme-ip-core @issue-ip-core-142
 		Examples:
-			| searchTerm | sortBy | asc!  | total | field | value!                                                     |
-			| foo        | NAME   | false | 0     | name  | []                                                         |
-			| el         | NAME   | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
-			| el         | NAME   | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ] |
+			| searchTerm | sortBy | asc!  | total | field | value!                                                                       |
+			| foo        |        | null  | 0     | name  | []                                                                           |
+			| el         |        | null  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |

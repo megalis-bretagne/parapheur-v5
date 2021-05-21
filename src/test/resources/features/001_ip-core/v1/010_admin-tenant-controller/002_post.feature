@@ -7,7 +7,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 		* def cleanRequestData = { name: '#(unique)' }
 
 	@permissions
-	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a tenant
+	Scenario Outline: ${scenario.title.permissions(role, 'create a tenant', status)}
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
@@ -18,7 +18,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 		When method POST
 		Then status <status>
 			And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
-			And if (<status> === 201) utils.assert("$.name == '#(cleanRequestData.name)'")
+			And if (<status> !== 201) utils.assert("$ == schemas.error")
 
 		Examples:
 			| role             | username     | password | status |
@@ -31,7 +31,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 			|                  |              |          | 401    |
 
 	@data-validation
-	Scenario Outline: Data validation - a user with an "ADMIN" role cannot create a tenant with ${wrong_data}
+	Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, data)}
 		* api_v1.auth.login('cnoir', 'a123456')
 		* def requestData = cleanRequestData
 		* requestData[field] = utils.eval(value)
@@ -41,13 +41,19 @@ Feature: POST /api/admin/tenant (Create tenant)
 			And header Accept = 'application/json'
 			And request requestData
 		When method POST
-		Then status 400
-			And match $ == schemas.error
+		Then status <status>
+			And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+			And if (<status> === 201) utils.assert("$ contains requestData")
+			And if (<status> !== 201) utils.assert("$ == schemas.error")
 
+		Examples:
+			| status | field | value!                                      | data                                |
+			| 201    | name  | eval(utils.string.getRandom(1, 'tmp-'))     | a name that is at least 1 character |
+			| 201    | name  | eval(utils.string.getRandom(64, 'tmp-'))    | a name that is up to 64 characters  |
 		@fixme-ip-core @issue-ip-core-todo
 		Examples:
-			| status | field | value!                                      | wrong_data                 |
-			| 400    | name  | ''                                          | an empty name              |
-			| 400    | name  | ' '                                         | a space as a name          |
-			| 400    | name  | eval(utils.string.getByLength(512, 'tmp-')) | a name that is too long    |
-			| 409    | name  | 'Montpellier Méditerranée Métropole'        | a name that already exists |
+			| status | field | value!                                      | data                                |
+			| 400    | name  | ''                                          | an empty name                       |
+			| 400    | name  | ' '                                         | a space as a name                   |
+			| 400    | name  | eval(utils.string.getByLength(65, 'tmp-'))  | a name that is too long             |
+			| 409    | name  | 'Montpellier Méditerranée Métropole'        | a name that already exists          |
