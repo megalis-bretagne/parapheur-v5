@@ -10,7 +10,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
         * def deskData = api_v1.desk.getById(existingTenantId, existingDeskId)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing desk from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing desk from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -30,7 +30,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing desk from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing desk from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -50,7 +50,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing desk from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing desk from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -68,7 +68,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing desk from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing desk from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

@@ -2,7 +2,7 @@
 Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} disable and delete stats for an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} disable and delete stats for an existing tenant
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.createTemporary()
 
@@ -24,7 +24,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} cannot disable and delete stats for a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} cannot disable and delete stats for a non-existing tenant
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 

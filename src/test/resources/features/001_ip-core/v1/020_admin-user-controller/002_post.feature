@@ -21,7 +21,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 """
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} create a user in an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} create a user in an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -45,7 +45,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} cannot create a user in a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot create a user in a non-existing tenant
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 

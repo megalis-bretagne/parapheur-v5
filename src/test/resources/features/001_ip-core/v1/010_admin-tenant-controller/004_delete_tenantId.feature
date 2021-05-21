@@ -2,7 +2,7 @@
 Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 
 	@permissions
-	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing tenant
+	Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
 		* api_v1.auth.login('user', 'password')
 		* def id = api_v1.entity.createTemporary()
 
@@ -25,7 +25,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 			|                  |              |          | 401    |
 
 	@permissions
-	Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} cannot delete a non-existing tenant
+	Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tenant', status)}
 		* def id = api_v1.entity.getNonExistingId()
 		* api_v1.auth.login('<username>', '<password>')
 

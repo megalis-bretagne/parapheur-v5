@@ -10,7 +10,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * def userData = api_v1.user.getById(existingTenantId, existingUserId)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -30,7 +30,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete an existing user from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -50,7 +50,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from an existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing user from an existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -68,7 +68,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.outline.role(role)} ${scenario.outline.status(status)} delete a non-existing user from a non-existing tenant
+    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing user from a non-existing tenant
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
