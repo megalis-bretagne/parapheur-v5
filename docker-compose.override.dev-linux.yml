@@ -150,3 +150,15 @@ services:
     ports:
       - 8200:8200
 
+
+  prometheus:
+    ports:
+      - 9091:9090
+    volumes:
+      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
+      - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
+
+
+  grafana:
+    ports:
+      - 3000:3000
