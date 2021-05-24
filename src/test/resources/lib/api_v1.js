@@ -129,7 +129,7 @@ function fn(config) {
     config.api_v1['user'] = {};
     config.api_v1.user['createTemporary'] = function (tenantId) {
         var unique = 'tmp-' + java.util.UUID.randomUUID() + '';
-        var email = unique + '@test';
+        var email = unique + '@dom.local';
         var data = {
             userName: unique,
             email: email,

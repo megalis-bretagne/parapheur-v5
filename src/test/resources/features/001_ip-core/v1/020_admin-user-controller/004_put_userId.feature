@@ -46,11 +46,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -69,7 +69,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403s   |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -86,11 +86,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     #-------------------------------------------------------------------------------------------------------------------
@@ -117,18 +117,18 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
             | 400    | privilege                    | ''                                                         | an empty privilege                                  |
             | 400    | privilege                    | ' '                                                        | a space as privilege                                |
             | 400    | privilege                    | 'foo'                                                      | a privilege that is not amongst the accepted values |
-            | 400    | privilege                    | eval(utils.string.getByLength(257, 'tmp-'))                | a privilege that is too long                        |
+            | 400    | privilege                    | eval(utils.string.getRandom(257, 'tmp-'))                | a privilege that is too long                        |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field                        | value!                                                     | wrong_data                                          |
             | 400    | userName                     | ''                                                         | an empty userName                                   |
             | 400    | userName                     | ' '                                                        | a space as a userName                               |
-            | 400    | userName                     | eval(utils.string.getByLength(257, 'tmp-'))                | a userName that is too long                         |
+            | 400    | userName                     | eval(utils.string.getRandom(257, 'tmp-'))                | a userName that is too long                         |
             | 409    | userName                     | 'user'                                                     | a userName that already exists                      |
-            | 400    | email                        | eval(utils.string.getByLength(257, 'tmp-') + '@dom.local') | an email that is too long                           |
+            | 400    | email                        | eval(utils.string.getRandom(257, 'tmp-') + '@dom.local') | an email that is too long                           |
             | 409    | email                        | 'sample-user@dom.local'                                    | an email that already exists                        |
-            | 400    | firstName                    | eval(utils.string.getByLength(257, 'tmp-'))                | a first name that is too long                       |
-            | 400    | lastName                     | eval(utils.string.getByLength(257, 'tmp-'))                | a last name that is too long                        |
+            | 400    | firstName                    | eval(utils.string.getRandom(257, 'tmp-'))                | a first name that is too long                       |
+            | 400    | lastName                     | eval(utils.string.getRandom(257, 'tmp-'))                | a last name that is too long                        |
             | 400    | email                        | ''                                                         | an empty email                                      |
             | 400    | email                        | ' '                                                        | a space as email                                    |
             | 400    | email                        | 'foo'                                                      | a value that is not an email                        |
@@ -138,11 +138,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId} (Update user)
             | 400    | lastName                     | ' '                                                        | a space as last name                                |
             | 400    | password                     | ''                                                         | an empty password                                   |
             | 400    | password                     | ' '                                                        | a space as password                                 |
-            | 400    | password                     | eval(utils.string.getByLength(257, 'tmp-'))                | a password that is too long                         |
+            | 400    | password                     | eval(utils.string.getRandom(257, 'tmp-'))                | a password that is too long                         |
             | 400    | notificationsCronFrequency   | ''                                                         | an empty frequency                                  |
             | 400    | notificationsCronFrequency   | ' '                                                        | a space as frequency                                |
             | 400    | notificationsCronFrequency   | 'foo'                                                      | a frequency that is not amongst the accepted values |
-            | 400    | notificationsCronFrequency   | eval(utils.string.getByLength(257, 'tmp-'))                | a frequency that is too long                        |
+            | 400    | notificationsCronFrequency   | eval(utils.string.getRandom(257, 'tmp-'))                | a frequency that is too long                        |
             | 400    | notificationsRedirectionMail | ' '                                                        | a space as notification email                       |
             | 400    | notificationsRedirectionMail | 'foo'                                                      | a value that is not a notification email            |
-            | 400    | notificationsRedirectionMail | eval(utils.string.getByLength(257, 'tmp-') + '@dom.local') | a notification email that is too long               |
+            | 400    | notificationsRedirectionMail | eval(utils.string.getRandom(257, 'tmp-') + '@dom.local') | a notification email that is too long               |

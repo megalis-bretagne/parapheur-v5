@@ -55,11 +55,11 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation @todo @karate-todo @karate-todo-put
@@ -87,7 +87,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
             | 201    | description  | eval(utils.string.getRandom(300))                             | a description that is up to 300 characters |
             | 400    | name         | ''                                                            | an empty name                              |
             | 400    | name         | ' '                                                           | a space as a name                          |
-            | 400    | name         | eval(utils.string.getByLength(256))                           | a name that is too long                    |
+            | 400    | name         | eval(utils.string.getRandom(256))                           | a name that is too long                    |
             | 409    | name         | eval(api_v1.desk.getIdByName(existingTenantId, 'tmp-', true)) | a name that already exists                 |
-            | 400    | description  | eval(utils.string.getByLength(301))                           | a description that is too long             |
+            | 400    | description  | eval(utils.string.getRandom(301))                           | a description that is too long             |
             | 400    | parentDeskId | eval(api_v1.desk.getNonExistingId())                          | a parent desk that doesn't exist           |
