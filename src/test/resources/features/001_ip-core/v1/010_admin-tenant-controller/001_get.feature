@@ -10,6 +10,8 @@ Feature: GET /api/admin/tenant (List tenants)
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
+			And if (<status> === 200) utils.assert("$ == schemas.tenant.index")
+			And if (<status> !== 200) utils.assert("$ == schemas.error")
 
 		Examples:
 			| role             | username     | password | status |

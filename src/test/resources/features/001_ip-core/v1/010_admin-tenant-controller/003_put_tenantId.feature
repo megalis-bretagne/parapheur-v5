@@ -51,11 +51,11 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
@@ -88,6 +88,6 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
             | status | field | value!                                      | data                                |
             | 400    | name  | ''                                          | an empty name                       |
             | 400    | name  | ' '                                         | a space as a name                   |
-            | 400    | name  | eval(utils.string.getByLength(65, 'tmp-'))  | a name that is too long             |
+            | 400    | name  | eval(utils.string.getRandom(65, 'tmp-'))  | a name that is too long             |
             | 409    | name  | 'Montpellier Méditerranée Métropole'        | a name that already exists          |
 

@@ -44,11 +44,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
@@ -84,11 +84,11 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation @fixme-ip-core @issue-ip-core-todo
@@ -110,7 +110,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             | status | field        | value!                                      | wrong_data                       |
             | 400    | name         | ''                                          | an empty name                    |
             | 400    | name         | ' '                                         | a space as a name                |
-            | 400    | name         | eval(utils.string.getByLength(257, 'tmp-')) | a name that is too long          |
+            | 400    | name         | eval(utils.string.getRandom(257, 'tmp-')) | a name that is too long          |
             | 409    | name         | 'Translucide'                               | a name that already exists       |
-            | 400    | description  | eval(utils.string.getByLength(301, 'tmp-')) | a description that is too long   |
+            | 400    | description  | eval(utils.string.getRandom(301, 'tmp-')) | a description that is too long   |
             | 400    | parentDeskId | eval(api_v1.desk.getNonExistingId())        | a parent desk that doesn't exist |
