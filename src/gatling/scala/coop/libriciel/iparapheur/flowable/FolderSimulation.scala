@@ -30,7 +30,8 @@ class FolderSimulation extends Simulation {
 
 
   var createInstance: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomDeskIdAsUser)
+    .exec(getRandomTenantId)
+    .exec(getRandomDeskIdAsAdmin)
     .exec(getRandomTypeId)
     .exec(getRandomSubtypeId)
     .exec(session => {
