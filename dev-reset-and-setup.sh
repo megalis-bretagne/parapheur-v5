@@ -154,7 +154,9 @@ __reset__()
         && docker-compose \
             -f docker-compose.yml \
             -f docker-compose.override.dev-`accepted_arch`.yml \
-            down -v \
+            down \
+            --remove-orphans \
+            --volumes \
         && sudo rm -rf ./data \
         && mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data} \
         && touch ./data/.gitkeep \
