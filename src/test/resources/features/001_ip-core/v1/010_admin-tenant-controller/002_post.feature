@@ -47,13 +47,13 @@ Feature: POST /api/admin/tenant (Create tenant)
 			And if (<status> !== 201) utils.assert("$ == schemas.error")
 
 		Examples:
-			| status | field | value!                                      | data                                |
-			| 201    | name  | eval(utils.string.getRandom(1, 'tmp-'))     | a name that is at least 1 character |
-			| 201    | name  | eval(utils.string.getRandom(64, 'tmp-'))    | a name that is up to 64 characters  |
+			| status | field | value!                                     | data                                    |
+			| 201    | name  | eval(utils.string.getRandom(1, 'tmp-'))    | a name that is 1 character long         |
+			| 201    | name  | eval(utils.string.getRandom(64, 'tmp-'))   | a name that is up to 64 characters long |
 		@fixme-ip-core @issue-ip-core-todo
 		Examples:
-			| status | field | value!                                      | data                                |
-			| 400    | name  | ''                                          | an empty name                       |
-			| 400    | name  | ' '                                         | a space as a name                   |
-			| 400    | name  | eval(utils.string.getByLength(65, 'tmp-'))  | a name that is too long             |
-			| 409    | name  | 'Montpellier Méditerranée Métropole'        | a name that already exists          |
+			| status | field | value!                                     | data                                    |
+			| 400    | name  | ''                                         | an empty name                           |
+			| 400    | name  | ' '                                        | a space as a name                       |
+			| 400    | name  | eval(utils.string.getRandom(65, 'tmp-')) | a name that is too long                 |
+			| 409    | name  | 'Montpellier Méditerranée Métropole'       | a name that already exists              |

@@ -223,6 +223,7 @@ curl_post() {
 
 __setup_matomo__()
 {
+    # @fixme: Matomo version (currently, 4.2.1 is working)
     ( \
         export_dot_env \
         && echo "--------------------------------------------------------------------------------" \

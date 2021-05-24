@@ -2,7 +2,7 @@
 Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} disable and delete stats for an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.createTemporary()
 
@@ -12,6 +12,8 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And if (<status> === 204) utils.assert("response == ''")
+            And if (<status> !== 204) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -24,7 +26,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} cannot disable and delete stats for a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
@@ -34,13 +36,15 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And if (<status> === 204) utils.assert("response == ''")
+            And if (<status> !== 204) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

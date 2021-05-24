@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @666
 Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     Background:
