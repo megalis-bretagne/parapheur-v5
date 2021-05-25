@@ -21,7 +21,8 @@ FORCE="0"
 
 # Security problems ahead with .env export... which is why it's a dev script
 export_dot_env() {
-    export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)
+#    export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)
+    set -a; . .env; set +a
 }
 
 export_dot_env
@@ -52,6 +53,9 @@ declare -r _cyan_="\e[36m"
 declare -r _default_="\e[0m"
 declare -r _green_="\e[32m"
 declare -r _red_="\e[31m"
+
+declare -r _check_="\xE2\x9C\x94"
+declare -r _cross_="\xE2\x9D\x8C"
 
 declare -r __PID__="${$}"
 
@@ -143,6 +147,123 @@ accepted_arch() {
             exit 2
         ;;
     esac
+}
+
+# @see https://stackoverflow.com/a/4025065
+version_compare() {
+    if [[ $1 == $2 ]] ; then
+        echo 0
+        return
+    fi
+    local IFS=.
+    local i ver1=($1) ver2=($2)
+    # fill empty fields in ver1 with zeros
+    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)) ; do
+        ver1[i]=0
+    done
+    # fill empty fields in ver2 with zeros
+    for ((i=${#ver2[@]}; i<${#ver1[@]}; i++)) ; do
+        ver2[i]=0
+    done
+
+    for ((i=0; i<${#ver1[@]}; i++)) ; do
+        if [[ -z ${ver2[i]} ]] ; then
+            # fill empty fields in ver2 with zeros
+            ver2[i]=0
+        fi
+
+        if ((10#${ver1[i]} > 10#${ver2[i]})) ; then
+            echo 1
+            return
+        fi
+
+        if ((10#${ver1[i]} < 10#${ver2[i]})) ; then
+            echo -1
+            return
+        fi
+    done
+    echo 0
+    return
+}
+
+__check_commands__() {
+    required_commands=(bash curl docker docker-compose grep java python3 sed)
+    missing_commands=()
+
+    for required_command in "${required_commands[@]}";do
+        if [ `command -v "${required_command}" >/dev/null 2>&1 ; echo $?` -gt 0 ] ; then
+            missing_commands+=( $required_command )
+        fi
+    done
+
+    if [ ${#missing_commands[@]} -gt 0 ] ; then
+        >&2 printf "\n${_red_}Fatal:${_default_} missing command(s): ${missing_commands[@]}\n"
+        exit 1
+    fi
+}
+
+__check_versions__() {
+    # @todo: compare versions ? (sort -V)
+    local -A expected
+    local -A comparisons
+    local software status mismatches=0 regexp="\([0-9]\+\.[0-9]\+\(\.[0-9]\+\)\{0,1\}\)"
+
+    expected['bash']="4.4"
+    expected['curl']="7.58"
+    expected['docker']="20.10"
+    expected['docker-compose']="1.27"
+    expected['grep']="3.1"
+    expected['java']="11.0"
+    expected['python3']="3.6"
+    expected['sed']="4.4"
+
+    local -A versions
+    versions['bash']="`bash --version | grep --color=never "bash" -m 1 | sed "s/^.* ${regexp}.*$/\1/g"`"
+    versions['curl']="`curl --version | grep --color=never "curl" -m 1 | sed "s/^.*curl ${regexp}.*$/\1/g"`"
+    versions['docker']="`docker --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
+    versions['docker-compose']="`docker-compose --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
+    versions['grep']="`grep --version | grep --color=never -m 1 "grep" | sed "s/^.* ${regexp}.*$/\1/g"`"
+    versions['java']="`java -version 2>&1 | grep --color=never -m 1 "version" | sed "s/^.*\\"${regexp}\\".*$/\1/g"`"
+    versions['python3']="`python3 --version 2>&1 | sed "s/^.* ${regexp}.*$/\1/g"`"
+    versions['sed']="`sed --version | grep --color=never -m 1 "sed" | sed "s/^.* ${regexp}.*$/\1/g"`"
+
+    for software in "${!expected[@]}"; do
+        comparisons[${software}]=`version_compare "${versions[${software}]}" "${expected[${software}]}"`
+    done
+
+    for software in "${!expected[@]}"; do
+        if [ ${comparisons[$software]} -lt 0 ] ; then
+            >&2 printf "${_red_}${_cross_}${_default_} ${software} ${versions[${software}]} (expected at least ${expected[${software}]})\n"
+            mismatches=$((mismatches+1))
+        else
+            printf "${_green_}${_check_}${_default_} ${software} ${versions[${software}]} (expected at least ${expected[${software}]})\n"
+        fi
+    done
+
+    if [ ${mismatches} -gt 0 ] ; then
+        >&2 printf "\n${_red_}Fatal:${_default_} software versions requirements not met\n"
+        exit 1
+    fi
+}
+
+__check__() {
+    ( \
+        echo "--------------------------------------------------------------------------------" \
+        && echo "Checking environment" \
+        && echo "--------------------------------------------------------------------------------" \
+        && ( test -f .env && printf "${_green_}${_check_}${_default_} .env file is present\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env does not exist" ; exit 1 ) ) \
+        && ( test -w .env && printf "${_green_}${_check_}${_default_} .env file is writable\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env is not writable" ; exit 1 ) ) \
+        && ( missing="`comm -23 <(grep -v "^\(#.*\|\s*$\)" .env.dist | sed 's/=.*$//g' | sort) <(grep -v "^\(#.*\|\s*$\)" .env | sed 's/=.*$//g' | sort)`" ; if [ ! -z "${missing}" ]; then >&2 printf "${_red_}Fatal${_default_} missing variables from .env file when comparing to .env.dist: %s\n" "`echo ${missing} | sed 's/\s\+/, /g'`" && exit 1;  fi ) \
+        && accepted_arch > /dev/null \
+        && __check_commands__ \
+        && __check_versions__ \
+    )
+
+    EXIT_STATUS=$?
+    if [ $EXIT_STATUS -eq 0 ] ; then
+        printf "\n${_green_}OK${_default_} Checking environment completed\n"
+    fi
+    return $EXIT_STATUS
 }
 
 __reset__()
@@ -272,6 +393,7 @@ __setup_matomo__()
 __main__()
 {
     (
+        cd ${__ROOT__}
         opts=`getopt --longoptions force,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
         eval set -- "$opts"
         while true ; do
@@ -308,7 +430,8 @@ __main__()
             exit 1
         fi
 
-        export_dot_env \
+        __check__ \
+        && export_dot_env \
         && __reset__ \
         && __setup_vault__ \
         && __setup_matomo__ \
