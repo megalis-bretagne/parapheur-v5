@@ -218,6 +218,7 @@ services:
       - SOLR_SOLR_PORT=8983
       - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
       - ALFRESCO_SECURE_COMMS=none
+      - SOLR_HEAP=1g
       - "SOLR_JAVA_MEM=-Xms1024m -Xmx1024m"
     volumes:
       # https://hub.alfresco.com/t5/alfresco-content-services-blog/managing-alfresco-search-services-1-4-storage/ba-p/300972
@@ -364,3 +365,11 @@ services:
       - GF_SECURITY_ADMIN_USER=grafana
       - GF_SECURITY_ADMIN_PASSWORD=grafana
       - GF_USERS_ALLOW_SIGN_UP=false
+
+  filetransfer:
+    image: dutchcoders/transfer.sh:v1.2.4
+    command: --provider local --basedir /data/
+    volumes:
+      - ./data/transfer/:/data/
+    environment:
+      - RANDOM_TOKEN_LENGTH=0

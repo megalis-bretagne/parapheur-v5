@@ -106,6 +106,12 @@ server {
       proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
   }
 
+  location /filetransfer/ {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_filetransfer filetransfer;
+    proxy_pass http://$upstream_filetransfer:8080/;
+  }
+
   # location /libersign {
   #   proxy_pass http://libersign/;
   # }
