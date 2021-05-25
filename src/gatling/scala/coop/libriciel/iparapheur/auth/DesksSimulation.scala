@@ -36,7 +36,6 @@ class DesksSimulation extends Simulation {
         .header("Accept", "application/json")
         .queryParam("page", 0)
         .queryParam("pageSize", 1)
-        .queryParam("searchTerm", "sample-user@example")
         .check(status.is(200))
         .check(jsonPath("$.total").exists)
         .check(jsonPath("$.data").exists)

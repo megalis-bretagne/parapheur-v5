@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.5</version>
+    <version>0.8</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -71,15 +71,29 @@
                         <constraint ref="iparapheur:indexConstraint"/>
                     </constraints>
                 </property>
-                <property name="iparapheur:pdfVisualFor">
-                    <title>PDF visual</title>
+            </properties>
+        </type>
+
+        <type name="iparapheur:detachedSignature">
+            <title>i-Parapheur internal signature model</title>
+            <parent>cm:content</parent>
+
+            <properties>
+                <property name="iparapheur:targetDocumentId">
+                    <title>Target document ID</title>
+                    <type>d:text</type>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
+                    </constraints>
+                </property>
+                <property name="iparapheur:targetTaskId">
+                    <title>Target task ID</title>
                     <type>d:text</type>
                     <constraints>
                         <constraint ref="iparapheur:isNodeUuid"/>
                     </constraints>
                 </property>
             </properties>
-
         </type>
 
         <type name="iparapheur:folder">
@@ -93,7 +107,7 @@
                   but is the proper way for later requests.
                   -->
                 <property name="iparapheur:premisNodeId">
-                    <title>PDF visual</title>
+                    <title>Premis digest</title>
                     <type>d:text</type>
                     <constraints>
                         <constraint ref="iparapheur:isNodeUuid"/>
