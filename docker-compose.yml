@@ -50,7 +50,8 @@ services:
       - ./data/matomo/config/:/var/www/html/config/
       - ./data/matomo/plugins/:/var/www/html/plugins/
       - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
-      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
+      - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
+      - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
       - 80:80
       - 443:443
