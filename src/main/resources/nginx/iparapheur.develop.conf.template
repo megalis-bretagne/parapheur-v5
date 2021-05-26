@@ -19,6 +19,10 @@ server {
   listen 80;
   server_name ${APPLICATION_HOST};
 
+  # ssl on;
+  # ssl_certificate /etc/nginx/ssl/iparapheur.dom.local.crt;
+  # ssl_certificate_key /etc/nginx/ssl/iparapheur.dom.local.key;
+
   client_max_body_size 2000M;
   large_client_header_buffers 4 32k;
 

@@ -27,6 +27,8 @@ services:
     memswap_limit: 64m
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
+
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
@@ -50,8 +52,8 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 256M
+    memswap_limit: 256m
     ports:
       - 10080:8080
 

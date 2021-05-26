@@ -23,6 +23,7 @@ services:
     image: nginx:alpine
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
 
 
   redis:
