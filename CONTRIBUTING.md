@@ -197,7 +197,7 @@ find ./src/test/resources/features \
 ? | `--tags '@setup or (ip-core and api-v1)'` |||
 | `--tags @ip-core --tags ~@issue-ip-core-78` |||
 
-- `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@ip-web"`
+- `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@ip-web" --info`
 - corrections swagger dans mes issues
 
 ```bash

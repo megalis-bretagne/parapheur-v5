@@ -2,11 +2,14 @@ import functools
 import json
 import urllib.request
 
-# gradle test -Dkarate.options="--tags ~@ip-web"
-# python3 karate-tests-report.py > build/karate-tests-20210524-all-ip-core.md
+# gradle test -Dkarate.options="--tags ~@ip-web" --info
+# python3 karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-all-ip-core.md"
 
-# gradle test -Dkarate.options="--tags ~@ip-web --tags ~@issue-ip-core-78"
-# python3 karate-tests-report.py > build/karate-tests-20210524-all-ip-core-not-issue-ip-core-78.md
+# gradle test -Dkarate.options="--tags ~@ip-web --tags ~@issue-ip-core-78" --info
+# python3 karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-all-ip-core-not-issue-ip-core-78.md"
+
+# gradle test -Dkarate.options="--tags ~@ip-web --tags ~@fixme-ip-core --tags ~@todo-ip-core" --info
+# python3 karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-all-ip-core-no-fixme.md"
 
 result = {}
 
