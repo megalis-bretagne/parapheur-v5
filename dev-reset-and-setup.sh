@@ -5,26 +5,27 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 set -o errexit
+set -o errtrace
+set -o functrace
 set -o nounset
 set -o pipefail
 
 # Use xtrace ?
 if [ "`getopt --longoptions xtrace -- x "$@" 2> /dev/null | grep --color=none "\(^\|\s\)\(\-x\|\-\-xtrace\)\($\|\s\)"`" != "" ] ; then
-    declare -r __XTRACE__=1
     set -o xtrace
-else
-    declare -r __XTRACE__=0
 fi
 
 # Don't do anything unless forced to
 FORCE="0"
 
+FORCE_MATOMO_VERSION="0"
+
 # Security problems ahead with .env export... which is why it's a dev script
 export_dot_env() {
-#    export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)
-    set -a; . .env; set +a
+    set -o allexport; source .env; set +o allexport
 }
 
+# @fixme
 export_dot_env
 
 MATOMO_COOKIES="${MATOMO_COOKIES:-/tmp/matomo-setup-cookies.txt}"
@@ -33,6 +34,7 @@ MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
 MATOMO_DB_TYPE="${MATOMO_DB_TYPE:-InnoDB}"
 MATOMO_DB_ROOT_EMAIL="${MATOMO_DB_ROOT_EMAIL:-admin@dom.local}"
 MATOMO_DB_ROOT_USER="${MATOMO_DB_ROOT_USER:-admin}"
+MATOMO_EXPECTED_VERSION="4.2.1"
 MATOMO_SITE_ID="${MATOMO_SITE_ID:-1}"
 MATOMO_SITE_NAME="${MATOMO_SITE_NAME:-i-Parapheur - Général}"
 MATOMO_SITE_TIMEZONE="${MATOMO_SITE_TIMEZONE:-Europe/Paris}"
@@ -42,32 +44,37 @@ MATOMO_TMP_HTML="${MATOMO_TMP_HTML:-/tmp/matomo-setup-tmp.html}"
 MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
 
-# ----------------------------------------------------------------------------------------------------------------------
-# "Library"
-# ----------------------------------------------------------------------------------------------------------------------
+# ======================================================================================================================
 
-# Internal constants
+__trap_exit__()
+{
+    local code="${1}"
 
-declare -r _blue_="\e[34m"
-declare -r _cyan_="\e[36m"
-declare -r _default_="\e[0m"
-declare -r _green_="\e[32m"
-declare -r _red_="\e[31m"
+    # Make sure we're called from the main script
+    if [ "${$}" -eq "${BASHPID}" ]; then
+        if [ ${code} -eq 0 ] ; then
+            log_success "process ${BASHPID} exited normally in ${SECONDS}s at `date_now`"
+        else
+            # Unset trap so we exit immediately
+            trap - ERR EXIT
 
-declare -r _check_="\xE2\x9C\x94"
-declare -r _cross_="\xE2\x9D\x8C"
+            # Prepare stack trace
+            local stack_trace=()
+            for ((i=0;i<${#FUNCNAME[@]}-1;i++)) ; do
+                stack_trace+=("${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} in function ${FUNCNAME[$i+1]}")
+            done
 
-declare -r __PID__="${$}"
+            # Print the stack trace
+            log_error "process ${BASHPID} exited with error code ${code} in ${SECONDS}s at `date_now`"
+            >&2 printf "\nStack trace (most recent call last):\n"
+            for ((i=${#stack_trace[@]}-1;i>=0;i--)) ; do
+                >&2 printf "  ${stack_trace[$i]}\n"
+            done
+        fi
+    fi
+}
 
-declare -r __FILE__="$(realpath "${0}")"
-declare -r __SCRIPT__="$(basename "${__FILE__}")"
-declare -r __ROOT__="$(realpath "$(dirname "${__FILE__}")")"
-
-printf "${_cyan_}Startup:${_default_} started process ${__PID__}\n\n"
-
-# Error and exit handling: exit is trapped, as well as signals.
-# If a __cleanup__ function exists, it will be called on signal or exit and the exit code will be passed as parameter.
-
+# @fixme: wrong code
 __trap_signals__()
 {
     local code="${?}"
@@ -75,31 +82,53 @@ __trap_signals__()
         local signal=$((${code} - 128))
         local name="`kill -l ${signal}`"
 
-        >&2 printf "\nProcess ${__PID__} received SIG${name} (${signal}), exiting..."
+        >&2 printf "\nProcess ${BASHPID} received SIG${name} (${signal}), exiting...\n"
     fi
 }
 
-__trap_exit__()
-{
-    local code="${?}"
+trap '__trap_exit__ ${?} ${LINENO}' ERR EXIT
+trap '__trap_signals__ ${?}' SIGHUP SIGINT SIGQUIT SIGTERM
 
-    if [ ${code} -eq 0 ] ; then
-        printf "\n${_green_}Success:${_default_} process ${__PID__} exited normally\n"
-    else
-        >&2 printf "\n${_red_}Error:${_default_} process ${__PID__} exited with error code ${code}\n"
-    fi
+# ======================================================================================================================
 
-    if [ "`type -t __cleanup__`" = "function" ] ; then
-        __cleanup__
-    fi
+declare -r _blue_="\e[34m"
+declare -r _cyan_="\e[36m"
+declare -r _default_="\e[0m"
+declare -r _green_="\e[32m"
+declare -r _light_yellow_="\e[93m"
+declare -r _red_="\e[31m"
+
+# @see https://unix.stackexchange.com/a/25907
+declare -r _check_="\xE2\x9C\x94"
+declare -r _cross_="\xE2\x9D\x8C"
+declare -r _warning_="\xE2\x9A\xA0"
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+date_now() { date "+%Y-%m-%d %H:%M:%S"; }
+
+log_error()   { printf "${_red_}${2:-Error:}${_default_} ${1}\n"; }
+log_info()    { printf "${_cyan_}${2:-Info:}${_default_} ${1}\n"; }
+log_success() { printf "${_green_}${2:-Success:}${_default_} ${1}\n"; }
+log_warning() { printf "${_light_yellow_}${2:-Warning:}${_default_} ${1}\n"; }
+
+log_icon_check()   { log_success "${1}" "${_check_}"; }
+log_icon_cross()   { log_error "${1}" "${_cross_}"; }
+log_icon_warning() { log_warning "${1}" "${_warning_}"; }
+
+log_hr()   {
+    local char=${1:--}
+    local times=${2:-80}
+    printf "%${times}s\n" | sed "s/ /${char}/g"
 }
 
-trap "__trap_signals__" SIGHUP SIGINT SIGQUIT SIGTERM
-trap "__trap_exit__" EXIT
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------------------------------------------------
-# Functions
-# ----------------------------------------------------------------------------------------------------------------------
+declare -r __FILE__="$(realpath "${0}")"
+declare -r __SCRIPT__="$(basename "${__FILE__}")"
+declare -r __ROOT__="$(realpath "$(dirname "${__FILE__}")")"
+
+# ======================================================================================================================
 
 __usage__()
 {
@@ -117,10 +146,11 @@ __usage__()
     printf "\nSYNOPSIS\n"
     printf "  %s [OPTION]\n" "${__SCRIPT__}"
     printf "\nOPTIONS\n"
-    printf "  -f|--force\tYou have to use this option for the script to work\n"
-    printf "  -h|--help\tDisplay this help\n"
-    printf "  -s|--sleep\tThe sleep amount to wait for the vault container or the matomo containers to properly start up (default: 30s)\n"
-    printf "  -x|--xtrace\tDebug mode, prints every command before executing it (set -o xtrace)\n"
+    printf "  -f|--force\t\t\tYou have to use this option for the script to work\n"
+    printf "  --force-matomo-version\tDon't fail for unexpected Matomo version (expected ${MATOMO_EXPECTED_VERSION})\n"
+    printf "  -h|--help\t\t\tDisplay this help\n"
+    printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container or the matomo containers to properly start up (default: 30s)\n"
+    printf "  -x|--xtrace\t\t\tDebug mode, prints every command before executing it (set -o xtrace)\n"
     printf "\nEXEMPLES\n"
     printf "  %s --force\n" "${__SCRIPT__}"
     printf "  %s --force --sleep 30s\n" "${__SCRIPT__}"
@@ -131,6 +161,8 @@ urlencode () {
     local string="${1}"
     python3 -c "exec(\"import sys\nfrom urllib.parse import quote_plus\nprint(quote_plus(sys.argv[1]))\")" "${string}"
 }
+
+log_info "started process ${BASHPID} at `date_now`\n" "Startup:"
 
 # @see https://stackoverflow.com/a/3466183
 accepted_arch() {
@@ -240,6 +272,17 @@ __check_versions__() {
         fi
     done
 
+    # @info Matomo version 4.2.1, check __setup_matomo__
+    local MATOMO_VERSION="`grep "image.*matomo:" docker-compose.yml | sed 's/^.*matomo:\([0-9\.]\+\).*$/\1/g'`"
+    if [ "${MATOMO_VERSION}" == "${MATOMO_EXPECTED_VERSION}" ] ; then
+        log_icon_check "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
+    elif [ "${FORCE_MATOMO_VERSION}" == "1" ] ; then
+            log_warning "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
+    else
+        mismatches=$((mismatches+1))
+        log_icon_cross "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
+    fi
+
     if [ ${mismatches} -gt 0 ] ; then
         >&2 printf "\n${_red_}Fatal:${_default_} software versions requirements not met\n"
         exit 1
@@ -247,74 +290,62 @@ __check_versions__() {
 }
 
 __check__() {
-    ( \
-        echo "--------------------------------------------------------------------------------" \
-        && echo "Checking environment" \
-        && echo "--------------------------------------------------------------------------------" \
-        && ( test -f .env && printf "${_green_}${_check_}${_default_} .env file is present\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env does not exist" ; exit 1 ) ) \
-        && ( test -w .env && printf "${_green_}${_check_}${_default_} .env file is writable\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env is not writable" ; exit 1 ) ) \
-        && ( missing="`comm -23 <(grep -v "^\(#.*\|\s*$\)" .env.dist | sed 's/=.*$//g' | sort) <(grep -v "^\(#.*\|\s*$\)" .env | sed 's/=.*$//g' | sort)`" ; if [ ! -z "${missing}" ]; then >&2 printf "${_red_}Fatal${_default_} missing variables from .env file when comparing to .env.dist: %s\n" "`echo ${missing} | sed 's/\s\+/, /g'`" && exit 1;  fi ) \
-        && accepted_arch > /dev/null \
-        && __check_commands__ \
-        && __check_versions__ \
-    )
+      log_hr
+      echo "Checking environment..."
+      log_hr
 
-    EXIT_STATUS=$?
-    if [ $EXIT_STATUS -eq 0 ] ; then
-        printf "\n${_green_}OK${_default_} Checking environment completed\n"
-    fi
-    return $EXIT_STATUS
+      ( test -f .env && printf "${_green_}${_check_}${_default_} .env file is present\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env does not exist" ; exit 1 ) )
+      ( test -w .env && printf "${_green_}${_check_}${_default_} .env file is writable\n" || ( >&2 printf "${_red_}Fatal${_default_} %s\n" "file ${__ROOT__}/.env is not writable" ; exit 1 ) )
+      ( missing="`comm -23 <(grep -v "^\(#.*\|\s*$\)" .env.dist | sed 's/=.*$//g' | sort) <(grep -v "^\(#.*\|\s*$\)" .env | sed 's/=.*$//g' | sort)`" ; if [ ! -z "${missing}" ]; then >&2 printf "${_red_}Fatal${_default_} missing variables from .env file when comparing to .env.dist: %s\n" "`echo ${missing} | sed 's/\s\+/, /g'`" && exit 1;  fi )
+      accepted_arch > /dev/null
+      log_success "... checking environment completed\n" "OK"
+
+      log_hr
+      echo "Checking required softwares..."
+      log_hr
+      __check_commands__
+      __check_versions__
+      log_success "... checking required softwares completed\n" "OK"
 }
 
 __reset__()
 {
-    ( \
-        echo "--------------------------------------------------------------------------------" \
-        && echo "Reset" \
-        && echo "--------------------------------------------------------------------------------" \
-        && docker-compose \
-            -f docker-compose.yml \
-            -f docker-compose.override.dev-`accepted_arch`.yml \
-            down \
-            --remove-orphans \
-            --volumes \
-        && sudo rm -rf ./data \
-        && mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data} \
-        && touch ./data/.gitkeep \
-        && chmod -R 0757 ./data
-    )
+      log_hr
+      echo "Resetting..."
+      log_hr
 
-    EXIT_STATUS=$?
-    if [ $EXIT_STATUS -eq 0 ] ; then
-        printf "\n${_green_}OK${_default_} Reset completed\n"
-    fi
-    return $EXIT_STATUS
+      docker-compose \
+          -f docker-compose.yml \
+          -f docker-compose.override.dev-`accepted_arch`.yml \
+          down \
+          --remove-orphans \
+          --volumes
+      sudo rm -rf ./data
+      mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data}
+      touch ./data/.gitkeep
+      chmod -R 0757 ./data
 
+      log_success "... resetting completed\n" "OK"
 }
 
 __setup_vault__()
 {
-    ( \
-        echo "--------------------------------------------------------------------------------" \
-        && echo "Vault - setup" \
-        && echo "--------------------------------------------------------------------------------" \
-        && docker-compose up -d vault \
-        && sleep ${SLEEP_VALUE} \
-        && VAULT_OUTPUT="`docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1`" \
-        && export VAULT_UNSEAL_KEY="`echo "$VAULT_OUTPUT" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`" \
-        && export VAULT_TOKEN="`echo "$VAULT_OUTPUT" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`" \
-        && sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env \
-        && sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env \
-        && docker exec -it compose_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY} \
-        && docker exec -it compose_vault_1 vault login token=${VAULT_TOKEN} \
-        && docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
-    )
+      log_hr
+      echo "Vault - setup..."
+      log_hr
 
-    EXIT_STATUS=$?
-    if [ $EXIT_STATUS -eq 0 ] ; then
-        printf "\n${_green_}OK${_default_} Vault - setup completed\n"
-    fi
-    return $EXIT_STATUS
+      docker-compose up -d vault
+      sleep ${SLEEP_VALUE}
+      VAULT_OUTPUT="`docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
+      export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
+      export VAULT_TOKEN="`echo "${VAULT_OUTPUT}" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
+      sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env
+      sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env
+      docker exec -it compose_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
+      docker exec -it compose_vault_1 vault login token=${VAULT_TOKEN}
+      docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
+
+      log_success "... Vault - setup completed\n" "OK"
 }
 
 curl_get() {
@@ -322,9 +353,9 @@ curl_get() {
     local output="`curl -b ${MATOMO_COOKIES} -c ${MATOMO_COOKIES} -s -o "${MATOMO_TMP_HTML}" -L -w "%{http_code} %{url_effective}\n" -L -X GET "${url}"`"
 
     if [[ "${output}" =~ ^2[0-9][0-9] ]] ; then
-        printf "\t${_green_}OK${_default_} %s\n" "${output}"
+        printf "${_green_}${_check_}${_default_} %s\n" "${output}"
     else
-        >&2 printf "\t${_red_}KO${_default_} %s\n" "${output}"
+        >&2 printf "${_red_}${_cross_}${_default_} %s\n" "${output}"
         exit 1
     fi
 }
@@ -335,55 +366,53 @@ curl_post() {
     local output="`curl -b ${MATOMO_COOKIES} -c ${MATOMO_COOKIES} -s -o "${MATOMO_TMP_HTML}" -L -w "%{http_code} %{url_effective}\n" -L -X POST "${url}" --data "${data}"`"
 
     if [[ "${output}" =~ ^2[0-9][0-9] ]] ; then
-        printf "\t${_green_}OK${_default_} %s\n" "${output}"
+        printf "${_green_}${_check_}${_default_} %s\n" "${output}"
     else
-        >&2 printf "\t${_red_}KO${_default_} %s\n" "${output}"
+        >&2 printf "${_red_}${_cross_}${_default_} %s\n" "${output}"
         exit 1
     fi
 }
 
+# @info Matomo version 4.2.1
 __setup_matomo__()
 {
-    # @fixme: Matomo version (currently, 4.2.1 is working)
-    ( \
-        export_dot_env \
-        && echo "--------------------------------------------------------------------------------" \
-        && echo "Matomo - setup" \
-        && echo "--------------------------------------------------------------------------------" \
-        && docker-compose up -d matomo nginx \
-        && sleep ${SLEEP_VALUE} \
-        && rm -f $MATOMO_COOKIES \
-        && curl_get "${MATOMO_URL}" \
-        && curl_get "${MATOMO_URL}index.php?action=systemCheck" \
-        && curl_get "${MATOMO_URL}index.php?action=databaseSetup" \
-        && curl_post "${MATOMO_URL}index.php?action=databaseSetup" "type=${MATOMO_DB_TYPE}&host=${MATOMO_DB_HOST}&username=`urlencode ${MATOMO_DB_USER}`&password=`urlencode ${MATOMO_DB_PASSWORD}`&dbname=`urlencode ${MATOMO_DB_DATABASE}`&tables_prefix=${MATOMO_TABLES_PREFIX}&adapter=`urlencode "PDO\MYSQL"`&submit=`urlencode "Next »"`" \
-        && curl_get "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation" \
-        && curl_post "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation" "login=${MATOMO_DB_ROOT_USER}&password=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&password_bis=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&email=`urlencode ${MATOMO_DB_ROOT_EMAIL}`&submit=`urlencode "Next »"`" \
-        && curl_post "${MATOMO_URL}index.php?action=firstWebsiteSetup&module=Installation" "siteName=`urlencode "${MATOMO_SITE_NAME}"`&url=`urlencode "https://${APPLICATION_HOST}"`&timezone=`urlencode ${MATOMO_SITE_TIMEZONE}`&ecommerce=0&submit=`urlencode "Next »"`" \
-        && curl_get "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`" \
-        && curl_post "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`" "submit=`urlencode "Continue to Matomo »"`" \
-        && echo "--------------------------------------------------------------------------------" \
-        && echo "Matomo - create token" \
-        && echo "--------------------------------------------------------------------------------" \
-        && rm -f $MATOMO_COOKIES \
-        && MATOMO_DATE_URL="`date "+%Y-%m-%d"`" \
-        && curl_get "${MATOMO_URL}" \
-        && form_nonce=`grep -m 1 "form_nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'` \
-        && curl_post "${MATOMO_URL}index.php?module=Login" "form_login=${MATOMO_DB_ROOT_USER}&form_nonce=${form_nonce}&form_redirect=`urlencode "${MATOMO_URL}"`&form_password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`" \
-        && curl_get "${MATOMO_URL}?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" \
-        && nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'` \
-        && curl_post "${MATOMO_URL}index.php?module=Login&action=confirmPassword&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "nonce=${nonce}&password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`" \
-        && nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'` \
-        && curl_post "${MATOMO_URL}index.php?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "description=${MATOMO_TOKEN_NAME}&nonce=${nonce}" \
-        && export MATOMO_TOKEN="`grep "<code>" "${MATOMO_TMP_HTML}" | sed 's/^.*<code>\([^<]*\)<.*$/\1/g'`" \
-        && sed -i "s#MATOMO_TOKEN=.*#MATOMO_TOKEN=${MATOMO_TOKEN}#g" .env
-    )
+    export_dot_env
 
-    EXIT_STATUS=$?
-    if [ $EXIT_STATUS -eq 0 ] ; then
-        printf "\n${_green_}OK${_default_} Matomo - setup completed\n"
-    fi
-    return $EXIT_STATUS
+    log_hr
+    echo "Matomo - setup..."
+    log_hr
+
+    docker-compose up -d matomo nginx
+    sleep ${SLEEP_VALUE}
+    rm -f $MATOMO_COOKIES
+    curl_get "${MATOMO_URL}"
+    curl_get "${MATOMO_URL}index.php?action=systemCheck"
+    curl_get "${MATOMO_URL}index.php?action=databaseSetup"
+    curl_post "${MATOMO_URL}index.php?action=databaseSetup" "type=${MATOMO_DB_TYPE}&host=${MATOMO_DB_HOST}&username=`urlencode ${MATOMO_DB_USER}`&password=`urlencode ${MATOMO_DB_PASSWORD}`&dbname=`urlencode ${MATOMO_DB_DATABASE}`&tables_prefix=${MATOMO_TABLES_PREFIX}&adapter=`urlencode "PDO\MYSQL"`&submit=`urlencode "Next »"`"
+    curl_get "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation"
+    curl_post "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation" "login=${MATOMO_DB_ROOT_USER}&password=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&password_bis=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&email=`urlencode ${MATOMO_DB_ROOT_EMAIL}`&submit=`urlencode "Next »"`"
+    curl_post "${MATOMO_URL}index.php?action=firstWebsiteSetup&module=Installation" "siteName=`urlencode "${MATOMO_SITE_NAME}"`&url=`urlencode "https://${APPLICATION_HOST}"`&timezone=`urlencode ${MATOMO_SITE_TIMEZONE}`&ecommerce=0&submit=`urlencode "Next »"`"
+    curl_get "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`"
+    curl_post "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`" "submit=`urlencode "Continue to Matomo »"`"
+    log_success "... Matomo - setup completed\n" "OK"
+
+    log_hr
+    echo "Matomo - create token..."
+    log_hr
+
+    rm -f $MATOMO_COOKIES
+    MATOMO_DATE_URL="`date "+%Y-%m-%d"`"
+    curl_get "${MATOMO_URL}"
+    form_nonce=`grep -m 1 "form_nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
+    curl_post "${MATOMO_URL}index.php?module=Login" "form_login=${MATOMO_DB_ROOT_USER}&form_nonce=${form_nonce}&form_redirect=`urlencode "${MATOMO_URL}"`&form_password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`"
+    curl_get "${MATOMO_URL}?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}"
+    nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
+    curl_post "${MATOMO_URL}index.php?module=Login&action=confirmPassword&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "nonce=${nonce}&password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`"
+    nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
+    curl_post "${MATOMO_URL}index.php?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "description=${MATOMO_TOKEN_NAME}&nonce=${nonce}"
+    export MATOMO_TOKEN="`grep "<code>" "${MATOMO_TMP_HTML}" | sed 's/^.*<code>\([^<]*\)<.*$/\1/g'`"
+    sed -i "s#MATOMO_TOKEN=.*#MATOMO_TOKEN=${MATOMO_TOKEN}#g" .env
+    log_success "... Matomo - create token completed\n" "OK"
 }
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -392,58 +421,60 @@ __setup_matomo__()
 
 __main__()
 {
-    (
-        cd ${__ROOT__}
-        opts=`getopt --longoptions force,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
-        eval set -- "$opts"
-        while true ; do
-            case "${1}" in
-                -f|--force)
-                    FORCE="1"
-                    shift
-                ;;
-                -h|--help)
-                    __usage__
-                    exit 0
-                ;;
-                -x|--xtrace)
-                    shift
-                ;;
-              -s|--sleep)
-                    SLEEP_VALUE="${2}"
-                    shift 2
-                ;;
-                --)
-                    shift
-                    break
-                ;;
-                *)
-                    >&2 __usage__
-                    exit 1
-                ;;
-            esac
-        done
+      cd ${__ROOT__}
+      opts=`getopt --longoptions force,force-matomo-version,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
+      eval set -- "$opts"
+      while true ; do
+          case "${1}" in
+              -f|--force)
+                  FORCE="1"
+                  shift
+              ;;
+              --force-matomo-version)
+                  FORCE_MATOMO_VERSION="1"
+                  shift
+              ;;
+              -h|--help)
+                  __usage__
+                  exit 0
+              ;;
+              -x|--xtrace)
+                  shift
+              ;;
+            -s|--sleep)
+                  SLEEP_VALUE="${2}"
+                  shift 2
+              ;;
+              --)
+                  shift
+                  break
+              ;;
+              *)
+                  >&2 __usage__
+                  exit 1
+              ;;
+          esac
+      done
 
-        if [ ${FORCE} -ne 1 ] ; then
-            >&2 __usage__
-            >&2 echo "Use -f or --force to proceed the script"
-            exit 1
-        fi
+      if [ ${FORCE} -ne 1 ] ; then
+          >&2 __usage__
+          >&2 printf "\n"
+          log_error "Use -f or --force to proceed with the script" "Fatal:"
+          exit 1
+      fi
 
-        __check__ \
-        && export_dot_env \
-        && __reset__ \
-        && __setup_vault__ \
-        && __setup_matomo__ \
-        && export_dot_env \
-        && docker-compose down \
-        && sudo chmod -R 0757 ./data \
-        && docker-compose \
-            -f docker-compose.yml \
-            -f docker-compose.override.dev-`accepted_arch`.yml \
-            up \
-        && exit 0
-    )
+      __check__
+      export_dot_env
+      __reset__
+      __setup_vault__
+      __setup_matomo__
+      export_dot_env
+      docker-compose down
+      sudo chmod -R 0757 ./data
+      docker-compose \
+          -f docker-compose.yml \
+          -f docker-compose.override.dev-`accepted_arch`.yml \
+          up
 }
 
 __main__ "${@}"
