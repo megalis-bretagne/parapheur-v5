@@ -334,7 +334,10 @@ __setup_vault__()
       echo "Vault - setup..."
       log_hr
 
-      docker-compose up -d vault
+      docker-compose \
+          -f docker-compose.yml \
+          -f docker-compose.override.dev-`accepted_arch`.yml \
+          up -d vault
       sleep ${SLEEP_VALUE}
       VAULT_OUTPUT="`docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
@@ -382,7 +385,10 @@ __setup_matomo__()
     echo "Matomo - setup..."
     log_hr
 
-    docker-compose up -d matomo nginx
+    docker-compose \
+        -f docker-compose.yml \
+        -f docker-compose.override.dev-`accepted_arch`.yml \
+        up -d matomo nginx
     sleep ${SLEEP_VALUE}
     rm -f $MATOMO_COOKIES
     curl_get "${MATOMO_URL}"
