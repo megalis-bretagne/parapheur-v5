@@ -19,6 +19,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         Then status <status>
             And if (<status> === 200) utils.assert("header Content-Type == 'image/png;charset=UTF-8'")
             And if (<status> === 200) utils.assert("response == read('<path>')")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | status | path                                         |

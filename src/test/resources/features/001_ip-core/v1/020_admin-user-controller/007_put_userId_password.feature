@@ -98,3 +98,26 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
+
+    @data-validation
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
+        * api_v1.auth.login('cnoir', 'a123456')
+
+        Given url baseUrl
+            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
+            And header Accept = 'application/json'
+            And request { <field>: <value> }
+
+        When method PUT
+        Then status <status>
+            And if (<status> === 200) utils.assert("response == ''")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
+
+        Examples:
+            | status | field    | value!    | data                |
+            | 200    | password | 'a123456' | a correct password  |
+        @fixme-ip-core @issue-ip-core-todo
+        Examples:
+            | status | field    | value!    | data                |
+            | 400    | password | ''        | an empty password   |
+            | 400    | password | ' '       | a space as password |
