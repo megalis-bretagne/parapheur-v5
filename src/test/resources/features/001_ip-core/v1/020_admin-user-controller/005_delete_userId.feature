@@ -10,7 +10,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * def userData = api_v1.user.getById(existingTenantId, existingUserId)
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -18,6 +18,8 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And if (<status> === 204) utils.assert("response == ''")
+            And if (<status> !== 204) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -30,7 +32,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete an existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -38,6 +40,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
@@ -50,7 +53,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -58,6 +61,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
@@ -68,7 +72,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} delete a non-existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -76,6 +80,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
+            And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |

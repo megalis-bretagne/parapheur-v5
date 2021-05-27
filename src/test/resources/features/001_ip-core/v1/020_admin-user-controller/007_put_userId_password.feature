@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @666
 Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
