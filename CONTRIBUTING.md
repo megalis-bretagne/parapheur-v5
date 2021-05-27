@@ -179,16 +179,7 @@ $ gradle test
 ##### Getting the tags list
 
 ```bash
-# Get the list of all tags used in feature files.
-find ./src/test/resources/features \
-      -type f \
-      -iname *.feature \
-      -exec grep "^\s*@" {} \; \
-      | sed 's/\(^\s*\|\s*$\)//g' \
-      | sed 's/\s\+/\n/g' \
-      | sort \
-      | uniq
-#      | grep "\(fixme\|todo\)" \
+./dev-reset-and-setup.sh karate-tags
 ```
 
 #### Examples
