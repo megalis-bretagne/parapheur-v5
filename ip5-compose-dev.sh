@@ -18,7 +18,7 @@ fi
 # Don't do anything unless forced to
 FORCE="0"
 
-FORCE_MATOMO_VERSION="0"
+IGNORE_MATOMO_VERSION="0"
 
 # Security problems ahead with .env export... which is why it's a dev script
 export_dot_env() {
@@ -28,6 +28,7 @@ export_dot_env() {
 # @fixme
 export_dot_env
 
+KARATE_DEFAULT_TAGS_PATH="./src/test/resources/features"
 MATOMO_COOKIES="${MATOMO_COOKIES:-/tmp/matomo-setup-cookies.txt}"
 MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
 MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
@@ -137,24 +138,32 @@ __usage__()
     printf "NAME\n"
     printf "  %s\n" "${__SCRIPT__}"
     printf "\nDESCRIPTION\n"
-    printf "  ${warning} Destroys and re-creates a working working i-Parapheur v. 5 development environment\n"
-    printf "  ${warning} Uses sudo to destroy and recreate ./data dir.\n"
-    printf "  ${warning} Reads and exports values from the .env file\n"
-    printf "  ${warning} Replaces values (MATOMO_TOKEN, VAULT_TOKEN, VAULT_UNSEAL_KEY) in the .env file and exports them\n"
+    printf "  Development helper script for i-Parapheur v. 5\n"
     printf "  Look at the top of the file for some extra variables (that can be passed as environment variables)\n"
     printf "  It should detect a linux or macos environment and use specific override-dev according to arch\n"
     printf "\nSYNOPSIS\n"
-    printf "  %s [OPTION]\n" "${__SCRIPT__}"
+    printf "  %s [OPTION] [COMMAND]\n" "${__SCRIPT__}"
+    printf "\nCOMMANDS\n"
+    printf "  check\t\tCheck the prerequisites needed to setup a working i-Parapheur v. 5 development environment\n"
+    printf "  karate-tags\tList all tags used in karate fixture files path (default: %s)\n"  "${KARATE_DEFAULT_TAGS_PATH}"
+    printf "  setup\t\tCheck the prerequisites, setup and launch a working i-parapheur 5 installation\n"
+    printf "  \t\t${warning} Destroys and re-creates a working i-Parapheur v. 5 development environment\n"
+    printf "  \t\t${warning} Uses sudo to destroy and recreate ./data dir.\n"
+    printf "  \t\t${warning} Reads and exports values from the .env file\n"
+    printf "  \t\t${warning} Replaces values (MATOMO_TOKEN, VAULT_TOKEN, VAULT_UNSEAL_KEY) in the .env file and exports them\n"
     printf "\nOPTIONS\n"
-    printf "  -f|--force\t\t\tYou have to use this option for the script to work\n"
-    printf "  --force-matomo-version\tDon't fail for unexpected Matomo version (expected ${MATOMO_EXPECTED_VERSION})\n"
+    printf "  -f|--force\t\t\tYou have to use this option for the setup command to work\n"
     printf "  -h|--help\t\t\tDisplay this help\n"
-    printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container or the matomo containers to properly start up (default: 30s)\n"
+    printf "  --ignore-matomo-version\tDon't fail for unexpected Matomo version during check or setup (expected ${MATOMO_EXPECTED_VERSION})\n"
+    printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container or the matomo containers to properly start up during setup (default: 30s)\n"
     printf "  -x|--xtrace\t\t\tDebug mode, prints every command before executing it (set -o xtrace)\n"
     printf "\nEXEMPLES\n"
-    printf "  %s --force\n" "${__SCRIPT__}"
-    printf "  %s --force --sleep 30s\n" "${__SCRIPT__}"
+    printf "  %s check\n" "${__SCRIPT__}"
+    printf "  %s karate-tags %s\n" "${__SCRIPT__}" "${KARATE_DEFAULT_TAGS_PATH}"
+    printf "  %s setup --force\n" "${__SCRIPT__}"
+    printf "  %s setup --force --sleep 30s\n" "${__SCRIPT__}"
     printf "  %s --help\n" "${__SCRIPT__}"
+    printf "\n"
 }
 
 urlencode () {
@@ -276,7 +285,7 @@ __check_versions__() {
     local MATOMO_VERSION="`grep "image.*matomo:" docker-compose.yml | sed 's/^.*matomo:\([0-9\.]\+\).*$/\1/g'`"
     if [ "${MATOMO_VERSION}" == "${MATOMO_EXPECTED_VERSION}" ] ; then
         log_icon_check "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
-    elif [ "${FORCE_MATOMO_VERSION}" == "1" ] ; then
+    elif [ "${IGNORE_MATOMO_VERSION}" == "1" ] ; then
             log_warning "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
     else
         mismatches=$((mismatches+1))
@@ -421,6 +430,19 @@ __setup_matomo__()
     log_success "... Matomo - create token completed\n" "OK"
 }
 
+__karate_tags__() {
+    local path="${1}"
+    find "${path}" \
+          -type f \
+          -iname *.feature \
+          -exec grep "^\s*@" {} \; \
+          | sed 's/\(^\s*\|\s*$\)//g' \
+          | sed 's/\s\+/\n/g' \
+          | sort \
+          | uniq
+    printf "\n"
+}
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Main function
 # ----------------------------------------------------------------------------------------------------------------------
@@ -428,7 +450,7 @@ __setup_matomo__()
 __main__()
 {
       cd ${__ROOT__}
-      opts=`getopt --longoptions force,force-matomo-version,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
+      opts=`getopt --longoptions force,ignore-matomo-version,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
       eval set -- "$opts"
       while true ; do
           case "${1}" in
@@ -436,8 +458,8 @@ __main__()
                   FORCE="1"
                   shift
               ;;
-              --force-matomo-version)
-                  FORCE_MATOMO_VERSION="1"
+              --ignore-matomo-version)
+                  IGNORE_MATOMO_VERSION="1"
                   shift
               ;;
               -h|--help)
@@ -462,25 +484,48 @@ __main__()
           esac
       done
 
-      if [ ${FORCE} -ne 1 ] ; then
-          >&2 __usage__
-          >&2 printf "\n"
-          log_error "Use -f or --force to proceed with the script" "Fatal:"
-          exit 1
-      fi
+      while true ; do
+          case "${1:-}" in
+              check)
+                  __check__
+                  exit 0
+              ;;
+              setup)
+                  if [ ${FORCE} -ne 1 ] ; then
+                      >&2 __usage__
+                      >&2 printf "\n"
+                      log_error "Use -f or --force to proceed with the script" "Fatal:"
+                      exit 1
+                  fi
 
-      __check__
-      export_dot_env
-      __reset__
-      __setup_vault__
-      __setup_matomo__
-      export_dot_env
-      docker-compose down
-      sudo chmod -R 0757 ./data
-      docker-compose \
-          -f docker-compose.yml \
-          -f docker-compose.override.dev-`accepted_arch`.yml \
-          up
+                  __check__
+                  export_dot_env
+                  __reset__
+                  __setup_vault__
+                  __setup_matomo__
+                  export_dot_env
+                  docker-compose down
+                  sudo chmod -R 0757 ./data
+                  docker-compose \
+                      -f docker-compose.yml \
+                      -f docker-compose.override.dev-`accepted_arch`.yml \
+                      up
+                  exit 0
+              ;;
+              karate-tags)
+                  __karate_tags__ "${2:-./${KARATE_DEFAULT_TAGS_PATH}}"
+                  exit 0
+              ;;
+              --)
+                  shift
+                  break
+              ;;
+              *)
+                  >&2 __usage__
+                  exit 1
+              ;;
+          esac
+      done
 }
 
 __main__ "${@}"
