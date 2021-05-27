@@ -36,6 +36,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>
+			And match $ == schemas.error
 
 		Examples:
 			| role             | username     | password | status |

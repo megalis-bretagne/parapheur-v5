@@ -1,4 +1,4 @@
-@ip-core @api-v1 @666
+@ip-core @api-v1
 Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     Background:
@@ -9,7 +9,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get an existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -19,6 +19,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         Then status <status>
             And if (<status> === 200) utils.assert("$ == schemas.user.element")
             And if (<status> === 200) utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -31,7 +32,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -39,6 +40,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
@@ -49,7 +51,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get an existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -57,6 +59,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
@@ -67,7 +70,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -75,6 +78,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:

@@ -59,7 +59,7 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
         * def id = api_v1.entity.createTemporary()

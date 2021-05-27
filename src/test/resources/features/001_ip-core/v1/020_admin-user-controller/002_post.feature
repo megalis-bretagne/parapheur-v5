@@ -74,7 +74,6 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
 
     @data-validation
     Scenario Outline: ${scenario.title.validation('ADMIN', 'create a user in an existing tenant', status, data)}
-
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = uniqueRequestData
         * requestData[field] = utils.eval(value)
