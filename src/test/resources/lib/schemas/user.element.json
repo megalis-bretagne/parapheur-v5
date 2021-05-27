@@ -1,5 +1,4 @@
 {
-  "signatureImageNodeId": null,
   "lastName": "#string",
   "isLdapSynchronized": false,
   "complementaryField": null,
@@ -12,5 +11,6 @@
   "isLocked": null,
   "notificationsCronFrequency": null,
   "id": "#uuid",
-  "email": "#string"
+  "email": "#string",
+  "signatureImageContentId": "##uuid"
 }

@@ -1,5 +1,7 @@
 {
   "expirationDate": "#string",
-  "id": "#string",
-  "name": "#string"
+  "id": "#uuid",
+  "name": "#string",
+  "signatureImageContentId": "##string",
+  "usageCount": "##present"
 }
