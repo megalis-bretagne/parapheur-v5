@@ -1,4 +1,4 @@
-@ip-core @api-v1 @666
+@ip-core @api-v1
 Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
@@ -9,7 +9,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} update the password of an existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'update the password of an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -18,8 +18,9 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
+            And if (<status> === 200) utils.assert("response == ''")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
-        @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
@@ -31,7 +32,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot update the password of a non-existing user from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -40,6 +41,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:
@@ -53,7 +55,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot update the password of an existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'update the password of an existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -62,6 +64,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
@@ -74,7 +77,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             |                  |              |          | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot update the password of a non-existing user from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -83,6 +86,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:

@@ -40,6 +40,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:
@@ -62,6 +63,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:
@@ -83,6 +85,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:

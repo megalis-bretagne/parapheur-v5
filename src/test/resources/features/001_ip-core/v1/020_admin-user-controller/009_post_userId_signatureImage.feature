@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @666
 Feature: POST /api/admin/tenant/{tenantId}/user/signatureImage (Create user's signature image)
 
     @permissions @karate-todo @karate-todo-title-when-the-signature-already-exists

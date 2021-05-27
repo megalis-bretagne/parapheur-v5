@@ -8,7 +8,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get an existing user's signature image from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user\'s signature image from an existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -32,8 +32,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             |                  |              |          | ltransparent@dom.local | 401    |                                              |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user's signature image from an existing tenant
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -41,6 +40,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:
@@ -53,8 +53,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get an existing user's signature image from a non-existing tenant
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user\'s signature image from a non-existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -63,12 +63,12 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
-        @issue-ip-core-todo
         Examples:
             | role             | username     | password | email                  | status |
             | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 404    |
-        @issue-ip-core-78
+        @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |
@@ -76,8 +76,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             |                  |              |          | ltransparent@dom.local | 401    |
 
     @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing user's signature image from a non-existing tenant
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -85,6 +84,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @issue-ip-core-todo
         Examples:
