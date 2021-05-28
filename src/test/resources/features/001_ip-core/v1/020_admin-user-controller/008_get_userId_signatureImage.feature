@@ -23,8 +23,8 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
 
         Examples:
             | role             | username     | password | email                  | status | path                                         |
-            | ADMIN            | cnoir        | a123456  | stranslucide@dom.local | 404    |                                              |
             | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | classpath:files/signature - ltransparent.png |
+            | ADMIN            | cnoir        | a123456  | cnoir@dom.local        | 404    |                                              |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status | path                                         |
