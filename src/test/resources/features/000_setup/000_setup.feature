@@ -218,3 +218,4 @@ Feature: Basic setup
 		Examples:
 			| tenant         | email                  | path                                         |
 			| Default tenant | ltransparent@dom.local | classpath:files/signature - ltransparent.png |
+			| Default tenant | stranslucide@dom.local | classpath:files/signature - stranslucide.png |

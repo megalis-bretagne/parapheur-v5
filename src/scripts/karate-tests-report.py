@@ -7,7 +7,7 @@
 # python3 ./src/scripts/karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-all-ip-core-not-issue-ip-core-78.md"
 
 # gradle test -Dkarate.options="--tags ~@ip-web --tags ~@fixme-ip-core --tags ~@todo-ip-core" --info
-# python3 ./src/scripts/karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-all-ip-core-no-fixme.md"
+# python3 ./src/scripts/karate-tests-report.py > "build/karate-tests-`date "+%Y%m%d"`-passing-ip-core.md"
 
 from os import listdir
 from os.path import isfile, join
@@ -25,7 +25,7 @@ import urllib.request
 def get_parser() -> argparse.ArgumentParser:
     defaults = {
         'path': os.path.dirname(os.path.dirname(os.path.dirname(__file__))) + '/build/karate-reports/',
-        'url': 'https://iparapheur-5-0.dev.libriciel.net/api/v2/api-docs' # @fixme: 'http://iparapheur.dom.local/api/v2/api-docs'
+        'url': 'http://iparapheur.dom.local/api/v2/api-docs'
     }
 
     # @todo: 3 statuses + meaning
@@ -58,6 +58,7 @@ def get_api_dict(url: str) -> dict:
     results = {}
 
     try:
+        #print(f"Getting URL ${url}")
         with urllib.request.urlopen(url) as api:
             data = json.load(api)
     except urllib.error.URLError as exc:
