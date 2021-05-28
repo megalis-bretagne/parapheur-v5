@@ -67,7 +67,14 @@ def get_api_dict(url: str) -> dict:
 
     for path in sorted(data['paths'].keys()):
         for verb in sorted(data['paths'][path].keys(), key=functools.cmp_to_key(http_verbs_cmp)):
-            results[f"{verb.upper()} {path}"] = {'total': 0, 'passed': 0, 'failed': 0}
+            results[f"{verb.upper()} {path}"] = {
+                # @todo: data['paths'][path][verb]['responses'].keys()
+                'operationId': data['paths'][path][verb]['operationId'],
+                'summary': data['paths'][path][verb]['summary'],
+                'total': 0,
+                'passed': 0,
+                'failed': 0
+            }
 
     return results
 
@@ -84,37 +91,75 @@ def complete_results_with_karate_report(path: str, results: dict) -> dict:
                 matches = regexp.match(data['name'])
                 if matches != None:
                     key = f"{matches[1]} {matches[2]}"
-                    results[key] = {
-                        'total': data['passedCount'] + data['failedCount'],
-                        'passed': data['passedCount'],
-                        'failed': data['failedCount']
-                    }
+                    if key in results:
+                        results[key]['total'] = data['passedCount'] + data['failedCount']
+                        results[key]['passed'] = data['passedCount']
+                        results[key]['failed'] = data['failedCount']
+
     return results
 
 def output_results_in_md(results: dict) -> None:
-    """Output results in markdown"""
-    max = 0
-    for path in results.keys():
-        if len(path) > max:
-            max = len(path)
+    """Computes and outputs results in markdown"""
 
-    statuses = {
-        'OK': '<span style="background: green;">OK</span>',
-        'KO': '<span style="background: yellow;">KO</span>',
-        'NA': '<span style="background: red;">N/A</span>',
-    }
-    # @todo: 43= longest...
-
+    # Compute and get max lengths...
+    endpoints = {'total': len(results), 'passed': 0, 'partial': 0}
     totals = {'total': 0, 'passed': 0, 'failed': 0}
-
-    print(f"| " + 'Status'.ljust(43) + " | " + 'Endpoint'.ljust(max + 2) + " | Passed | Failed | Total |")
-    print(f"| " + '---'.ljust(43) + " | " + '---'.ljust(max + 2) + " | " + '---'.ljust(6) + " | " + '---'.ljust(6) + " | " + '---'.ljust(5) + " |")
-
+    max = {'status': 43, 'endpoint': 0, 'description': 0, 'passed': 0, 'failed': 0, 'total': 0}
     for path, details in results.items():
         totals['total'] = totals['total'] + details['total']
         totals['passed'] = totals['passed'] + details['passed']
         totals['failed'] = totals['failed'] + details['failed']
 
+        if details['total'] > 0:
+            if details['failed'] == 0:
+                endpoints['passed'] = endpoints['passed'] + 1
+            elif details['passed'] > 0:
+                endpoints['partial'] = endpoints['partial'] + 1
+
+        max['endpoint'] = len(path) if len(path) > max['endpoint'] else max['endpoint']
+        max['description'] = len(path) if len(path) > max['description'] else max['description']
+
+    max['passed'] = len(str(totals['passed']))
+    max['failed'] = len(str(totals['failed']))
+    max['total'] = len(str(totals['total']))
+
+    # Display
+    # @todo: 43= longest...
+    statuses = {
+        'OK': '<span style="background: green;">OK</span>',
+        'KO': '<span style="background: yellow;">KO</span>',
+        'NA': '<span style="background: red;">N/A</span>',
+    }
+
+    print(f"# Summary\n")
+
+    print(f"| Endpoints | Passing | Partial | Uncovered |")
+    print(f"| ---       | ---     | ---     | ---       |")
+    print(f"| %9d | %7d | %7d | %9d |" % (endpoints['total'], endpoints['passed'], endpoints['partial'], endpoints['total'] - (endpoints['passed'] + endpoints['partial'])))
+
+    print(f"\n# Details\n")
+
+    print(
+        f"| " + "Status".ljust(max["status"])
+        + " | " + "Endpoint".ljust(max["endpoint"] + 2)
+
+        + " | Description".ljust(max["description"])
+        + " | Passed".ljust(max["passed"])
+        + " | Failed".ljust(max["failed"])
+        + " | Total".ljust(max["total"])
+        + " |"
+    )
+    print(
+        f"| " + "---".ljust(max["status"])
+        + " | " + "---".ljust(max["endpoint"] + 2)
+        + " | " + "---".ljust(max['description'])
+        + " | " + "---".ljust(max["passed"])
+        + " | " + "---".ljust(max["failed"])
+        + " | " + "---".ljust(max["total"])
+        + " |"
+    )
+
+    for path, details in results.items():
         if details['total'] == 0:
             status = 'NA'
         elif details['total'] > details['passed']:
@@ -122,9 +167,25 @@ def output_results_in_md(results: dict) -> None:
         else:
             status = 'OK'
 
-        print(f"| " + statuses[status].ljust(43) + " | `" + path + "`" + ''.ljust(max - len(path)) + " | " + str(details['passed']).rjust(6) + " | " + str(details['failed']).rjust(6) + " | " + str(details['total']).rjust(5) + " |")
+        print(
+            f"| " + statuses[status].ljust(max["status"])
+            + " | `" + path + "`" + ''.ljust(max["endpoint"] - len(path))
+            + " | " + details['summary'].ljust(max["description"])
+            + " | " + str(details['passed']).rjust(max["passed"])
+            + " | " + str(details['failed']).rjust(max["failed"])
+            + " | " + str(details['total']).rjust(max["total"])
+            + " |"
+        )
 
-    print(f"| " + ''.ljust(43) + " | " + 'Total'.ljust(max + 2) + " | " + str(totals['passed']).rjust(6) + " | " + str(totals['failed']).rjust(6) + " | " + str(totals['total']).rjust(5) + " |")
+    print(
+        f"| " + ''.ljust(max["status"])
+        + " | " + 'Total'.ljust(max["endpoint"] + 2)
+        + " | " + details['summary'].ljust(max["description"])
+        + " | " + str(totals['passed']).rjust(max["passed"])
+        + " | " + str(totals['failed']).rjust(max["failed"])
+        + " | " + str(totals['total']).rjust(max["total"])
+        + " |"
+    )
 
 # ======================================================================================================================
 
