@@ -330,9 +330,9 @@ __reset__()
           --remove-orphans \
           --volumes
       sudo rm -rf ./data
-      mkdir -m 757 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data}
+      mkdir -m 777 -p ./data/{alfresco,matomo/{config,plugins},postgres,solr/{data,contentstore},vault/data}
       touch ./data/.gitkeep
-      chmod -R 0757 ./data
+      chmod -R 0777 ./data
 
       log_success "... resetting completed\n" "OK"
 }
@@ -505,7 +505,7 @@ __main__()
                   __setup_matomo__
                   export_dot_env
                   docker-compose down
-                  sudo chmod -R 0757 ./data
+                  sudo chmod -R 0777 ./data
                   docker-compose \
                       -f docker-compose.yml \
                       -f docker-compose.override.dev-`accepted_arch`.yml \
