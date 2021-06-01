@@ -136,6 +136,13 @@ def output_results_in_md(results: dict) -> None:
     print(f"| Endpoints | Passing | Partial | Uncovered |")
     print(f"| ---       | ---     | ---     | ---       |")
     print(f"| %9d | %7d | %7d | %9d |" % (endpoints['total'], endpoints['passed'], endpoints['partial'], endpoints['total'] - (endpoints['passed'] + endpoints['partial'])))
+    print(f"| %7.2f %% | %5.2f %% | %5.2f %% | %7.2f %% |" % (
+        endpoints['total'] / endpoints['total'] * 100,
+        endpoints['passed'] / endpoints['total'] * 100,
+        endpoints['partial'] / endpoints['total'] * 100,
+        (endpoints['total'] - (endpoints['passed'] + endpoints['partial'])) / endpoints['total'] * 100
+        )
+    )
 
     print(f"\n# Details\n")
 
