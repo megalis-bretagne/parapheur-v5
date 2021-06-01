@@ -7,7 +7,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get the list from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get the desk list from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -16,8 +16,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         When method GET
         Then status <status>
             And if (<status> === 200) utils.assert("$ == schemas.desk.index")
-            And if (<status> === 200) utils.assert("$.total == 2")
-            And if (<status> === 200) utils.assert("$.data[*].name == [ 'Translucide', 'Transparent' ]")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -30,7 +29,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get the list from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get the desk list from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -38,6 +37,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
@@ -48,7 +48,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 401    |
 
     @searching
-    Scenario Outline: Searching - a user with an "ADMIN" role can filter the desk list and get ${total} result(s) with "${searchTerm}", sorted by ${sortBy}, ${asc ? 'ascending' : 'descending'}
+    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
@@ -71,4 +71,5 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | searchTerm | sortBy | asc!  | total | field | value!                           |
+            |            | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
             | trans      | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |

@@ -9,8 +9,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
         * def existingDeskData = api_v1.desk.getById(existingTenantId, existingDeskId)
 
-    @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} edit an existing desk from an existing tenant
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'edit an existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -19,19 +19,21 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
-            And if (<status> === 200) utils.assert("$ contains { id: '#(existingDeskData.id)', name: '#(existingDeskData.name)' }")
+            And if (<status> === 200) utils.assert("response == ''")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
-        @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 200    |
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        Examples:
+            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot edit an existing desk from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'edit an existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -40,6 +42,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
@@ -51,8 +54,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot edit a non-existing desk from an existing tenant
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'edit a non-existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -61,8 +64,9 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
-        @issue-ip-core-78 @issue-ip-core-todo
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
@@ -71,7 +75,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot edit a non-existing desk from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'edit a non-existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -80,6 +84,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
+            And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
@@ -91,8 +96,8 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @data-validation @fixme-ip-core @issue-ip-core-todo
-    Scenario Outline: Data validation - a user with an "ADMIN" role cannot edit a desk with ${wrong_data}
+    @data-validation
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a desk in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = existingDeskData
         * requestData[field] = utils.eval(value)
@@ -104,13 +109,21 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
 
         When method PUT
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 200) utils.assert("response == ''")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
-            | status | field        | value!                                      | wrong_data                       |
-            | 400    | name         | ''                                          | an empty name                    |
-            | 400    | name         | ' '                                         | a space as a name                |
-            | 400    | name         | eval(utils.string.getRandom(257, 'tmp-')) | a name that is too long          |
-            | 409    | name         | 'Translucide'                               | a name that already exists       |
-            | 400    | description  | eval(utils.string.getRandom(301, 'tmp-')) | a description that is too long   |
-            | 400    | parentDeskId | eval(api_v1.desk.getNonExistingId())        | a parent desk that doesn't exist |
+            | status | field        | value!                                                        | data                                       |
+            | 200    | name         | eval(utils.string.getRandom(1))                               | a name that is 1 character long            |
+            | 200    | name         | eval(utils.string.getRandom(255, 'tmp-'))                     | a name that is up to 255 characters        |
+            | 200    | parentDeskId | eval(api_v1.desk.getIdByName(existingTenantId, 'tmp-', true)) | a parent desk that does exist              |
+        @fixme-ip-core @issue-ip-core-todo
+        Examples:
+            | status | field        | value!                                                        | data                                       |
+            | 200    | description  | eval(utils.string.getRandom(300))                             | a description that is up to 300 characters |
+            | 400    | name         | ''                                                            | an empty name                              |
+            | 400    | name         | ' '                                                           | a space as a name                          |
+            | 400    | name         | eval(utils.string.getRandom(256))                             | a name that is too long                    |
+            | 409    | name         | eval(api_v1.desk.getIdByName(existingTenantId, 'tmp-', true)) | a name that already exists                 |
+            | 400    | description  | eval(utils.string.getRandom(301))                             | a description that is too long             |
+            | 400    | parentDeskId | eval(api_v1.desk.getNonExistingId())                          | a parent desk that doesn't exist           |

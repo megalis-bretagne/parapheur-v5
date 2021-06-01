@@ -81,7 +81,7 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
 
         Examples:
             | status | field | value!                                      | data                                |
-            | 200    | name  | eval(utils.string.getRandom(1, 'tmp-'))     | a name that is at least 1 character |
+            | 200    | name  | eval(utils.string.getRandom(1))             | a name that is at least 1 character |
             | 200    | name  | eval(utils.string.getRandom(64, 'tmp-'))    | a name that is up to 64 characters  |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
