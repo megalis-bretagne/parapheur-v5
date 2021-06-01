@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
+Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delegations (active and planned) for given substitute desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -7,21 +7,22 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
-        * def deskData = api_v1.desk.getById(existingTenantId, existingDeskId)
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing desk from an existing tenant', status)}
+    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for an existing substitute desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId
+            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
-        When method DELETE
+        When method GET
         Then status <status>
+            And if (<status> === 200) utils.assert("$ == schemas.delegation.index")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 204    |
+            | ADMIN            | cnoir        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -30,34 +31,15 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for an existing substitute desk in a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/desk/', existingDeskId
+            And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
-        When method DELETE
+        When method GET
         Then status <status>
-
-        Examples:
-            | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
-
-    @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing desk from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId
-            And header Accept = 'application/json'
-        When method DELETE
-        Then status <status>
+            And match $ == schemas.error
 
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
@@ -68,21 +50,20 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for a non-existing substitute desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/desk/', nonExistingDeskId
+            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations'
             And header Accept = 'application/json'
-        When method DELETE
+        When method GET
         Then status <status>
+            And match $ == schemas.error
 
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

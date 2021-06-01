@@ -38,6 +38,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
+			And match $ == schemas.error
 
 		@fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
 		Examples:

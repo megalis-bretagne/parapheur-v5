@@ -9,7 +9,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} ${scenario.title.status(status)} get an existing desk from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -19,6 +19,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
         Then status <status>
             And if (<status> === 200) utils.assert("$ == schemas.desk.element")
             And if (<status> === 200) utils.assert("$ contains { 'name': 'Transparent' }")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -31,7 +32,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing desk from an existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -49,7 +50,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get an existing desk from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -67,7 +68,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: Permissions - ${scenario.title.role(role)} cannot get a non-existing desk from a non-existing tenant
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

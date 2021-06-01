@@ -254,6 +254,10 @@ function fn(config) {
             'element': karate.read('classpath:lib/schemas/sealCertificate.element.json'),
             'index': karate.read('classpath:lib/schemas/sealCertificate.index.json')
         },
+        'delegation': {
+            'element': karate.read('classpath:lib/schemas/delegation.element.json'),
+            'index': karate.read('classpath:lib/schemas/delegation.index.json')
+        }
     };
 
     /**
