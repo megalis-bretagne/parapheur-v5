@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @666
 Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
 
     Background:

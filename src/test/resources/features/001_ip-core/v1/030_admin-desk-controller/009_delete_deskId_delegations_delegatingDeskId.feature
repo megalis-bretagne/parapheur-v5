@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Create a new delegation (active or planned) from target desk)
+Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Remove an active or planned delegation from target Desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -10,14 +10,15 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def requestData =
 """
 {
-    "2025-01-01T02:00:00.000Z": true,
-    "2025-01-31T02:00:00.000Z": false,
+"2025-01-01T02:00:00.000Z": true,
+"2025-01-31T02:00:00.000Z": false,
 }
 """
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in an existing tenant', status)}
+        # Create a delegation
+        * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
@@ -25,13 +26,21 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
             And header Accept = 'application/json'
             And request requestData
         When method POST
+        Then status 201
+
+        # Try to delete it
+        * api_v1.auth.login('<username>', '<password>')
+        Given url baseUrl
+            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And header Accept = 'application/json'
+        When method DELETE
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 204) utils.assert("response == ''")
+            And if (<status> !== 204) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 204    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -40,15 +49,24 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in a non-existing tenant', status)}
+        # Create a delegation
+        * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
+        Given url baseUrl
+            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And header Accept = 'application/json'
+            And request requestData
+        When method POST
+        Then status 201
+
+        # Try to delete it
+        * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
-            And request requestData
-        When method POST
+        When method DELETE
         Then status <status>
             And match $ == schemas.error
 
@@ -63,36 +81,13 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to a non-existing desk in an existing tenant', status)}
+    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to a non-existing desk in an existing tenant', status)}
+        # Try to delete it
         * api_v1.auth.login('<username>', '<password>')
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-
         Given url baseUrl
             And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
             And header Accept = 'application/json'
-            And request requestData
-        When method POST
-        Then status <status>
-            And match $ == schemas.error
-
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
-
-    @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target non-existing desk to an existing desk in an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
-            And header Accept = 'application/json'
-            And request requestData
-        When method POST
+        When method DELETE
         Then status <status>
             And match $ == schemas.error
 
@@ -104,26 +99,23 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
-        * api_v1.auth.login('cnoir', 'a123456')
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target non-existing desk to an existing desk in an existing tenant', status)}
+        * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
+        * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
-            And request request_data
-        When method POST
+        When method DELETE
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And match $ == schemas.error
 
+        @fixme-ip-core @issue-ip-core-78
         Examples:
-            | status | field | request_data!                                                           | data                                           |
-            | 201    | name  | { "2025-01-01T02:00:00.000Z": true, "2025-01-31T02:00:00.000Z": false } | right data types                               |
-            | 400    | name  | { "foo": true, "bar": false }                                           | wrong data types (strings instead of dates)    |
-        @fixme-ip-core @issue-ip-core-todo
-        Examples:
-            | status | field | request_data!                                                           | data                                           |
-            | 400    | name  | {}                                                                      | an empty request body                          |
-            | 400    | name  | { "2025-01-01T02:00:00.000Z": 6, "2025-01-31T02:00:00.000Z": 6 }        | wrong data types (integer instead of booleans) |
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
