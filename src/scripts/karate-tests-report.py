@@ -62,7 +62,7 @@ def get_api_dict(url: str) -> dict:
         with urllib.request.urlopen(url) as api:
             data = json.load(api)
     except urllib.error.URLError as exc:
-        print(f"Error: could not reach URL {url}")
+        print(f"Error: could not reach URL {url}", file=sys.stderr)
         sys.exit(1)
 
     for path in sorted(data['paths'].keys()):
