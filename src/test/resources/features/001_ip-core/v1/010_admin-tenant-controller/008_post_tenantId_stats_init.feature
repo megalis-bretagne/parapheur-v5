@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stats entry for the given tenant)
+Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a stats entry for the given tenant)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'create or recreate a stats entry for an existing tenant', status)}
@@ -8,7 +8,7 @@ Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stat
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/stats/init'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/stats/init'
             And header Accept = 'application/json'
         When method POST
         Then status <status>
@@ -33,7 +33,7 @@ Feature: POST /api/admin/tenant/{tenantId}/stats/init (Create or recreate a stat
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/stats/init'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/stats/init'
             And header Accept = 'application/json'
         When method POST
         Then status <status>

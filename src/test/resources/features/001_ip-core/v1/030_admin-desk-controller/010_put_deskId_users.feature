@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
+Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * def unique = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request
 """
@@ -33,7 +33,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(existingUserId)"] }
         When method PUT
@@ -57,7 +57,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * api_v1.auth.login('user', 'password')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request
 """
@@ -77,7 +77,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(nonExistingUserId)"] }
         When method PUT
@@ -103,7 +103,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(existingUserId)"] }
         When method PUT
@@ -128,7 +128,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(nonExistingUserId)"] }
         When method PUT

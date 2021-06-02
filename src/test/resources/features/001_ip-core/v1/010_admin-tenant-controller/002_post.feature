@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant (Create tenant)
+Feature: POST /api/v1/admin/tenant (Create tenant)
 
 	Background:
 		* api_v1.auth.login('user', 'password')
@@ -11,7 +11,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant'
 			And header Accept = 'application/json'
 			And request cleanRequestData
 
@@ -37,7 +37,7 @@ Feature: POST /api/admin/tenant (Create tenant)
 		* requestData[field] = utils.eval(value)
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant'
 			And header Accept = 'application/json'
 			And request requestData
 		When method POST

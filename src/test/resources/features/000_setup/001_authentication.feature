@@ -1,5 +1,5 @@
 @setup @check-setup
-Feature: POST /auth/realms/api/protocol/openid-connect/token (Authentication)
+Feature: POST /auth/realms/api/v1/protocol/openid-connect/token (Authentication)
 
 	@authentication
 	Scenario Outline: Successful authentication for role "${role}" with "${username}" and "${password}"

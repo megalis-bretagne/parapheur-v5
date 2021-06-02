@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user from desk)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user from desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * def unique = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request
 """
@@ -33,7 +33,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(existingUserId)"] }
         When method PUT
@@ -41,7 +41,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
 
         # Remove the user from the desk
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -65,7 +65,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * def unique = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request
 """
@@ -85,7 +85,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
             And request { "userIdList": ["#(existingUserId)"] }
         When method PUT
@@ -93,7 +93,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
 
         # Remove the user from the desk
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -116,7 +116,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/users/?userIdList=' + existingUserId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/users/?userIdList=' + existingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -138,7 +138,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
         * def unique = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request
 """
@@ -156,7 +156,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user fr
 
         # Remove the user from the desk
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + nonExistingUserId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + nonExistingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>

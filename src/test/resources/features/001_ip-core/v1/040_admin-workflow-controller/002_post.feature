@@ -1,5 +1,5 @@
 @ip-core @api-v1 @karate-todo
-Feature: POST /api/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
+Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -37,7 +37,7 @@ Feature: POST /api/admin/tenant/{tenantId}/workflowDefinition (Create a workflow
         * def key = name.toLowerCase().replace(/[^a-z0-9]/g, '_')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', tenantId, '/workflowDefinition'
+            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
             And header Accept = 'application/json'
             And request
 """

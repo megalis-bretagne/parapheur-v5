@@ -5,7 +5,7 @@ Feature: Basic setup
 		* api_v1.auth.login('user', 'password')
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant'
 			And header Accept = 'application/json'
 			And request { name: '<name>'}
 		When method POST
@@ -23,7 +23,7 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/user'
+			And path '/api/v1/admin/tenant/', tenantId, '/user'
 			And header Accept = 'application/json'
 			And request
 """
@@ -55,7 +55,7 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/desk'
+			And path '/api/v1/admin/tenant/', tenantId, '/desk'
 			And header Accept = 'application/json'
 			And request
 """
@@ -72,7 +72,7 @@ Feature: Basic setup
 		* def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/desk/', deskId, '/users'
+			And path '/api/v1/admin/tenant/', tenantId, '/desk/', deskId, '/users'
 			And header Accept = 'application/json'
 			And request { "userIdList": ["#(userId)"] }
 		When method PUT
@@ -88,7 +88,7 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('Default tenant')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/sealCertificate'
+			And path '/api/v1/admin/tenant/', tenantId, '/sealCertificate'
 			And header Accept = 'application/json'
 			And multipart file file = { read: 'classpath:files/Default tenant - Seal Certificate.p12', 'contentType': 'application/x-pkcs12' }
 			And multipart field password = 'christian.buffin@libriciel.coop'
@@ -104,7 +104,7 @@ Feature: Basic setup
 		* def key = '<name>'.toLowerCase().replace(/[^a-z0-9]/g, '_')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/workflowDefinition'
+			And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
 			And header Accept = 'application/json'
 			And request
 """
@@ -146,7 +146,7 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/typology/type'
+			And path '/api/v1/admin/tenant/', tenantId, '/typology/type'
 			And header Accept = 'application/json'
 			And request
 """
@@ -177,7 +177,7 @@ Feature: Basic setup
 		* def typeId = api_v1.type.getIdByName(tenantId, '<type>')
 
 		Given url baseUrl
-			And path 'api/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
+			And path '/api/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
 			And header Accept = 'application/json'
 			And request
 """
@@ -209,7 +209,7 @@ Feature: Basic setup
 		* def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+			And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
 			And header Accept = 'application/json'
 			And multipart file file = { read: '<path>', 'contentType': 'image/png' }
 		When method POST
