@@ -1,0 +1,6 @@
+{
+  "total": "#number",
+  "data": "#[] #(schemas.workflow.element)",
+  "pageSize": "#number",
+  "page": "#number"
+}
