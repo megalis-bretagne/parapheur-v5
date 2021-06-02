@@ -70,7 +70,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/users (List users from d
         Then status <status>
             And match $ == schemas.error
 
-        @fixme-ip-core @issue-ip-core-78
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
