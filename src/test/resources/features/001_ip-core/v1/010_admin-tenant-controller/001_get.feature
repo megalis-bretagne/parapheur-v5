@@ -40,11 +40,18 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 			And match $.data[*]['<field>'] == <value>
 
 		Examples:
-			| searchTerm | sortBy | asc!  | total | field | value!                                                                       |
-			|            | NAME   | true  | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
-			|            | NAME   | false | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
+			| searchTerm   | sortBy | asc!  | total | field | value!                                                                       |
+			|              | NAME   | true  | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
+			|              | NAME   | false | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
 		@fixme-ip-core @issue-ip-core-142
 		Examples:
-			| searchTerm | sortBy | asc!  | total | field | value!                                                                       |
-			| foo        |        | null  | 0     | name  | []                                                                           |
-			| el         |        | null  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
+			| searchTerm   | sortBy | asc!  | total | field | value!                                                                       |
+			| foo          |        | null  | 0     | name  | []                                                                           |
+			| el           |        | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
+			| el           |        | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]                   |
+			| mediterranee |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| MEDITERRANEE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| méditerranée |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| MÉDITERRANÉE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| méditérranéé |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| MÉDITÉRRANÉÉ |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
