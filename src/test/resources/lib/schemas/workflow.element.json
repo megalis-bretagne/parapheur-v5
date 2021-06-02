@@ -1,15 +1,10 @@
 {
-  "steps": [
-    {
-      "validators": "#[] #uuid",
-      "validationMode": "#regex (AND|OR|SIMPLE)",
-      "name": "#string",
-      "type": "#regex (EXTERNAL_SIGNATURE|MAIL|SEAL|SIGNATURE|VISA)",
-      "parallelType": "#regex (OR)"
-    }
-  ],
+  "isSuspended": "#boolean",
+  "deploymentId": "#uuid",
   "name": "#string",
-  "id": "#uuid",
+  "id": "#string",
+  "version": "#number",
+  "steps": null,
   "key": "#string",
-  "deploymentId": "#string"
+  "usageCount": "#number"
 }
