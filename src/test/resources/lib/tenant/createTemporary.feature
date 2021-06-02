@@ -5,7 +5,7 @@ Feature: Tenant lib
         * def requestData = { name:  '#(name)' }
 
         Given url baseUrl
-            And path '/api/admin/tenant/'
+            And path '/api/v1/admin/tenant/'
             And header Accept = 'application/json'
             And request requestData
         When method POST

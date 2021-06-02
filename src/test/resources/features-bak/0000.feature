@@ -12,12 +12,12 @@ Feature: My feature
 #    @wip
 ##    Scenario Outline: WIP - ${title.role(role)} ${title.status(status)} associate an existing desk to an existing user in an existing tenant
 #    Scenario Outline: ... ${title.role(role)} ... ${title.existing(tenant)} tenant
-##        * print '/api/admin/tenant/', id.tenant[<tenant> ? 'existing' : 'non_existing'] ,'/desk'
+##        * print '/api/v1/admin/tenant/', id.tenant[<tenant> ? 'existing' : 'non_existing'] ,'/desk'
 #
 ##        * def tenant = <tenant> == true ? api_v1.entity.getIdByName('Default tenant') : api_v1.entity.getNonExistingId()
-##        * print '/api/admin/tenant/', tenant ,'/desk'
+##        * print '/api/v1/admin/tenant/', tenant ,'/desk'
 #
-#        * print '/api/admin/tenant/' + tenantId(tenant)  + '/desk'
+#        * print '/api/v1/admin/tenant/' + tenantId(tenant)  + '/desk'
 #
 #        * print <tenant>
 #        * match <status> == '#number'
@@ -36,7 +36,7 @@ Feature: My feature
 #
 #    @wip
 #    Scenario Outline: ... ${title.role(role)} ${scenario.title.status(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
-#        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
+#        * print '/api/v1/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
 #        * match <status> == '#number'
 #
 ##        Examples:
@@ -68,8 +68,8 @@ Feature: My feature
 
     @x-wip
     Scenario Outline: ... ${title.role(role)} ${scenario.title.status(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
-        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
-#        * print '/api/admin/tenant/' + tenantId(tenant_exists)  + '/desk/', + deskId(tenant_exists)  +, '/users'
+        * print '/api/v1/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
+#        * print '/api/v1/admin/tenant/' + tenantId(tenant_exists)  + '/desk/', + deskId(tenant_exists)  +, '/users'
 #        * print userId(user_exists)
         * print { "userIdList": [ userId(user_exists) ] }
 

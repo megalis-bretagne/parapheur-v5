@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user's signature image)
+Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user's signature image)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -37,7 +37,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -60,7 +60,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -81,7 +81,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get user
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method GET
         Then status <status>

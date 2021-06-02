@@ -41,7 +41,7 @@ function fn(config) {
     config.api_v1.desk['getById'] = function (tenantId, deskId) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/desk/' + deskId)
+            .path('/api/v1/admin/tenant/' + tenantId + '/desk/' + deskId)
             .header('Accept', 'application/json')
             .get();
 
@@ -54,7 +54,7 @@ function fn(config) {
     config.api_v1.desk['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/desk')
+            .path('/api/v1/admin/tenant/' + tenantId + '/desk')
             .header('Accept', 'application/json')
             .param('searchTerm', name)
             .get();
@@ -84,7 +84,7 @@ function fn(config) {
     config.api_v1.entity['getIdByName'] = function (name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant')
+            .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
             .param('asc', 'true')
             .param('page', 0)
@@ -103,7 +103,7 @@ function fn(config) {
     config.api_v1.entity['getNameById'] = function (id) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant')
+            .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
             .param('asc', 'true')
             .param('page', 0)
@@ -145,11 +145,11 @@ function fn(config) {
 
         return api_v1.user.getIdByEmail(tenantId, email);
     };
-    // @fixme-ip-core: user-controller, /api/currentUser -> 404
+    // @fixme-ip-core: user-controller, /api/v1/currentUser -> 404
     config.api_v1.user['getCurrentUserId'] = function () {
         response = karate
             .http(baseUrl)
-            .path('/api/currentUser')
+            .path('/api/v1/currentUser')
             .header('Accept', 'application/json')
             .get();
 
@@ -162,7 +162,7 @@ function fn(config) {
     config.api_v1.user['getById'] = function (tenantId, userId) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/user/' + userId)
+            .path('/api/v1/admin/tenant/' + tenantId + '/user/' + userId)
             .header('Accept', 'application/json')
             .get();
 
@@ -175,7 +175,7 @@ function fn(config) {
     config.api_v1.user['getIdByEmail'] = function (tenantId, email, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/user')
+            .path('/api/v1/admin/tenant/' + tenantId + '/user')
             .header('Accept', 'application/json')
             .param('searchTerm', email)
             .get();
@@ -258,7 +258,7 @@ function fn(config) {
     config.api_v1.type['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/typology')
+            .path('/api/v1/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
             .param('searchTerm', name)
             .get();
@@ -306,7 +306,7 @@ function fn(config) {
     config.api_v1.workflow['getKeyByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/admin/tenant/' + tenantId + '/workflowDefinition')
+            .path('/api/v1/admin/tenant/' + tenantId + '/workflowDefinition')
             .header('Accept', 'application/json')
             .param('searchTerm', name)
             .get();

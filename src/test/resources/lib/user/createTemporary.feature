@@ -17,7 +17,7 @@ Feature: User lib
 """
 
         Given url baseUrl
-            And path '/api/admin/tenant/', tenantId, '/user'
+            And path '/api/v1/admin/tenant/', tenantId, '/user'
             And header Accept = 'application/json'
             And request requestData
         When method POST

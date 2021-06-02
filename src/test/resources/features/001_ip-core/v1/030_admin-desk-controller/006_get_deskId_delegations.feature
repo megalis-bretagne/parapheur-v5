@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delegations (active and planned) for given substitute desk)
+Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delegations (active and planned) for given substitute desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delega
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -35,7 +35,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delega
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -54,7 +54,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delega
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations'
             And header Accept = 'application/json'
         When method GET
         Then status <status>

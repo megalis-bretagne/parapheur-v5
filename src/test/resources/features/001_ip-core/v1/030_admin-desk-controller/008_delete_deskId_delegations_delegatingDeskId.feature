@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Remove an active or planned delegation from target Desk)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Remove an active or planned delegation from target Desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -22,7 +22,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -31,7 +31,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
         # Try to delete it
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -55,7 +55,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -64,7 +64,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
         # Try to delete it
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -85,7 +85,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
         # Try to delete it
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -106,7 +106,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegati
 
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>

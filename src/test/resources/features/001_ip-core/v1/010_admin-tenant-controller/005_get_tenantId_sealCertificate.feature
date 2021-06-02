@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/sealCertificate (List seal certificates)
+Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certificates)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'get the seal certificates list of an existing tenant', status)}
@@ -8,7 +8,7 @@ Feature: GET /api/admin/tenant/{tenantId}/sealCertificate (List seal certificate
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/sealCertificate'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/sealCertificate'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -32,7 +32,7 @@ Feature: GET /api/admin/tenant/{tenantId}/sealCertificate (List seal certificate
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/sealCertificate'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/sealCertificate'
             And header Accept = 'application/json'
         When method GET
         Then status <status>

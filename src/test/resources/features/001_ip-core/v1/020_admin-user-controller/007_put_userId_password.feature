@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
+Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
             And header Accept = 'application/json'
             And request { password: 'a123456' }
         When method PUT
@@ -36,7 +36,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
             And header Accept = 'application/json'
             And request { password: 'a123456' }
         When method PUT
@@ -59,7 +59,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/password'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/password'
             And header Accept = 'application/json'
             And request { password: 'a123456' }
         When method PUT
@@ -81,7 +81,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
             And header Accept = 'application/json'
             And request { password: 'a123456' }
         When method PUT
@@ -104,7 +104,7 @@ Feature: PUT /api/admin/tenant/{tenantId}/user/{userId}/password (Update user pa
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
             And header Accept = 'application/json'
             And request { <field>: <value> }
 
