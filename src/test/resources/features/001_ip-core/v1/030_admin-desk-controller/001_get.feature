@@ -64,12 +64,16 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             And match $.data[*]['<field>'] == <value>
 
         Examples:
-            | searchTerm | sortBy | asc!  | total | field | value!                           |
-            | foo        | NAME   | false | 0     | name  | []                               |
-            | lucide     | NAME   | true  | 1     | name  | [ 'Translucide' ]                |
-            | trans      | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
+            | searchTerm  | sortBy | asc!  | total | field | value!                           |
+            | foo         | NAME   | false | 0     | name  | []                               |
+            | lucide      | NAME   | true  | 1     | name  | [ 'Translucide' ]                |
+            | trans       | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
+            | TRANS       | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
-            | searchTerm | sortBy | asc!  | total | field | value!                           |
-            |            | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
-            | trans      | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | searchTerm  | sortBy | asc!  | total | field | value!                           |
+            |             | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | trans       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | TRANS       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | trànslucidé | NAME   | null  | 2     | name  | [ 'Translucide', 'Transparent' ] |
+            | TRÀNSLUCIDÉ | NAME   | null  | 2     | name  | [ 'Translucide', 'Transparent' ] |
