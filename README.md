@@ -82,7 +82,7 @@ $ docker-compose up -d nginx matomo
 ```
 ou en environnement de développement :
 ```bash
-$ docker-compose -f docker-compose.override.dev-linux.yml up -d nginx matomo
+$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo
 ```
 
 `http://iparapheur.dom.local/matomo/` for the installation page.  
