@@ -221,7 +221,7 @@ function fn(config) {
         },
         'workflow': {
             'element': karate.read('classpath:lib/schemas/workflow.element.json'),
-            // 'index': karate.read('classpath:lib/schemas/workflow.index.json')
+            'index': karate.read('classpath:lib/schemas/workflow.index.json')
         },
         'type': {
             'element': karate.read('classpath:lib/schemas/type.element.json'),
