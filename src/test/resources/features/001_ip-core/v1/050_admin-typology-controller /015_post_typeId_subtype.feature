@@ -1,5 +1,5 @@
 @ip-core @api-v1 @karate-todo
-Feature: POST /api/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
+Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -14,7 +14,7 @@ Feature: POST /api/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Creat
         * def name = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-        And path 'api/admin/tenant/', tenantId, 'typology/type/', typeId, '/subtype'
+        And path '/api/v1/admin/tenant/', tenantId, 'typology/type/', typeId, '/subtype'
             And header Accept = 'application/json'
             And request
 """

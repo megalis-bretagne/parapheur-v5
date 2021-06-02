@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/user (List users)
+Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 	@permissions
 	Scenario Outline: ${scenario.title.permissions(role, 'get the user list from an existing tenant', status)}
@@ -9,7 +9,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', existingTenantId, '/user'
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
@@ -34,7 +34,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user'
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
@@ -55,7 +55,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user (List users)
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', existingTenantId, '/user'
 			And header Accept = 'application/json'
 			And param asc = <asc>
 			And param sortBy = '<sortBy>'

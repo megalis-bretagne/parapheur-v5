@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Create a new delegation (active or planned) from target desk)
+Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Create a new delegation (active or planned) from target desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -21,7 +21,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -45,7 +45,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -68,7 +68,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -89,7 +89,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request requestData
         When method POST
@@ -110,7 +110,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegating
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
             And request request_data
         When method POST

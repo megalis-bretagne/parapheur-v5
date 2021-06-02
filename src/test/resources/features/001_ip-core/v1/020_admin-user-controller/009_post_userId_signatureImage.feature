@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create user's signature image)
+Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create user's signature image)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'create a signature image for an existing user in an existing tenant', status)}
@@ -9,7 +9,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create 
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
             And multipart file file = { read: '<path>', 'contentType': 'image/png' }
         When method POST
@@ -36,7 +36,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create 
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
@@ -63,7 +63,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create 
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
@@ -88,7 +88,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create 
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
@@ -114,7 +114,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create 
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
             And multipart file file = { read: <path>, 'contentType': '<contentType>' }
         When method POST

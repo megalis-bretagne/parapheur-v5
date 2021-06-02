@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
+Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -11,7 +11,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -33,7 +33,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -52,7 +52,7 @@ Feature: GET /api/admin/tenant/{tenantId}/desk (List desks)
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And param asc = <asc>
             And param sortBy = '<sortBy>'

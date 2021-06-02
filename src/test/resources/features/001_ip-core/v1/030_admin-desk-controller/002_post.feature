@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
+Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -21,7 +21,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request uniqueRequestData
 
@@ -45,7 +45,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk'
             And header Accept = 'application/json'
             And request uniqueRequestData
         When method POST
@@ -73,7 +73,7 @@ Feature: POST /api/admin/tenant/{tenantId}/desk (Create a new desk)
         * if (requestData['parentDeskId'] != null) expected['directParent'] = { id: requestData['parentDeskId'] }
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And request requestData
         When method POST

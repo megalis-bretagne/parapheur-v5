@@ -1,5 +1,5 @@
 @ip-core @api-v1 @karate-todo
-Feature: POST /api/admin/tenant/{tenantId}/typology/type (Create type)
+Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -12,7 +12,7 @@ Feature: POST /api/admin/tenant/{tenantId}/typology/type (Create type)
         * def name = 'tmp-' + utils.getUUID()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', tenantId, '/typology/type'
+            And path '/api/v1/admin/tenant/', tenantId, '/typology/type'
             And header Accept = 'application/json'
             And request
 """

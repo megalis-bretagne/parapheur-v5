@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}
@@ -8,7 +8,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
 
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/stats/remove'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/stats/remove'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -32,7 +32,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/stats/remove (Disable stats for the
 
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/stats/remove'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/stats/remove'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>

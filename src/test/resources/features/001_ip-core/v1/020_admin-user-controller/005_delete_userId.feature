@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId} (Delete user)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -14,7 +14,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -36,7 +36,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -57,7 +57,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -76,7 +76,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId} (Delete user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>

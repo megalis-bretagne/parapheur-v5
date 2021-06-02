@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
+Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -16,7 +16,7 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', id
+            And path '/api/v1/admin/tenant/', id
             And header Accept = 'application/json'
             And request cleanRequestData
         When method PUT
@@ -41,7 +41,7 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', id
+            And path '/api/v1/admin/tenant/', id
             And header Accept = 'application/json'
             And request cleanRequestData
         When method PUT
@@ -70,7 +70,7 @@ Feature: PUT /api/admin/tenant/{tenantId} (Edit tenant)
         * requestData[field] = utils.eval(value)
 
         Given url baseUrl
-            And path '/api/admin/tenant/', id
+            And path '/api/v1/admin/tenant/', id
             And header Accept = 'application/json'
             And request requestData
         When method PUT

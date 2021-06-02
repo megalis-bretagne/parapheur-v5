@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal certificate)
+Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal certificate)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -11,7 +11,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
             And multipart field password = 'christian.buffin@libriciel.coop'
@@ -38,7 +38,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/sealCertificate'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
             And multipart field password = 'christian.buffin@libriciel.coop'
@@ -63,7 +63,7 @@ Feature: POST /api/admin/tenant/{tenantId}/sealCertificate (Import a new seal ce
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: '<path>', 'contentType': 'application/x-pkcs12' }
             And multipart field <field> = utils.eval(value)

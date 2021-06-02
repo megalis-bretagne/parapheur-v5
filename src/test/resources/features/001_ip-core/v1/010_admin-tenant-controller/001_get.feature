@@ -1,12 +1,12 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant (List tenants)
+Feature: GET /api/v1/admin/tenant (List tenants)
 
 	@permissions
 	Scenario Outline: ${scenario.title.permissions(role, 'get the tenant list', status)}
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant'
 			And header Accept = 'application/json'
 		When method GET
 		Then status <status>
@@ -28,7 +28,7 @@ Feature: GET /api/admin/tenant (List tenants)
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/'
+			And path '/api/v1/admin/tenant/'
 			And header Accept = 'application/json'
 			And param asc = <asc>
 			And param sortBy = '<sortBy>'

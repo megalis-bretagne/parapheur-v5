@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for an existing user in an existing tenant', status)}
@@ -9,7 +9,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delet
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -34,7 +34,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delet
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -60,7 +60,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delet
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -84,7 +84,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delet
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -109,7 +109,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delet
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>

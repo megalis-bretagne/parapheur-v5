@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
+Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -13,7 +13,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -36,7 +36,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -55,7 +55,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -74,7 +74,7 @@ Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method GET
         Then status <status>

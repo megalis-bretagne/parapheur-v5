@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
+Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'delete an existing seal certificate in an existing tenant', status)}
@@ -7,7 +7,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
             And multipart field password = 'christian.buffin@libriciel.coop'
@@ -19,7 +19,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/sealCertificate/' + existingSealCertificateId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/sealCertificate/' + existingSealCertificateId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -47,7 +47,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/' + existingTenantId + '/sealCertificate/' + nonExistingSealCertificateId
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/sealCertificate/' + nonExistingSealCertificateId
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -73,7 +73,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/sealCertificate'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: 'classpath:files/certificate.p12', 'contentType': 'application/x-pkcs12' }
             And multipart field password = 'christian.buffin@libriciel.coop'
@@ -85,7 +85,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-        And path '/api/admin/tenant/' + nonExistingTenantId + '/sealCertificate/' + existingSealCertificateId
+        And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/sealCertificate/' + existingSealCertificateId
         And header Accept = 'application/json'
         When method DELETE
         Then status <status>
@@ -114,7 +114,7 @@ Feature: DELETE /api/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-        And path '/api/admin/tenant/' + nonExistingTenantId + '/sealCertificate/' + nonExistingSealCertificateId
+        And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/sealCertificate/' + nonExistingSealCertificateId
         And header Accept = 'application/json'
         When method DELETE
         Then status <status>

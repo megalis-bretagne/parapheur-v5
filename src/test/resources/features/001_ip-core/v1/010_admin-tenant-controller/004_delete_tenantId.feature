@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
+Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
 	@permissions
 	Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
@@ -9,7 +9,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', id
+			And path '/api/v1/admin/tenant/', id
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>
@@ -32,7 +32,7 @@ Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
 		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', id
+			And path '/api/v1/admin/tenant/', id
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>

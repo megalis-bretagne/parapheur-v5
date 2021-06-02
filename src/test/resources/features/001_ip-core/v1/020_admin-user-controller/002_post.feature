@@ -1,5 +1,5 @@
 @ip-core @api-v1
-Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
+Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
     # @fixme: status 400 missing from swagger
 
     Background:
@@ -26,7 +26,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user'
             And header Accept = 'application/json'
             And request uniqueRequestData
 
@@ -54,7 +54,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user'
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user'
             And header Accept = 'application/json'
             And request uniqueRequestData
 
@@ -79,7 +79,7 @@ Feature: POST /api/admin/tenant/{tenantId}/user (Create a new user)
         * requestData[field] = utils.eval(value)
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user'
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user'
             And header Accept = 'application/json'
             And request requestData
 
