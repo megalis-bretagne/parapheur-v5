@@ -69,6 +69,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 		Examples:
 			| searchTerm | sortBy     | asc!  | total | field     | value!                                                        |
 			|            | USERNAME   | true  | 5     | userName  | [ 'ablanc', 'cnoir', 'ltransparent', 'stranslucide', 'user' ] |
+			|            | USERNAME   | false | 5     | userName  | [ 'user', 'stranslucide', 'ltransparent', 'cnoir', 'ablanc' ] |
 			| foo        | USERNAME   | false | 0     | userName  | []                                                            |
 			| la         | EMAIL      | true  | 2     | email     | [ 'ablanc@dom.local', 'ltransparent@dom.local' ]              |
 			| la         | EMAIL      | false | 2     | email     | [ 'ltransparent@dom.local', 'ablanc@dom.local' ]              |
@@ -78,3 +79,12 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 			| la         | LAST_NAME  | false | 2     | lastName  | [ 'Transparent', 'Blanc' ]                                    |
 			| la         | USERNAME   | true  | 2     | userName  | [ 'ablanc', 'ltransparent' ]                                  |
 			| la         | USERNAME   | false | 2     | userName  | [ 'ltransparent', 'ablanc' ]                                  |
+			| aurélie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+			| AURÉLIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+		@fixme-ip-core @issue-ip-core-todo
+		Examples:
+			| searchTerm | sortBy     | asc!  | total | field     | value!                                                        |
+			| aurelie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+			| AURELIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+			| aurélié    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+			| AURÉLIÉ    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
