@@ -125,7 +125,7 @@ object CoreApi {
   val getRandomTypeId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/v1/desk/${deskId}/types")
+        .get("api/v1/tenant/${tenantId}/desk/${deskId}/types")
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
@@ -141,7 +141,7 @@ object CoreApi {
   val getRandomSubtypeId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/v1/desk/${deskId}/types/${typeId}/subtypes")
+        .get("api/v1/tenant/${tenantId}/desk/${deskId}/types/${typeId}/subtypes")
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
