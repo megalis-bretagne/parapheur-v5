@@ -31,7 +31,7 @@ class TypologySimulation extends Simulation {
   var getRandomWorkflowId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/tenant/${tenantId}/workflowDefinition")
+        .get("api/v1/admin/tenant/${tenantId}/workflowDefinition")
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
@@ -52,7 +52,7 @@ class TypologySimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/typology/type")
+        .post("api/v1/admin/tenant/${tenantId}/typology/type")
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .body(StringBody(
@@ -79,7 +79,7 @@ class TypologySimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/typology/type/${typeId}/subtype")
+        .post("api/v1/admin/tenant/${tenantId}/typology/type/${typeId}/subtype")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

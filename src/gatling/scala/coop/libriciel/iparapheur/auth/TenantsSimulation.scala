@@ -37,7 +37,7 @@ class TenantsSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant")
+        .post("api/v1/admin/tenant")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

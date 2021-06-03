@@ -38,7 +38,7 @@ class UsersSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/user")
+        .post("api/v1/admin/tenant/${tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
