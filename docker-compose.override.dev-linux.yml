@@ -42,8 +42,8 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
-    mem_limit: 512m
-    memswap_limit: 512m
+    mem_limit: 64m
+    memswap_limit: 64m
     ports:
       - 4200:80
 
@@ -148,7 +148,6 @@ services:
     ports:
       - 8200:8200
 
-
   prometheus:
     ports:
       - 9091:9090
@@ -160,3 +159,8 @@ services:
   grafana:
     ports:
       - 3000:3000
+
+
+  filetransfer:
+    ports:
+      - 1807:8080

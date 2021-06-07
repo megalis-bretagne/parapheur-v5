@@ -99,6 +99,10 @@ server {
       proxy_pass http://host.docker.internal:8888/bl-xemwebviewer;
   }
 
+  location /filetransfer/ {
+      proxy_pass http://host.docker.internal:1807/;
+  }
+
   location ^~ / {
     proxy_pass http://host.docker.internal:4200/;
   }
