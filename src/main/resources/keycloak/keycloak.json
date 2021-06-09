@@ -69,6 +69,80 @@
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false
+      },
+      {
+        "id": "b452b419-49e3-4b54-9f6a-101a39673c20",
+        "name": "adminEntite",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "2cb21b83-33ec-49e1-8ed9-990708370225",
+        "name": "auditeur",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "f018e778-eba7-4dc4-b209-4e2f7d18d251",
+        "name": "exploitant",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "be1557d6-722d-43ff-8397-083652892330",
+        "name": "adminGroupeEntite",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "b479aa46-2879-43f9-b95e-9bbb048b2389",
+        "name": "offline_access",
+        "description": "${role_offline-access}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "a6aa5fc2-7902-4ae9-89ef-a43c024d20eb",
+        "name": "adminDelegueEntite",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "101591ba-6e4b-45db-9cea-924999c25b94",
+        "name": "uma_authorization",
+        "description": "${role_uma_authorization}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "9cc6ed45-cb02-49cb-9667-5843a0307393",
+        "name": "adminInstance",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
+      },
+      {
+        "id": "377b7cb0-8761-4f4d-9459-907bc74554ee",
+        "name": "deskbox",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "ipng",
+        "attributes": {}
       }
     ]
   },
