@@ -28,6 +28,9 @@ services:
     memswap_limit: 64M
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+    networks:
+      - ipng
+      - default
 
 
   core:
