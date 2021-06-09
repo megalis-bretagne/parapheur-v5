@@ -29,6 +29,9 @@ services:
     memswap_limit: 64m
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+    networks:
+      - ipng
+      - default
 
 
   core:
@@ -44,7 +47,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:ipng-basic-usage
     mem_limit: 64m
     memswap_limit: 64m
     environment:

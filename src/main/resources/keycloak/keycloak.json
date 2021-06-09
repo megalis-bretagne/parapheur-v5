@@ -33,7 +33,7 @@
         "roles"
       ],
       "directAccessGrantsEnabled": true,
-      "enabled": true,
+  "enabled": true,
       "frontchannelLogout": false,
       "fullScopeAllowed": true,
       "implicitFlowEnabled": false,
@@ -382,14 +382,14 @@
         "user"
       ]
     },
-    {
+      {
       "client": "${env.KEYCLOAK_CLIENT_ID}",
-      "roles": [
+        "roles": [
         "default-roles-${env.KEYCLOAK_REALM}",
         "offline_access",
         "uma_authorization"
-      ]
-    }
+        ]
+      }
   ],
   "smtpServer": {},
   "sslRequired": "external",
@@ -405,8 +405,8 @@
       "clientRoles": {
         "${env.KEYCLOAK_CLIENT_ID}": [
           "uma_protection"
-        ]
-      },
+    ]
+  },
       "disableableCredentialTypes": [],
       "emailVerified": false,
       "enabled": true,
@@ -463,7 +463,7 @@
           "manage-clients",
           "view-clients"
         ]
-      },
+    },
       "credentials": [
         {
           "type": "password",
@@ -491,8 +491,8 @@
         {
           "type": "password",
           "value": "password"
-        }
-      ],
+      }
+  ],
       "email": "sample-user@dom.local",
       "enabled": true,
       "firstName": "Sample",
@@ -503,7 +503,7 @@
       ],
       "username": "user"
     }
-  ],
+      ],
   "verifyEmail": false,
   "waitIncrementSeconds": 60
 }
