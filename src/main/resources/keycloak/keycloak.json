@@ -120,15 +120,6 @@
         "attributes": {}
       },
       {
-        "id": "101591ba-6e4b-45db-9cea-924999c25b94",
-        "name": "uma_authorization",
-        "description": "${role_uma_authorization}",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
         "id": "9cc6ed45-cb02-49cb-9667-5843a0307393",
         "name": "adminInstance",
         "composite": false,
