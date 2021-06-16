@@ -149,6 +149,8 @@ services:
       - 8200:8200
 
   prometheus:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 9091:9090
     volumes:
