@@ -64,7 +64,7 @@ object CoreApi {
     .exec(
       http("Check up")
         .post("/auth/realms/api/protocol/openid-connect/token")
-        .formParam("client_id", "admin-cli")
+        .formParam("client_id", "ipcore-web")
         .formParam("username", login)
         .formParam("password", pass)
         .formParam("grant_type", "password")

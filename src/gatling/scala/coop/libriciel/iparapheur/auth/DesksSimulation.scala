@@ -61,6 +61,7 @@ class DesksSimulation extends Simulation {
           """
             {
               "name" : "${randomRole} de ${randomCity}",
+              "shortName" : "${randomRole} de ${randomCity}",
               "description": "Gatling de ${randomRole} de ${randomCity}"
             }
           """)).asJson
