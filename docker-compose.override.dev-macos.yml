@@ -87,9 +87,9 @@ services:
       - 9009:8080
 
 
-  solr6:
-    ports:
-      - 8983:8983
+  #solr6:
+  #  ports:
+  #    - 8983:8983
 
 
   postgres:

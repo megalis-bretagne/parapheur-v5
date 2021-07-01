@@ -104,11 +104,11 @@ services:
       - 9009:8080
 
 
-  solr6:
-    mem_limit: 1536M
-    memswap_limit: 1536m
-    ports:
-      - 8983:8983
+  #solr6:
+  #  mem_limit: 1536M
+  #  memswap_limit: 1536m
+  #  ports:
+  #    - 8983:8983
 
 
   postgres:
