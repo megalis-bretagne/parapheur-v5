@@ -121,6 +121,7 @@ services:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
 
-  grafana:
+  filetransfer:
     ports:
-      - 3000:3000
+      - 1807:8080
+
