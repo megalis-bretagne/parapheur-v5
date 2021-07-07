@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: filetransfer
+  name: filetransfer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: filetransfer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: filetransfer
+    spec:
+      containers:
+        - args:
+            - --provider
+            - local
+            - --basedir
+            - /data/
+          env:
+            - name: RANDOM_TOKEN_LENGTH
+              value: "0"
+          image: dutchcoders/transfer.sh:v1.2.4
+          name: filetransfer
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/
+              name: filetransfer-claim0
+      restartPolicy: Always
+      volumes:
+        - name: filetransfer-claim0
+          persistentVolumeClaim:
+            claimName: filetransfer-claim0
+status: {}

@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- alfresco-deployment.yaml
+- core-deployment.yaml
+- crypto-deployment.yaml
+- external-signature-connector-deployment.yaml
+- filetransfer-deployment.yaml
+- grafana-deployment.yaml
+- keycloak-deployment.yaml
+- libersign-deployment.yaml
+- matomo-db-deployment.yaml
+- matomo-deployment.yaml
+- nginx-deployment.yaml
+- nginx-service.yaml
+- pastell-connector-deployment.yaml
+- pdf-stamp-deployment.yaml
+- pes-viewer-deployment.yaml
+- postgres-deployment.yaml
+- prometheus-deployment.yaml
+- redis-deployment.yaml
+- solr6-deployment.yaml
+- vault-deployment.yaml
+- web-deployment.yaml
+- workflow-deployment.yaml
+
+- ../alfesco
+
+- gitlab.com/org/myapp/deploy?ref=prod

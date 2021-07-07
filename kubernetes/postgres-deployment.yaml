@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    io.kompose.service: postgres
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      io.kompose.service: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: postgres
+    spec:
+      containers:
+        - name: postgres
+          args:
+            - postgres
+            - -c
+            - max_connections=500
+            - -c
+            - log_min_messages=LOG
+          env:
+            - name: DB_TO_CREATE
+              value: alfresco,flowable,keycloak,ipcore,quartz,pastellconnector
+            - name: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+          image: postgres:10.1
+          resources:
+            limits:
+              memory: "536870912"
+          tty: true
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: data
+            - mountPath: /docker-entrypoint-initdb.d/
+              name: initdb
+      restartPolicy: Always
+      volumes:
+        - name: initdb
+          configMap:
+            name: initdb
+        - name: data
+          persistentVolumeClaim:
+            claimName: postgres-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data
+spec:
+  # storageClassName: "oci-bv"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    io.kompose.service: postgres
+spec:
+  type: ClusterIP
+  ports:
+    - name: "postgres"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: postgres
+# spec:
+#   type: ExternalName
+#   externalName: my.database.example.com
+
+
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: initdb
+# spec:
+#   template:
+#     spec:
+#       containers:
+#         - name: pi
+#           image: perl
+#           command: [ "perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)" ]
+#       restartPolicy: Never
+#   backoffLimit: 4
+# ---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: hello
+# spec:
+#   schedule: "*/1 * * * *"
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: hello
+#               image: busybox
+#               imagePullPolicy: IfNotPresent
+#               command:
+#                 - /bin/sh
+#                 - -c
+#                 - date; echo Hello from the Kubernetes cluster
+#           restartPolicy: OnFailure

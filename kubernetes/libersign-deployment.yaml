@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: libersign
+  name: libersign
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: libersign
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: libersign
+    spec:
+      containers:
+        - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
+          name: libersign
+          resources:
+            limits:
+              memory: "67108864"
+          tty: true
+      restartPolicy: Always
+status: {}

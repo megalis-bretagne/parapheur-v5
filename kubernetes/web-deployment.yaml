@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+        - env:
+            - name: APPLICATION_URL
+              value: http://iparapheur.dom.local
+            - name: KEYCLOAK_CLIENT_ID
+            - name: KEYCLOAK_REALM
+            - name: KEYCLOAK_URL
+              value: http://iparapheur.dom.local/auth
+          image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:0.1
+          name: web
+          resources:
+            limits:
+              memory: "67108864"
+          tty: true
+      restartPolicy: Always
+status: {}

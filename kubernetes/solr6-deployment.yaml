@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: solr6
+  name: solr6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: solr6
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: solr6
+    spec:
+      containers:
+        - env:
+            - name: ALFRESCO_SECURE_COMMS
+              value: none
+            - name: SOLR_ALFRESCO_HOST
+              value: alfresco
+            - name: SOLR_ALFRESCO_PORT
+              value: "8080"
+            - name: SOLR_CREATE_ALFRESCO_DEFAULTS
+              value: alfresco,archive
+            - name: SOLR_HEAP
+              value: 1g
+            - name: SOLR_JAVA_MEM
+              value: -Xms1024m -Xmx1024m
+            - name: SOLR_SOLR_HOST
+              value: solr6
+            - name: SOLR_SOLR_PORT
+              value: "8983"
+          image: alfresco/alfresco-search-services:2.0.1
+          name: solr6
+          resources:
+            limits:
+              memory: "2147483648"
+          volumeMounts:
+            - mountPath: /opt/alfresco-search-services/contentstore
+              name: solr6-claim0
+            - mountPath: /opt/alfresco-search-services/data
+              name: solr6-claim1
+      restartPolicy: Always
+      volumes:
+        - name: solr6-claim0
+          persistentVolumeClaim:
+            claimName: solr6-claim0
+        - name: solr6-claim1
+          persistentVolumeClaim:
+            claimName: solr6-claim1
+status: {}

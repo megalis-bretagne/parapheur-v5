@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: alfresco
+  name: alfresco
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: alfresco
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: alfresco
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTS
+              value: " -XX:+UseContainerSupport -Ddeployment.method=DOCKER_COMPOSE\n-Ddb.driver=org.postgresql.Driver -Ddb.username=alfresco -Ddb.password=alfresco -Ddb.url=jdbc:postgresql://postgres:5432/alfresco -Dalfresco.host=alfresco -Dalfresco.port=8080 -Dalf.root=/var/lib/alfresco\n-Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.secureComms=none -Dsolr.base.url=/solr -Dindex.subsystem.name=solr6\n-Dheartbeat.enabled=false -Dtransform.service.enabled=false -Dlocal.transform.service.enabled=false -Dlegacy.transform.service.enabled=false -Dmessaging.subsystem.autoStart=false -Dsystem.workflow.engine.activiti.enabled=false "
+          image: alfresco/alfresco-content-repository-community:6.2.0-ga
+          name: alfresco
+          resources:
+            limits:
+              memory: "1610612736"
+          tty: true
+          volumeMounts:
+            - mountPath: /usr/local/tomcat/alf_data
+              name: alfresco-claim0
+            - mountPath: /usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
+              name: alfresco-claim1
+            - mountPath: /usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
+              name: alfresco-claim2
+      restartPolicy: Always
+      volumes:
+        - name: alfresco-claim0
+          persistentVolumeClaim:
+            claimName: alfresco-claim0
+        - name: alfresco-claim1
+          persistentVolumeClaim:
+            claimName: alfresco-claim1
+        - name: alfresco-claim2
+          persistentVolumeClaim:
+            claimName: alfresco-claim2
+status: {}

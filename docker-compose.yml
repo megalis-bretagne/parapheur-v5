@@ -27,7 +27,7 @@
 # Get the latest docker-compose.yml file with a 30-day trial license by accessing the Alfresco Content Services trial download page at:
 # https://www.alfresco.com/platform/content-services-ecm/trial/download
 
-version: '2.4'
+version: '2'
 
 
 volumes:
@@ -76,13 +76,13 @@ services:
       - KEYCLOAK_HOST=keycloak
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
-    depends_on:
-      postgres:
-        condition: service_healthy
-      alfresco:
-        condition: service_started
-      workflow:
-        condition: service_started
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   alfresco:
+    #     condition: service_started
+    #   workflow:
+    #     condition: service_started
     volumes:
       - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
@@ -106,9 +106,9 @@ services:
     restart: always
     tty: true
     mem_limit: 256M
-    depends_on:
-      postgres:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
     volumes:
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
@@ -195,9 +195,9 @@ services:
                   -Dmessaging.subsystem.autoStart=false
                   -Dsystem.workflow.engine.activiti.enabled=false
                   "
-    depends_on:
-      postgres:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
       # DOC: file needs to end in -context.xml and to be in this location.
@@ -246,11 +246,11 @@ services:
       - POSTGRES_PASSWORD
       - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz,pastellconnector
     command: postgres -c max_connections=500 -c log_min_messages=LOG
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
@@ -313,11 +313,11 @@ services:
       - MATOMO_DATABASE_USERNAME=${MATOMO_DB_USER}
       - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD}
       - MATOMO_DATABASE_DBNAME=${MATOMO_DB_DATABASE}
-    healthcheck:
-      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
   matomo-db:
     image: mariadb:10.3
     restart: always

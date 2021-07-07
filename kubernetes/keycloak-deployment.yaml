@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert --out kubernetes
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert --out kubernetes
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: keycloak
+    spec:
+      containers:
+        - env:
+            - name: DB_ADDR
+              value: postgres
+            - name: DB_DATABASE
+              value: keycloak
+            - name: DB_PASSWORD
+              value: keycloak
+            - name: DB_USER
+              value: keycloak
+            - name: DB_VENDOR
+              value: postgres
+            - name: KEYCLOAK_CLIENT_ID
+            - name: KEYCLOAK_IMPORT
+              value: /tmp/keycloak.json
+            - name: KEYCLOAK_PASSWORD
+            - name: KEYCLOAK_REALM
+            - name: KEYCLOAK_USER
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
+          image: jboss/keycloak:9.0.3
+          name: keycloak
+          resources:
+            limits:
+              memory: "536870912"
+          tty: true
+          volumeMounts:
+            - mountPath: /tmp/keycloak.json
+              name: keycloak-claim0
+            - mountPath: /opt/jboss/tools/docker-entrypoint.sh
+              name: keycloak-claim1
+            - mountPath: /opt/jboss/keycloak/themes/libriciel
+              name: keycloak-claim2
+            - mountPath: /opt/jboss/keycloak/themes/iparapheur
+              name: keycloak-claim3
+      restartPolicy: Always
+      volumes:
+        - name: keycloak-claim0
+          persistentVolumeClaim:
+            claimName: keycloak-claim0
+        - name: keycloak-claim1
+          persistentVolumeClaim:
+            claimName: keycloak-claim1
+        - name: keycloak-claim2
+          persistentVolumeClaim:
+            claimName: keycloak-claim2
+        - name: keycloak-claim3
+          persistentVolumeClaim:
+            claimName: keycloak-claim3
+status: {}
