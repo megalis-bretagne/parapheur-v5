@@ -148,7 +148,7 @@ server {
     ssl_certificate_key /etc/nginx/ssl/peer0/server.key;
 
     location / {
-        grpc_pass grpcs://0.0.0.0:9051;
+        grpc_pass grpcs://host.docker.internal:9051;
     }
 }
 
@@ -160,7 +160,7 @@ server {
     ssl_certificate_key /etc/nginx/ssl/peer1/server.key;
 
     location / {
-        grpc_pass grpcs://0.0.0.0:10051;
+        grpc_pass grpcs://host.docker.internal:10051;
     }
 }
 
@@ -172,7 +172,7 @@ server {
     ssl_certificate_key /etc/nginx/ssl/ca/ca.blucas.iparapheur.dev.libriciel.eu.key;
 
     location / {
-        grpc_pass grpcs://0.0.0.0:8054;
+        grpc_pass grpcs://host.docker.internal:8054;
     }
 }
 
@@ -184,6 +184,6 @@ server {
     ssl_certificate_key /etc/nginx/ssl/orderer/server.key;
 
     location / {
-        grpc_pass grpcs://0.0.0.0:7050;
+        grpc_pass grpcs://host.docker.internal:7050;
     }
 }
