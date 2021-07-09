@@ -101,7 +101,7 @@ Feature: Basic setup
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 		* def deskId = api_v1.desk.getIdByName(tenantId, '<deskName>')
-		* def key = '<name>'.toLowerCase().replace(/[^a-z0-9]/g, '_')
+		* def key = api_v1.desk.getKeyStringFromNameString('<name>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
