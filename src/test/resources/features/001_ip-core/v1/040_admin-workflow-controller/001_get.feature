@@ -1,4 +1,4 @@
-@ip-core @api-v1 @666
+@ip-core @api-v1
 Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefinitions)
 
     @permissions
