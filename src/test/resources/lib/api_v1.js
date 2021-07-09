@@ -84,6 +84,9 @@ function fn(config) {
         var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'desk', 'name', name, containing);
         return element['id'];
     };
+    config.api_v1.desk['getKeyStringFromNameString'] = function (name) {
+        return String(name).toLowerCase().replace(/[^a-z0-9]/g, '_');
+    };
     config.api_v1.desk['getNonExistingId'] = function () {
         // @todo: check if it really does not exist
         return '00000000-0000-0000-0000-000000000000';
