@@ -38,7 +38,7 @@ class WorkflowSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/admin/tenant/${tenantId}/workflowDefinition")
+        .post("api/v1/admin/tenant/${tenantId}/workflowDefinition")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

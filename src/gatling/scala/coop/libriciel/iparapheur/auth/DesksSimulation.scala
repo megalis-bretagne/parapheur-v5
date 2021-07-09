@@ -31,7 +31,7 @@ class DesksSimulation extends Simulation {
   var getUserId: ScenarioBuilder = scenario(getClass.getName)
     .exec(
       http("Get")
-        .get("api/admin/tenant/${tenantId}/user")
+        .get("api/v1/admin/tenant/${tenantId}/user")
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
@@ -55,12 +55,13 @@ class DesksSimulation extends Simulation {
     })
     .exec(
       http("Create desk")
-        .post("api/admin/tenant/${tenantId}/desk")
+        .post("api/v1/admin/tenant/${tenantId}/desk")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """
             {
               "name" : "${randomRole} de ${randomCity}",
+              "shortName" : "${randomRole} de ${randomCity}",
               "description": "Gatling de ${randomRole} de ${randomCity}"
             }
           """)).asJson
@@ -69,7 +70,7 @@ class DesksSimulation extends Simulation {
     )
     .exec(
       http("Put")
-        .put("api/admin/tenant/${tenantId}/desk/${deskId}/users")
+        .put("api/v1/admin/tenant/${tenantId}/desk/${deskId}/users")
         .header("Authorization", "bearer ${authToken}")
         .body(StringBody(
           """

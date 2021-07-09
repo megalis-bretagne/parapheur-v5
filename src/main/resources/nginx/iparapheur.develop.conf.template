@@ -33,10 +33,6 @@ server {
     proxy_pass http://host.docker.internal:9090/auth;
   }
 
-  location /prometheus/api/v1/query {
-    proxy_pass http://host.docker.internal:9091/api/v1/query;
-  }
-
   location /api {
     proxy_pass http://host.docker.internal:8080/api;
   }
@@ -97,6 +93,10 @@ server {
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
       proxy_pass http://host.docker.internal:8888/bl-xemwebviewer;
+  }
+
+  location /filetransfer/ {
+      proxy_pass http://host.docker.internal:1807/;
   }
 
   location ^~ / {

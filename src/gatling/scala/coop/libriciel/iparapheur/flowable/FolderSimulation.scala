@@ -41,7 +41,7 @@ class FolderSimulation extends Simulation {
     })
     .exec(
       http("Create")
-        .post("api/desk/${deskId}/draft")
+        .post("api/v1/tenant/${tenantId}/desk/${deskId}/draft")
         .queryParam("typeId", "${typeId}")
         .queryParam("subtypeId", "${subtypeId}")
         .queryParam("name", "Folder ${randomNameValue}")
