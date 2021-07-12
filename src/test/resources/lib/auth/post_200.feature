@@ -4,7 +4,7 @@ Feature: Authentication lib
 	Scenario: Assert success
 		Given url baseUrl
             And path '/auth/realms/api/protocol/openid-connect/token'
-            And form field client_id = 'admin-cli'
+            And form field client_id = 'ipcore-web'
             And form field username = __arg.username
             And form field password = __arg.password
             And form field grant_type = 'password'
@@ -12,4 +12,3 @@ Feature: Authentication lib
 		When method POST
 		Then status 200
             And match $ == schemas.auth.post_200
-            #And def access_token = $.access_token

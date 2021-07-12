@@ -19,6 +19,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
 """
 {
     'name': '#(unique)',
+    "shortName": "#(unique)",
     'description': 'Bureau #(unique)',
     'parentDeskId': null
 }

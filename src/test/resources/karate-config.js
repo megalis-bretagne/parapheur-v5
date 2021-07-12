@@ -41,6 +41,8 @@ function fn() {
         // customize
     }
 
+    karate.configure('headers', { Accept: 'application/json' });
+
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     config = karate.call('classpath:lib/api_v1.js', config);
     config = karate.call('classpath:lib/common.js', config);

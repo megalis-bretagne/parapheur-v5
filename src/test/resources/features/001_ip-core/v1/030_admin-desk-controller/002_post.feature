@@ -11,6 +11,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 """
 {
     'name': '#(unique)',
+    "shortName": "#(unique)",
     'description': '#(description)',
     'parentDeskId': null
 }
