@@ -187,7 +187,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         Then status <status>
             And if (<status> === 201) utils.assert("response == ''")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
-@wip
+
         Examples:
             | status | path |
             | 201    | xxx  |
@@ -198,7 +198,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 #            | 201    | type  | 'SIGNATURE'          | a "SIGNATURE" type           |
 #            | 201    | type  | 'VISA'               | a "VISA" type                |
 #            | 400    | type  | 'FOO'               | an unknown type                |
-#        @fixme-ip-core @issue-ip-core-todo @wip
+#        @fixme-ip-core @issue-ip-core-todo
 #        Examples:
 #            | status | field | value!               | data                         |
 #            | 201    | type  | 'MAIL'               | a "MAIL" type                |

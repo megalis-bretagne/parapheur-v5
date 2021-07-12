@@ -96,6 +96,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
+    # @karate-todo-shortName
     @data-validation
     Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a desk in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
