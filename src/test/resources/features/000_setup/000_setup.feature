@@ -21,7 +21,6 @@ Feature: Basic setup
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
-
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', tenantId, '/user'
 			And header Accept = 'application/json'
@@ -49,7 +48,7 @@ Feature: Basic setup
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
 
 	# 404 when-parentDeskId is not null
-	@todo-karate
+	@todo-karate @wip
 	Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
@@ -61,6 +60,7 @@ Feature: Basic setup
 """
 {
 	"name": "<name>",
+	"shortName": "<name>",
 	"description": "Bureau <name>",
 	"parentDeskId": null
 }

@@ -4,7 +4,8 @@ function fn(config) {
     /**
      * auth
      */
-    config.api_v1['auth'] = {};
+    config.api_v1['auth'] = {token: {}};
+
     // @todo: as pure javascript functions
     config.api_v1.auth['login'] = function (username, password, status = null) {
         if (utils.isInteger(status) === false) {
@@ -15,10 +16,19 @@ function fn(config) {
             }
         }
 
-        return karate.call('classpath:lib/auth/post_' + String(status) + '.feature', {
+        rv = karate.call('classpath:lib/auth/post_' + String(status) + '.feature', {
             username: username,
             password: password
         });
+
+        api_v1.auth.token['access_token'] = rv.response.access_token;
+        api_v1.auth.token['refresh_token'] = rv.response.refresh_token;
+
+        karate.configure('headers', {
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + api_v1.auth.token.access_token
+        });
+        return rv;
     };
 
     /**
@@ -43,6 +53,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/desk/' + deskId)
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .get();
 
         if (response.status !== 200) {
@@ -56,6 +67,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/desk')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('searchTerm', name)
             .get();
 
@@ -89,6 +101,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
             .param('pageSize', 100)
@@ -108,6 +121,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
             .param('pageSize', 100)
@@ -154,6 +168,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/currentUser')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .get();
 
         if (response.status !== 200) {
@@ -167,6 +182,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/user/' + userId)
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .get();
 
         if (response.status !== 200) {
@@ -180,6 +196,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/user')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('searchTerm', email)
             .get();
 
@@ -263,6 +280,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('searchTerm', name)
             .get();
 
@@ -311,6 +329,7 @@ function fn(config) {
             .http(baseUrl)
             .path('/api/v1/admin/tenant/' + tenantId + '/workflowDefinition')
             .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('searchTerm', name)
             .get();
 
