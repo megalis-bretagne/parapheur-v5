@@ -7,7 +7,7 @@ Feature: POST /auth/realms/api/v1/protocol/openid-connect/token (Authentication)
 
 		Examples:
 			| role             | username     | password |
-			| ADMIN            | cnoir        | a123456  |
+			| TENANT_ADMIN     | cnoir        | a123456  |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  |
 			| NONE             | ltransparent | a123456  |
 

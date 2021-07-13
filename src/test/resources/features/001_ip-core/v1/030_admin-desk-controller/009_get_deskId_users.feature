@@ -15,7 +15,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
     "isLdapSynchronized": "#boolean",
     "complementaryField": null,
     "rolesCount": "#number",
-    "privilege": "##regex (ADMIN|FUNCTIONAL_ADMIN|NONE)",
+    "privilege": "##regex (ADMIN|FUNCTIONAL_ADMIN|NONE|TENANT_ADMIN)",
     "userName": "#string",
     "isChecked": "#boolean",
     "firstName": "#string",
@@ -51,7 +51,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -73,7 +73,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -92,7 +92,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -111,7 +111,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

@@ -18,7 +18,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 		Examples:
 			| role             | username     | password | status |
-			| ADMIN            | cnoir        | a123456  | 200    |
+			| TENANT_ADMIN     | cnoir        | a123456  | 200    |
 		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
@@ -43,13 +43,13 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 		@fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
 		Examples:
 			| role             | username     | password | status |
-			| ADMIN            | cnoir        | a123456  | 404    |
+			| TENANT_ADMIN     | cnoir        | a123456  | 403    |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sortBy, asc)}
+	Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the user list', 200, total, searchTerm, sortBy, asc)}
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 		* api_v1.auth.login('cnoir', 'a123456')

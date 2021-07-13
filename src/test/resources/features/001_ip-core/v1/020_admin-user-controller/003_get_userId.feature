@@ -23,7 +23,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -45,7 +45,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -64,7 +64,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -83,7 +83,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

@@ -3,7 +3,7 @@
   "isLdapSynchronized": false,
   "complementaryField": null,
   "rolesCount": "##number",
-  "privilege": "#regex (ADMIN|FUNCTIONAL_ADMIN|NONE)",
+  "privilege": "#regex (ADMIN|FUNCTIONAL_ADMIN|NONE|TENANT_ADMIN)",
   "userName": "#string",
   "isChecked": null,
   "firstName": "#string",

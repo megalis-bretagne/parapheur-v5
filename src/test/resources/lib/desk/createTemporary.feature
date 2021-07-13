@@ -6,6 +6,7 @@ Feature: Desk lib
 """
     {
         name : '#(name)',
+        shortName : '#(name)',
         description : '#(description)',
         parentDeskId : '#(parentDeskId)'
     }

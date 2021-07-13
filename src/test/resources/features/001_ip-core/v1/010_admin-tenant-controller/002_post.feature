@@ -22,7 +22,7 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 
 		Examples:
 			| role             | username     | password | status |
-			| ADMIN            | cnoir        | a123456  | 201    |
+			| TENANT_ADMIN     | cnoir        | a123456  | 201    |
 		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
@@ -31,7 +31,7 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 			|                  |              |          | 401    |
 
 	@data-validation
-	Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, data)}
+	Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a tenant', status, data)}
 		* api_v1.auth.login('cnoir', 'a123456')
 		* def requestData = cleanRequestData
 		* requestData[field] = utils.eval(value)
