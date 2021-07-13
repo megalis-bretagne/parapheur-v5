@@ -23,7 +23,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -46,7 +46,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -68,7 +68,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -91,7 +91,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -100,7 +100,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl

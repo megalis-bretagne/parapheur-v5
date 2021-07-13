@@ -6,11 +6,12 @@
   "level": "##number",
   "directChildrenCount": "##number",
   "directParent": null,
-  "delegatingDesks": [],
+  "delegatingDesks": "##[]",
   "draftFoldersCount": "#number",
   "rejectedFoldersCount": "#number",
   "pendingFoldersCount": "#number",
   "finishedFoldersCount": "#number",
   "lateFoldersCount": "#number",
-  "isChecked": null
+  "isChecked": null,
+  "shortName": "##string"
 }

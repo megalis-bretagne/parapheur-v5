@@ -18,6 +18,8 @@ Feature: Basic setup
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
+	# [ ADMIN, FUNCTIONAL_ADMIN, NONE, TENANT_ADMIN ] -> /users FUNCTIONAL_ADMIN OK, ADMIN KO (user n'est plus ADMIN mais TENANT_ADMIN)
+	# wip-karate wip-ajouter-sgris-aux-tests-d-'acces
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
@@ -33,8 +35,7 @@ Feature: Basic setup
 	lastName: '<lastName>',
 	password: '<password>',
 	privilege: '<privilege>',
-	notificationsCronFrequency: 'NONE',
-	notificationsRedirectionMail: '<email>'
+	notificationsCronFrequency: 'disabled'
 }
 """
 		When method POST
@@ -42,13 +43,13 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        |
-			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            |
+			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | TENANT_ADMIN     |
 			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN |
 			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             |
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
 
 	# 404 when-parentDeskId is not null
-	@todo-karate @wip
+	@todo-karate
 	Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')

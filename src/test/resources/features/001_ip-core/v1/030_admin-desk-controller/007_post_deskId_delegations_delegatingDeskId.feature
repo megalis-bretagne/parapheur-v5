@@ -31,7 +31,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegat
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -54,7 +54,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegat
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -78,7 +78,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegat
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -99,13 +99,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegat
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
+    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a new delegation from target desk', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 

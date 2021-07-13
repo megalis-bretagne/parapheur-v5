@@ -24,7 +24,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -46,7 +46,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -69,7 +69,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -88,7 +88,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -98,7 +98,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
     # @fixme: status 400 missing from swagger
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'edit an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = existingUserData
         * requestData[field] = utils.eval(value)
@@ -122,7 +122,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
             | 200    | lastName                     | 'u'                                                      | a last name that is 1 character long                |
             | 200    | lastName                     | eval(utils.string.getRandom(255, 'tmp-'))                | a last name that is 255 characters long             |
             | 200    | email                        | eval(utils.string.getRandom(245, 'tmp-') + '@dom.local') | an email that is 255 characters long                |
-            | 200    | privilege                    | 'ADMIN'                                                  | "ADMIN" privilege                                   |
+            | 200    | privilege                    | 'TENANT_ADMIN'                                                  | "TENANT_ADMIN" privilege                                   |
             | 200    | privilege                    | 'FUNCTIONAL_ADMIN'                                       | "FUNCTIONAL_ADMIN" privilege                        |
             | 200    | privilege                    | 'NONE'                                                   | "NONE" privilege                                    |
             | 400    | privilege                    | ''                                                       | an empty privilege                                  |

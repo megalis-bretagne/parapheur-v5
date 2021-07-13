@@ -21,7 +21,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 204    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 204    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -41,7 +41,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -62,7 +62,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -79,7 +79,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |

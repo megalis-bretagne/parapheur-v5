@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @fixme-no-wip-?
 Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a stats entry for the given tenant)
 
     @permissions
@@ -17,7 +17,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -42,7 +42,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |

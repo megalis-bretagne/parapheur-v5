@@ -23,8 +23,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
 
         Examples:
             | role             | username     | password | email                  | status | path                                         |
-            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | classpath:files/signature - ltransparent.png |
-            | ADMIN            | cnoir        | a123456  | cnoir@dom.local        | 404    |                                              |
+            | TENANT_ADMIN     | cnoir        | a123456  | ltransparent@dom.local | 200    | classpath:files/signature - ltransparent.png |
+            | TENANT_ADMIN     | cnoir        | a123456  | cnoir@dom.local        | 404    |                                              |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status | path                                         |
@@ -46,7 +46,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -68,7 +68,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
 
         Examples:
             | role             | username     | password | email                  | status |
-            | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | sample-user@dom.local  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status |
@@ -90,7 +90,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |

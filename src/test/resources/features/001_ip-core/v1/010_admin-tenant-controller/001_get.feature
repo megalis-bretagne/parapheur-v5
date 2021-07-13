@@ -15,7 +15,7 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 
 		Examples:
 			| role             | username     | password | status |
-			| ADMIN            | cnoir        | a123456  | 200    |
+			| TENANT_ADMIN     | cnoir        | a123456  | 200    |
 		@fixme-ip-core @issue-ip-core-78
 		Examples:
 			| role             | username     | password | status |
@@ -24,7 +24,7 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
+	Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl

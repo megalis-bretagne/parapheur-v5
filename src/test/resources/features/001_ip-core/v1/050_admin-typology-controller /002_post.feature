@@ -6,7 +6,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 
     @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can create a "PADES" type with no protocol and associate it to an existing tenant
+    Scenario: Permissions - a user with an "TENANT_ADMIN" role can create a "PADES" type with no protocol and associate it to an existing tenant
         * api_v1.auth.login('cnoir', 'a123456')
         * def tenantId = api_v1.entity.getIdByName('Default tenant')
         * def name = 'tmp-' + utils.getUUID()
