@@ -38,7 +38,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         @question-ip-core
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -64,7 +64,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -73,7 +73,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a user in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = uniqueRequestData
         * requestData[field] = utils.eval(value)
@@ -90,8 +90,6 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         Examples:
             | status | field                        | value!                                                   | data                                                |
-            # @fixme: created user isn't returned by further calls to the API, but trying to re-create it leads to a 409
-            | 201    | userName                     | 't'                                                      | a user name that is 1 character long                |
             | 201    | userName                     | eval(utils.string.getRandom(255, 'tmp-'))                | a user name that is 255 characters long             |
             | 400    | userName                     | ''                                                       | an empty user name                                  |
             | 400    | userName                     | ' '                                                      | a space as a user name                              |
@@ -106,7 +104,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             | 201    | email                        | eval(utils.string.getRandom(245, 'tmp-') + '@dom.local') | an email that is 255 characters long                |
             | 400    | email                        | eval(utils.string.getRandom(246, 'tmp-') + '@dom.local') | an email that is 256 characters long                |
             | 409    | email                        | 'sample-user@dom.local'                                  | an email that already exists                        |
-            | 201    | privilege                    | 'ADMIN'                                                  | "ADMIN" privilege                                   |
+            | 201    | privilege                    | 'TENANT_ADMIN'                                           | "TENANT_ADMIN" privilege                                   |
             | 201    | privilege                    | 'FUNCTIONAL_ADMIN'                                       | "FUNCTIONAL_ADMIN" privilege                        |
             | 201    | privilege                    | 'NONE'                                                   | "NONE" privilege                                    |
             | 400    | privilege                    | ''                                                       | an empty privilege                                  |
@@ -115,6 +113,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field                        | value!                                                   | data                                                |
+            # @fixme: the following test makes user cnoir lose TENANT_ADMIN rights ??
+            | 201    | userName                     | 't'                                                      | a user name that is 1 character long                |
             | 400    | email                        | ''                                                       | an empty email                                      |
             | 400    | email                        | ' '                                                      | a space as email                                    |
             | 400    | email                        | 'foo'                                                    | a value that is not an email                        |

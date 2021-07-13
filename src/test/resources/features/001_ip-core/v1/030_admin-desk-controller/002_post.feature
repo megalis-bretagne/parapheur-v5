@@ -33,7 +33,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -55,7 +55,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -64,7 +64,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a desk in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a desk in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * copy requestData = uniqueRequestData
         * requestData[field] = utils.eval(value)

@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @fixme-no-wip-?
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     @permissions
@@ -17,7 +17,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 204    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 204    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -41,7 +41,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |

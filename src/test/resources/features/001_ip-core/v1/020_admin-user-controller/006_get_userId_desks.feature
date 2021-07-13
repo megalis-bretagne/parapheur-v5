@@ -22,8 +22,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | email                  | status | name!             |
-            | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 200    | []                |
-            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
+            | TENANT_ADMIN     | cnoir        | a123456  | sample-user@dom.local  | 200    | []                |
+            | TENANT_ADMIN     | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status | name!             |
@@ -45,7 +45,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -68,7 +68,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -90,7 +90,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
         @issue-ip-core-78
         Examples:
             | role             | username     | password | status |

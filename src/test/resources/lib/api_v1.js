@@ -8,6 +8,11 @@ function fn(config) {
 
     // @todo: as pure javascript functions
     config.api_v1.auth['login'] = function (username, password, status = null) {
+        karate.configure('headers', {
+            Accept: 'application/json'
+        });
+        api_v1.auth.token = {};
+
         if (utils.isInteger(status) === false) {
             if (status === true || (status === null && username !== '')) {
                 status = 200;
@@ -21,13 +26,16 @@ function fn(config) {
             password: password
         });
 
-        api_v1.auth.token['access_token'] = rv.response.access_token;
-        api_v1.auth.token['refresh_token'] = rv.response.refresh_token;
+        if (status === 200) {
+            api_v1.auth.token['access_token'] = rv.response.access_token;
+            api_v1.auth.token['refresh_token'] = rv.response.refresh_token;
 
-        karate.configure('headers', {
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + api_v1.auth.token.access_token
-        });
+            karate.configure('headers', {
+                Accept: 'application/json',
+                Authorization: 'Bearer ' + api_v1.auth.token.access_token
+            });
+        }
+
         return rv;
     };
 
