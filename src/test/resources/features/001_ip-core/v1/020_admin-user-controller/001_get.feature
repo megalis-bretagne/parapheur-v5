@@ -81,10 +81,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 			| la         | USERNAME   | false | 2     | userName  | [ 'ltransparent', 'ablanc' ]                                  |
 			| aurélie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
 			| AURÉLIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
-		@fixme-ip-core @issue-ip-core-todo
-		Examples:
-			| searchTerm | sortBy     | asc!  | total | field     | value!                                                        |
-			| aurelie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
-			| AURELIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
-			| aurélié    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
-			| AURÉLIÉ    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+#		@fixme-ip-core @issue-ip-core-todo
+#		Examples:
+#			| searchTerm | sortBy     | asc!  | total | field     | value!                                                        |
+#			| aurelie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+#			| AURELIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+#			| aurélié    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
+#			| AURÉLIÉ    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                 |
