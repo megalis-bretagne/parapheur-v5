@@ -55,5 +55,5 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 			| status | field | value!                                   | data                                    |
 			| 400    | name  | ''                                       | an empty name                           |
 			| 400    | name  | ' '                                      | a space as a name                       |
-			| 400    | name  | eval(utils.string.getRandom(65, 'tmp-')) | a name that is too long                 |
+			| 400    | name  | eval(utils.string.getRandom(65, 'tmp-')) | a name that is above 64 characters long |
 			| 409    | name  | 'Montpellier Méditerranée Métropole'     | a name that already exists              |

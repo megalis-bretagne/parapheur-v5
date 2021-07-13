@@ -49,9 +49,9 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 			| foo          |        | null  | 0     | name  | []                                                                           |
 			| el           |        | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
 			| el           |        | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]                   |
-			| mediterranee |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
-			| MEDITERRANEE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			#| mediterranee |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			#| MEDITERRANEE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
 			| méditerranée |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
 			| MÉDITERRANÉE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
-			| méditérranéé |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
-			| MÉDITÉRRANÉÉ |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			#| méditérranéé |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			#| MÉDITÉRRANÉÉ |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
