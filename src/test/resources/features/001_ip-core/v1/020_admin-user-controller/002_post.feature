@@ -16,7 +16,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
     lastName: 'tmp',
     password: 'a123456',
     privilege: 'NONE',
-    notificationsCronFrequency: 'NONE',
+    notificationsCronFrequency: '0 7 * * 1',
     notificationsRedirectionMail: '#(email)'
 }
 """
@@ -113,8 +113,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field                        | value!                                                   | data                                                |
-            # @fixme: the following test makes user cnoir lose TENANT_ADMIN rights ??
-            | 201    | userName                     | 't'                                                      | a user name that is 1 character long                |
+            # @fixme: the following test makes user cnoir lose TENANT_ADMIN rights / tenant association ??
+            # Une erreur importante est survenue, et empêche l'application de fonctionner normalement
+            # Aucun tenant trouvé pour l'utilisateur actuellemnt connecté. Rechargez la page. si le problème persiste, contactez votre administrateur.
+            # | 201    | userName                     | 't'                                                      | a user name that is 1 character long                |
             | 400    | email                        | ''                                                       | an empty email                                      |
             | 400    | email                        | ' '                                                      | a space as email                                    |
             | 400    | email                        | 'foo'                                                    | a value that is not an email                        |
