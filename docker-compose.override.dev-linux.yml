@@ -104,11 +104,11 @@ services:
       - 9009:8080
 
 
-  solr6:
-    mem_limit: 1536M
-    memswap_limit: 1536m
-    ports:
-      - 8983:8983
+  #solr6:
+  #  mem_limit: 1536M
+  #  memswap_limit: 1536m
+  #  ports:
+  #    - 8983:8983
 
 
   postgres:
@@ -148,6 +148,7 @@ services:
     ports:
       - 8200:8200
 
+
   prometheus:
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -158,11 +159,7 @@ services:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
 
-  grafana:
-    ports:
-      - 3000:3000
-
-
   filetransfer:
     ports:
       - 1807:8080
+

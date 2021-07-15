@@ -206,25 +206,26 @@ services:
       - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
 
 
-  solr6:
-    image: alfresco/alfresco-search-services:2.0.1
-    mem_limit: 2g
-    depends_on:
-      - alfresco
-    environment:
-      # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
-      - SOLR_ALFRESCO_HOST=alfresco
-      - SOLR_ALFRESCO_PORT=8080
-      - SOLR_SOLR_HOST=solr6
-      - SOLR_SOLR_PORT=8983
-      - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
-      - ALFRESCO_SECURE_COMMS=none
-      - SOLR_HEAP=1g
-      - "SOLR_JAVA_MEM=-Xms1024m -Xmx1024m"
-    volumes:
-      # https://hub.alfresco.com/t5/alfresco-content-services-blog/managing-alfresco-search-services-1-4-storage/ba-p/300972
-      - ./data/solr/contentstore:/opt/alfresco-search-services/contentstore
-      - ./data/solr/data:/opt/alfresco-search-services/data
+  #solr6:
+  #  image: alfresco/alfresco-search-services:2.0.1
+  #  mem_limit: 2g
+  #  depends_on:
+  #    - alfresco
+  #  environment:
+  #    # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+  #    - SOLR_ALFRESCO_HOST=alfresco
+  #    - SOLR_ALFRESCO_PORT=8080
+  #    - SOLR_SOLR_HOST=solr6
+  #    - SOLR_SOLR_PORT=8983
+  #    - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
+  #    - ALFRESCO_SECURE_COMMS=none
+  #    - SOLR_HEAP=1g
+  #    - "SOLR_JAVA_MEM=-Xms1024m -Xmx1024m"
+  #  volumes:
+  #    # https://hub.alfresco.com/t5/alfresco-content-services-blog/managing-alfresco-search-services-1-4-storage/ba-p/300972
+  #    - ./data/solr/contentstore:/opt/alfresco-search-services/contentstore
+  #    - ./data/solr/data:/opt/alfresco-search-services/data
+
 
   #libreoffice:
   #  image: alfresco/alfresco-libreoffice:2.1.1
@@ -356,17 +357,6 @@ services:
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
 
-  grafana:
-    image: grafana/grafana:6.7.2
-    restart: always
-    volumes:
-      - ./src/main/resources/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./src/main/resources/grafana/provisioning/:/etc/grafana/provisioning/
-    environment:
-      - GF_SECURITY_ADMIN_USER=grafana
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
-      - GF_USERS_ALLOW_SIGN_UP=false
-
   filetransfer:
     image: dutchcoders/transfer.sh:v1.2.4
     command: --provider local --basedir /data/
@@ -374,3 +364,4 @@ services:
       - ./data/transfer/:/data/
     environment:
       - RANDOM_TOKEN_LENGTH=0
+
