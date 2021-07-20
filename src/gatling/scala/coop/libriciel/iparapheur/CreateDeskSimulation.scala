@@ -15,40 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.flowable
+package coop.libriciel.iparapheur
 
-import coop.libriciel.iparapheur.CoreApi
 import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.auth.DeskScenarios.createDesk
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef._
 
-import java.util.Random
-
-
-class FolderSimulation extends Simulation {
-
-
-  var createInstance: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(getRandomDeskIdAsAdmin)
-    .exec(getRandomTypeId)
-    .exec(getRandomSubtypeId)
-    .exec(session => {
-      session.setAll(
-        ("randomNameValue", new Random().nextInt(250000))
-      )
-    })
-    .exec(
-      http("Create")
-        .post("api/v1/tenant/${tenantId}/desk/${deskId}/draft")
-        .queryParam("typeId", "${typeId}")
-        .queryParam("subtypeId", "${subtypeId}")
-        .queryParam("name", "Folder ${randomNameValue}")
-        .formUpload("file", "dummy.pdf")
-        .check(status.is(201))
-    )
-
+class CreateDeskSimulation extends Simulation {
 
   /**
    * The simulations need to be in a file named *Simulation, and execute this.
@@ -58,10 +31,11 @@ class FolderSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    CoreApi
-      .checkUp
+    scenario("Create Desks")
+      .exec(authenticateRequest)
       .repeat(repeatCount) {
-        exec(createInstance)
+        exec(getRandomTenantId)
+          .exec(createDesk)
       }
       .inject(atOnceUsers(1))
   ).protocols(httpConf)

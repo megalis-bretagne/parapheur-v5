@@ -15,40 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.auth
+package coop.libriciel.iparapheur
 
-import coop.libriciel.iparapheur.CoreApi.{CITIES_LIST, checkUp, httpConf, repeatCount}
+import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.auth.TenantScenarios.createTenant
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef._
 
-import java.util.{Random, UUID}
-
-
-class TenantsSimulation extends Simulation {
-
-
-  var createTenant: ScenarioBuilder = scenario(getClass.getName)
-    .exec(session => {
-      session.setAll(
-        ("randomId", UUID.randomUUID().toString),
-        ("randomCity", CITIES_LIST(new Random().nextInt(CITIES_LIST.length)))
-      )
-    })
-    .exec(
-      http("Create")
-        .post("api/v1/admin/tenant")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "id" : "${randomId}",
-              "name": "${randomCity}"
-            }
-          """)).asJson
-        .check(status.is(201))
-    )
-
+class CreateTenantSimulation extends Simulation {
 
   /**
    * The simulations need to be in a file named *Simulation, and execute this.
@@ -58,7 +31,8 @@ class TenantsSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    checkUp
+    scenario("Create Tenants")
+      .exec(authenticateRequest)
       .repeat(repeatCount) {
         exec(createTenant)
       }

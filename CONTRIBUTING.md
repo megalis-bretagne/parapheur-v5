@@ -182,18 +182,17 @@ Every Integration test should use the `src/gatling/application.yml`'s `tests.rep
 This value can be overridden (increased), to turn those integrations into performance tests :
 
 ```bash
-$ gradle clean gatlingRun -Dtests.repeat_count=1000000
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.CreateTenantSimulation -Dtests.repeat_count=2
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.CreateUserSimulation -Dtests.repeat_count=100
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.CreateDeskSimulation -Dtests.repeat_count=100
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.WorkflowSimulation -Dtests.repeat_count=100
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.CreateTypologySimulation -Dtests.repeat_count=50
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.CreateFolderSimulation -Dtests.repeat_count=100
 ```
 
-Full run :
-
+You can create pre-filled tenants with :
 ```bash
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=200
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
+$ gradle clean gatlingRun-coop.libriciel.iparapheur.FillApplicationSimulation -Dtests.repeat_count=10
 ```
 
 ### Other resources

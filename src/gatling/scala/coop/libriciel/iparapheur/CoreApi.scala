@@ -19,10 +19,10 @@
 package coop.libriciel.iparapheur
 
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef.{jsonPath, scenario, _}
-import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.core.Predef.{jsonPath, _}
 import io.gatling.http.Predef.{http, status, _}
 import io.gatling.http.protocol.HttpProtocolBuilder
+import io.gatling.http.request.builder.HttpRequestBuilder
 
 import scala.io.Source
 
@@ -60,98 +60,88 @@ object CoreApi {
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
 
-  val checkUp: ScenarioBuilder = scenario("Check up")
-    .exec(
-      http("Check up")
-        .post("/auth/realms/api/protocol/openid-connect/token")
-        .formParam("client_id", "ipcore-web")
-        .formParam("username", login)
-        .formParam("password", pass)
-        .formParam("grant_type", "password")
-        .check(status.is(200))
-        .check(jsonPath("$.access_token").exists)
-        .check(jsonPath("$.access_token").ofType[String].saveAs("authToken"))
-    )
+  val authenticateRequest: HttpRequestBuilder =
+    http("Authentication")
+      .post("/auth/realms/api/protocol/openid-connect/token")
+      .formParam("client_id", "ipcore-web")
+      .formParam("username", login)
+      .formParam("password", pass)
+      .formParam("grant_type", "password")
+      .check(status.is(200))
+      .check(jsonPath("$.access_token").exists)
+      .check(jsonPath("$.access_token").ofType[String].saveAs("authToken")
+      )
 
 
-  val getRandomTenantId: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/v1/tenant")
-        .header("Authorization", "bearer ${authToken}")
-        .header("Accept", "application/json")
-        .queryParam("page", 0)
-        .queryParam("pageSize", Integer.MAX_VALUE)
-        .queryParam("withAdminRights", true)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("tenantId"))
-    )
+  val getRandomTenantId: HttpRequestBuilder =
+    http("Get random Tenant Id")
+      .get("api/v1/tenant")
+      .header("Authorization", "bearer ${authToken}")
+      .header("Accept", "application/json")
+      .queryParam("page", 0)
+      .queryParam("pageSize", Integer.MAX_VALUE)
+      .queryParam("withAdminRights", true)
+      .check(status.is(200))
+      .check(jsonPath("$.total").exists)
+      .check(jsonPath("$.data").exists)
+      .check(jsonPath("$.total").ofType[Int].gte(1))
+      .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("tenantId"))
 
 
-  val getRandomDeskIdAsAdmin: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/v1/admin/tenant/${tenantId}/desk")
-        .header("Authorization", "bearer ${authToken}")
-        .header("Accept", "application/json")
-        .queryParam("page", 0)
-        .queryParam("pageSize", Integer.MAX_VALUE)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
-    )
+  val getRandomDeskIdAsAdmin: HttpRequestBuilder =
+    http("Get random Desk Id as admin")
+      .get("api/v1/admin/tenant/${tenantId}/desk")
+      .header("Authorization", "bearer ${authToken}")
+      .header("Accept", "application/json")
+      .queryParam("page", 0)
+      .queryParam("pageSize", Integer.MAX_VALUE)
+      .check(status.is(200))
+      .check(jsonPath("$.total").exists)
+      .check(jsonPath("$.data").exists)
+      .check(jsonPath("$.total").ofType[Int].gte(1))
+      .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
 
 
-  val getRandomDeskIdAsUser: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/v1/desk")
-        .header("Authorization", "bearer ${authToken}")
-        .header("Accept", "application/json")
-        .queryParam("page", 0)
-        .queryParam("pageSize", Integer.MAX_VALUE)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
-    )
-
-  val getRandomTypeId: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/v1/tenant/${tenantId}/desk/${deskId}/types")
-        .header("Authorization", "bearer ${authToken}")
-        .header("Accept", "application/json")
-        .queryParam("page", 0)
-        .queryParam("pageSize", Integer.MAX_VALUE)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("typeId"))
-    )
+  val getRandomDeskIdAsUser: HttpRequestBuilder =
+    http("Get random desk Id as user")
+      .get("api/v1/desk")
+      .header("Authorization", "bearer ${authToken}")
+      .header("Accept", "application/json")
+      .queryParam("page", 0)
+      .queryParam("pageSize", Integer.MAX_VALUE)
+      .check(status.is(200))
+      .check(jsonPath("$.total").exists)
+      .check(jsonPath("$.data").exists)
+      .check(jsonPath("$.total").ofType[Int].gte(1))
+      .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("deskId"))
 
 
-  val getRandomSubtypeId: ScenarioBuilder = scenario(getClass.getName)
-    .exec(
-      http("Get")
-        .get("api/v1/tenant/${tenantId}/desk/${deskId}/types/${typeId}/subtypes")
-        .header("Authorization", "bearer ${authToken}")
-        .header("Accept", "application/json")
-        .queryParam("page", 0)
-        .queryParam("pageSize", Integer.MAX_VALUE)
-        .check(status.is(200))
-        .check(jsonPath("$.total").exists)
-        .check(jsonPath("$.data").exists)
-        .check(jsonPath("$.total").ofType[Int].gte(1))
-        .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("subtypeId"))
-    )
+  val getRandomTypeId: HttpRequestBuilder =
+    http("Get random Type Id")
+      .get("api/v1/tenant/${tenantId}/desk/${deskId}/types")
+      .header("Authorization", "bearer ${authToken}")
+      .header("Accept", "application/json")
+      .queryParam("page", 0)
+      .queryParam("pageSize", Integer.MAX_VALUE)
+      .check(status.is(200))
+      .check(jsonPath("$.total").exists)
+      .check(jsonPath("$.data").exists)
+      .check(jsonPath("$.total").ofType[Int].gte(1))
+      .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("typeId"))
+
+
+  val getRandomSubtypeId: HttpRequestBuilder =
+    http("Get random SubType Id")
+      .get("api/v1/tenant/${tenantId}/desk/${deskId}/types/${typeId}/subtypes")
+      .header("Authorization", "bearer ${authToken}")
+      .header("Accept", "application/json")
+      .queryParam("page", 0)
+      .queryParam("pageSize", Integer.MAX_VALUE)
+      .check(status.is(200))
+      .check(jsonPath("$.total").exists)
+      .check(jsonPath("$.data").exists)
+      .check(jsonPath("$.total").ofType[Int].gte(1))
+      .check(jsonPath("$.data[*].id").ofType[String].findRandom.saveAs("subtypeId"))
 
 
 }

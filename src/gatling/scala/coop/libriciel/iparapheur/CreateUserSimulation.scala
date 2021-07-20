@@ -15,44 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.auth
+package coop.libriciel.iparapheur
 
 import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.auth.UserScenarios.createUser
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef._
 
-import java.util.Random
-
-
-class UsersSimulation extends Simulation {
-
-
-  var createUser: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(session => {
-      session.setAll(
-        ("randomFirstName", FIRST_NAMES_LIST(new Random().nextInt(FIRST_NAMES_LIST.length))),
-        ("randomLastName", LAST_NAMES_LIST(new Random().nextInt(LAST_NAMES_LIST.length)))
-      )
-    })
-    .exec(
-      http("Create")
-        .post("api/v1/admin/tenant/${tenantId}/user")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "userName" : "${randomFirstName}_${randomLastName}",
-              "email": "${randomFirstName}.${randomLastName}@dom.local",
-              "firstName": "${randomFirstName}",
-              "lastName": "${randomLastName}",
-              "password": "password"
-            }
-          """)).asJson
-        .check(status.is(201))
-    )
-
+class CreateUserSimulation extends Simulation {
 
   /**
    * The simulations need to be in a file named *Simulation, and execute this.
@@ -62,9 +31,11 @@ class UsersSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    checkUp
+    scenario("Create Users")
+      .exec(authenticateRequest)
       .repeat(repeatCount) {
-        exec(createUser)
+        exec(getRandomTenantId)
+          .exec(createUser)
       }
       .inject(atOnceUsers(1))
   ).protocols(httpConf)

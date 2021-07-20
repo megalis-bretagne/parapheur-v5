@@ -15,50 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package coop.libriciel.iparapheur.flowable
+package coop.libriciel.iparapheur
 
 import coop.libriciel.iparapheur.CoreApi._
+import coop.libriciel.iparapheur.flowable.WorkflowScenarios.createWorkflow
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef._
-
-import java.util.Random
 
 
 class WorkflowSimulation extends Simulation {
-
-
-  var createWorkflow: ScenarioBuilder = scenario(getClass.getName)
-    .exec(getRandomTenantId)
-    .exec(getRandomDeskIdAsAdmin)
-    .exec(session => {
-      session.setAll(
-        ("randomSimpleWorkflowValue", new Random().nextInt(250000))
-      )
-    })
-    .exec(
-      http("Create")
-        .post("api/v1/admin/tenant/${tenantId}/workflowDefinition")
-        .header("Authorization", "bearer ${authToken}")
-        .body(StringBody(
-          """
-            {
-              "deploymentChildrenCount": 0,
-              "deploymentId": "simple_workflow_${randomSimpleWorkflowValue}",
-              "id": "simple_workflow_${randomSimpleWorkflowValue}",
-              "key": "simple_workflow_${randomSimpleWorkflowValue}",
-              "name": "Simple workflow ${randomSimpleWorkflowValue}",
-              "steps": [
-                {
-                  "type": "VISA",
-                  "validators": [ "${deskId}" ]
-                }
-              ]
-            }
-          """)).asJson
-        .check(status.is(201))
-    )
-
 
   /**
    * The simulations need to be in a file named *Simulation, and execute this.
@@ -68,9 +32,11 @@ class WorkflowSimulation extends Simulation {
    * For such simple tests cases, everything is called from here, merging everything in one report/log.
    */
   setUp(
-    checkUp
+    scenario("Create Workflows")
+      .exec(authenticateRequest)
       .repeat(repeatCount) {
-        exec(createWorkflow)
+        exec(getRandomTenantId)
+          .exec(createWorkflow)
       }
       .inject(atOnceUsers(1))
   ).protocols(httpConf)
