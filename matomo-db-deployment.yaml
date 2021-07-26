@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: matomo-db
+  name: matomo-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: matomo-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: matomo-db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: matomo
+        - name: MYSQL_PASSWORD
+          value: matomo
+        - name: MYSQL_ROOT_PASSWORD
+          value: libriciel2k18
+        - name: MYSQL_USER
+          value: matomo
+        image: mariadb:10.3
+        imagePullPolicy: ""
+        name: matomo-db
+        resources:
+          limits:
+            memory: "268435456"
+        tty: true
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: matomo-db-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: matomo-db-claim0
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/data/matomo-db
+          type: DirectoryOrCreate
+status: {}
