@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - image: prom/prometheus
+        name: prometheus
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/prometheus/alert.rules
+          name: prometheus-alert-rules
+        - mountPath: /etc/prometheus/prometheus.yml
+          name: prometheus-properties
+      restartPolicy: Always
+      volumes:
+      - name: prometheus-alert-rules
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/prometheus/alert.rules
+          type: FileOrCreate
+      - name: prometheus-properties
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/prometheus/prometheus.yml
+          type: FileOrCreate
+status: {}
