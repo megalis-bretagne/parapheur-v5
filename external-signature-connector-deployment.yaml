@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: external-signature-connector
+  name: external-signature-connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-signature-connector
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: external-signature-connector
+    spec:
+      containers:
+        - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+          name: external-signature-connector
+          resources: { }
+          tty: true
+          volumeMounts:
+            - mountPath: /application.properties
+              name: external-signature-connector-properties
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: external-signature-connector-properties
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/external-signature-connector/application.properties
+            type: FileOrCreate
+status: { }
