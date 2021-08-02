@@ -1,0 +1,62 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: workflow
+  namespace: default
+  labels:
+    app: workflow
+spec:
+  type: ClusterIP
+  selector:
+    app: workflow
+  ports:
+    - protocol: TCP
+      port: 80
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: workflow
+  name: workflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: workflow
+    spec:
+      containers:
+        - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
+          name: workflow
+          resources:
+            limits:
+              memory: "268435456"
+          tty: true
+          volumeMounts:
+            - mountPath: /sentry.properties
+              name: workflow-properties
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: workflow-properties
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/workflow/sentry.properties
+            type: FileOrCreate
+status: { }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIubGlicmljaWVsLmZyIjogewoJCQkiYXV0aCI6ICJiWEpwWTI5eVpHVmhkVHBIY21sdGNHVnljM1Z5YkdWelpuSmhhWE5sY3c9PSIKCQl9LAoJCSJnaXRsYWIubGlicmljaWVsLmZyOjQ1NjciOiB7CgkJCSJhdXRoIjogImJYSnBZMjl5WkdWaGRUcEhjbWx0Y0dWeWMzVnliR1Z6Wm5KaGFYTmxjdz09IgoJCX0sCgkJInJlZ2lzdHJ5LmxpYnJpY2llbC5mciI6IHsKCQkJImF1dGgiOiAiY0c5c1pTMXphV2R1WVhSMWNtVTZjbm8yTjNsTE5WRjFiV0ZIWVRkYVJBPT0iCgkJfQoJfQp9
+type: kubernetes.io/dockerconfigjson
