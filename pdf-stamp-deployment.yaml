@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: pdf-stamp
+  name: pdf-stamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pdf-stamp
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: pdf-stamp
+    spec:
+      containers:
+      - image: registry.libriciel.fr/signature/pdf-stamp:develop
+        name: pdf-stamp
+        resources:
+          limits:
+            memory: "268435456"
+        tty: true
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+status: {}
