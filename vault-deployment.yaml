@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: vault
+  name: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: vault
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: vault
+    spec:
+      containers:
+        - args:
+            - vault
+            - server
+            - -config=/vault/config/vault.json
+          env:
+            - name: VAULT_ADDR
+              value: http://0.0.0.0:8200
+            - name: VAULT_API_ADDR
+              value: http://0.0.0.0:8200
+          image: vault:1.6.2
+          name: vault
+          resources: { }
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
+          tty: true
+          volumeMounts:
+            - mountPath: /vault/config
+              name: vault-config
+            - mountPath: /vault/policies
+              name: vault-policies
+            - mountPath: /vault/data
+              name: vault-data
+      restartPolicy: Always
+      volumes:
+        - name: vault-config
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/vault/config
+            type: DirectoryOrCreate
+        - name: vault-policies
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/vault/policies
+            type: DirectoryOrCreate
+        - name: vault-data
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/data/vault/data
+            type: DirectoryOrCreate
+status: { }
