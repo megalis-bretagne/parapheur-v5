@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: libersign
+  name: libersign
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: libersign
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: libersign
+    spec:
+      containers:
+      - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
+        name: libersign
+        resources:
+          limits:
+            memory: "67108864"
+        tty: true
+      restartPolicy: Always
+      volumes: null
+      imagePullSecrets:
+        - name: regcred
+status: {}
