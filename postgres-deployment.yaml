@@ -14,7 +14,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         io.kompose.service: postgres
     spec:
@@ -31,7 +30,6 @@ spec:
             - name: POSTGRES_PASSWORD
             - name: POSTGRES_USER
           image: postgres:10.1
-          imagePullPolicy: ""
           name: postgres
           resources:
             limits:
@@ -43,7 +41,6 @@ spec:
             - mountPath: /docker-entrypoint-initdb.d
               name: postgres-entrypoint
       restartPolicy: Always
-      serviceAccountName: ""
       volumes:
         - name: postgres-data
           hostPath:
