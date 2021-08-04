@@ -1,21 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: libersign
+  namespace: iparapheur
+  labels:
+    app: libersign
+spec:
+  type: ClusterIP
+  selector:
+    app: libersign
+  ports:
+    - protocol: TCP
+      port: 8080
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
-    io.kompose.service: libersign
+    app: libersign
   name: libersign
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: libersign
+      app: libersign
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: libersign
+        app: libersign
     spec:
       containers:
       - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
@@ -25,7 +40,6 @@ spec:
             memory: "67108864"
         tty: true
       restartPolicy: Always
-      volumes: null
       imagePullSecrets:
         - name: regcred
 status: {}

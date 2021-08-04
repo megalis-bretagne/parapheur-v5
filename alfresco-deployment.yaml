@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: alfresco
-  namespace: default
+  namespace: iparapheur
   labels:
     app: alfresco
 spec:
@@ -11,30 +11,27 @@ spec:
     app: alfresco
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: alfresco
+    app: alfresco
   name: alfresco
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: alfresco
+      app: alfresco
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
-        kompose.version: 1.21.0 (992df58d8)
-      creationTimestamp: null
       labels:
-        io.kompose.service: alfresco
+        app: alfresco
     spec:
       containers:
       - env:
@@ -47,7 +44,6 @@ spec:
             -Dlegacy.transform.service.enabled=false -Dmessaging.subsystem.autoStart=false
             -Dsystem.workflow.engine.activiti.enabled=false "
         image: alfresco/alfresco-content-repository-community:6.2.0-ga
-        imagePullPolicy: ""
         name: alfresco
         resources:
           limits:
@@ -55,69 +51,24 @@ spec:
         tty: true
         volumeMounts:
         - mountPath: /usr/local/tomcat/alf_data
-          name: alfresco-claim0
+          name: alfresco-data
         - mountPath: /usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
-          name: alfresco-claim1
+          name: alfresco-ip-custom-models
         - mountPath: /usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
-          name: alfresco-claim2
+          name: alfresco-custom-model-context
       restartPolicy: Always
-      serviceAccountName: ""
       volumes:
-      - name: alfresco-claim0
-        persistentVolumeClaim:
-          claimName: alfresco-claim0
-      - name: alfresco-claim1
-        persistentVolumeClaim:
-          claimName: alfresco-claim1
-      - name: alfresco-claim2
-        persistentVolumeClaim:
-          claimName: alfresco-claim2
-status: {}
+      - name: alfresco-data
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/data/alfresco
+          type: DirectoryOrCreate
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: alfresco-claim0
-  name: alfresco-claim0
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: alfresco-claim1
-  name: alfresco-claim1
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: alfresco-claim2
-  name: alfresco-claim2
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
+      - name: alfresco-ip-custom-models
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/content/ip-custom-models.xml
+          type: FileOrCreate
+      - name: alfresco-custom-model-context
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/content/custom-model-context.xml
+          type: FileOrCreate
 status: {}

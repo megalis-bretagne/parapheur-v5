@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: iparapheur
+  labels:
+    app: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - port: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+  namespace: iparapheur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - env:
+        - name: DB_ADDR
+          value: postgres
+        - name: DB_DATABASE
+          value: keycloak
+        - name: DB_PASSWORD
+          value: keycloak
+        - name: DB_USER
+          value: keycloak
+        - name: DB_VENDOR
+          value: postgres
+        - name: KEYCLOAK_CLIENT_ID
+          value: ipcore-web
+        - name: KEYCLOAK_IMPORT
+          value: /tmp/keycloak.json
+        - name: KEYCLOAK_PASSWORD
+          value: admin
+        - name: KEYCLOAK_REALM
+          value: api
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        image: jboss/keycloak:9.0.3
+        name: keycloak
+        resources:
+          limits:
+            memory: "536870912"
+        tty: true
+        volumeMounts:
+        - mountPath: /tmp/keycloak.json
+          name: keycloak-configuration
+        - mountPath: /opt/jboss/tools/docker-entrypoint.sh
+          name: keycloak-init
+        - mountPath: /opt/jboss/keycloak/themes/libriciel
+          name: keycloak-theme-libriciel
+        - mountPath: /opt/jboss/keycloak/themes/iparapheur
+          name: keycloak-theme-ip
+      restartPolicy: Always
+      volumes:
+      - name: keycloak-configuration
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/keycloak/keycloak.json
+          type: FileOrCreate
+      - name: keycloak-init
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/keycloak/docker-entrypoint.sh
+          type: FileOrCreate
+      - name: keycloak-theme-libriciel
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/keycloak/themes/libriciel
+          type: DirectoryOrCreate
+      - name: keycloak-theme-ip
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/keycloak/themes/iparapheur
+          type: DirectoryOrCreate
+status: {}

@@ -1,0 +1,57 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: filetransfer
+  namespace: iparapheur
+  labels:
+    app: filetransfer
+spec:
+  type: ClusterIP
+  selector:
+    app: filetransfer
+  ports:
+    - protocol: TCP
+      port: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: filetransfer
+  name: filetransfer
+  namespace: iparapheur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filetransfer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: filetransfer
+    spec:
+      containers:
+      - args:
+        - --provider
+        - local
+        - --basedir
+        - /data/
+        env:
+        - name: RANDOM_TOKEN_LENGTH
+          value: "0"
+        image: dutchcoders/transfer.sh:v1.2.4
+        name: filetransfer
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/
+          name: filetransfer-data
+      restartPolicy: Always
+      volumes:
+      - name: filetransfer-data
+        hostPath:
+          path: /home/marc/dev/i-Parapheur-v5/compose/data/transfer
+          type: DirectoryOrCreate
+status: {}

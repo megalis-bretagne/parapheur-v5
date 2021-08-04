@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-client
+  namespace: iparapheur
+  labels:
+    app: web-client
+spec:
+  selector:
+    app: web-client
+  ports:
+    - port: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web-client
+  name: web-client
+  namespace: iparapheur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-client
+  strategy: { }
+  template:
+    metadata:
+      labels:
+        app: web-client
+    spec:
+      containers:
+        - env:
+            - name: APPLICATION_URL
+              value: 'http://ip-k8s.local'
+            - name: KEYCLOAK_CLIENT_ID
+            - name: KEYCLOAK_REALM
+            - name: KEYCLOAK_URL
+              value: /auth
+          image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+          name: web
+          resources:
+            limits:
+              memory: "67108864"
+          tty: true
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+status: { }

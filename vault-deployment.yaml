@@ -1,23 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault
+  namespace: iparapheur
+  labels:
+    app: vault
+spec:
+  selector:
+    app: vault
+  ports:
+    - port: 8200
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: vault
+    app: vault
   name: vault
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: vault
+      app: vault
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        io.kompose.service: vault
+        app: vault
     spec:
       containers:
-        - args:
+        - name: vault
+          image: vault:1.6.2
+          args:
             - vault
             - server
             - -config=/vault/config/vault.json
@@ -26,8 +43,6 @@ spec:
               value: http://0.0.0.0:8200
             - name: VAULT_API_ADDR
               value: http://0.0.0.0:8200
-          image: vault:1.6.2
-          name: vault
           resources: { }
           securityContext:
             capabilities:
@@ -42,6 +57,8 @@ spec:
             - mountPath: /vault/data
               name: vault-data
       restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
       volumes:
         - name: vault-config
           hostPath:

@@ -1,20 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto
+  namespace: iparapheur
+  labels:
+    app: crypto
+spec:
+  selector:
+    app: crypto
+  ports:
+    - port: 8080
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: crypto
+    app: crypto
   name: crypto
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: crypto
+      app: crypto
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        io.kompose.service: crypto
+        app: crypto
     spec:
       containers:
         - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:2.1.0
@@ -25,29 +40,13 @@ spec:
           tty: true
           volumeMounts:
             - mountPath: /sentry.properties
-              name: crypto-claim0
+              name: crypto-sentry-properties
       restartPolicy: Always
       imagePullSecrets:
         - name: regcred
       volumes:
-        - name: crypto-claim0
-          persistentVolumeClaim:
-            claimName: crypto-claim0
+        - name: crypto-sentry-properties
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/crypto/sentry.properties
+            type: FileOrCreate
 status: { }
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: crypto-claim0
-  name: crypto-claim0
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-status: { }
-

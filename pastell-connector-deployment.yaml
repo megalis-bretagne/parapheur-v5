@@ -1,20 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pastell-connector
+  namespace: iparapheur
+  labels:
+    app: pastell-connector
+spec:
+  type: ClusterIP
+  selector:
+    app: pastell-connector
+  ports:
+    - protocol: TCP
+      port: 8080
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: pastell-connector
   name: pastell-connector
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: pastell-connector
+      app: pastell-connector
   strategy: {}
   template:
     metadata:
       labels:
-        app: postgres
-        io.kompose.service: pastell-connector
+        app: pastell-connector
     spec:
       containers:
       - env:

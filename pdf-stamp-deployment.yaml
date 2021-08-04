@@ -1,19 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pdf-stamp
+  namespace: iparapheur
+  labels:
+    app: pdf-stamp
+spec:
+  type: ClusterIP
+  selector:
+    app: pdf-stamp
+  ports:
+    - protocol: TCP
+      port: 8080
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: pdf-stamp
+    app: pdf-stamp
   name: pdf-stamp
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: pdf-stamp
+      app: pdf-stamp
   strategy: {}
   template:
     metadata:
       labels:
-        io.kompose.service: pdf-stamp
+        app: pdf-stamp
     spec:
       containers:
       - image: registry.libriciel.fr/signature/pdf-stamp:develop

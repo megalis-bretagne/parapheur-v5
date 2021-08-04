@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: core
+  namespace: iparapheur
+  labels:
+    app: core
+spec:
+  selector:
+    app: core
+  ports:
+    - port: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: core
+  name: core
+  namespace: iparapheur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: core
+    spec:
+      hostAliases:
+        - ip: "10.152.183.159"
+          hostnames:
+            - "ip-k8s.local"
+      containers:
+        - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+          name: core
+          env:
+            - name: APPLICATION_HOST
+              value: 'ip-k8s.local'
+            - name: KEYCLOAK_AUTH_PROTOCOL
+              value: http
+            - name: KEYCLOAK_CLIENT_ID
+              value: ipcore-web
+            - name: KEYCLOAK_HOST
+              value: keycloak
+            - name: KEYCLOAK_REALM
+              value: api
+            - name: MATOMO_TOKEN
+              value: a6c89dba0f9247e8b74c5773b404ed6d
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: PUBLIC_URL_PROTOCOL
+              value: http
+            - name: STATS_SERVICE_PROTOCOL
+              value: http
+            - name: VAULT_TOKEN
+              value: s.mKDPrnPfxG4euaJdowscIJ3A
+            - name: VAULT_UNSEAL_KEY
+              value: kjhtckdgurXlkWKrN5/BlZuOXaCN1yoa5rSmvfM4aTY=
+          resources:
+            limits:
+              memory: "268435456"
+          tty: true
+          volumeMounts:
+            - mountPath: /sentry.properties
+              name: core-sentry-properties
+            - mountPath: /application.yml
+              name: core-properties
+
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: core-sentry-properties
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/core/sentry.properties
+            type: FileOrCreate
+        - name: core-properties
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/src/main/resources/core/application-dev.yml
+            type: FileOrCreate
+status: { }

@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: workflow
-  namespace: default
+  namespace: iparapheur
   labels:
     app: workflow
 spec:
@@ -11,15 +11,16 @@ spec:
     app: workflow
   ports:
     - protocol: TCP
-      port: 80
----
+      port: 8080
 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: workflow
   name: workflow
+  namespace: iparapheur
 spec:
   replicas: 1
   selector:
@@ -52,11 +53,4 @@ spec:
             type: FileOrCreate
 status: { }
 
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: regcred
-data:
-  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIubGlicmljaWVsLmZyIjogewoJCQkiYXV0aCI6ICJiWEpwWTI5eVpHVmhkVHBIY21sdGNHVnljM1Z5YkdWelpuSmhhWE5sY3c9PSIKCQl9LAoJCSJnaXRsYWIubGlicmljaWVsLmZyOjQ1NjciOiB7CgkJCSJhdXRoIjogImJYSnBZMjl5WkdWaGRUcEhjbWx0Y0dWeWMzVnliR1Z6Wm5KaGFYTmxjdz09IgoJCX0sCgkJInJlZ2lzdHJ5LmxpYnJpY2llbC5mciI6IHsKCQkJImF1dGgiOiAiY0c5c1pTMXphV2R1WVhSMWNtVTZjbm8yTjNsTE5WRjFiV0ZIWVRkYVJBPT0iCgkJfQoJfQp9
-type: kubernetes.io/dockerconfigjson
+
