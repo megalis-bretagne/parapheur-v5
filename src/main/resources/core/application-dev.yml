@@ -2,3 +2,41 @@ spring:
   mail:
     host: smtp
     port: 25
+services:
+  ipng:
+    host: iparapheur.dom.local
+    port: 8081
+  stats:
+    provider: none
+ipng:
+  name: customName
+  lastRedisMessage: 1625823031359-0
+  tenantToEntities:
+    60c08ad6-f4d5-4e55-ac28-adc6c262d5a8: conseilregionadmin141
+    441f9d50-8f24-4c07-b160-c92033922332: conseilregionadmin241
+    172c8d41-bb7b-4ab1-b3b1-608c3e6cb1ad: montpellierEntityId
+    33de45d6-c5d7-4db8-96ab-68198b9940a0: libricielEntityId
+  tenantConfigurations:
+    441f9d50-8f24-4c07-b160-c92033922332:
+      deskToDeskbox:
+        aecfbd42-19d7-4193-88f5-b034832bddcb: deskboxcr41
+      innerTypesToIpngTypes:
+        2c3c5f63-0dee-4301-bedc-83f3d92d4721: 100-common-contract
+
+    60c08ad6-f4d5-4e55-ac28-adc6c262d5a8:
+      deskToDeskbox:
+        7ee3e753-3343-4b5c-8539-e50b54c759f1: deskbox141
+      innerTypesToIpngTypes:
+        f5fbfc35-8623-4088-8d31-24dfe61a37ca: 100-common-contract
+
+    172c8d41-bb7b-4ab1-b3b1-608c3e6cb1ad:
+      deskToDeskbox:
+        b84a0776-186f-488f-8fd6-b3ce3045f74f: serviceAchatDbxId
+      innerTypesToIpngTypes:
+        608a3f0e-cd3a-4082-8681-ebc0da9a3e92: 100-common-contract
+
+    33de45d6-c5d7-4db8-96ab-68198b9940a0:
+      deskToDeskbox:
+        57e41f8a-5dea-42df-aaf4-acbece9e5828: serviceCommercialDbxId
+      innerTypesToIpngTypes:
+        d4f4cc86-3daf-41cc-b1b0-ab66588ce2d7: 100-common-contract
