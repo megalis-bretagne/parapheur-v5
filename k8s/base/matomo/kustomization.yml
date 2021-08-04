@@ -1,0 +1,4 @@
+resources:
+  - matomo-config-configmap.yml
+  - matomo-deployment.yml
+  - matomo-service.yml

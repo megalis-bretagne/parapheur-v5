@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: core
-  namespace: default
+  namespace: iparapheur
 spec:
   entryPoints:
     - web
@@ -19,7 +19,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: matomo
-  namespace: default
+  namespace: iparapheur
 spec:
   entryPoints:
     - web
@@ -38,7 +38,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: keycloak
-  namespace: default
+  namespace: iparapheur
 spec:
   entryPoints:
     - web
@@ -54,7 +54,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: web-client
-  namespace: default
+  namespace: iparapheur
 spec:
   entryPoints:
     - web
@@ -70,7 +70,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: stripprefix
-  namespace: default
+  namespace: iparapheur
 spec:
   stripPrefix:
     prefixes:

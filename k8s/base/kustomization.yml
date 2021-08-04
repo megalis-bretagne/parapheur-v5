@@ -1,0 +1,20 @@
+resources:
+  - iparapheur-namespace.yml
+  - ip-routes.yml
+  - traefik-dashboard.yml
+  - web-client
+  - vault
+  - redis
+  - prometheus
+  - postgres
+  - pes-viewer
+  - pdf-stamp
+  - pastell-connector
+  - matomo
+  - libersign
+  - keycloak
+  - filetransfer
+  - external-signature-connector
+  - crypto
+  - alfresco
+  - core

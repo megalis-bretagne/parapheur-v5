@@ -1,0 +1,3 @@
+resources:
+  - pdf-stamp-deployment.yml
+  - pdf-stamp-service.yml

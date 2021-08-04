@@ -1,0 +1,3 @@
+resources:
+  - core-deployment.yml
+  - core-service.yml

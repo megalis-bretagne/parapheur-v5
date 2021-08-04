@@ -1,0 +1,3 @@
+resources:
+  - filetransfer-deployment.yml
+  - filetransfer-service.yml

@@ -1,0 +1,3 @@
+resources:
+  - libersign-deployment.yml
+  - libersign-service.yml

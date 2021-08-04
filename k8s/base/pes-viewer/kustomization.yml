@@ -1,0 +1,3 @@
+resources:
+  - pes-viewer-deployment.yml
+  - pes-viewer-service.yml

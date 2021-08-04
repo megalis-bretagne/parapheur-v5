@@ -1,0 +1,3 @@
+resources:
+  - external-signature-connector-deployment.yml
+  - external-signature-connector-service.yml

@@ -1,0 +1,3 @@
+resources:
+  - alfresco-deployment.yml
+  - alfresco-service.yml

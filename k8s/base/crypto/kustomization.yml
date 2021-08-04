@@ -1,0 +1,3 @@
+resources:
+  - crypto-deployment.yml
+  - crypto-service.yml

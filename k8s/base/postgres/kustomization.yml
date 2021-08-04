@@ -1,0 +1,3 @@
+resources:
+  - postgres-deployment.yml
+  - postgres-service.yml

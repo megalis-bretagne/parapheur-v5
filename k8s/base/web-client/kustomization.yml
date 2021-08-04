@@ -1,0 +1,3 @@
+resources:
+  - web-client-deployment.yml
+  - web-client-service.yml

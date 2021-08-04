@@ -1,0 +1,3 @@
+resources:
+  - pastell-connector-deployment.yml
+  - pastell-connector-service.yml

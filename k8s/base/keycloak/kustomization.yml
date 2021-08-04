@@ -1,0 +1,3 @@
+resources:
+  - keycloak-deployment.yml
+  - keycloak-service.yml
