@@ -1,20 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: pdf-stamp
-  namespace: iparapheur
-  labels:
-    app: pdf-stamp
-spec:
-  type: ClusterIP
-  selector:
-    app: pdf-stamp
-  ports:
-    - protocol: TCP
-      port: 8080
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:

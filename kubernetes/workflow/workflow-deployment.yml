@@ -1,19 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: workflow
-  namespace: iparapheur
-  labels:
-    app: workflow
-spec:
-  type: ClusterIP
-  selector:
-    app: workflow
-  ports:
-    - protocol: TCP
-      port: 8080
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

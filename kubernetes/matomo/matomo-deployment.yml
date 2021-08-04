@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matomo
+  namespace: iparapheur
+  labels:
+    app: matomo
+    environment: matomo
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matomo
+      environment: matomo
+  template:
+    metadata:
+      labels:
+        app: matomo
+        environment: matomo
+    spec:
+      containers:
+        - name: matomo-nginx
+          image: "nginx:alpine"
+          command: [ "nginx", "-g", "daemon off;", "-c", "/config/nginx.conf" ]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Gi
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config/nginx.conf
+              name: config
+              subPath: nginx.conf
+            - mountPath: /var/www/html
+              name: html-files
+
+        - name: matomo
+          image: matomo:4.4.0-fpm-alpine
+          env:
+            - name: MATOMO_DATABASE_HOST
+              value: 127.0.0.1
+            - name: MATOMO_DATABASE_USERNAME
+              value: matomo
+            - name: MATOMO_DATABASE_PASSWORD
+              value: password
+            - name: MATOMO_DATABASE_DBNAME
+              value: matomo
+            - name: MATOMO_DATABASE_ADAPTER
+              value: mysql
+            - name: MATOMO_DATABASE_TABLES_PREFIX
+              value: prefix
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          ports:
+            - name: http
+              containerPort: 9000
+          volumeMounts:
+            - mountPath: /usr/local/etc/php/conf.d/php-special.ini
+              name: config
+              subPath: php.ini
+            - mountPath: /var/www/html
+              name: html-files
+
+        - name: mysql
+          volumeMounts:
+            - name: matomo-mysql-storage
+              mountPath: /var/lib/mysql
+          image: mariadb:10.6.3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "matomo"
+            - name: MYSQL_DATABASE
+              value: "matomo"
+          resources:
+            limits:
+              cpu: "0.2"
+              memory: "512Mi"
+      volumes:
+        - name: config
+          configMap:
+            name: matomo-config
+        - name: html-files
+        - name: matomo-mysql-storage
+          hostPath:
+            path: /home/marc/dev/i-Parapheur-v5/compose/data/matomo-db
+            type: DirectoryOrCreate

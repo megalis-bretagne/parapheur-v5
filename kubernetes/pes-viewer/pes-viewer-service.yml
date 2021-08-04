@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pes-viewer
+  namespace: iparapheur
+  labels:
+    app: pes-viewer
+spec:
+  selector:
+    app: pes-viewer
+  ports:
+    - port: 8080

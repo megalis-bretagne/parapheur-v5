@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pastell-connector
+  namespace: iparapheur
+  labels:
+    app: pastell-connector
+spec:
+  type: ClusterIP
+  selector:
+    app: pastell-connector
+  ports:
+    - protocol: TCP
+      port: 8080

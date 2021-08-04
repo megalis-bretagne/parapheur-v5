@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: alfresco
+  namespace: iparapheur
+  labels:
+    app: alfresco
+spec:
+  type: ClusterIP
+  selector:
+    app: alfresco
+  ports:
+    - protocol: TCP
+      port: 8080

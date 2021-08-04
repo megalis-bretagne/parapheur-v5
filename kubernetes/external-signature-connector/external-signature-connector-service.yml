@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: external-signature-connector
+  namespace: iparapheur
+  labels:
+    app: external-signature-connector
+spec:
+  type: ClusterIP
+  selector:
+    app: external-signature-connector
+  ports:
+    - protocol: TCP
+      port: 8080

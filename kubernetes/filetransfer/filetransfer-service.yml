@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: filetransfer
+  namespace: iparapheur
+  labels:
+    app: filetransfer
+spec:
+  type: ClusterIP
+  selector:
+    app: filetransfer
+  ports:
+    - protocol: TCP
+      port: 8080

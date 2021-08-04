@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: matomo
+  namespace: iparapheur
+  labels:
+    app: matomo
+spec:
+  type: ClusterIP
+  selector:
+    app: matomo
+  ports:
+    - protocol: TCP
+      port: 80

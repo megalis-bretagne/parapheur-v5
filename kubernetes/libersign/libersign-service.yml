@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: libersign
+  namespace: iparapheur
+  labels:
+    app: libersign
+spec:
+  type: ClusterIP
+  selector:
+    app: libersign
+  ports:
+    - protocol: TCP
+      port: 8080
