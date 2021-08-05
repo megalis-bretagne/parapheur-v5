@@ -2,3 +2,5 @@ spring:
   mail:
     host: smtp
     port: 25
+
+server.error.include-message: always
