@@ -8,6 +8,7 @@ resources:
   - prometheus
   - postgres
   - pes-viewer
+  - workflow
   - pdf-stamp
   - pastell-connector
   - matomo

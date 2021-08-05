@@ -1,0 +1,3 @@
+resources:
+  - workflow-deployment.yml
+  - workflow-service.yml

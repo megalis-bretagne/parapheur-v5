@@ -18,7 +18,7 @@ spec:
         app: core
     spec:
       hostAliases:
-        - ip: "10.152.183.45"
+        - ip: "10.152.183.156"
           hostnames:
             - "ip-k8s.local"
       containers:
