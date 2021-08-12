@@ -55,6 +55,8 @@
     </constraints>
 
     <types>
+
+
         <type name="iparapheur:document">
             <title>i-Parapheur internal document model</title>
             <parent>cm:content</parent>
@@ -63,6 +65,10 @@
                 <property name="iparapheur:isMainDocument">
                     <title>Main document</title>
                     <type>d:boolean</type>
+                </property>
+                <property name="iparapheur:annotations">
+                    <title>Parapheur annotations</title>
+                    <type>d:text</type>
                 </property>
                 <property name="iparapheur:index">
                     <title>Document order</title>
@@ -77,7 +83,6 @@
         <type name="iparapheur:detachedSignature">
             <title>i-Parapheur internal signature model</title>
             <parent>cm:content</parent>
-
             <properties>
                 <property name="iparapheur:targetDocumentId">
                     <title>Target document ID</title>
