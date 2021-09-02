@@ -23,6 +23,7 @@ spec:
             - "ip-k8s.local"
       containers:
         - image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+          imagePullPolicy: Always
           name: core
           env:
             - name: APPLICATION_HOST
@@ -44,9 +45,9 @@ spec:
             - name: STATS_SERVICE_PROTOCOL
               value: http
             - name: VAULT_TOKEN
-              value: s.mKDPrnPfxG4euaJdowscIJ3A
+              value: s.KaGFIGOrkI1KLr15gFseU777
             - name: VAULT_UNSEAL_KEY
-              value: kjhtckdgurXlkWKrN5/BlZuOXaCN1yoa5rSmvfM4aTY=
+              value: iM1eiaxFppOMmsUgFWwAvLW6j3mGG3v2A9grCcrCAg0=
           resources:
             limits:
               memory: "268435456"

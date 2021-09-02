@@ -25,6 +25,7 @@ spec:
             - name: KEYCLOAK_URL
               value: /auth
           image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+          imagePullPolicy: Always
           name: web
           resources:
             limits:
