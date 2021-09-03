@@ -275,6 +275,7 @@ services:
     environment:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
       - DB_VENDOR=postgres
@@ -282,18 +283,22 @@ services:
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
       - DB_USER=${KEYCLOAK_DB_USER}
       - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
-      - KEYCLOAK_IMPORT=/tmp/keycloak.json
+      # This file will be generated from the given JSON, by the script file
+      - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
+      - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - PROXY_ADDRESS_FORWARDING=true
     volumes:
+      - ./src/main/resources/keycloak/startup-scripts:/opt/jboss/startup-scripts
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
-      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
-      # The problematic line was just commented out
-      # TODO : Remove it when keycloak 9.0.2 will be released.
-      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
       # Resources to retrieve from iparapheur-theme pipeline artifact,
       # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
       - ./src/main/resources/keycloak/themes/libriciel:/opt/jboss/keycloak/themes/libriciel
       - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
+      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
+      #     WARNING : The issue was closed, but the issue was not actually fixed, to date.
+      #     The bug is easy to reproduce : On the first launch, the KEYCLOAK_USER/KEYCLOAK_PASSWORD variables will create the default user.
+      #     On the second launch, Keycloak will crash, because the user already exist. The problematic line (l.2) was just commented out.
+      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 
 
   matomo:
