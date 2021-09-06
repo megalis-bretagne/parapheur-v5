@@ -78,6 +78,7 @@ services:
 
 
   pdf-stamp:
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:api-v2
     ports:
       - 8889:8080
 
