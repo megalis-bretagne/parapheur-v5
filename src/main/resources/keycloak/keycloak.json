@@ -1,155 +1,110 @@
 {
-  "id": "i-Parapheur",
-  "realm": "api",
-  "notBefore": 0,
-  "revokeRefreshToken": false,
-  "refreshTokenMaxReuse": 0,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanLogin": 1800,
+  "accessCodeLifespanUserAction": 300,
   "accessTokenLifespan": 300,
   "accessTokenLifespanForImplicitFlow": 900,
-  "ssoSessionIdleTimeout": 1800,
-  "ssoSessionMaxLifespan": 36000,
-  "ssoSessionIdleTimeoutRememberMe": 0,
-  "ssoSessionMaxLifespanRememberMe": 0,
-  "offlineSessionIdleTimeout": 2592000,
-  "offlineSessionMaxLifespanEnabled": false,
-  "offlineSessionMaxLifespan": 5184000,
-  "accessCodeLifespan": 60,
-  "accessCodeLifespanUserAction": 300,
-  "accessCodeLifespanLogin": 1800,
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
-  "enabled": true,
-  "sslRequired": "external",
-  "registrationAllowed": false,
-  "registrationEmailAsUsername": false,
-  "rememberMe": false,
-  "verifyEmail": false,
-  "loginWithEmailAllowed": true,
-  "smtpServer": {
-    "host": "smtp",
-    "from": "no-reply@dom.local",
-    "starttls": "",
-    "auth": "",
-    "ssl": ""
-  },
-  "duplicateEmailsAllowed": false,
-  "resetPasswordAllowed": true,
-  "editUsernameAllowed": false,
   "bruteForceProtected": false,
-  "permanentLockout": false,
-  "maxFailureWaitSeconds": 900,
-  "minimumQuickLoginWaitSeconds": 60,
-  "waitIncrementSeconds": 60,
-  "quickLoginCheckMilliSeconds": 1000,
-  "maxDeltaTimeSeconds": 43200,
-  "failureFactor": 30,
-  "internationalizationEnabled": true,
-  "loginTheme": "iparapheur",
-  "supportedLocales": [
-    "fr"
-  ],
-  "defaultLocale": "fr",
-  "keycloakVersion": "4.8.3.Final",
-  "roles": {
-    "realm": [
-      {
-        "name": "user",
-        "description": "User privileges",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "name": "admin",
-        "description": "Administrator privileges",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "name": "uma_authorization",
-        "description": "${role_uma_authorization}",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "id": "b452b419-49e3-4b54-9f6a-101a39673c20",
-        "name": "adminEntite",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "2cb21b83-33ec-49e1-8ed9-990708370225",
-        "name": "auditeur",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "f018e778-eba7-4dc4-b209-4e2f7d18d251",
-        "name": "exploitant",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "be1557d6-722d-43ff-8397-083652892330",
-        "name": "adminGroupeEntite",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "b479aa46-2879-43f9-b95e-9bbb048b2389",
-        "name": "offline_access",
-        "description": "${role_offline-access}",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "a6aa5fc2-7902-4ae9-89ef-a43c024d20eb",
-        "name": "adminDelegueEntite",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "9cc6ed45-cb02-49cb-9667-5843a0307393",
-        "name": "adminInstance",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      },
-      {
-        "id": "377b7cb0-8761-4f4d-9459-907bc74554ee",
-        "name": "deskbox",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "ipng",
-        "attributes": {}
-      }
-    ]
-  },
-  "groups": [],
-  "defaultRoles": [
-    "uma_authorization"
-  ],
-  "requiredCredentials": [
-    "password"
-  ],
-  "scopeMappings": [
+  "clients": [
     {
-      "client": "ipcore-web",
-      "roles": [
-        "user"
-      ]
+      "attributes": {
+        "display.on.consent.screen": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.assertion.signature": "false",
+        "saml.authnstatement": "false",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.onetimeuse.condition": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml_force_name_id_format": "false",
+        "tls.client.certificate.bound.access.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "baseUrl": "/",
+      "bearerOnly": false,
+      "clientAuthenticatorType": "client-secret",
+      "clientId": "ipcore-web",
+      "consentRequired": false,
+      "defaultClientScopes": [
+        "email",
+        "profile",
+        "role_list",
+        "roles",
+        "web-origins"
+      ],
+      "directAccessGrantsEnabled": true,
+      "enabled": true,
+      "frontchannelLogout": false,
+      "fullScopeAllowed": true,
+      "implicitFlowEnabled": false,
+      "nodeReRegistrationTimeout": -1,
+      "notBefore": 0,
+      "optionalClientScopes": [
+        "address",
+        "offline_access",
+        "phone"
+      ],
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": [
+        "/*"
+      ],
+      "serviceAccountsEnabled": false,
+      "standardFlowEnabled": true,
+      "surrogateAuthRequired": false,
+      "webOrigins": []
+    },
+    {
+      "attributes": {
+        "display.on.consent.screen": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.assertion.signature": "false",
+        "saml.authnstatement": "false",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.onetimeuse.condition": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml_force_name_id_format": "false",
+        "tls.client.certificate.bound.access.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "bearerOnly": true,
+      "clientId": "ipcore-api",
+      "consentRequired": false,
+      "defaultClientScopes": [
+        "email",
+        "profile",
+        "role_list"
+      ],
+      "directAccessGrantsEnabled": true,
+      "enabled": true,
+      "frontchannelLogout": false,
+      "fullScopeAllowed": true,
+      "implicitFlowEnabled": false,
+      "nodeReRegistrationTimeout": -1,
+      "notBefore": 0,
+      "optionalClientScopes": [
+        "address",
+        "offline_access",
+        "phone"
+      ],
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "redirectUris": [
+        "/*"
+      ],
+      "serviceAccountsEnabled": false,
+      "standardFlowEnabled": true,
+      "surrogateAuthRequired": false,
+      "webOrigins": []
     }
   ],
   "clientScopeMappings": {
@@ -162,155 +117,200 @@
       }
     ]
   },
+  "defaultLocale": "fr",
+  "defaultRoles": [
+    "uma_authorization"
+  ],
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "enabled": true,
+  "failureFactor": 30,
+  "groups": [],
+  "id": "i-Parapheur",
+  "internationalizationEnabled": true,
+  "keycloakVersion": "4.8.3.Final",
+  "loginTheme": "iparapheur",
+  "loginWithEmailAllowed": true,
+  "maxDeltaTimeSeconds": 43200,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "notBefore": 0,
+  "offlineSessionIdleTimeout": 2592000,
+  "offlineSessionMaxLifespan": 5184000,
+  "offlineSessionMaxLifespanEnabled": false,
+  "permanentLockout": false,
+  "quickLoginCheckMilliSeconds": 1000,
+  "realm": "api",
+  "refreshTokenMaxReuse": 0,
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "rememberMe": false,
+  "requiredCredentials": [
+    "password"
+  ],
+  "resetPasswordAllowed": true,
+  "revokeRefreshToken": false,
+  "roles": {
+    "realm": [
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "description": "${role_offline-access}",
+        "id": "b479aa46-2879-43f9-b95e-9bbb048b2389",
+        "name": "offline_access"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "2cb21b83-33ec-49e1-8ed9-990708370225",
+        "name": "auditeur"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "377b7cb0-8761-4f4d-9459-907bc74554ee",
+        "name": "deskbox"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "9cc6ed45-cb02-49cb-9667-5843a0307393",
+        "name": "adminInstance"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "a6aa5fc2-7902-4ae9-89ef-a43c024d20eb",
+        "name": "adminDelegueEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "b452b419-49e3-4b54-9f6a-101a39673c20",
+        "name": "adminEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "be1557d6-722d-43ff-8397-083652892330",
+        "name": "adminGroupeEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "id": "f018e778-eba7-4dc4-b209-4e2f7d18d251",
+        "name": "exploitant"
+      },
+      {
+        "clientRole": false,
+        "composite": false,
+        "description": "${role_uma_authorization}",
+        "name": "uma_authorization"
+      },
+      {
+        "clientRole": false,
+        "composite": false,
+        "description": "Administrator privileges",
+        "name": "admin"
+      },
+      {
+        "clientRole": false,
+        "composite": false,
+        "description": "User privileges",
+        "name": "user"
+      }
+    ]
+  },
+  "scopeMappings": [
+    {
+      "client": "ipcore-web",
+      "roles": [
+        "user"
+      ]
+    }
+  ],
+  "smtpServer": {
+    "auth": "",
+    "from": "no-reply@dom.local",
+    "host": "smtp",
+    "ssl": "",
+    "starttls": ""
+  },
+  "sslRequired": "external",
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionIdleTimeoutRememberMe": 0,
+  "ssoSessionMaxLifespan": 36000,
+  "ssoSessionMaxLifespanRememberMe": 0,
+  "supportedLocales": [
+    "fr"
+  ],
   "users": [
     {
-      "username": "rest-admin",
-      "enabled": true,
-      "email": "rest-admin@dom.local",
-      "firstName": "Rest",
-      "lastName": "Admin",
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
+        ],
+        "realm-management": [
+          "manage-realm",
+          "manage-users"
+        ]
+      },
       "credentials": [
         {
           "type": "password",
           "value": "admin"
         }
       ],
+      "email": "rest-admin@dom.local",
+      "enabled": true,
+      "firstName": "Rest",
+      "lastName": "Admin",
       "realmRoles": [
         "admin",
         "user"
       ],
-      "clientRoles": {
-        "realm-management": [
-          "manage-users",
-          "manage-realm"
-        ],
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
+      "username": "rest-admin"
     },
     {
-      "username": "user",
-      "enabled": true,
-      "email": "sample-user@dom.local",
-      "firstName": "Sample",
-      "lastName": "User",
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
+        ]
+      },
       "credentials": [
         {
           "type": "password",
           "value": "password"
         }
       ],
+      "email": "sample-user@dom.local",
+      "enabled": true,
+      "firstName": "Sample",
+      "lastName": "User",
       "realmRoles": [
         "user"
       ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
+      "username": "user"
     }
   ],
-  "clients": [
-    {
-      "clientId": "ipcore-api",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [],
-      "notBefore": 0,
-      "bearerOnly": true,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": false,
-      "frontchannelLogout": false,
-      "protocol": "openid-connect",
-      "attributes": {
-        "saml.assertion.signature": "false",
-        "saml.force.post.binding": "false",
-        "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
-        "saml.server.signature": "false",
-        "saml.server.signature.keyinfo.ext": "false",
-        "exclude.session.state.from.auth.response": "false",
-        "saml_force_name_id_format": "false",
-        "saml.client.signature": "false",
-        "tls.client.certificate.bound.access.tokens": "false",
-        "saml.authnstatement": "false",
-        "display.on.consent.screen": "false",
-        "saml.onetimeuse.condition": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
-    },
-    {
-      "clientId": "ipcore-web",
-      "baseUrl": "/",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
-      "frontchannelLogout": false,
-      "protocol": "openid-connect",
-      "attributes": {
-        "saml.assertion.signature": "false",
-        "saml.force.post.binding": "false",
-        "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
-        "saml.server.signature": "false",
-        "saml.server.signature.keyinfo.ext": "false",
-        "exclude.session.state.from.auth.response": "false",
-        "saml_force_name_id_format": "false",
-        "saml.client.signature": "false",
-        "tls.client.certificate.bound.access.tokens": "false",
-        "saml.authnstatement": "false",
-        "display.on.consent.screen": "false",
-        "saml.onetimeuse.condition": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "web-origins",
-        "role_list",
-        "profile",
-        "roles",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
-    }
-  ]
+  "verifyEmail": false,
+  "waitIncrementSeconds": 60
 }
