@@ -53,8 +53,8 @@ services:
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     links:
       - matomo
 
