@@ -77,7 +77,7 @@
       },
       "authenticationFlowBindingOverrides": {},
       "bearerOnly": true,
-      "clientId": "ipcore-api",
+      "clientId": "${env.KEYCLOAK_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
         "email",
@@ -140,7 +140,7 @@
   "offlineSessionMaxLifespanEnabled": false,
   "permanentLockout": false,
   "quickLoginCheckMilliSeconds": 1000,
-  "realm": "api",
+  "realm": "${env.KEYCLOAK_REALM}",
   "refreshTokenMaxReuse": 0,
   "registrationAllowed": false,
   "registrationEmailAsUsername": false,

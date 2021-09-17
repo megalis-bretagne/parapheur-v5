@@ -28,49 +28,49 @@ services:
   redis:
     image: redis:6.0-alpine
     ports:
-      - 6379:6379
+      - "6379:6379"
 
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     ports:
-      - 8080:8080
+      - "8080:8080"
 
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     ports:
-      - 4200:80
+      - "4200:80"
 
 
   pes-viewer:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:dev
     ports:
-      - 8888:8080
+      - "8888:8080"
 
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
     ports:
-      - 10080:8080
+      - "10080:8080"
 
 
   pastell-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:tenancy
     ports:
-      - 8002:8080
+      - "8002:8080"
 
 
   external-signature-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
     ports:
-      - 2757:8080
+      - "2757:8080"
 
 
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     ports:
-      - 8085:8080
+      - "8085:8080"
 
 
   libersign:
@@ -80,12 +80,12 @@ services:
   pdf-stamp:
     image: gitlab.libriciel.fr:4567/outils/pdf-stamp:api-v2
     ports:
-      - 8889:8080
+      - "8889:8080"
 
 
   alfresco:
     ports:
-      - 9009:8080
+      - "9009:8080"
 
 
   #solr6:
@@ -95,12 +95,12 @@ services:
 
   postgres:
     ports:
-      - 5432:5432
+      - "5432:5432"
 
 
   keycloak:
     ports:
-      - 9090:8080
+      - "9090:8080"
 
 
   smtp:
@@ -112,12 +112,12 @@ services:
 
   vault:
     ports:
-      - 8200:8200
+      - "8200:8200"
 
 
   prometheus:
     ports:
-      - 9091:9090
+      - "9091:9090"
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
@@ -125,5 +125,5 @@ services:
 
   filetransfer:
     ports:
-      - 1807:8080
+      - "1807:8080"
 
