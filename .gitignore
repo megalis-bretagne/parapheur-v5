@@ -267,3 +267,7 @@ hs_err_pid*
 ### Project-specific files
 
 data*/
+patch-ssl/
+src/main/resources/nginx/ssl/
+update-containers.sh
+cron-update.log
