@@ -80,6 +80,7 @@
         "resources": [],
         "scopes": []
       },
+      "baseUrl": "/api",
       "bearerOnly": true,
       "clientId": "${env.KEYCLOAK_CLIENT_ID}",
       "consentRequired": false,
@@ -305,8 +306,10 @@
           "view-profile"
         ],
         "realm-management": [
+          "manage-authorization",
           "manage-realm",
-          "manage-users"
+          "manage-users",
+          "view-clients"
         ]
       },
       "credentials": [
