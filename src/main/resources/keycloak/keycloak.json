@@ -27,8 +27,7 @@
       "authenticationFlowBindingOverrides": {},
       "baseUrl": "/",
       "bearerOnly": false,
-      "clientAuthenticatorType": "client-secret",
-      "clientId": "ipcore-web",
+      "clientId": "${env.KEYCLOAK_WEB_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
         "profile",
@@ -113,7 +112,7 @@
   "clientScopeMappings": {
     "account": [
       {
-        "client": "ipcore-web",
+        "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
         "roles": [
           "view-profile"
         ]
@@ -258,7 +257,7 @@
   },
   "scopeMappings": [
     {
-      "client": "ipcore-web",
+      "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
       "roles": [
         "user"
       ]

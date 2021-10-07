@@ -23,12 +23,14 @@ cp /tmp/keycloak.json /tmp/keycloak_env_var_patched.json
 echo 'Patching keycloak.json file, replacing values :'
 echo '    ${env.KEYCLOAK_REALM}         : '${KEYCLOAK_REALM}
 echo '    ${env.KEYCLOAK_CLIENT_ID}     : '${KEYCLOAK_CLIENT_ID}
+echo '    ${env.KEYCLOAK_WEB_CLIENT_ID}     : '${KEYCLOAK_WEB_CLIENT_ID}
 echo '    ${env.KEYCLOAK_CLIENT_SECRET} : '$( [[ ${#KEYCLOAK_CLIENT_SECRET} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
 echo '    ${env.KEYCLOAK_USER}          : '${KEYCLOAK_USER}
 echo '    ${env.KEYCLOAK_PASSWORD}      : '$( [[ ${#KEYCLOAK_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
 
 sed -i "s/\${env.KEYCLOAK_REALM}/${KEYCLOAK_REALM}/g"                 /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_CLIENT_ID}/${KEYCLOAK_CLIENT_ID}/g"         /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_WEB_CLIENT_ID}/${KEYCLOAK_WEB_CLIENT_ID}/g"         /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_CLIENT_SECRET}/${KEYCLOAK_CLIENT_SECRET}/g" /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_USER}/${KEYCLOAK_USER}/g"                   /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_PASSWORD}/${KEYCLOAK_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
