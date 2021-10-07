@@ -353,8 +353,8 @@ services:
     restart: always
     tty: true
     environment:
-      - VAULT_ADDR=http://0.0.0.0:8200
-      - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+      - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
     cap_add:
       - IPC_LOCK
     command: vault server -config=/vault/config/vault.json
