@@ -149,7 +149,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/signature/pdf-stamp:develop
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
     restart: always
     tty: true
     mem_limit: 256M
