@@ -114,6 +114,9 @@ services:
 
 
   vault:
+    # For some reasons, macOS' Docker uses kebab-case in container names.
+    # We want to ease the copy/paste from the README file.
+    container_name: 'compose_vault_1'
     ports:
       - "8200:8200"
 
