@@ -182,6 +182,7 @@ services:
     mem_limit: 1536M
     environment:
       # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+      # TODO: -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.secureComms=none -Dsolr.base.url=/solr -Dindex.subsystem.name=solr6
       JAVA_OPTS: "
                   -XX:+UseContainerSupport
                   -Ddeployment.method=DOCKER_COMPOSE
@@ -189,16 +190,10 @@ services:
           -Ddb.driver=org.postgresql.Driver
           -Ddb.username=alfresco
           -Ddb.password=alfresco
-          -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
-          -Dalfresco.host=alfresco
-          -Dalfresco.port=8080
+          -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
+          -Dalfresco.host=${CONTENT_HOST}
+          -Dalfresco.port=${CONTENT_PORT}
                   -Dalf.root=/var/lib/alfresco
-
-                  -Dsolr.host=solr6
-                  -Dsolr.port=8983
-                  -Dsolr.secureComms=none
-                  -Dsolr.base.url=/solr
-                  -Dindex.subsystem.name=solr6
 
                   -Dheartbeat.enabled=false
           -Dtransform.service.enabled=false
