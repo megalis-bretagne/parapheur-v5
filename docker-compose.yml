@@ -65,7 +65,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.3
     restart: always
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
@@ -161,6 +161,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
     restart: unless-stopped
     tty: true
+    mem_limit: 512M
     environment:
       - POSTGRES_HOST=postgres
       - REDIS_HOST:redis
@@ -171,6 +172,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
     restart: unless-stopped
     tty: true
+    mem_limit: 512M
     volumes:
       - ./src/main/resources/external-signature-connector/application.properties:/application.properties
 
@@ -278,7 +280,7 @@ services:
     restart: always
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
-    mem_limit: 512M
+    mem_limit: 768M
     environment:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
@@ -350,6 +352,7 @@ services:
     image: vault:1.6.2
     restart: always
     tty: true
+    mem_limit: 512M
     environment:
       - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
       - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
@@ -364,6 +367,7 @@ services:
 
   prometheus:
     image: prom/prometheus
+    mem_limit: 256M
     restart: always
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
@@ -372,9 +376,9 @@ services:
 
   filetransfer:
     image: dutchcoders/transfer.sh:v1.2.4
+    mem_limit: 256M
     command: --provider local --basedir /data/
     volumes:
       - ./data/transfer/:/data/
     environment:
       - RANDOM_TOKEN_LENGTH=0
-

@@ -127,8 +127,8 @@ services:
 
 
   keycloak:
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 768M
+    memswap_limit: 768M
     ports:
       - "9090:8080"
     networks:
