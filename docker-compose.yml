@@ -67,17 +67,27 @@ services:
     tty: true
     mem_limit: 256M
     environment:
-      - POSTGRES_HOST=postgres
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - CONTENT_HOST
+      - CONTENT_PORT
       - MATOMO_TOKEN
       - STATS_SERVICE_PROTOCOL
       - VAULT_UNSEAL_KEY
       - VAULT_TOKEN
-      - PUBLIC_URL_PROTOCOL
+      - APPLICATION_PROTOCOL
       - APPLICATION_HOST
       - KEYCLOAK_AUTH_PROTOCOL
-      - KEYCLOAK_HOST=keycloak
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - KEYCLOAK_DB_DATABASE
+      - KEYCLOAK_DB_USER
+      - KEYCLOAK_DB_PASSWORD
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
+      - SECRET_PROTOCOL
+      - SECRET_HOST
+      - SECRET_PORT
     depends_on:
       postgres:
         condition: service_healthy
@@ -97,10 +107,10 @@ services:
     tty: true
     mem_limit: 64M
     environment:
-      - APPLICATION_URL=${PUBLIC_URL_PROTOCOL}://${APPLICATION_HOST}
+      - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
-      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
 
 
   workflow:
@@ -172,31 +182,26 @@ services:
     mem_limit: 1536M
     environment:
       # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+      # TODO: -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.secureComms=none -Dsolr.base.url=/solr -Dindex.subsystem.name=solr6
       JAVA_OPTS: "
                   -XX:+UseContainerSupport
                   -Ddeployment.method=DOCKER_COMPOSE
 
-                  -Ddb.driver=org.postgresql.Driver
-                  -Ddb.username=alfresco
-                  -Ddb.password=alfresco
-                  -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
-                  -Dalfresco.host=alfresco
-                  -Dalfresco.port=8080
+          -Ddb.driver=org.postgresql.Driver
+          -Ddb.username=alfresco
+          -Ddb.password=alfresco
+          -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
+          -Dalfresco.host=${CONTENT_HOST}
+          -Dalfresco.port=${CONTENT_PORT}
                   -Dalf.root=/var/lib/alfresco
 
-                  -Dsolr.host=solr6
-                  -Dsolr.port=8983
-                  -Dsolr.secureComms=none
-                  -Dsolr.base.url=/solr
-                  -Dindex.subsystem.name=solr6
-
                   -Dheartbeat.enabled=false
-                  -Dtransform.service.enabled=false
+          -Dtransform.service.enabled=false
                   -Dlocal.transform.service.enabled=false
                   -Dlegacy.transform.service.enabled=false
                   -Dmessaging.subsystem.autoStart=false
                   -Dsystem.workflow.engine.activiti.enabled=false
-                  "
+          "
     depends_on:
       postgres:
         condition: service_healthy
@@ -269,7 +274,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:9.0.3
+    image: jboss/keycloak:15.0.2
     restart: always
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
@@ -277,6 +282,7 @@ services:
     environment:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
@@ -345,8 +351,8 @@ services:
     restart: always
     tty: true
     environment:
-      - VAULT_ADDR=http://0.0.0.0:8200
-      - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+      - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
     cap_add:
       - IPC_LOCK
     command: vault server -config=/vault/config/vault.json

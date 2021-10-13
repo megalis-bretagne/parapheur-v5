@@ -80,7 +80,6 @@ services:
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:api-v2
     ports:
       - "8889:8080"
 
@@ -103,6 +102,8 @@ services:
   keycloak:
     ports:
       - "9090:8080"
+    # environment:
+    #   - KEYCLOAK_LOGLEVEL=DEBUG
 
 
   smtp:
@@ -113,6 +114,9 @@ services:
 
 
   vault:
+    # For some reasons, macOS' Docker uses kebab-case in container names.
+    # We want to ease the copy/paste from the README file.
+    container_name: 'compose_vault_1'
     ports:
       - "8200:8200"
 

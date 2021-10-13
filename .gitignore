@@ -266,7 +266,9 @@ hs_err_pid*
 ### i-Parapheur
 ### Project-specific files
 
-data*/
+data/*
+!.gitkeep
+data-*/*
 patch-ssl/
 src/main/resources/nginx/ssl/
 update-containers.sh

@@ -27,15 +27,11 @@
       "authenticationFlowBindingOverrides": {},
       "baseUrl": "/",
       "bearerOnly": false,
-      "clientAuthenticatorType": "client-secret",
-      "clientId": "ipcore-web",
+      "clientId": "${env.KEYCLOAK_WEB_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
-        "email",
         "profile",
-        "role_list",
-        "roles",
-        "web-origins"
+        "roles"
       ],
       "directAccessGrantsEnabled": true,
       "enabled": true,
@@ -43,11 +39,8 @@
       "fullScopeAllowed": true,
       "implicitFlowEnabled": false,
       "nodeReRegistrationTimeout": -1,
-      "notBefore": 0,
       "optionalClientScopes": [
-        "address",
-        "offline_access",
-        "phone"
+        "offline_access"
       ],
       "protocol": "openid-connect",
       "publicClient": true,
@@ -73,16 +66,26 @@
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "saml_force_name_id_format": "false",
-        "tls.client.certificate.bound.access.tokens": "false"
+        "tls.client.certificate.bound.access.tokens": "false",
+        "use.refresh.tokens": "true"
       },
       "authenticationFlowBindingOverrides": {},
+      "authorizationServicesEnabled": true,
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "decisionStrategy": "AFFIRMATIVE",
+        "policies": [],
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [],
+        "scopes": []
+      },
+      "baseUrl": "/api",
       "bearerOnly": true,
       "clientId": "${env.KEYCLOAK_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
-        "email",
         "profile",
-        "role_list"
+        "roles"
       ],
       "directAccessGrantsEnabled": true,
       "enabled": true,
@@ -90,18 +93,17 @@
       "fullScopeAllowed": true,
       "implicitFlowEnabled": false,
       "nodeReRegistrationTimeout": -1,
-      "notBefore": 0,
       "optionalClientScopes": [
-        "address",
-        "offline_access",
-        "phone"
+        "microprofile-jwt",
+        "offline_access"
       ],
       "protocol": "openid-connect",
       "publicClient": false,
       "redirectUris": [
         "/*"
       ],
-      "serviceAccountsEnabled": false,
+      "secret": "${env.KEYCLOAK_CLIENT_SECRET}",
+      "serviceAccountsEnabled": true,
       "standardFlowEnabled": true,
       "surrogateAuthRequired": false,
       "webOrigins": []
@@ -110,7 +112,7 @@
   "clientScopeMappings": {
     "account": [
       {
-        "client": "ipcore-web",
+        "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
         "roles": [
           "view-profile"
         ]
@@ -118,9 +120,17 @@
     ]
   },
   "defaultLocale": "fr",
-  "defaultRoles": [
-    "uma_authorization"
+  "defaultOptionalClientScopes": [
+    "microprofile-jwt",
+    "offline_access"
   ],
+  "defaultRole": {
+    "clientRole": false,
+    "composite": true,
+    "containerId": "${env.KEYCLOAK_REALM}",
+    "description": "${role_default-roles}",
+    "name": "default-roles-${env.KEYCLOAK_REALM}"
+  },
   "duplicateEmailsAllowed": false,
   "editUsernameAllowed": false,
   "enabled": true,
@@ -128,13 +138,14 @@
   "groups": [],
   "id": "i-Parapheur",
   "internationalizationEnabled": true,
-  "keycloakVersion": "4.8.3.Final",
+  "keycloakVersion": "15.0.2",
   "loginTheme": "iparapheur",
   "loginWithEmailAllowed": true,
   "maxDeltaTimeSeconds": 43200,
   "maxFailureWaitSeconds": 900,
   "minimumQuickLoginWaitSeconds": 60,
-  "notBefore": 0,
+  "oauth2DeviceCodeLifespan": 600,
+  "oauth2DevicePollingInterval": 5,
   "offlineSessionIdleTimeout": 2592000,
   "offlineSessionMaxLifespan": 5184000,
   "offlineSessionMaxLifespanEnabled": false,
@@ -158,7 +169,6 @@
         "composite": false,
         "containerId": "ipng",
         "description": "${role_offline-access}",
-        "id": "b479aa46-2879-43f9-b95e-9bbb048b2389",
         "name": "offline_access"
       },
       {
@@ -224,34 +234,44 @@
         "name": "uma_authorization"
       },
       {
+        "attributes": {},
         "clientRole": false,
-        "composite": false,
-        "description": "Administrator privileges",
-        "name": "admin"
-      },
-      {
-        "clientRole": false,
-        "composite": false,
-        "description": "User privileges",
-        "name": "user"
+        "composite": true,
+        "composites": {
+          "client": {
+            "account": [
+              "manage-account",
+              "view-profile"
+            ]
+          },
+          "realm": [
+            "offline_access",
+            "uma_authorization"
+          ]
+        },
+        "containerId": "${env.KEYCLOAK_REALM}",
+        "description": "${role_default-roles}",
+        "name": "default-roles-${env.KEYCLOAK_REALM}"
       }
     ]
   },
   "scopeMappings": [
     {
-      "client": "ipcore-web",
+      "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
       "roles": [
         "user"
       ]
+    },
+    {
+      "client": "${env.KEYCLOAK_CLIENT_ID}",
+      "roles": [
+        "default-roles-${env.KEYCLOAK_REALM}",
+        "offline_access",
+        "uma_authorization"
+      ]
     }
   ],
-  "smtpServer": {
-    "auth": "",
-    "from": "no-reply@dom.local",
-    "host": "smtp",
-    "ssl": "",
-    "starttls": ""
-  },
+  "smtpServer": {},
   "sslRequired": "external",
   "ssoSessionIdleTimeout": 1800,
   "ssoSessionIdleTimeoutRememberMe": 0,
@@ -263,13 +283,32 @@
   "users": [
     {
       "clientRoles": {
+        "${env.KEYCLOAK_CLIENT_ID}": [
+          "uma_protection"
+        ]
+      },
+      "disableableCredentialTypes": [],
+      "emailVerified": false,
+      "enabled": true,
+      "groups": [],
+      "realmRoles": [
+        "default-roles-${env.KEYCLOAK_REALM}"
+      ],
+      "requiredActions": [],
+      "serviceAccountClientId": "${env.KEYCLOAK_CLIENT_ID}",
+      "username": "service-account-${env.KEYCLOAK_CLIENT_ID}"
+    },
+    {
+      "clientRoles": {
         "account": [
           "manage-account",
           "view-profile"
         ],
         "realm-management": [
+          "manage-authorization",
           "manage-realm",
-          "manage-users"
+          "manage-users",
+          "view-clients"
         ]
       },
       "credentials": [
