@@ -90,7 +90,7 @@
       "directAccessGrantsEnabled": true,
       "enabled": true,
       "frontchannelLogout": false,
-      "fullScopeAllowed": true,
+      "fullScopeAllowed": false,
       "implicitFlowEnabled": false,
       "nodeReRegistrationTimeout": -1,
       "optionalClientScopes": [
