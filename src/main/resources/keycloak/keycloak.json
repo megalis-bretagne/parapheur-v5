@@ -307,6 +307,7 @@
         "realm-management": [
           "manage-authorization",
           "manage-realm",
+          "manage-clients",
           "manage-users",
           "view-clients"
         ]
