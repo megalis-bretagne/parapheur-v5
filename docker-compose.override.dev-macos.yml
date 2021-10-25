@@ -37,6 +37,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     ports:
       - "8080:8080"
+    entrypoint: [ "echo", "Service disabled" ]
 
 
   web:
@@ -132,4 +133,10 @@ services:
   filetransfer:
     ports:
       - "1807:8080"
+    entrypoint: [ "echo", "Service disabled" ]
 
+
+  matomo:
+    entrypoint: [ "echo", "Service disabled" ]
+  matomo-db:
+    entrypoint: [ "echo", "Service disabled" ]
