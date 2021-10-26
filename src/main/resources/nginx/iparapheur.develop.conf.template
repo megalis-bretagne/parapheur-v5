@@ -59,7 +59,7 @@ server {
     proxy_pass http://host.docker.internal:2757/external-signature-connector;
   }
 
-  location /legacy-bridge/ws {
+  location /ws-iparapheur {
     proxy_pass http://host.docker.internal:2758/ws;
   }
 
