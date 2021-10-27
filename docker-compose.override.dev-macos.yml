@@ -42,6 +42,7 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+    entrypoint: [ "echo", "Service disabled" ]
     ports:
       - "4200:80"
 
@@ -59,7 +60,7 @@ services:
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:tenancy
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
     ports:
       - "8002:8080"
 
@@ -81,6 +82,7 @@ services:
 
 
   pdf-stamp:
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
     ports:
       - "8889:8080"
 

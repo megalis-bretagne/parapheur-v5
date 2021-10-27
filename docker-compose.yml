@@ -86,7 +86,6 @@ services:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
-      - KEYCLOAK_WEB_CLIENT_ID
       - WORKFLOW_HOST
       - WORKFLOW_PORT
       - SECRET_PROTOCOL
@@ -107,7 +106,7 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:0.1
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
@@ -317,7 +316,7 @@ services:
 
   matomo:
     image: matomo:4.2.1-fpm
-    restart: always
+    restart: unless-stopped
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
     # We're assuming a generous 1G for the service, and a little bit for the DB.
@@ -340,7 +339,7 @@ services:
       retries: 5
   matomo-db:
     image: mariadb:10.3
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 256M
     volumes:
