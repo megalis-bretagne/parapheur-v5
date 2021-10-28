@@ -60,7 +60,7 @@ server {
   }
 
   location /ws-iparapheur {
-    proxy_pass http://host.docker.internal:2758/ws;
+    proxy_pass http://host.docker.internal:2758/ws-iparapheur;
   }
 
   location /pdf-stamp {
