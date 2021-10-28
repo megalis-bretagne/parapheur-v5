@@ -176,6 +176,15 @@ services:
     volumes:
       - ./src/main/resources/external-signature-connector/application.properties:/application.properties
 
+  legacy-bridge:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    volumes:
+      - ./src/main/resources/legacy-bridge/application.properties:/application.properties
+    external_links:
+      - nginx:${APPLICATION_HOST}
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
