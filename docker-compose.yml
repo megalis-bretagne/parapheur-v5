@@ -160,8 +160,7 @@ services:
 
 
   pastell-connector:
-    # FIXME : setup a proper tag on the public repository
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 512M
