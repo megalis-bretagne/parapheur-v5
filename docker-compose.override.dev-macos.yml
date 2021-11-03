@@ -71,6 +71,12 @@ services:
       - "2757:8080"
 
 
+  legacy-bridge:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    ports:
+      - "2758:8080"
+
+
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     ports:

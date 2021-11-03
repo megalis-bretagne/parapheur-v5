@@ -59,6 +59,10 @@ server {
     proxy_pass http://host.docker.internal:2757/external-signature-connector;
   }
 
+  location /ws-iparapheur {
+    proxy_pass http://host.docker.internal:2758/ws-iparapheur;
+  }
+
   location /pdf-stamp {
     proxy_pass http://host.docker.internal:8889/pdf-stamp;
   }

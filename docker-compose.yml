@@ -62,10 +62,11 @@ services:
 
 
   core:
+    # FIXME : setup a proper tag on the public repository
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.3
     restart: always
     tty: true
-    mem_limit: 512M
+    mem_limit: 1024M
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
@@ -105,6 +106,7 @@ services:
 
 
   web:
+    # FIXME : setup a proper tag on the public repository
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:0.1
     restart: unless-stopped
     tty: true
@@ -117,10 +119,10 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:0.2
+    image: registry.libriciel.fr/public/signature/workflow:1.0.0
     restart: always
     tty: true
-    mem_limit: 256M
+    mem_limit: 768M
     depends_on:
       postgres:
         condition: service_healthy
@@ -129,7 +131,7 @@ services:
 
 
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:1.3.0
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:1.4.0
     restart: always
     tty: true
     mem_limit: 256M
@@ -138,30 +140,30 @@ services:
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
+    image: registry.libriciel.fr/public/signature/libersign:1.11.4
     restart: always
     tty: true
     mem_limit: 64M
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:2.1.0
+    image: registry.libriciel.fr/public/signature/crypto:2.3.1
     restart: always
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     volumes:
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/signature/pdf-stamp:develop
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.5.0
     restart: always
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -172,12 +174,24 @@ services:
 
 
   external-signature-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.0
     restart: unless-stopped
     tty: true
     mem_limit: 512M
     volumes:
       - ./src/main/resources/external-signature-connector/application.properties:/application.properties
+
+
+  legacy-bridge:
+    # FIXME : setup a proper tag on the public repository
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    volumes:
+      - ./src/main/resources/legacy-bridge/application.properties:/application.properties
+    external_links:
+      - nginx:${APPLICATION_HOST}
 
 
   alfresco:

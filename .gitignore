@@ -266,6 +266,7 @@ hs_err_pid*
 ### i-Parapheur
 ### Project-specific files
 
+docker-compose.override.instance-*
 data/*
 !.gitkeep
 data-*/*
