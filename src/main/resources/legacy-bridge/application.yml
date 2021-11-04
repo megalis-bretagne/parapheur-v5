@@ -16,8 +16,23 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-parapheur.port=8080
-parapheur.host=core
+service:
+  auth:
+    host: ${KEYCLOAK_HOST}
+    port: ${KEYCLOAK_PORT}
+    login: rest-admin
+    password: admin
+    ticket-delay: 60000
+  parapheur:
+    host: ${APPLICATION_HOST}
+    port: 80
 
-export.entity.id=
-export.desk.id=
+keycloak:
+  auth-server-url: ${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
+  ssl-required: external
+  bearer-only: true
+  realm: ${KEYCLOAK_REALM}
+  resource: ${KEYCLOAK_CLIENT_ID}
+  enable-basic-auth: on
+  credentials:
+    secret: ${KEYCLOAK_CLIENT_SECRET}

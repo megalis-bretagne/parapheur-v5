@@ -185,11 +185,20 @@ services:
     restart: unless-stopped
     tty: true
     mem_limit: 512M
-    volumes:
-      - ./src/main/resources/legacy-bridge/application.properties:/application.properties
+    depends_on:
+      - core
     external_links:
       - nginx:${APPLICATION_HOST}
-
+    environment:
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - APPLICATION_HOST
+      - APPLICATION_PROTOCOL
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+    volumes:
+      - ./src/main/resources/legacy-bridge/application.yml:/application.yml
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
