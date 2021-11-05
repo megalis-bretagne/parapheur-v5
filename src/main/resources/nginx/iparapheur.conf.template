@@ -59,6 +59,12 @@ server {
     proxy_pass http://$upstream_pastell_connector:8080/pastell-connector;
   }
 
+  location /ws-iparapheur {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_legacy_bridge legacy-bridge;
+    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
+  }
+
   location /pdf-stamp {
     resolver 127.0.0.11 valid=30s;
     set $upstream_pdf_stamp pdf-stamp;
