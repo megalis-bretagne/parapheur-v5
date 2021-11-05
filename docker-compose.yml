@@ -41,7 +41,7 @@ services:
 
   nginx:
     image: nginx:1.19.9-alpine
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
@@ -64,7 +64,7 @@ services:
   core:
     # FIXME : setup a proper tag on the public repository
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.3
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 1024M
     environment:
@@ -120,7 +120,7 @@ services:
 
   workflow:
     image: registry.libriciel.fr/public/signature/workflow:1.0.0
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 768M
     depends_on:
@@ -132,7 +132,7 @@ services:
 
   pes-viewer:
     image: registry.libriciel.fr:443/public/signature/pes-viewer:1.4.0
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 256M
     volumes:
@@ -141,14 +141,14 @@ services:
 
   libersign:
     image: registry.libriciel.fr/public/signature/libersign:1.11.4
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
 
 
   crypto:
     image: registry.libriciel.fr/public/signature/crypto:2.3.1
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 512M
     volumes:
@@ -157,7 +157,7 @@ services:
 
   pdf-stamp:
     image: registry.libriciel.fr/public/signature/pdf-stamp:2.5.0
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 512M
 
@@ -196,7 +196,7 @@ services:
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 1536M
     environment:
@@ -265,7 +265,7 @@ services:
 
   postgres:
     image: postgres:10.1
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 512M
     environment:
@@ -285,7 +285,7 @@ services:
 
   redis:
     image: redis:6.0.9-alpine
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 128M
     volumes:
@@ -294,10 +294,10 @@ services:
 
   keycloak:
     image: jboss/keycloak:15.0.2
-    restart: always
+    restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
-    mem_limit: 768M
+    mem_limit: 1536M
     environment:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
@@ -367,7 +367,7 @@ services:
 
   vault:
     image: vault:1.6.2
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 512M
     environment:
@@ -385,7 +385,7 @@ services:
   prometheus:
     image: prom/prometheus
     mem_limit: 256M
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -394,6 +394,7 @@ services:
   filetransfer:
     image: dutchcoders/transfer.sh:v1.2.4
     mem_limit: 256M
+    restart: unless-stopped
     command: --provider local --basedir /data/
     volumes:
       - ./data/transfer/:/data/
