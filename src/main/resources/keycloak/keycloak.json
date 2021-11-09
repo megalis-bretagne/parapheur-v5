@@ -141,6 +141,114 @@
       }
     ]
   },
+  "clientScopes": [
+    {
+      "name": "microprofile-jwt",
+      "description": "Microprofile - JWT built-in scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "upn",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "upn",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "groups",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "roles",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        },
+        {
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "generic_role_mapper",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "generic_role_mapper_script",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-script-based-protocol-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "script": "/**\n * Available variables: \n * user - the current user\n * realm - the current realm\n * token - the current token\n * userSession - the current userSession\n * keycloakSession - the current keycloakSession\n */\n\n// Not proud of this one,\n// but we don't have any parameter but a request header\n// To pass an argument in here\nvar targetRole = keycloakSession\n    .getContext()\n    .getRequestHeaders()\n    .getHeaderString(\"X-Scope-Mapper-Filtering\");\n\n// TODO : Find a proper hasRole()\nvar roles = [];\nfor each (var role in user.getRoleMappings())\n    if (role.getName() === targetRole)\n        roles.push(role.getName());\n\nroles.push(\"default-roles-api\");\nroles.push(\"offline_access\");\nroles.push(\"uma_authorization\");\n\n// Overriding the realm_access part\ntoken.setOtherClaims(\"realm_access\", {\n    \"roles\": Java.to(roles, \"java.lang.String[]\"),\n});\n",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "offline_access",
+      "description": "OpenID Connect built-in scope: offline_access",
+      "protocol": "openid-connect",
+      "attributes": {
+        "consent.screen.text": "${offlineAccessScopeConsentText}",
+        "display.on.consent.screen": "true"
+      }
+    }
+  ],
   "defaultLocale": "fr",
   "defaultOptionalClientScopes": [
     "microprofile-jwt",
