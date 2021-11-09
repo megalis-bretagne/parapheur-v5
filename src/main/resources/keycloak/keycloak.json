@@ -30,7 +30,6 @@
       "clientId": "${env.KEYCLOAK_WEB_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
-        "profile",
         "roles"
       ],
       "directAccessGrantsEnabled": true,
@@ -106,7 +105,6 @@
       "clientId": "${env.KEYCLOAK_CLIENT_ID}",
       "consentRequired": false,
       "defaultClientScopes": [
-        "profile",
         "roles"
       ],
       "directAccessGrantsEnabled": true,
@@ -117,7 +115,8 @@
       "nodeReRegistrationTimeout": -1,
       "optionalClientScopes": [
         "microprofile-jwt",
-        "offline_access"
+        "offline_access",
+        "generic_role_mapper"
       ],
       "protocol": "openid-connect",
       "publicClient": false,
