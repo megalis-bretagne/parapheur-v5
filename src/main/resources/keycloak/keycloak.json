@@ -75,7 +75,6 @@
         "decisionStrategy": "AFFIRMATIVE",
         "policies": [
           {
-            "id": "53ac1015-d43d-472c-bb8e-2048d0a5da6b",
             "name": "Desk owner",
             "type": "js",
             "logic": "POSITIVE",
@@ -85,7 +84,6 @@
             }
           },
           {
-            "id": "3f3afa32-5053-4a44-8354-8a830fdce12c",
             "name": "Desk access",
             "type": "resource",
             "logic": "POSITIVE",
@@ -305,7 +303,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "2cb21b83-33ec-49e1-8ed9-990708370225",
         "name": "auditeur"
       },
       {
@@ -313,7 +310,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "377b7cb0-8761-4f4d-9459-907bc74554ee",
         "name": "deskbox"
       },
       {
@@ -321,7 +317,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "9cc6ed45-cb02-49cb-9667-5843a0307393",
         "name": "adminInstance"
       },
       {
@@ -329,7 +324,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "a6aa5fc2-7902-4ae9-89ef-a43c024d20eb",
         "name": "adminDelegueEntite"
       },
       {
@@ -337,7 +331,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "b452b419-49e3-4b54-9f6a-101a39673c20",
         "name": "adminEntite"
       },
       {
@@ -345,7 +338,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "be1557d6-722d-43ff-8397-083652892330",
         "name": "adminGroupeEntite"
       },
       {
@@ -353,7 +345,6 @@
         "clientRole": false,
         "composite": false,
         "containerId": "ipng",
-        "id": "f018e778-eba7-4dc4-b209-4e2f7d18d251",
         "name": "exploitant"
       },
       {
