@@ -383,7 +383,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.31.1
     mem_limit: 256M
     restart: unless-stopped
     volumes:

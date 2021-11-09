@@ -369,7 +369,8 @@
       "firstName": "Sample",
       "lastName": "User",
       "realmRoles": [
-        "user"
+        "user",
+        "admin"
       ],
       "username": "user"
     }
