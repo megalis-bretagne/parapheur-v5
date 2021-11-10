@@ -24,8 +24,8 @@ service:
     password: admin
     ticket-delay: 60000
   parapheur:
-    host: ${APPLICATION_HOST}
-    port: 80
+    host: core
+    port: 8080
 
 keycloak:
   auth-server-url: ${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
