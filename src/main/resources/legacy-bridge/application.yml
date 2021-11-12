@@ -32,7 +32,7 @@ keycloak:
   ssl-required: external
   bearer-only: true
   realm: ${KEYCLOAK_REALM}
-  resource: ${KEYCLOAK_CLIENT_ID}
+  resource: ${KEYCLOAK_WEB_CLIENT_ID}
   enable-basic-auth: on
   credentials:
     secret: ${KEYCLOAK_CLIENT_SECRET}
