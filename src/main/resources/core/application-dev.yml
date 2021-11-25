@@ -18,6 +18,10 @@
 
 services:
   stats.provider: none
+  ipng:
+    provider: ipng
+    bindings.provider: db
+    host: ipng-business
 
 spring:
   mail:
