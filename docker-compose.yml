@@ -323,6 +323,7 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_FRONTEND_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
     volumes:
       - ./src/main/resources/keycloak/startup-scripts:/opt/jboss/startup-scripts
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
