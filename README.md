@@ -110,7 +110,6 @@ Locale           : France
 You will need "Prometheus Node Exporter" to get your local machine data.
 
 1. Install https://github.com/prometheus/node_exporter.
-2. Set up the PROMETHEUS_LOCAL_JOB_URL environment variable with your ip address.
 
 ## Start
 

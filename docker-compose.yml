@@ -395,8 +395,6 @@ services:
     image: prom/prometheus:v2.31.1
     mem_limit: 256M
     restart: unless-stopped
-    environment:
-      - PROMETHEUS_LOCAL_JOB_URL
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
