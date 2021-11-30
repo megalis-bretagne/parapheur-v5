@@ -14,3 +14,9 @@ scrape_configs:
     metrics_path: '/crypto/actuator/prometheus'
     static_configs:
       - targets: [ 'host.docker.internal:8085' ]
+
+  - job_name: 'local'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [ '${PROMETHEUS_LOCAL_JOB_URL}:9100' ]
