@@ -37,7 +37,7 @@ server {
     proxy_pass http://keycloak:8080/auth;
   }
 
-  location /api/v1/query {
+  location /api/v[0-9]+/query {
     proxy_pass http://prometheus:8080/api/v1/query;
   }
 

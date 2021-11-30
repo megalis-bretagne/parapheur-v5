@@ -54,7 +54,7 @@ sudo mkdir -m 757 -p ./data/alfresco
 sudo mkdir -m 757 -p ./data/postgres
 sudo mkdir -m 757 -p ./data/matomo/plugins
 sudo mkdir -m 757 -p ./data/matomo/config
-``
+```
 
 #### Vault post-install setup
 
@@ -109,7 +109,12 @@ Locale           : France
 
 You will need "Prometheus Node Exporter" to get your local machine data.
 
-1. Install https://github.com/prometheus/node_exporter.
+```
+sudo apt update
+sudo apt install prometheus-node-exporter
+```
+
+Or in : https://github.com/prometheus/node_exporter.
 
 ## Start
 
