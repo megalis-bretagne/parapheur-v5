@@ -394,6 +394,8 @@ services:
   prometheus:
     image: prom/prometheus:v2.31.1
     mem_limit: 256M
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
