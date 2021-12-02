@@ -35,6 +35,10 @@ server {
     proxy_pass http://host.docker.internal:9090/auth;
   }
 
+  location /prometheus {
+    proxy_pass http://host.docker.internal:9091/api/v1/query;
+  }
+
   location /api {
     proxy_pass http://host.docker.internal:8080/api;
   }
