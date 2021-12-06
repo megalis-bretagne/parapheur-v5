@@ -407,8 +407,9 @@ services:
     image: dutchcoders/transfer.sh:v1.2.4
     mem_limit: 256M
     restart: unless-stopped
-    command: --provider local --basedir /data/
+    command: --provider local --basedir /data/ --temp-path /tmp/
     volumes:
-      - ./data/transfer/:/data/
+      - ./data/transfer/data:/data/
+      - ./data/transfer/tmp:/tmp/
     environment:
       - RANDOM_TOKEN_LENGTH=0
