@@ -454,6 +454,37 @@
         "account": [
           "manage-account",
           "view-profile"
+        ],
+        "realm-management": [
+          "manage-authorization",
+          "manage-realm",
+          "manage-clients",
+          "manage-users",
+          "manage-clients",
+          "view-clients"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin"
+        }
+      ],
+      "email": "soapui@dom.local",
+      "enabled": true,
+      "firstName": "Soap",
+      "lastName": "Ui",
+      "realmRoles": [
+        "admin",
+        "user"
+      ],
+      "username": "soapui"
+    },
+    {
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
         ]
       },
       "credentials": [

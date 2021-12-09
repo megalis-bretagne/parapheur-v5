@@ -20,7 +20,7 @@ service:
   auth:
     host: ${KEYCLOAK_HOST}
     port: ${KEYCLOAK_PORT}
-    login: rest-admin
+    login: soapui
     password: admin
     ticket-delay: 60000
   parapheur:
