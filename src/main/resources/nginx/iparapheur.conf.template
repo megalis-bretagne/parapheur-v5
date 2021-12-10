@@ -114,9 +114,7 @@ server {
   }
 
   location /filetransfer/ {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_filetransfer filetransfer;
-    proxy_pass http://$upstream_filetransfer:8080/;
+    proxy_pass http://filetransfer:8080/;
   }
 
   # location /libersign {
