@@ -13,5 +13,9 @@
   "finishedFoldersCount": "#number",
   "lateFoldersCount": "#number",
   "isChecked": null,
-  "shortName": "##string"
+  "shortName": "##string",
+  "folderCreationAllowed": "##boolean",
+  "archivingAllowed": "##boolean",
+  "chainAllowed": "##boolean",
+  "actionAllowed": "##boolean"
 }

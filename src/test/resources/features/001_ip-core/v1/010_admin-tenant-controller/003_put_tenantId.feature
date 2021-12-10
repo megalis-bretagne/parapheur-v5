@@ -46,7 +46,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             And request cleanRequestData
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
