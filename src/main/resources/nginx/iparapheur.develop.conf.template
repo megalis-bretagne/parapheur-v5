@@ -1,5 +1,6 @@
+#
 # i-Parapheur
-# Copyright (C) 2019-2020 Libriciel-SCOP
+# Copyright (C) 2019-2021 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -13,6 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 
 server {
 
@@ -31,6 +33,10 @@ server {
 
   location /auth {
     proxy_pass http://host.docker.internal:9090/auth;
+  }
+
+  location /prometheus {
+    proxy_pass http://host.docker.internal:9091/api/v1/query;
   }
 
   location /api {
@@ -55,6 +61,10 @@ server {
 
   location /external-signature-connector {
     proxy_pass http://host.docker.internal:2757/external-signature-connector;
+  }
+
+  location /ws-iparapheur {
+    proxy_pass http://host.docker.internal:2758/ws-iparapheur;
   }
 
   location /pdf-stamp {
@@ -93,6 +103,12 @@ server {
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
       proxy_pass http://host.docker.internal:8888/bl-xemwebviewer;
+  }
+
+  location /ipng {
+    proxy_set_header X-Forwarded-Host $host:$server_port;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_pass http://host.docker.internal:8081/ipng;
   }
 
   location /filetransfer/ {

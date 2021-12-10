@@ -1,5 +1,6 @@
+#
 # i-Parapheur
-# Copyright (C) 2019-2020 Libriciel-SCOP
+# Copyright (C) 2019-2021 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -13,13 +14,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 
 server {
 
-  listen 80;
+  listen 443 ssl;
   server_name ${APPLICATION_HOST};
 
-  ssl on;
   ssl_certificate /etc/nginx/ssl/fullchain.pem;
   ssl_certificate_key /etc/nginx/ssl/privkey.pem;
 
@@ -33,15 +34,11 @@ server {
   proxy_http_version 1.1;
 
   location /auth {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_keycloak keycloak;
-    proxy_pass http://$upstream_keycloak:8080/auth;
+    proxy_pass http://keycloak:8080/auth;
   }
 
   location /api {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_core core;
-    proxy_pass http://$upstream_core:8080/api;
+    proxy_pass http://core:8080/api;
   }
 
   location /crypto {
@@ -60,6 +57,12 @@ server {
     resolver 127.0.0.11 valid=30s;
     set $upstream_pastell_connector pastell-connector;
     proxy_pass http://$upstream_pastell_connector:8080/pastell-connector;
+  }
+
+  location /ws-iparapheur {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_legacy_bridge legacy-bridge;
+    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
   }
 
   location /pdf-stamp {
@@ -117,13 +120,11 @@ server {
   # }
 
   location ^~ / {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_web web;
-    proxy_pass http://$upstream_web:80/;
+    proxy_pass http://web:80/;
   }
 
   location ^~ /sockjs-node {
-    proxy_pass http://$upstream_web:80/sockjs-node;
+    proxy_pass http://web:80/sockjs-node;
   }
 
 }

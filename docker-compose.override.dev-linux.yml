@@ -1,5 +1,6 @@
+#
 # i-Parapheur
-# Copyright (C) 2019-2020 Libriciel-SCOP
+# Copyright (C) 2019-2021 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -13,6 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 
 version: '2.4'
 
@@ -27,6 +29,9 @@ services:
     memswap_limit: 64m
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+    networks:
+      - ipng
+      - default
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
@@ -37,7 +42,10 @@ services:
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
     ports:
-      - 8080:8080
+      - "8080:8080"
+    networks:
+      - ipng
+      - default
 
 
   web:
@@ -45,7 +53,7 @@ services:
     mem_limit: 64m
     memswap_limit: 64m
     ports:
-      - 4200:80
+      - "4200:80"
 
 
   workflow:
@@ -53,19 +61,24 @@ services:
     mem_limit: 512M
     memswap_limit: 512m
     ports:
-      - 10080:8080
+      - "10080:8080"
 
 
   pastell-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
     ports:
-      - 8002:8080
+      - "8002:8080"
 
 
   external-signature-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
     ports:
-      - 2757:8080
+      - "2757:8080"
+
+  legacy-bridge:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    ports:
+      - "2758:8080"
 
 
   crypto:
@@ -73,26 +86,26 @@ services:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
-      - 8085:8080
+      - "8085:8080"
 
 
   libersign:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
     ports:
-      - 8079:80
+      - "8079:80"
 
 
   pes-viewer:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
-      - 8888:8888
+      - "8888:8888"
 
   pdf-stamp:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
-      - 8889:8080
+      - "8889:8080"
 
 
   # Non-libriciel services
@@ -101,7 +114,7 @@ services:
     mem_limit: 1024M
     memswap_limit: 1024m
     ports:
-      - 9009:8080
+      - "9009:8080"
 
 
   #solr6:
@@ -115,14 +128,17 @@ services:
     mem_limit: 512M
     memswap_limit: 512m
     ports:
-      - 5432:5432
+      - "5432:5432"
 
 
   keycloak:
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 768M
+    memswap_limit: 768M
     ports:
-      - 9090:8080
+      - "9090:8080"
+    networks:
+      - ipng
+      - default
 
 
   matomo:
@@ -135,25 +151,29 @@ services:
     mem_limit: 64M
     memswap_limit: 64m
     ports:
-      - 6379:6379
+      - "6379:6379"
+    networks:
+      - ipng
+      - default
 
 
   smtp:
-    image: tophfr/mailcatcher:0.6.5_3
+    image: tophfr/mailcatcher:0.7.1
     ports:
+      - "1025:25"
       - "1080:80"
 
 
   vault:
     ports:
-      - 8200:8200
+      - "8200:8200"
 
 
   prometheus:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - 9091:9090
+      - "9091:9090"
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
@@ -161,5 +181,9 @@ services:
 
   filetransfer:
     ports:
-      - 1807:8080
+      - "1807:8080"
 
+networks:
+  ipng:
+    external: true
+    name: ipngbusiness_ipng

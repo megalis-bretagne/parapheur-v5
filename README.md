@@ -11,27 +11,27 @@ official repository.
 Remove older versions of Docker (if needed)
 
 ```bash
-$ sudo apt remove docker docker-engine docker.io containerd runc
+sudo apt remove docker docker-engine docker.io containerd runc
 ```
 
 Import Docker repository GPG key:
 
 ```bash
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 
 Add Docker CE repository to Ubuntu:
 
 ```bash
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 ```
 
 Install latest packages
 
 ```bash
-$ sudo apt update
-$ sudo apt install docker-ce docker-ce-cli containerd.io
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
 ```
 
 ### System settings
@@ -39,7 +39,7 @@ $ sudo apt install docker-ce docker-ce-cli containerd.io
 Application settings are defined in a `.env` file located at the root of the project. First, copy the example file :
 
 ```bash
-$ cp ./.env.dist .env
+cp ./.env.dist .env
 ```
 By default, the application will start on the http://iparapheur.dom.local URL.
 You can edit the `.env` file to change the passwords or urls among others.
@@ -47,13 +47,13 @@ You can edit the `.env` file to change the passwords or urls among others.
 #### Create data directories
 
 ```bash
-$ sudo mkdir -m 757 -p ./data/solr/data
-$ sudo mkdir -m 757 -p ./data/solr/contentstore
-$ sudo mkdir -m 757 -p ./data/vault/data
-$ sudo mkdir -m 757 -p ./data/alfresco
-$ sudo mkdir -m 757 -p ./data/postgres
-$ sudo mkdir -m 757 -p ./data/matomo/plugins
-$ sudo mkdir -m 757 -p ./data/matomo/config
+sudo mkdir -m 757 -p ./data/solr/data
+sudo mkdir -m 757 -p ./data/solr/contentstore
+sudo mkdir -m 757 -p ./data/vault/data
+sudo mkdir -m 757 -p ./data/alfresco
+sudo mkdir -m 757 -p ./data/postgres
+sudo mkdir -m 757 -p ./data/matomo/plugins
+sudo mkdir -m 757 -p ./data/matomo/config
 ```
 
 #### Vault post-install setup
@@ -62,15 +62,15 @@ $ sudo mkdir -m 757 -p ./data/matomo/config
 Most of the initialization can be in the command line, that will return keys to store :
 
 ```bash
-$ docker-compose up -d vault
+docker-compose up -d vault
   # note that the container name prefix depends
   # on the local project's directory name - here it is "compose"
-$ docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1
+docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1
    # Unseal Key 1:       <unseal_key>
    # Initial Root Token: <token>
-$ docker exec -it compose_vault_1 vault operator unseal <unseal_key>
-$ docker exec -it compose_vault_1 vault login token=<token>
-$ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
+docker exec -it compose_vault_1 vault operator unseal <unseal_key>
+docker exec -it compose_vault_1 vault login token=<token>
+docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 ```
 
 - Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
@@ -78,11 +78,11 @@ $ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret k
 #### Matomo post-install setup
 
 ```bash
-$ docker-compose up -d nginx matomo
+docker-compose up -d nginx matomo
 ```
 ou en environnement de développement :
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo
+docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo
 ```
 
 `http://iparapheur.dom.local/matomo/` for the installation page.  
@@ -105,12 +105,23 @@ Locale           : France
 
 - Save the token value into your `.env` file in the variables `MATOMO_TOKEN`
 
+## Prometheus settings
+
+You will need "Prometheus Node Exporter" to get your local machine data.
+
+```
+sudo apt update
+sudo apt install prometheus-node-exporter
+```
+
+Or in : https://github.com/prometheus/node_exporter.
+
 ## Start
 
 The following command will serve a working i-Parapheur.
 
 ```bash
-$ docker-compose up
+docker-compose up
 ```
 
 To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
