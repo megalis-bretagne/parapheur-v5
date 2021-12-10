@@ -72,7 +72,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         Then status <status>
             And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
             And if (<status> === 201) utils.assert("$ contains expected")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Impossible de lire le certificat\"'")
 
         Examples:
             | status | field    | value!                                       | data                                    | path                                         | expected!                                                                                               |

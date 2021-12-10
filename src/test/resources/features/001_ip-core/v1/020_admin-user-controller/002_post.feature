@@ -60,11 +60,12 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -86,7 +87,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         When method POST
         Then status <status>
             And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Bad Request'")
+            And if (<status> === 409) utils.assert("response == '409 CONFLICT \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Conflict'")
 
         Examples:
             | status | field                        | value!                                                   | data                                                |
