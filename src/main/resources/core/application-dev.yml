@@ -25,3 +25,5 @@ spring:
     port: 25
 
 server.error.include-message: always
+swagger.oauth2.client-id: ipcore-web
+springfox.documentation.enabled: true
