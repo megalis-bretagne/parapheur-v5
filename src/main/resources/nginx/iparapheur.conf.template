@@ -104,9 +104,7 @@ server {
 
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
-      resolver 127.0.0.11 valid=30s;
-      set $upstream_pes_viewer pes-viewer;
-      proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
+      proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
   }
 
   location /filetransfer/ {
