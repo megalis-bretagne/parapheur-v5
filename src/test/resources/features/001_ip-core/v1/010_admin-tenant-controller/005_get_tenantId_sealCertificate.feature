@@ -36,7 +36,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

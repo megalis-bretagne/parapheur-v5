@@ -1,6 +1,5 @@
 @setup
 Feature: Basic setup
-
 	Scenario Outline: Create tenant "${name}"
 		* api_v1.auth.login('user', 'password')
 
@@ -23,6 +22,7 @@ Feature: Basic setup
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
+		* def defaultTenantId = api_v1.entity.getIdByName('Default tenant')
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', tenantId, '/user'
 			And header Accept = 'application/json'
@@ -41,12 +41,58 @@ Feature: Basic setup
 		When method POST
 		Then status 201
 
+		* def userId = api_v1.user.getIdByEmail(defaultTenantId, '<email>')
+		* def globalPrivilege = privilege == 'TENANT_ADMIN' ? 'ADMIN' : 'NONE'
+
+		Given url baseUrl
+			# @info: concatenating with , -> / while concatenating with + adds no extra character
+			And path '/api/v1/admin/user/', userId, '/privileges?privilege=' + globalPrivilege
+			And header Accept = 'application/json'
+			And request {}
+		When method PUT
+		Then status 200
+
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        |
 			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | TENANT_ADMIN     |
 			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN |
 			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             |
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
+
+	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
+		* api_v1.auth.login('user', 'password')
+		* def tenantId = api_v1.entity.getIdByName('<tenant>')
+		* def defaultTenantId = api_v1.entity.getIdByName('Default tenant')
+		* def userId = api_v1.user.getIdByEmail(defaultTenantId, '<email>')
+
+		Given url baseUrl
+			And path '/api/v1/admin/user/', userId, '/tenant/', tenantId
+			And header Accept = 'application/json'
+			And request
+"""
+{
+	"headers":{
+		"normalizedNames":{},
+		"lazyUpdate":null,
+		"lazyInit":null,
+		"headers":{}
+	},
+	"params":{
+		"updates":null,
+		"cloneFrom":null,
+		"encoder":{},
+		"map":null
+	}
+}
+"""
+		When method PUT
+		Then status 200
+
+		Examples:
+			| email           | tenant                             |
+			| cnoir@dom.local | Default tenant                     |
+			| cnoir@dom.local | Libriciel SCOP                     |
+			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
 	# 404 when-parentDeskId is not null
 	@todo-karate

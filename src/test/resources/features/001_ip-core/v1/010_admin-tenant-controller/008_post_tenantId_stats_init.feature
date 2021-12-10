@@ -37,8 +37,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
             And header Accept = 'application/json'
         When method POST
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

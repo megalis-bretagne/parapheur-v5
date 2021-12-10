@@ -27,3 +27,4 @@ spring:
 server.error.include-message: always
 swagger.oauth2.client-id: ipcore-web
 springfox.documentation.enabled: true
+spring.jpa.hibernate.ddl-auto: update
