@@ -20,15 +20,20 @@ FORCE="0"
 
 IGNORE_MATOMO_VERSION="0"
 
-# Security problems ahead with .env export... which is why it's a dev script
+# Security problems ahead with .env export...
+# which is why it's a dev script
 export_dot_env() {
-    set -o allexport; source .env; set +o allexport
+    set -o allexport
+    # @see https://stackoverflow.com/a/29327295
+    eval "$(sed "s/\(<\|>\)//g" .env)"
+    set +o allexport
 }
 
-# @fixme
 export_dot_env
 
 KARATE_DEFAULT_TAGS_PATH="./src/test/resources/features"
+# @todo: get and use
+KEYCLOAK_CLIENT_SECRET="${KEYCLOAK_CLIENT_SECRET:-random-uuid}"
 MATOMO_COOKIES="${MATOMO_COOKIES:-/tmp/matomo-setup-cookies.txt}"
 MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
 MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
