@@ -116,7 +116,8 @@ services:
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
-
+    volumes:
+      - ${RGPD_DATA}:/usr/share/nginx/html/assets/rgpd.json
 
   workflow:
     image: registry.libriciel.fr/public/signature/workflow:1.0.0

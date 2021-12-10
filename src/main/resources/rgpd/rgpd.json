@@ -1,0 +1,76 @@
+{
+  "declaringEntity": {
+    "name": "Mairie de Montpellier 1",
+    "address": "1 Place Georges Frêche, 34000 Montpellier",
+    "siret": "21340172201787",
+    "apeCode": "8411Z",
+    "phoneNumber": "04 67 34 70 00",
+    "mail": "contact-mairie@test.fr",
+    "dpo": {
+      "name": "le nom du DPO",
+      "mail": "maildudpo@"
+    },
+    "responsible": {
+      "name": "le nom du maire",
+      "title": "Maire"
+    }
+  },
+  "hostingEntity": {
+    "name": "Libriciel SCOP",
+    "address": "836 rue du Mas de Verchant, 34000 Montpellier",
+    "siret": "491 011 698 00025"
+  },
+  "hostingEntityComments": "Libriciel SCOP, assure l'hébergement de vos données chez plusieurs sous-traitants, uniquement sur le territoire Français, en dehors des zones soumises au PATRIOT Act. ",
+  "maintenanceEntity": {
+    "name": "Libriciel SCOP",
+    "address": "836 rue du Mas de Verchant, 34000 Montpellier",
+    "siret": "491 011 698 00025"
+  },
+  "application": {
+    "name": "webTruc",
+    "preservedDataAfterDeletion": [
+      "Historique des transactions",
+      "Commentaires"
+    ],
+    "cookieSessionDuration": "180 minutes",
+    "mandatoryCookies": [
+      "Cookie de localisation"
+    ],
+    "optionalCookies": [
+      {
+        "name": "Cookies de personnalisation de l'application",
+        "description": "Permet de conserver vos préférences.",
+        "elements": [
+          "un cookie de personnalisation"
+        ]
+      }
+    ],
+    "noCookies": false,
+    "editor": {
+      "name": "Libriciel Scop",
+      "address": "836, rue du Mas de Verchant, 34000 Montpellier"
+    },
+    "dataProcesses": [
+      {
+        "name": "Affichage de vos données personnelles",
+        "elements": [
+          "Liste des utilisateurs : votre identifiant de connexion, apparait dans la liste."
+        ]
+      }
+    ],
+    "noDataProcessed": false,
+    "noDataCollected": false,
+    "collectedDataSet": [
+      {
+        "name": "Création d'un utilisateur",
+        "mandatoryElements": [
+          "Civilité de l'utilisateur",
+          "Nom de l'utilisateur"
+        ],
+        "optionalElements": [
+          "Numéro de téléphone"
+        ]
+      }
+    ]
+  }
+}
