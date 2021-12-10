@@ -255,7 +255,8 @@ function fn(config) {
         },
         'tenant': {
             'element': karate.read('classpath:lib/schemas/tenant.element.json'),
-            'index': karate.read('classpath:lib/schemas/tenant.index.json')
+            'index': karate.read('classpath:lib/schemas/tenant.index.json'),
+            'index_element': karate.read('classpath:lib/schemas/tenant.index.element.json')
         },
         'user': {
             'element': karate.read('classpath:lib/schemas/user.element.json'),
