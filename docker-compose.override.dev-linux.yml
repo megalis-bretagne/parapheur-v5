@@ -29,9 +29,7 @@ services:
     memswap_limit: 64m
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
-    networks:
-      - ipng
-      - default
+
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
@@ -43,9 +41,6 @@ services:
       - ./src/main/resources/core/application-dev.yml:/application.yml
     ports:
       - "8080:8080"
-    networks:
-      - ipng
-      - default
 
 
   web:
@@ -136,9 +131,6 @@ services:
     memswap_limit: 768M
     ports:
       - "9090:8080"
-    networks:
-      - ipng
-      - default
 
 
   matomo:
@@ -152,9 +144,6 @@ services:
     memswap_limit: 64m
     ports:
       - "6379:6379"
-    networks:
-      - ipng
-      - default
 
 
   smtp:
@@ -182,8 +171,3 @@ services:
   filetransfer:
     ports:
       - "1807:8080"
-
-networks:
-  ipng:
-    external: true
-    name: ipngbusiness_ipng

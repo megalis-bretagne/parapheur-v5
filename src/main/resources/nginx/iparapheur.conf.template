@@ -107,10 +107,14 @@ server {
       proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
   }
 
+  location /ipng {
+    proxy_set_header X-Forwarded-Host $host:$server_port;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_pass http://ipng-business:8081/ipng;
+  }
+
   location /filetransfer/ {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_filetransfer filetransfer;
-    proxy_pass http://$upstream_filetransfer:8080/;
+    proxy_pass http://filetransfer:8080/;
   }
 
   # location /libersign {

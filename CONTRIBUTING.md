@@ -217,3 +217,10 @@ SET locked= FALSE,
     lockedby=null
 WHERE id = 1;
 ```
+
+## Re-insert a message from redis error queue
+
+From the shell in the redis conrtainer, assuming we want to reup the latest error message :  
+```
+redis-cli --raw XREVRANGE ipng-error + - COUNT 1 | tail -n 10 |  tr "\n" " " | xargs redis-cli XADD ipng-proof '*'
+```
