@@ -186,4 +186,4 @@ services:
 networks:
   ipng:
     external: true
-    name: ipngbusiness_ipng
+    name: ipng_ipng
