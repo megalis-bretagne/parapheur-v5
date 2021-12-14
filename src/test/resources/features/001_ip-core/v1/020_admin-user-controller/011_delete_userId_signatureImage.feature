@@ -64,11 +64,11 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And match $ == schemas.error
+            #And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -88,11 +88,11 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And match $ == schemas.error
+            #And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -114,7 +114,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         When method DELETE
         Then status <status>
             And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 404) utils.assert("$ == '404 NOT_FOUND \"Lutilisateur na pas dimage de signature définie\"'")
 
         Examples:
             | status | email                  | data                                  |
