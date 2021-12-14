@@ -68,11 +68,11 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            #And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -93,11 +93,11 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            #And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -121,7 +121,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
         Then status <status>
             # @todo: file, special schema
             And if (<status> === 201) utils.assert("$ == { 'value': '#uuid' }")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 400) utils.assert("$ == schemas.error")
+            And if (<status> === 409) utils.assert("$ == '409 CONFLICT \"Lutilisateur a déjà une image de signature de définie. La création est impossible, seule une modification peut être exécutée.\"'")
 
         Examples:
             | status | email                  | path!                                          | contentType          | data                                                |

@@ -19,7 +19,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         Then status <status>
             And if (<status> === 200) utils.assert("header Content-Type == 'image/png;charset=UTF-8'")
             And if (<status> === 200) utils.assert("response == read('<path>')")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"Lutilisateur na pas dimage de signature définie\"'")
+            And if (<status> !== 200 && <status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | status | path                                         |
@@ -64,11 +65,12 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | sample-user@dom.local  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | sample-user@dom.local  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | email                  | status |
