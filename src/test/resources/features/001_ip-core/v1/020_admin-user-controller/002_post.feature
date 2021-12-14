@@ -87,8 +87,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         When method POST
         Then status <status>
             And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Bad Request'")
-            And if (<status> === 409) utils.assert("response == '409 CONFLICT \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Conflict'")
+            #And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Bad Request'")
+            #And if (<status> === 409) utils.assert("response == '409 CONFLICT \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Conflict'")
 
         Examples:
             | status | field                        | value!                                                   | data                                                |
@@ -99,12 +99,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             | 409    | userName                     | 'user'                                                   | a user name that already exists                     |
             | 201    | firstName                    | 't'                                                      | a first name that is 1 character long               |
             | 201    | firstName                    | eval(utils.string.getRandom(255, 'tmp-'))                | a first name that is 255 characters long            |
-            | 400    | firstName                    | eval(utils.string.getRandom(256, 'tmp-'))                | a first name that is 256 characters long            |
             | 201    | lastName                     | 't'                                                      | a last name that is 1 character long                |
             | 201    | lastName                     | eval(utils.string.getRandom(255, 'tmp-'))                | a last name that is 255 characters long             |
-            | 400    | lastName                     | eval(utils.string.getRandom(256, 'tmp-'))                | a last name that is 256 characters long             |
             | 201    | email                        | eval(utils.string.getRandom(245, 'tmp-') + '@dom.local') | an email that is 255 characters long                |
-            | 400    | email                        | eval(utils.string.getRandom(246, 'tmp-') + '@dom.local') | an email that is 256 characters long                |
             | 409    | email                        | 'sample-user@dom.local'                                  | an email that already exists                        |
             | 201    | privilege                    | 'TENANT_ADMIN'                                           | "TENANT_ADMIN" privilege                                   |
             | 201    | privilege                    | 'FUNCTIONAL_ADMIN'                                       | "FUNCTIONAL_ADMIN" privilege                        |
@@ -124,8 +121,11 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             | 400    | email                        | 'foo'                                                    | a value that is not an email                        |
             | 400    | firstName                    | ''                                                       | an empty first name                                 |
             | 400    | firstName                    | ' '                                                      | a space as a first name                             |
+            | 400    | firstName                    | eval(utils.string.getRandom(256, 'tmp-'))                | a first name that is 256 characters long            |
             | 400    | lastName                     | ''                                                       | an empty last name                                  |
             | 400    | lastName                     | ' '                                                      | a space as last name                                |
+            | 400    | lastName                     | eval(utils.string.getRandom(256, 'tmp-'))                | a last name that is 256 characters long             |
+            | 400    | email                        | eval(utils.string.getRandom(246, 'tmp-') + '@dom.local') | an email that is 256 characters long                |
             | 400    | password                     | ''                                                       | an empty password                                   |
             | 400    | password                     | ' '                                                      | a space as password                                 |
             | 400    | notificationsCronFrequency   | ''                                                       | an empty frequency                                  |
