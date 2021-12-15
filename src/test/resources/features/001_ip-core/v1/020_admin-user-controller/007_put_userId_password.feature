@@ -8,7 +8,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'update the password of an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
@@ -24,14 +24,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 200    |
-        @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
@@ -41,13 +38,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
-        @issue-ip-core-todo
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
-        @issue-ip-core-78
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -70,14 +67,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    @permissions @fixme-ip-core
+    @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
@@ -89,11 +83,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         Then status <status>
             And match $ == schemas.error
 
-        @issue-ip-core-todo
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 403    |
-        @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
