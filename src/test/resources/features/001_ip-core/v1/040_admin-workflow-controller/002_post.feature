@@ -90,7 +90,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 """
         When method POST
         Then status <status>
-          And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -170,37 +171,37 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             | 400    | name         | ' '                                        | a space as a name                                    |
             | 400    | name         | eval(utils.string.getRandom(256, 'tmp-'))  | a name that is 256 characters long                   |
 
-    @data-validation @666
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
-
-        * def requestData = karate.read('classpath:fixtures/ip-core/v1/admin-workflow-controller/post/data-validation/' + path + '.js')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/workflowDefinition'
-            And header Accept = 'application/json'
-            And request requestData
-
-        When method POST
-        Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
-
-        Examples:
-            | status | path |
-            | 201    | xxx  |
+#    @data-validation @666
+#    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
+#        * api_v1.auth.login('user', 'password')
+#        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+#        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
+#
+#        * def requestData = karate.read('classpath:fixtures/ip-core/v1/admin-workflow-controller/post/data-validation/' + path + '.js')
+#
+#        Given url baseUrl
+#            And path '/api/v1/admin/tenant/', existingTenantId, '/workflowDefinition'
+#            And header Accept = 'application/json'
+#            And request requestData
+#
+#        When method POST
+#        Then status <status>
+#            And if (<status> === 201) utils.assert("response == ''")
+#            And if (<status> !== 201) utils.assert("$ == schemas.error")
+#
 #        Examples:
-#            | status | field | value!               | data                         |
-#            | 201    | type  | 'EXTERNAL_SIGNATURE' | an "EXTERNAL_SIGNATURE" type |
-#            | 201    | type  | 'SEAL'               | a "SEAL" type                |
-#            | 201    | type  | 'SIGNATURE'          | a "SIGNATURE" type           |
-#            | 201    | type  | 'VISA'               | a "VISA" type                |
-#            | 400    | type  | 'FOO'               | an unknown type                |
-#        @fixme-ip-core @issue-ip-core-todo
-#        Examples:
-#            | status | field | value!               | data                         |
-#            | 201    | type  | 'MAIL'               | a "MAIL" type                |
-
-# @todo: validation with data in more than one step
+#            | status | path |
+#            | 201    | xxx  |
+##        Examples:
+##            | status | field | value!               | data                         |
+##            | 201    | type  | 'EXTERNAL_SIGNATURE' | an "EXTERNAL_SIGNATURE" type |
+##            | 201    | type  | 'SEAL'               | a "SEAL" type                |
+##            | 201    | type  | 'SIGNATURE'          | a "SIGNATURE" type           |
+##            | 201    | type  | 'VISA'               | a "VISA" type                |
+##            | 400    | type  | 'FOO'               | an unknown type                |
+##        @fixme-ip-core @issue-ip-core-todo
+##        Examples:
+##            | status | field | value!               | data                         |
+##            | 201    | type  | 'MAIL'               | a "MAIL" type                |
+#
+## @todo: validation with data in more than one step
