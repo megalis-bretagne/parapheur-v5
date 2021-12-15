@@ -21,9 +21,6 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
         Examples:
             | role             | username     | password | email                  | path                                         | status |
             | TENANT_ADMIN     | cnoir        | a123456  |                        | classpath:files/signature - stranslucide.png | 201    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | email                  | path                                         | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 403    |
             | NONE             | ltransparent | a123456  | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 403    |
             |                  |              |          | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 401    |
@@ -41,13 +38,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
-        @fixme-ip-core @issue-ip-core-78
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -73,9 +70,6 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -98,9 +92,6 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
