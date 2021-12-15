@@ -11,20 +11,20 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
         * def schemaElement =
 """
 {
-    "lastName": "#string",
+    "lastName": "##string",
     "isLdapSynchronized": "#boolean",
     "complementaryField": null,
     "rolesCount": "#number",
     "privilege": "##regex (ADMIN|FUNCTIONAL_ADMIN|NONE|TENANT_ADMIN)",
     "userName": "#string",
     "isChecked": "#boolean",
-    "firstName": "#string",
+    "firstName": "##string",
     "notificationsRedirectionMail": null,
     "isLocked": "##boolean",
     "notificationsCronFrequency": null,
     "signatureImageContentId": null,
     "id":"#uuid",
-    "email":"#string"
+    "email":"##string"
 }
 """
         * def schemaIndex =
