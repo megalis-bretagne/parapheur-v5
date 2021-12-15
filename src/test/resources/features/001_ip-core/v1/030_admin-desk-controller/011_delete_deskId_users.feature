@@ -99,11 +99,12 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And match $ == schemas.error
+            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
+            And if (<status> !== 404) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
