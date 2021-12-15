@@ -53,9 +53,6 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
-        @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             |                  |              |          | 401    |
 
     @data-validation

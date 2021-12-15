@@ -1,4 +1,4 @@
-@ip-core @api-v1 @fixme-no-wip-?
+@ip-core @api-v1
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
     @permissions
