@@ -1,4 +1,4 @@
-@ip-core @api-v1 @fixme-no-wip-?
+@ip-core @api-v1
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     @permissions
@@ -14,13 +14,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
         Then status <status>
             And if (<status> === 204) utils.assert("response == ''")
             And if (<status> !== 204) utils.assert("$ == schemas.error")
-
+        # @fixme: 400 Request Header Or Cookie Too Large ?
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 204    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -42,9 +39,6 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

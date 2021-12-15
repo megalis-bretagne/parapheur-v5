@@ -23,9 +23,6 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 		Examples:
 			| role             | username     | password | status |
 			| TENANT_ADMIN     | cnoir        | a123456  | 201    |
-		@fixme-ip-core @issue-ip-core-78
-		Examples:
-			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |

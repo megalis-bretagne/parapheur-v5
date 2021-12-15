@@ -16,9 +16,6 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 		Examples:
 			| role             | username     | password | status |
 			| TENANT_ADMIN     | cnoir        | a123456  | 200    |
-		@fixme-ip-core @issue-ip-core-78
-		Examples:
-			| role             | username     | password | status |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
@@ -43,9 +40,6 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 			| searchTerm   | sortBy | asc!  | total | field | value!                                                                       |
 			|              | NAME   | true  | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
 			|              | NAME   | false | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
-		@fixme-ip-core @issue-ip-core-142
-		Examples:
-			| searchTerm   | sortBy | asc!  | total | field | value!                                                                       |
 			| foo          |        | null  | 0     | name  | []                                                                           |
 			| el           |        | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
 			| el           |        | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]                   |

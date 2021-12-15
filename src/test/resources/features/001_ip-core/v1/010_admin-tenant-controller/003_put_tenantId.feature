@@ -28,9 +28,6 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 200    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -52,9 +49,6 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
