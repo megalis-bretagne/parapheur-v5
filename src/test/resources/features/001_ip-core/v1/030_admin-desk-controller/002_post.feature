@@ -51,11 +51,11 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
             And request uniqueRequestData
         When method POST
         Then status <status>
-            And match $ == schemas.error
+            #And match $ == schemas.error
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
