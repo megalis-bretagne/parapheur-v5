@@ -3,12 +3,12 @@
   "signatureZipCode": null,
   "protocol": "##regex (ACTES|HELIOS)",
   "signatureLocation": null,
-  "depth": null,
   "signaturePosition": null,
   "signatureFormat": "#regex (PADES|PES_V2|PKCS7)",
   "name": "#string",
   "description": "#string",
   "id": "#uuid",
+  "parentId": "##uuid",
   "childrenCount": null,
   "subtypes": []
 }
