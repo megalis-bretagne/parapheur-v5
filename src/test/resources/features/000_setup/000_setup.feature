@@ -52,6 +52,7 @@ Feature: Basic setup
 		When method PUT
 		Then status 200
 
+		# @todo: ADMIN
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        |
 			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | TENANT_ADMIN     |
