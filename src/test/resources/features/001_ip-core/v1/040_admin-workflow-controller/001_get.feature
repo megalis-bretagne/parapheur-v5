@@ -43,7 +43,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -79,5 +79,5 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
             | searchTerm | sortBy | asc!  | total | field | value!                                                                                                                 |
             | signature  | NAME   | true  | 2     | name  | [ 'Transparent - Signature', 'Transparent - Signature externe' ]                                                       |
             | signature  | NAME   | false | 2     | name  | [ 'Transparent - Signature externe', 'Transparent - Signature' ]                                                       |
-            | Sîgnature  | NAME   | true  | 2     | name  | [ 'Transparent - Signature', 'Transparent - Signature externe' ]                                                       |
-            | Sîgnature  | NAME   | false | 2     | name  | [ 'Transparent - Signature externe', 'Transparent - Signature' ]                                                       |
+#            | Sîgnature  | NAME   | true  | 2     | name  | [ 'Transparent - Signature', 'Transparent - Signature externe' ]                                                       |
+#            | Sîgnature  | NAME   | false | 2     | name  | [ 'Transparent - Signature externe', 'Transparent - Signature' ]                                                       |
