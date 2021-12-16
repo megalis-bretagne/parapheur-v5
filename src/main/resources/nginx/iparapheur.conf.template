@@ -60,9 +60,7 @@ server {
   }
 
   location /ws-iparapheur {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_legacy_bridge legacy-bridge;
-    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
+    proxy_pass http://legacy-bridge:2758/ws-iparapheur;
   }
 
   location /pdf-stamp {
