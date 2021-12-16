@@ -233,7 +233,7 @@ version_compare() {
 }
 
 __check_commands__() {
-    required_commands=(bash curl docker docker-compose grep java python3 sed)
+    required_commands=(bash curl docker docker-compose grep python3 sed)
     missing_commands=()
 
     for required_command in "${required_commands[@]}";do
@@ -259,7 +259,6 @@ __check_versions__() {
     expected['docker']="20.10"
     expected['docker-compose']="1.27"
     expected['grep']="3.1"
-    expected['java']="11.0"
     expected['python3']="3.6"
     expected['sed']="4.4"
 
@@ -269,7 +268,6 @@ __check_versions__() {
     versions['docker']="`docker --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
     versions['docker-compose']="`docker-compose --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
     versions['grep']="`grep --version | grep --color=never -m 1 "grep" | sed "s/^.* ${regexp}.*$/\1/g"`"
-    versions['java']="`java -version 2>&1 | grep --color=never -m 1 "version" | sed "s/^.*\\"${regexp}\\".*$/\1/g"`"
     versions['python3']="`python3 --version 2>&1 | sed "s/^.* ${regexp}.*$/\1/g"`"
     versions['sed']="`sed --version | grep --color=never -m 1 "sed" | sed "s/^.* ${regexp}.*$/\1/g"`"
 
