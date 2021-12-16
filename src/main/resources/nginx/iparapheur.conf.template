@@ -60,9 +60,7 @@ server {
   }
 
   location /ws-iparapheur {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_legacy_bridge legacy-bridge;
-    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
+    proxy_pass http://legacy-bridge:2758/ws-iparapheur;
   }
 
   location /pdf-stamp {
@@ -104,15 +102,17 @@ server {
 
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
-      resolver 127.0.0.11 valid=30s;
-      set $upstream_pes_viewer pes-viewer;
-      proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
+      proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
+  }
+
+  location /ipng {
+    proxy_set_header X-Forwarded-Host $host:$server_port;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_pass http://ipng-business:8081/ipng;
   }
 
   location /filetransfer/ {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_filetransfer filetransfer;
-    proxy_pass http://$upstream_filetransfer:8080/;
+    proxy_pass http://filetransfer:8080/;
   }
 
   # location /libersign {

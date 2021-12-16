@@ -16,17 +16,33 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+
+
 services:
-  stats.provider: none
+  nginx:
+    networks:
+      - ipng
+      - default
+
+  core:
+    volumes:
+      - ./src/main/resources/core/application-dev-ipng.yml:/application.yml
+    networks:
+      - ipng
+      - default
+
+  keycloak:
+    networks:
+      - ipng
+      - default
+
+  redis:
+    networks:
+      - ipng
+      - default
+
+
+networks:
   ipng:
-    provider: none
-
-spring:
-  mail:
-    host: smtp
-    port: 25
-
-server.error.include-message: always
-swagger.oauth2.client-id: ipcore-web
-springfox.documentation.enabled: true
-spring.jpa.hibernate.ddl-auto: update
+    external: true
+    name: ipng_ipng

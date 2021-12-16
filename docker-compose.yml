@@ -116,7 +116,8 @@ services:
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
-
+    volumes:
+      - ${RGPD_DATA}:/usr/share/nginx/html/assets/rgpd.json
 
   workflow:
     image: registry.libriciel.fr/public/signature/workflow:1.0.0
@@ -323,6 +324,7 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_FRONTEND_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
     volumes:
       - ./src/main/resources/keycloak/startup-scripts:/opt/jboss/startup-scripts
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
@@ -406,8 +408,9 @@ services:
     image: dutchcoders/transfer.sh:v1.2.4
     mem_limit: 256M
     restart: unless-stopped
-    command: --provider local --basedir /data/
+    command: --provider local --basedir /data/ --temp-path /tmp/
     volumes:
-      - ./data/transfer/:/data/
+      - ./data/transfer/data:/data/
+      - ./data/transfer/tmp:/tmp/
     environment:
       - RANDOM_TOKEN_LENGTH=0

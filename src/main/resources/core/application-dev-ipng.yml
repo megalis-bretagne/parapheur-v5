@@ -19,14 +19,23 @@
 services:
   stats.provider: none
   ipng:
-    provider: none
+    provider: ipng
+    bindings-provider: db
+    host: ipng-business
 
 spring:
   mail:
     host: smtp
     port: 25
+  jpa.hibernate.ddl-auto: update
 
 server.error.include-message: always
 swagger.oauth2.client-id: ipcore-web
 springfox.documentation.enabled: true
-spring.jpa.hibernate.ddl-auto: update
+
+
+ipng:
+#  lastRedisMessage: 1638444072643-0
+  tenantToEntities:
+    1c6996ed-3cee-4ea3-bb77-afbc0f22bc44: montpellierEntityId
+    2dea654b-beee-4745-bb21-5813e25bda1f: libricielEntityId
