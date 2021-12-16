@@ -31,8 +31,6 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
-        * api_v1.auth.login('<username>', '<password>')
-
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
@@ -41,6 +39,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 200
 
         # Remove the user from the desk
+        * api_v1.auth.login('<username>', '<password>')
+
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
             And header Accept = 'application/json'
@@ -52,9 +52,6 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 204    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -84,8 +81,6 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
-        * api_v1.auth.login('<username>', '<password>')
-
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId, '/users'
             And header Accept = 'application/json'
@@ -94,6 +89,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 200
 
         # Remove the user from the desk
+        * api_v1.auth.login('<username>', '<password>')
+
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
             And header Accept = 'application/json'
@@ -105,9 +102,6 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Examples:
             | role             | username     | password | status |
             | TENANT_ADMIN     | cnoir        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -128,7 +122,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -147,6 +141,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
 """
 {
     'name': '#(unique)',
+    'shortName': '#(unique)',
     'description': 'Bureau #(unique)',
     'parentDeskId': null
 }
@@ -158,6 +153,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
         # Remove the user from the desk
+        * api_v1.auth.login('<username>', '<password>')
+
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + nonExistingUserId
             And header Accept = 'application/json'
@@ -169,7 +166,9 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+        Examples:
+            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
