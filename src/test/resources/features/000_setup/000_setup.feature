@@ -17,8 +17,6 @@ Feature: Basic setup
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
-	# [ ADMIN, FUNCTIONAL_ADMIN, NONE, TENANT_ADMIN ] -> /users FUNCTIONAL_ADMIN OK, ADMIN KO (user n'est plus ADMIN mais TENANT_ADMIN)
-	# wip-karate wip-ajouter-sgris-aux-tests-d-'acces
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
@@ -42,20 +40,30 @@ Feature: Basic setup
 		Then status 201
 
 		* def userId = api_v1.user.getIdByEmail(defaultTenantId, '<email>')
-		* def globalPrivilege = privilege == 'TENANT_ADMIN' ? 'ADMIN' : 'NONE'
 
 		Given url baseUrl
 			# @info: concatenating with , -> / while concatenating with + adds no extra character
-			And path '/api/v1/admin/user/', userId, '/privileges?privilege=' + globalPrivilege
+			And path '/api/v1/admin/user/', userId
 			And header Accept = 'application/json'
-			And request {}
+			And request
+"""
+{
+	userName : '<userName>',
+	email: '<email>',
+	firstName: '<firstName>',
+	lastName: '<lastName>',
+	password: '<password>',
+	privilege: '<privilege>',
+	notificationsCronFrequency: 'disabled'
+}
+"""
 		When method PUT
 		Then status 200
 
-		# @todo: ADMIN
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        |
-			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | TENANT_ADMIN     |
+			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            |
+			| Default tenant | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     |
 			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN |
 			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             |
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
@@ -95,11 +103,11 @@ Feature: Basic setup
 			| cnoir@dom.local | Libriciel SCOP                     |
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
-	# 404 when-parentDeskId is not null
 	@todo-karate
 	Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
 		* api_v1.auth.login('user', 'password')
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
+		* def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', tenantId, '/desk'
@@ -107,24 +115,27 @@ Feature: Basic setup
 			And request
 """
 {
-	"name": "<name>",
-	"shortName": "<name>",
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
 	"description": "Bureau <name>",
-	"parentDeskId": null
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"name": "<name>",
+	"ownerUserIdsList": [
+		"#(userId)"
+	],
+	"parentDeskId": null,
+	"shortName": "<name>",
 }
 """
 		When method POST
 		Then status 201
-
-		* def deskId = $.id
-		* def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
-
-		Given url baseUrl
-			And path '/api/v1/admin/tenant/', tenantId, '/desk/', deskId, '/users'
-			And header Accept = 'application/json'
-			And request { "userIdList": ["#(userId)"] }
-		When method PUT
-		Then status 200
 
 		Examples:
 			| tenant         | name        | email                  |
@@ -223,6 +234,7 @@ Feature: Basic setup
 		* def tenantId = api_v1.entity.getIdByName('<tenant>')
 		* def workflowKey = api_v1.workflow.getKeyByName(tenantId, '<workflow>')
 		* def typeId = api_v1.type.getIdByName(tenantId, '<type>')
+		* def sealCertificateId = '<sealCertificate>' == '' ? null : api_v1.sealCertificate.getIdByName(tenantId, '<sealCertificate>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
@@ -230,25 +242,32 @@ Feature: Basic setup
 			And request
 """
 {
-	"name" : "<name>",
-	"tenantId" : "#(tenantId)",
-	"creationWorkflowId" : null,
-	"validationWorkflowId" : "#(workflowKey)",
-	"description" : "<description>",
-	"isDigitalSignatureMandatory" : true
+	"annotationsAllowed": true,
+	"creationPermittedDeskIds": null,
+	"description": "<description>",
+	"externalSignatureConfig": {},
+	"externalSignatureConfigId": null,
+	"filterableByDeskIds": null,
+	"ipngTypeKeys": [],
+	"name": "<name>",
+	"sealCertificateId": "#(sealCertificateId)",
+	"subtypeLayerRequestList": [],
+	"subtypeMetadataList": [],
+	"subtypeMetadataRequestList": [],
+	"validationWorkflowId": "#(workflowKey)"
 }
 """
 		When method POST
 		Then status 201
 
 		Examples:
-			| tenant         | type        | name                  | description                   | workflow                        |
-			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |
-			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |
-			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |
-			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |
-			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |
-			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |
+			| tenant         | type        | name                  | description                   | workflow                        | sealCertificate                                    |
+			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    | Christian Buffin - Default tenant - Cachet serveur |
+			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                                                    |
+			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                                                    |
+			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                                                    |
+			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                                                    |
+			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                                                    |
 
 	@todo-karate @todo-karate-title
 	Scenario Outline: ...
