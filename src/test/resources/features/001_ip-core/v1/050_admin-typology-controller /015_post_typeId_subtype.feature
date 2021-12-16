@@ -1,11 +1,11 @@
-@ip-core @api-v1 @karate-todo
+@ip-core @api-v1 @todo
 Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
 
     Background:
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 
-    @permissions @fixme-karate
+    @permissions
     Scenario: Permissions - a user with an "TENANT_ADMIN" role can create a ...@fixme... and associate it to an existing tenant
         * api_v1.auth.login('cnoir', 'a123456')
         * def tenantId = api_v1.entity.getIdByName('Default tenant')
