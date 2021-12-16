@@ -52,6 +52,18 @@ zip:
       - .env.dist
       - LICENSE.md
       - README.md
+      # Resources
+      - ./src/main/resources/nginx/iparapheur.conf.template
+      - ./src/main/resources/content/ip-custom-models.xml
+      - ./src/main/resources/content/custom-model-context.xml
+      - ./src/main/resources/postgres/docker-entrypoint-initdb.d/*
+      - ./src/main/resources/keycloak/startup-scripts
+      - ./src/main/resources/keycloak/keycloak.json
+      - ./src/main/resources/keycloak/themes/libriciel
+      - ./src/main/resources/keycloak/themes/iparapheur
+      - ./src/main/resources/keycloak/docker-entrypoint.sh
+      - ./src/main/resources/prometheus/alert.rules
+      - ./src/main/resources/prometheus/prometheus.yml
       # TODO : Add some proper doc (PDF?)
 
 

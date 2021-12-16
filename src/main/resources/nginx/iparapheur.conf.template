@@ -60,7 +60,7 @@ server {
   }
 
   location /ws-iparapheur {
-    proxy_pass http://legacy-bridge:2758/ws-iparapheur;
+    proxy_pass http://legacy-bridge:8080/ws-iparapheur;
   }
 
   location /pdf-stamp {
