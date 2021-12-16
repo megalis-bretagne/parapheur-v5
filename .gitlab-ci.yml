@@ -30,6 +30,7 @@ stages:
 pull:
   stage: test
   script:
+    - cp .env.dist .env
     - docker-compose pull --quiet
 
 
