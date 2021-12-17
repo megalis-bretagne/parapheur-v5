@@ -25,10 +25,11 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -50,13 +51,14 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
@@ -69,7 +71,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         Then status <status>
             And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
             And if (<status> === 201) utils.assert("$ contains expected")
-            And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Impossible de lire le certificat\"'")
+            And if (<status> === 400) utils.assert("$ == schemas.error")
 
         Examples:
             | status | field    | value!                                       | data                                    | path                                         | expected!                                                                                               |

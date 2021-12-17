@@ -15,13 +15,14 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 
 		Examples:
 			| role             | username     | password | status |
-			| TENANT_ADMIN     | cnoir        | a123456  | 200    |
+			| ADMIN            | cnoir        | a123456  | 200    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
 	@searching
-	Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
+	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
