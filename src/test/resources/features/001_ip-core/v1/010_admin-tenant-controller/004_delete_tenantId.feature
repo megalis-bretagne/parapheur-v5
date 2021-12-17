@@ -18,7 +18,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
 		Examples:
 			| role             | username     | password | status |
-			| TENANT_ADMIN     | cnoir        | a123456  | 204    |
+			| ADMIN            | cnoir        | a123456  | 204    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
@@ -33,12 +34,12 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>
-			And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-			And if (<status> !== 404) utils.assert("$ == schemas.error")
+			And utils.assert("$ == schemas.error")
 
 		Examples:
 			| role             | username     | password | status |
-			| TENANT_ADMIN     | cnoir        | a123456  | 404    |
+			| ADMIN            | cnoir        | a123456  | 404    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |

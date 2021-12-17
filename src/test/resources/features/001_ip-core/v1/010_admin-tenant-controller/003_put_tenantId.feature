@@ -27,7 +27,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -43,18 +44,18 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             And request cleanRequestData
         When method PUT
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'edit an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
         * def id = api_v1.entity.createTemporary()

@@ -22,13 +22,14 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 
 		Examples:
 			| role             | username     | password | status |
-			| TENANT_ADMIN     | cnoir        | a123456  | 201    |
+			| ADMIN            | cnoir        | a123456  | 201    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
 			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
 			| NONE             | ltransparent | a123456  | 403    |
 			|                  |              |          | 401    |
 
 	@data-validation
-	Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a tenant', status, data)}
+	Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, data)}
 		* api_v1.auth.login('cnoir', 'a123456')
 		* def requestData = cleanRequestData
 		* requestData[field] = utils.eval(value)
