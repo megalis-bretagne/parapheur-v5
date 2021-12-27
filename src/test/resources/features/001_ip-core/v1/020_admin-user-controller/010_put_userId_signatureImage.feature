@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Replace user's signature image)
 
     @permissions
@@ -19,7 +19,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -37,12 +38,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -63,11 +65,12 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -85,17 +88,18 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')
@@ -109,7 +113,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         When method PUT
         Then status <status>
             And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> === 404) utils.assert("$ == '404 NOT_FOUND \"Lutilisateur na pas dimage de signature définie\"'")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | status | email                  | path!                                          | contentType          | data                                        |

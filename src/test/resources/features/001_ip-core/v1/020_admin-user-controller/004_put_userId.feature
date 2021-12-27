@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
     Background:
@@ -24,7 +24,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -39,12 +40,12 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
             And request existingUserData
         When method PUT
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -64,7 +65,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -81,19 +83,19 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
             And request existingUserData
         When method PUT
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     # @fixme: status 400 missing from swagger
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'edit an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = existingUserData
         * requestData[field] = utils.eval(value)
