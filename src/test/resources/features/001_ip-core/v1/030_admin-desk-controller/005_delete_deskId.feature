@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
     Background:
@@ -21,7 +21,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 204    |
+            | ADMIN            | cnoir        | a123456  | 204    |
+            | TENANT_ADMIN     | vgris        | a123456  | 204    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -38,7 +39,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -56,7 +58,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -75,7 +78,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

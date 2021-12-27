@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 
     Background:
@@ -10,10 +10,21 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
         * def uniqueRequestData =
 """
 {
-    'name': '#(unique)',
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
     "shortName": "#(unique)",
-    'description': '#(description)',
-    'parentDeskId': null
+    "description": "#(description)",
+    "parentDeskId": null
 }
 """
 
@@ -28,12 +39,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 201) utils.assert("$ == { 'value': '#uuid' }")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  | 201    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -48,17 +60,18 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
             And request uniqueRequestData
         When method POST
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a desk in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a desk in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * copy requestData = uniqueRequestData
         * requestData[field] = utils.eval(value)
@@ -73,18 +86,17 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
             And request requestData
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.desk.element")
-            And if (<status> === 201) utils.assert("$ contains expected")
+            And if (<status> === 201) utils.assert("$ == { 'value': '#uuid' }")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | status | field        | value!                                                        | data                                       |
             | 201    | name         | eval(utils.string.getRandom(1))                               | a name that is 1 character long            |
             | 201    | name         | eval(utils.string.getRandom(255, 'tmp-'))                     | a name that is up to 255 characters        |
+            | 201    | parentDeskId | eval(api_v1.desk.getIdByName(existingTenantId, 'tmp-', true)) | a parent desk that does exist              |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | status | field        | value!                                                        | data                                       |
-            | 201    | parentDeskId | eval(api_v1.desk.getIdByName(existingTenantId, 'tmp-', true)) | a parent desk that does exist              |
             | 201    | description  | eval(utils.string.getRandom(300))                             | a description that is up to 300 characters |
             | 400    | name         | ''                                                            | an empty name                              |
             | 400    | name         | ' '                                                           | a space as a name                          |

@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
 
     Background:
@@ -18,16 +18,27 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             And request
 """
 {
-    'name': '#(unique)',
-    'shortName': '#(unique)',
-    'description': 'Bureau #(unique)',
-    'parentDeskId': null
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
+    "shortName": "#(unique)",
+    "description": "Bureau #(unique)",
+    "parentDeskId": null
 }
 """
         When method POST
         Then status 201
 
-        * def existingDeskId = $.id
+        * def existingDeskId = $.value
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
@@ -44,9 +55,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        Examples:
+            | role             | username     | password | status |
             |                  |              |          | 401    |
 
     @permissions
@@ -60,16 +75,27 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             And request
 """
 {
-    'name': '#(unique)',
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
     "shortName": "#(unique)",
-    'description': 'Bureau #(unique)',
-    'parentDeskId': null
+    "description": "Bureau #(unique)",
+    "parentDeskId": null
 }
 """
         When method POST
         Then status 201
 
-        * def existingDeskId = $.id
+        * def existingDeskId = $.value
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
         # Associate a non-existing user to the temporary desk created above
@@ -86,7 +112,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 400    |
+            | ADMIN            | cnoir        | a123456  | 400    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -114,7 +141,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -141,7 +169,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |

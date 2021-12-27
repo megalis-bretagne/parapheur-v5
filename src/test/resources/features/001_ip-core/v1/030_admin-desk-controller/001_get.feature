@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
     Background:
@@ -20,7 +20,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -39,9 +40,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -74,5 +76,3 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             |             | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
             | trans       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
             | TRANS       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
-#            | trànslucidé | NAME   | null  | 2     | name  | [ 'Translucide', 'Transparent' ] |
-#            | TRÀNSLUCIDÉ | NAME   | null  | 2     | name  | [ 'Translucide', 'Transparent' ] |
