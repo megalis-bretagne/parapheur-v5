@@ -1,11 +1,20 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for an existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'stranslucide@dom.local')
+        * def existingUserId = api_v1.user.createTemporary(existingTenantId)
+
+        # Create the signature image for the temporary user
+        Given url baseUrl
+            And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
+            And header Accept = 'application/json'
+            And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
+        When method POST
+        Then status 201
+
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -18,9 +27,13 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 204    |
+            | ADMIN            | cnoir        | a123456  | 204    |
+            | TENANT_ADMIN     | vgris        | a123456  | 204    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
+        @fixme-ip-core @issue-ip-core-todo
+        Examples:
+            | role             | username     | password | status |
             |                  |              |          | 401    |
 
     @permissions
@@ -35,12 +48,13 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -60,11 +74,12 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -81,17 +96,18 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'delete a signature image for an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'delete a signature image for an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')
@@ -104,7 +120,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         When method DELETE
         Then status <status>
             And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> === 404) utils.assert("$ == '404 NOT_FOUND \"Lutilisateur na pas dimage de signature définie\"'")
+            And if (<status> !== 204) utils.assert("$ == schemas.error")
 
         Examples:
             | status | email                  | data                                  |
