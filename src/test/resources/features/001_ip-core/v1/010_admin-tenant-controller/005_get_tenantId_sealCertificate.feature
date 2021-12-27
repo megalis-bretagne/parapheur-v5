@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-tenant-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certificates)
 
     @permissions
