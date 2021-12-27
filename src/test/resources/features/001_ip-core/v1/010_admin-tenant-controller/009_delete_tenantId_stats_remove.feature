@@ -4,6 +4,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
+        # @fixme: 400 Request Header Or Cookie Too Large ?
         * def existingTenantId = api_v1.entity.createTemporary()
 
         * api_v1.auth.login('<username>', '<password>')
@@ -14,7 +15,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
         Then status <status>
             And if (<status> === 204) utils.assert("response == ''")
             And if (<status> !== 204) utils.assert("$ == schemas.error")
-        # @fixme: 400 Request Header Or Cookie Too Large ?
+
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 204    |
