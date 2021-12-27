@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
 
     Background:
@@ -8,6 +8,9 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
         * def existingDeskData = api_v1.desk.getById(existingTenantId, existingDeskId)
+        * existingDeskData['associatedDeskIdsList'] = []
+        * existingDeskData['filterableMetadataIdsList'] = []
+        * existingDeskData['ownerUserIdsList'] = []
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'edit an existing desk from an existing tenant', status)}
@@ -19,12 +22,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 200) utils.assert("response == ''")
             And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -39,11 +43,12 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -58,12 +63,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
-        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -80,18 +86,18 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
             And request existingDeskData
         When method PUT
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
-    # @karate-todo-shortName
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'edit a desk in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a desk in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = existingDeskData
         * requestData[field] = utils.eval(value)
@@ -103,7 +109,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
 
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
+            And if (<status> === 200) utils.assert("response == ''")
             And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:

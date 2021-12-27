@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delegations (active and planned) for given substitute desk)
 
     Background:
@@ -22,7 +22,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -41,9 +42,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -62,7 +64,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |

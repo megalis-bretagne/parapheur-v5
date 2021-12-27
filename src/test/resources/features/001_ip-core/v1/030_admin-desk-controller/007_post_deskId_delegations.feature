@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create a new delegation (active or planned) from target desk)
 
     Background:
@@ -38,7 +38,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  | 201    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -56,12 +57,12 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request baseRequestData
         When method POST
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -79,13 +80,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request baseRequestData
         When method POST
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         @fixme-ip-core
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -110,7 +111,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -118,7 +120,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a new delegation from target desk', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('cnoir', 'a123456')
         * copy requestData = request_data

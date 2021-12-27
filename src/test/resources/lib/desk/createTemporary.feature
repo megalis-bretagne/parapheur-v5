@@ -4,12 +4,23 @@ Feature: Desk lib
   Scenario: Create temporary desk
     * def requestData =
 """
-    {
-        name : '#(name)',
-        shortName : '#(name)',
-        description : '#(description)',
-        parentDeskId : '#(parentDeskId)'
-    }
+{
+    "actionAllowed": true,
+    "archivingAllowed": true,
+    "associatedDeskIdsList":[],
+    "availableSubtypeIdsList":[],
+    "chainAllowed":true,
+    "delegatingDesks":[],
+    "filterableMetadataIdsList":[],
+    "filterableSubtypeIdsList":[],
+    "folderCreationAllowed": true,
+    "linkedDeskboxIds":[],
+    "ownerUserIdsList": [],
+    "name": "#(name)",
+    "shortName": "#(name)",
+    "description": "#(description)",
+    "parentDeskId": "#(parentDeskId)"
+}
 """
 
     Given url baseUrl

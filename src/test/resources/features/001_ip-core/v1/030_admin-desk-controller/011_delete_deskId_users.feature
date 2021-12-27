@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-desk-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user from desk)
 
     Background:
@@ -18,16 +18,27 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And request
 """
 {
-    'name': '#(unique)',
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
     "shortName": "#(unique)",
-    'description': 'Bureau #(unique)',
-    'parentDeskId': null
+    "description": "Bureau #(unique)",
+    "parentDeskId": null
 }
 """
         When method POST
         Then status 201
 
-        * def existingDeskId = $.id
+        * def existingDeskId = $.value
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
@@ -51,7 +62,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 204    |
+            | ADMIN            | cnoir        | a123456  | 204    |
+            | TENANT_ADMIN     | vgris        | a123456  | 204    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -68,16 +80,27 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And request
 """
 {
-    'name': '#(unique)',
-    'shortName': '#(unique)',
-    'description': 'Bureau #(unique)',
-    'parentDeskId': null
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
+    "shortName": "#(unique)",
+    "description": "Bureau #(unique)",
+    "parentDeskId": null
 }
 """
         When method POST
         Then status 201
 
-        * def existingDeskId = $.id
+        * def existingDeskId = $.value
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
@@ -96,12 +119,12 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -122,7 +145,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -140,16 +164,27 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And request
 """
 {
-    'name': '#(unique)',
-    'shortName': '#(unique)',
-    'description': 'Bureau #(unique)',
-    'parentDeskId': null
+	"actionAllowed": true,
+	"archivingAllowed": true,
+	"associatedDeskIdsList":[],
+	"availableSubtypeIdsList":[],
+	"chainAllowed":true,
+	"delegatingDesks":[],
+	"filterableMetadataIdsList":[],
+	"filterableSubtypeIdsList":[],
+	"folderCreationAllowed": true,
+	"linkedDeskboxIds":[],
+	"ownerUserIdsList": [],
+    "name": "#(unique)",
+    "shortName": "#(unique)",
+    "description": "Bureau #(unique)",
+    "parentDeskId": null
 }
 """
         When method POST
         Then status 201
 
-        * def existingDeskId = $.id
+        * def existingDeskId = $.value
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
         # Remove the user from the desk
@@ -166,9 +201,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            |                  |              |          | 401    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
