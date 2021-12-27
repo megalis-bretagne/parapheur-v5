@@ -26,10 +26,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -52,7 +52,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+        Examples:
+            | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
