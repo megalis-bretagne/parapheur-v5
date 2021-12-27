@@ -1,5 +1,7 @@
 @karate-function
 Feature: Authentication lib
+	Background:
+		* configure cookies = null
 
 	Scenario: Assert error
 		Given url baseUrl
