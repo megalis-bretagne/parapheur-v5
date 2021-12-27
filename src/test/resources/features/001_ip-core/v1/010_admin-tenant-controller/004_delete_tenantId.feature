@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-tenant-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
 	@permissions
