@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-tenant-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal certificate)
 
     Background:
