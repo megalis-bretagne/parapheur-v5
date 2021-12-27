@@ -1,6 +1,5 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
-    # @fixme: status 400 missing from swagger
 
     Background:
         * api_v1.auth.login('user', 'password')
@@ -32,13 +31,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
+            And if (<status> === 201) utils.assert("$ == {'value': '#uuid'}")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
 
-        @question-ip-core
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  | 201    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -57,18 +56,18 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a user in an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = uniqueRequestData
         * requestData[field] = utils.eval(value)
@@ -80,9 +79,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            #And if (<status> === 400) utils.assert("response == '400 BAD_REQUEST \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Bad Request'")
-            #And if (<status> === 409) utils.assert("response == '409 CONFLICT \"Erreur lors de léchange avec le service dautentification\"; nested exception is java.lang.Throwable: Conflict'")
+            And if (<status> === 201) utils.assert("$ == {'value': '#uuid'}")
+            And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | status | field                        | value!                                                   | data                                                |
@@ -108,7 +106,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             | status | field                        | value!                                                   | data                                                |
             # @fixme: the following test makes user cnoir lose TENANT_ADMIN rights / tenant association ??
             # Une erreur importante est survenue, et empêche l'application de fonctionner normalement
-            # Aucun tenant trouvé pour l'utilisateur actuellemnt connecté. Rechargez la page. si le problème persiste, contactez votre administrateur.
+            # Aucun tenant trouvé pour l'utilisateur actuellement connecté. Rechargez la page. si le problème persiste, contactez votre administrateur.
             # | 201    | userName                     | 't'                                                      | a user name that is 1 character long                |
             | 400    | email                        | ''                                                       | an empty email                                      |
             | 400    | email                        | ' '                                                      | a space as email                                    |

@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user's desks)
 
     Background:
@@ -22,8 +22,9 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | email                  | status | name!             |
-            | TENANT_ADMIN     | cnoir        | a123456  | sample-user@dom.local  | 200    | []                |
-            | TENANT_ADMIN     | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
+            | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 200    | []                |
+            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
+            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                   |
             | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |                   |
             |                  |              |          | ltransparent@dom.local | 401    |                   |
@@ -37,13 +38,13 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -60,12 +61,12 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -79,12 +80,12 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |

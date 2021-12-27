@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create user's signature image)
 
     @permissions
@@ -14,13 +14,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: '<path>', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            # @todo: file, special schema
             And if (<status> === 201) utils.assert("$ == { 'value': '#uuid' }")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | path                                         | status |
-            | TENANT_ADMIN     | cnoir        | a123456  |                        | classpath:files/signature - stranslucide.png | 201    |
+            | ADMIN            | cnoir        | a123456  |                        | classpath:files/signature - stranslucide.png | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  |                        | classpath:files/signature - stranslucide.png | 201    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 403    |
             | NONE             | ltransparent | a123456  | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 403    |
             |                  |              |          | stranslucide@dom.local | classpath:files/signature - stranslucide.png | 401    |
@@ -38,13 +38,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -65,11 +65,12 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -87,17 +88,18 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
             And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status <status>
-            #And match $ == schemas.error
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a signature image for an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a signature image for an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')

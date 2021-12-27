@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-user-controller
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
@@ -23,7 +23,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -38,13 +39,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -61,12 +62,12 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
@@ -86,7 +87,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456  | 403    |
+            | TENANT_ADMIN     | vgris        | a123456  | 403    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
@@ -94,7 +96,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
