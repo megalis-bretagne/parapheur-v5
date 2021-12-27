@@ -1,4 +1,4 @@
-@ip-core @api-v1
+@ip-core @api-v1 @admin-workflow-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefinitions)
 
     @permissions
@@ -18,7 +18,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 200    |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -43,13 +44,14 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
         @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
             |                  |              |          | 401    |
 
     @searching
-    Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the workflow definition list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
+    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the workflow definition list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 
@@ -79,5 +81,3 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
             | searchTerm | sortBy | asc!  | total | field | value!                                                                                                                 |
             | signature  | NAME   | true  | 2     | name  | [ 'Transparent - Signature', 'Transparent - Signature externe' ]                                                       |
             | signature  | NAME   | false | 2     | name  | [ 'Transparent - Signature externe', 'Transparent - Signature' ]                                                       |
-#            | Sîgnature  | NAME   | true  | 2     | name  | [ 'Transparent - Signature', 'Transparent - Signature externe' ]                                                       |
-#            | Sîgnature  | NAME   | false | 2     | name  | [ 'Transparent - Signature externe', 'Transparent - Signature' ]                                                       |

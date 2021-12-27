@@ -1,4 +1,4 @@
-@ip-core @api-v1 @todo
+@ip-core @api-v1 @admin-workflow-controller @todo
 Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
 
 #    Background:
@@ -46,7 +46,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456  | 201    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -90,12 +91,12 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 """
         When method POST
         Then status <status>
-            And if (<status> === 404) utils.assert("response == '404 NOT_FOUND \"LID de lentité est introuvable\"'")
-            And if (<status> !== 404) utils.assert("$ == schemas.error")
+            And utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
         @fixme-ip-core @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
@@ -106,7 +107,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     # ------------------------------------------------------------------------------------------------------------------
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
+    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
@@ -172,7 +173,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             | 400    | name         | eval(utils.string.getRandom(256, 'tmp-'))  | a name that is 256 characters long                   |
 
 #    @data-validation @666
-#    Scenario Outline: ${scenario.title.validation('TENANT_ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
+#    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
 #        * api_v1.auth.login('user', 'password')
 #        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 #        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
