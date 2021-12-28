@@ -114,8 +114,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Crea
         Then status <status>
             # @todo: file, special schema
             And if (<status> === 201) utils.assert("$ == { 'value': '#uuid' }")
-            And if (<status> === 400) utils.assert("$ == schemas.error")
-            And if (<status> === 409) utils.assert("$ == '409 CONFLICT \"Lutilisateur a déjà une image de signature de définie. La création est impossible, seule une modification peut être exécutée.\"'")
+            And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
             | status | email                  | path!                                          | contentType          | data                                                |

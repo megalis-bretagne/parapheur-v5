@@ -1,7 +1,7 @@
 {
-  "administeredDesks": [],
-  "administeredTenants": [],
-  "supervisedDesks": [],
+  "administeredDesks": "##[]",
+  "administeredTenants": "##[]",
+  "supervisedDesks": "##[]",
   "lastName": "#string",
   "isLdapSynchronized": false,
   "complementaryField": null,

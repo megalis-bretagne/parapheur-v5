@@ -25,9 +25,9 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
     "signatureImageContentId": "##string",
     "id":"#uuid",
     "email":"##string",
-    "administeredDesks":[],
-    "administeredTenants":[],
-    "supervisedDesks":[]
+    "administeredDesks": "##[]",
+    "administeredTenants": "##[]",
+    "supervisedDesks": "##[]"
 }
 """
         * def schemaIndex =

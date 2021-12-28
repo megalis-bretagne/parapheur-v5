@@ -109,16 +109,16 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         Then status <status>
             And match $ == schemas.error
 
-        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        @fixme-ip-core @issue-ip-core-todo
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 400    |
             | TENANT_ADMIN     | vgris        | a123456  | 403    |
+            |                  |              |          | 401    |
         Examples:
             | role             | username     | password | status |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
             | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'associate a non-existing desk to an existing user in an existing tenant', status)}
