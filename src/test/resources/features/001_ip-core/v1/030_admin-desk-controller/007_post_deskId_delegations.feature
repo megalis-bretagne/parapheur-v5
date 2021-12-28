@@ -25,7 +25,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = delegatingDeskId
+        * set requestData.substituteDeskId = delegatingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -49,7 +49,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = delegatingDeskId
+        * set requestData.substituteDeskId = delegatingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -72,7 +72,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = nonExistingDeskId
+        * set requestData.substituteDeskId = nonExistingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -98,7 +98,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = delegatingDeskId
+        * set requestData.substituteDeskId = delegatingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations'
@@ -121,26 +121,25 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
     @data-validation
     Scenario Outline: ${scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-        * api_v1.auth.login('cnoir', 'a123456')
         * copy requestData = request_data
-        * set requestData['requestData'] = delegatingDeskId
+        * if (field !== '') requestData[field] = utils.eval(value)
 
+        * api_v1.auth.login('cnoir', 'a123456')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
-            And request request_data
+            And request requestData
         When method POST
         Then status <status>
             And if (<status> === 201) utils.assert("response == ''")
             And if (<status> !== 201) utils.assert("$ == schemas.error")
 
         Examples:
-            | status | field | request_data!                                                                                                                                        | data                                           |
-            | 201    | name  | { "schedule":{ "2025-01-01T02:00:00.000Z": true, "2025-01-31T02:00:00.000Z": false, }, "substituteDeskId": null, "subtypeId": null, "typeId": null } | right data types                               |
+            | status | field!             | value!                                                         | request_data!                                                                                                                                        | data                                           |
+            | 201    | 'substituteDeskId' | eval(api_v1.desk.getIdByName(existingTenantId, 'Transparent')) | { "schedule":{ "2025-01-01T02:00:00.000Z": true, "2025-01-31T02:00:00.000Z": false, }, "substituteDeskId": null, "subtypeId": null, "typeId": null } | right data types                               |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
-            | status | field | request_data!                                                                                                                                        | data                                           |
-            | 400    | name  | { "foo": true, "bar": false }                                                                                                                        | wrong data types (strings instead of dates)    |
-            | 400    | name  | {}                                                                                                                                                   | an empty request body                          |
-            | 400    | name  | { "schedule":{ "2025-01-01T02:00:00.000Z": 6, "2025-01-31T02:00:00.000Z": 6, }, "substituteDeskId": null, "subtypeId": null, "typeId": null }        | wrong data types (integer instead of booleans) |
+            | status | field            | value!                                                         | request_data!                                                                                                                                        | data                                           |
+            | 400    | ''                 |                                                                | { "foo": true, "bar": false }                                                                                                                        | wrong data types (strings instead of dates)    |
+            | 400    | ''                 |                                                                | {}                                                                                                                                                   | an empty request body                          |
+            | 400    | ''                 |                                                                | { "schedule":{ "2025-01-01T02:00:00.000Z": 6, "2025-01-31T02:00:00.000Z": 6, }, "substituteDeskId": null, "subtypeId": null, "typeId": null }        | wrong data types (integer instead of booleans) |

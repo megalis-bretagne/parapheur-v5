@@ -26,7 +26,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
         * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = delegatingDeskId
+        * set requestData.substituteDeskId = delegatingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -62,7 +62,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
         * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
-        * set requestData['requestData'] = delegatingDeskId
+        * set requestData.substituteDeskId = delegatingDeskId
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
