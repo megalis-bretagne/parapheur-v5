@@ -1,4 +1,4 @@
-@ip-web
+@ip-web @l10n
 Feature: Connexion
 
     Background:
@@ -6,8 +6,7 @@ Feature: Connexion
         # force logout between each scenario
         * driver baseUrl + ui.url.logout
 
-    @fixme-ip-web @l10n
-        Scenario: Accéder à la page de connexion
+    Scenario: Accéder à la page de connexion
         Given driver baseUrl
             And waitFor('form')
         Then match html('body') contains 'Bienvenue sur la page de connexion iParapheur'
@@ -17,13 +16,14 @@ Feature: Connexion
             And match html('body') contains 'Mot de passe oublié ?'
             And match html('body') contains 'Se connecter'
 
-    @fixme-ip-web @l10n
-        Scenario: Connexion réussie pour un utilisateur "ADMIN"
+    @permissions
+    Scenario: Connexion réussie pour un utilisateur "ADMIN"
         Given driver baseUrl
             And waitFor('form')
             And input(ui.locator.input('Identifiant ou courriel'), 'cnoir')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
+            And waitFor('{^}Bienvenue sur le i-Parapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -33,13 +33,14 @@ Feature: Connexion
             And assert exists(ui.locator.header['Profil']) == true
             And assert exists(ui.locator.header['Déconnexion']) == true
 
-    @fixme-ip-web @l10n @permissions
-        Scenario: Connexion réussie pour un utilisateur "FUNCTIONAL_ADMIN"
+    @permissions
+    Scenario: Connexion réussie pour un utilisateur "FUNCTIONAL_ADMIN"
         Given driver baseUrl
             And waitFor('form')
             And input(ui.locator.input('Identifiant ou courriel'), 'ablanc')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
+            And waitFor('{^}Bienvenue sur le i-Parapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -50,13 +51,14 @@ Feature: Connexion
             And assert exists(ui.locator.header['Profil']) == true
             And assert exists(ui.locator.header['Déconnexion']) == true
 
-    @fixme-ip-web @l10n
-        Scenario: Connexion réussie pour un utilisateur "NONE"
+    @permissions
+    Scenario: Connexion réussie pour un utilisateur "NONE"
         Given driver baseUrl
             And waitFor('form')
             And input(ui.locator.input('Identifiant ou courriel'), 'ltransparent')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
+            And waitFor('{^}Bienvenue sur le i-Parapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
             And assert exists(ui.locator.header['i-Parapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
@@ -67,8 +69,8 @@ Feature: Connexion
             And assert exists(ui.locator.header['Profil']) == true
             And assert exists(ui.locator.header['Déconnexion']) == true
 
-    @fixme-ip-web @l10n
-        Scenario: Connexion ratée
+    @permissions
+    Scenario: Connexion ratée
         Given driver baseUrl
             And waitFor('form')
             And input(ui.locator.input('Identifiant ou courriel'), '')
