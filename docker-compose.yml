@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.2
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -105,7 +105,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
