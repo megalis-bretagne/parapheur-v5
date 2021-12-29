@@ -68,6 +68,7 @@ zip:
       - ./src/main/resources/keycloak/docker-entrypoint.sh
       - ./src/main/resources/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml
+      - ./src/main/resources/rgpd/rgpd-template.json
       # TODO : Add some proper doc (PDF?)
 
 
