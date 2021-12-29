@@ -344,6 +344,27 @@ function fn(config) {
     };
 
     /**
+     * subtype
+     */
+    config.api_v1['subtype'] = {};
+    config.api_v1.subtype['getIdByName'] = function (tenantId, typeId, name, containing = false) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/admin/tenant/' + tenantId + '/typology/type/' + typeId + '/subtype')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .param('searchTerm', name)
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting type by its tenantId and name');
+        }
+
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
+        return element['id'];
+    };
+
+    /**
      * utils
      */
     config.api_v1['utils'] = {};
