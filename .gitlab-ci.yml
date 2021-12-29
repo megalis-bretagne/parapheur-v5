@@ -69,6 +69,8 @@ zip:
       - ./src/main/resources/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml
       - ./src/main/resources/rgpd/rgpd-template.json
+      - ./src/main/resources/vault/config/vault.json
+      - ./src/main/resources/vault/policies/app-policy.hcl
       # TODO : Add some proper doc (PDF?)
 
 
