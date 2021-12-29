@@ -29,6 +29,8 @@ stages:
 
 pull:
   stage: test
+  # FIXME
+  allow_failure: true
   script:
     - cp .env.dist .env
     - docker-compose pull --quiet
@@ -45,6 +47,8 @@ zip:
   script:
     - echo "Packaging things..."
   artifacts:
+    # TODO : Keep the artifact on tags
+    expire_in: 30 days
     name: "$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
     paths:
       - docker-compose.yml
