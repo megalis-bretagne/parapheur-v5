@@ -35,6 +35,8 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
       - "8080:8080"
     entrypoint: [ "echo", "Service disabled" ]
