@@ -60,7 +60,7 @@ server {
   }
 
   location /ws-iparapheur {
-    proxy_pass http://legacy-bridge:2758/ws-iparapheur;
+    proxy_pass http://legacy-bridge:8080/ws-iparapheur;
   }
 
   location /pdf-stamp {
@@ -105,11 +105,11 @@ server {
       proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
   }
 
-  location /ipng {
-    proxy_set_header X-Forwarded-Host $host:$server_port;
-    proxy_set_header X-Forwarded-Server $host;
-    proxy_pass http://ipng-business:8081/ipng;
-  }
+#  location /ipng {
+#    proxy_set_header X-Forwarded-Host $host:$server_port;
+#    proxy_set_header X-Forwarded-Server $host;
+#    proxy_pass http://ipng-business:8081/ipng;
+#  }
 
   location /filetransfer/ {
     proxy_pass http://filetransfer:8080/;

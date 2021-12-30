@@ -1,0 +1,91 @@
+#
+# i-Parapheur Web
+# Copyright (C) 2019-2021 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+image: docker/compose:debian-1.29.1
+
+
+stages:
+  - test
+  - package
+
+
+# <editor-fold desc="Test">
+
+
+# FIXME : That would be nice to perform the pull, to check the images existences, at least
+# pull:
+#  stage: test
+#  script:
+#    - cp .env.dist .env
+#    - docker-compose build .
+
+
+# </editor-fold desc="Test">
+
+
+# <editor-fold desc="Package">
+
+
+.packaging: &packaging
+  name: "$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
+  paths:
+    - docker-compose.yml
+    - docker-compose.ipng.yml
+    - .env.dist
+    - LICENSE.md
+    - README.md
+    # Resources
+    - ./src/main/resources/nginx/iparapheur.conf.template
+    - ./src/main/resources/content/ip-custom-models.xml
+    - ./src/main/resources/content/custom-model-context.xml
+    - ./src/main/resources/postgres/docker-entrypoint-initdb.d/*
+    - ./src/main/resources/keycloak/startup-scripts
+    - ./src/main/resources/keycloak/keycloak.json
+    - ./src/main/resources/keycloak/themes/libriciel
+    - ./src/main/resources/keycloak/themes/iparapheur
+    - ./src/main/resources/keycloak/docker-entrypoint.sh
+    - ./src/main/resources/prometheus/alert.rules
+    - ./src/main/resources/prometheus/prometheus.yml
+    - ./src/main/resources/rgpd/rgpd-template.json
+    - ./src/main/resources/vault/config/vault.json
+    - ./src/main/resources/vault/policies/app-policy.hcl
+    # TODO : Add some proper doc (PDF?)
+
+
+zip_prod:
+  stage: package
+  only:
+    - tags
+  script:
+    - echo "Packaging things..."
+  artifacts:
+    <<: *packaging
+
+
+zip:
+  stage: package
+  except:
+    - tags
+  script:
+    - echo "Packaging things..."
+  artifacts:
+    <<: *packaging
+    expire_in: 30 days
+
+
+# </editor-fold desc="Package">
