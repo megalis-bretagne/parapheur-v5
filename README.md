@@ -36,13 +36,14 @@ sudo apt install docker-ce docker-ce-cli containerd.io
 
 ### System settings
 
-Application settings are defined in a `.env` file located at the root of the project. First, copy the example file :
+Application settings are defined in a `.env` file located at the root of the project.  
+First, copy the example file :
 
 ```bash
-cp ./.env.dist .env
+cp .env.dist .env
 ```
-By default, the application will start on the http://iparapheur.dom.local URL.
-You can edit the `.env` file to change the passwords or urls among others.
+
+By default, the application will start on the http://iparapheur.dom.local URL. You can edit the `.env` file to change the passwords or URLs among others.
 
 #### Create data directories
 
@@ -80,7 +81,9 @@ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 ```bash
 docker-compose up -d nginx matomo
 ```
+
 ou en environnement de développement :
+
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo
 ```
@@ -98,10 +101,10 @@ Site url         : iparapheur.dom.local
 Locale           : France
 ```
 
-* Administration (top-left cog)
+* Administration (top-right cog)
 * User (in the left menu)
 * Security (in the left menu)
-* Authentication token : Create a new one, named `ipcore`
+* Authentication token (all the way down): Create a new one, named `ipcore`
 
 - Save the token value into your `.env` file in the variables `MATOMO_TOKEN`
 
