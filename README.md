@@ -135,3 +135,33 @@ To access it on a Linux machine, you may add this resolution in your `/etc/hosts
 
 And open the URL : http://iparapheur.dom.local
 
+## Specific tuning
+
+The original `docker-compose.yml` file will be updated on every upgrade.  
+Any needed modification should be set in an additional `yml` file, that will override what's needed.
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.override-instance.yml up -d
+```
+
+### Custom truststore
+
+On a custom CA, some Keycloak calls will be broken.  
+We need to create a specific truststore to allow the connexion, and add the truststore to the `override-instance.yml` file :
+
+```yml
+version: '2.4'
+services:
+
+  core:
+    environment:
+      - JAVA_OPTS=-Djavax.net.ssl.trustStoreType=PKCS12 -Djavax.net.ssl.trustStore=truststore.p12 -Djavax.net.ssl.trustStorePassword=trusttrust
+    volumes:
+      - ./truststore.p12:/truststore.p12
+
+  legacy-bridge:
+    environment:
+      - JAVA_OPTS=-Djavax.net.ssl.trustStoreType=PKCS12 -Djavax.net.ssl.trustStore=truststore.p12 -Djavax.net.ssl.trustStorePassword=trusttrust
+    volumes:
+      - ./truststore.p12:/truststore.p12
+```
