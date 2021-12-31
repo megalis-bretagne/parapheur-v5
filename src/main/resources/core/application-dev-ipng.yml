@@ -1,0 +1,41 @@
+#
+# i-Parapheur
+# Copyright (C) 2019-2021 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+services:
+  stats.provider: none
+  ipng:
+    provider: ipng
+    bindings-provider: db
+    host: ipng-business
+
+spring:
+  mail:
+    host: smtp
+    port: 25
+  jpa.hibernate.ddl-auto: update
+
+server.error.include-message: always
+swagger.oauth2.client-id: ipcore-web
+springfox.documentation.enabled: true
+
+
+ipng:
+#  lastRedisMessage: 1638444072643-0
+  tenantToEntities:
+    1c6996ed-3cee-4ea3-bb77-afbc0f22bc44: montpellierEntityId
+    2dea654b-beee-4745-bb21-5813e25bda1f: libricielEntityId

@@ -1,0 +1,7 @@
+{
+  "externalSignatureConfigList": "#present",
+  "id": "#uuid",
+  "metadataList": "#present",
+  "name": "#string",
+  "typeList": "#present"
+}

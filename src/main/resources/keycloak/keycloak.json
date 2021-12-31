@@ -1,243 +1,509 @@
 {
-  "id": "i-Parapheur",
-  "realm": "api",
-  "notBefore": 0,
-  "revokeRefreshToken": false,
-  "refreshTokenMaxReuse": 0,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanLogin": 1800,
+  "accessCodeLifespanUserAction": 300,
   "accessTokenLifespan": 300,
   "accessTokenLifespanForImplicitFlow": 900,
-  "ssoSessionIdleTimeout": 1800,
-  "ssoSessionMaxLifespan": 36000,
-  "ssoSessionIdleTimeoutRememberMe": 0,
-  "ssoSessionMaxLifespanRememberMe": 0,
-  "offlineSessionIdleTimeout": 2592000,
-  "offlineSessionMaxLifespanEnabled": false,
-  "offlineSessionMaxLifespan": 5184000,
-  "accessCodeLifespan": 60,
-  "accessCodeLifespanUserAction": 300,
-  "accessCodeLifespanLogin": 1800,
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
-  "enabled": true,
-  "sslRequired": "external",
-  "registrationAllowed": false,
-  "registrationEmailAsUsername": false,
-  "rememberMe": false,
-  "verifyEmail": false,
-  "loginWithEmailAllowed": true,
-  "duplicateEmailsAllowed": false,
-  "resetPasswordAllowed": true,
-  "editUsernameAllowed": false,
   "bruteForceProtected": false,
-  "permanentLockout": false,
-  "maxFailureWaitSeconds": 900,
-  "minimumQuickLoginWaitSeconds": 60,
-  "waitIncrementSeconds": 60,
-  "quickLoginCheckMilliSeconds": 1000,
-  "maxDeltaTimeSeconds": 43200,
-  "failureFactor": 30,
-  "internationalizationEnabled": false,
-  "supportedLocales": [
-    "fr"
-  ],
-  "defaultLocale": "fr",
-  "keycloakVersion": "4.8.3.Final",
-  "roles": {
-    "realm": [
-      {
-        "name": "user",
-        "description": "User privileges",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "name": "admin",
-        "description": "Administrator privileges",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "name": "uma_authorization",
-        "description": "${role_uma_authorization}",
-        "composite": false,
-        "clientRole": false
-      }
-    ]
-  },
-  "groups": [],
-  "defaultRoles": [
-    "uma_authorization"
-  ],
-  "requiredCredentials": [
-    "password"
-  ],
-  "scopeMappings": [
+  "clients": [
     {
-      "client": "ipcore-web",
-      "roles": [
-        "user"
-      ]
+      "attributes": {
+        "display.on.consent.screen": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.assertion.signature": "false",
+        "saml.authnstatement": "false",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.onetimeuse.condition": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml_force_name_id_format": "false",
+        "tls.client.certificate.bound.access.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "baseUrl": "/",
+      "bearerOnly": false,
+      "clientId": "${env.KEYCLOAK_WEB_CLIENT_ID}",
+      "consentRequired": false,
+      "defaultClientScopes": [
+        "roles"
+      ],
+      "directAccessGrantsEnabled": true,
+      "enabled": true,
+      "frontchannelLogout": false,
+      "fullScopeAllowed": true,
+      "implicitFlowEnabled": false,
+      "nodeReRegistrationTimeout": -1,
+      "optionalClientScopes": [
+        "offline_access"
+      ],
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": [
+        "/*"
+      ],
+      "serviceAccountsEnabled": false,
+      "standardFlowEnabled": true,
+      "surrogateAuthRequired": false,
+      "webOrigins": []
+    },
+    {
+      "attributes": {
+        "display.on.consent.screen": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.assertion.signature": "false",
+        "saml.authnstatement": "false",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.onetimeuse.condition": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml_force_name_id_format": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "use.refresh.tokens": "true"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "authorizationServicesEnabled": true,
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "decisionStrategy": "AFFIRMATIVE",
+        "policies": [
+          {
+            "name": "Desk owner",
+            "type": "js",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "code": "var identity = $evaluation.getContext().getIdentity();\nvar resource = $evaluation.getPermission().getResource();\n\n// Straightforward test, since resource and realm role share the same name\nif (identity.hasRealmRole(resource.getName())) {\n    $evaluation.grant();\n}"
+            }
+          },
+          {
+            "name": "Desk access",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "defaultResourceType": "urn:ipcore:resources:desk",
+              "applyPolicies": "[\"Desk owner\"]"
+            }
+          }
+        ],
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [],
+        "scopes": []
+      },
+      "baseUrl": "/api",
+      "bearerOnly": true,
+      "clientId": "${env.KEYCLOAK_CLIENT_ID}",
+      "consentRequired": false,
+      "defaultClientScopes": [
+        "roles"
+      ],
+      "directAccessGrantsEnabled": true,
+      "enabled": true,
+      "frontchannelLogout": false,
+      "fullScopeAllowed": false,
+      "implicitFlowEnabled": false,
+      "nodeReRegistrationTimeout": -1,
+      "optionalClientScopes": [
+        "microprofile-jwt",
+        "offline_access",
+        "generic_role_mapper"
+      ],
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "redirectUris": [
+        "/*"
+      ],
+      "secret": "${env.KEYCLOAK_CLIENT_SECRET}",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "surrogateAuthRequired": false,
+      "webOrigins": []
     }
   ],
   "clientScopeMappings": {
     "account": [
       {
-        "client": "ipcore-web",
+        "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
         "roles": [
           "view-profile"
         ]
       }
     ]
   },
+  "clientScopes": [
+    {
+      "name": "microprofile-jwt",
+      "description": "Microprofile - JWT built-in scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "upn",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "upn",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "groups",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "roles",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        },
+        {
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "generic_role_mapper",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "generic_role_mapper_script",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-script-based-protocol-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "script": "/**\n * Available variables: \n * user - the current user\n * realm - the current realm\n * token - the current token\n * userSession - the current userSession\n * keycloakSession - the current keycloakSession\n */\n\n// Not proud of this one,\n// but we don't have any parameter but a request header\n// To pass an argument in here\nvar targetRole = keycloakSession\n    .getContext()\n    .getRequestHeaders()\n    .getHeaderString(\"X-Scope-Mapper-Filtering\");\n\n// TODO : Find a proper hasRole()\nvar roles = [];\nfor each (var role in user.getRoleMappings())\n    if (role.getName() === targetRole)\n        roles.push(role.getName());\n\nroles.push(\"default-roles-api\");\nroles.push(\"offline_access\");\nroles.push(\"uma_authorization\");\n\n// Overriding the realm_access part\ntoken.setOtherClaims(\"realm_access\", {\n    \"roles\": Java.to(roles, \"java.lang.String[]\"),\n});\n",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "offline_access",
+      "description": "OpenID Connect built-in scope: offline_access",
+      "protocol": "openid-connect",
+      "attributes": {
+        "consent.screen.text": "${offlineAccessScopeConsentText}",
+        "display.on.consent.screen": "true"
+      }
+    }
+  ],
+  "defaultLocale": "fr",
+  "defaultOptionalClientScopes": [
+    "microprofile-jwt",
+    "offline_access"
+  ],
+  "defaultRole": {
+    "clientRole": false,
+    "composite": true,
+    "containerId": "${env.KEYCLOAK_REALM}",
+    "description": "${role_default-roles}",
+    "name": "default-roles-${env.KEYCLOAK_REALM}"
+  },
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "enabled": true,
+  "failureFactor": 30,
+  "groups": [],
+  "id": "i-Parapheur",
+  "internationalizationEnabled": true,
+  "keycloakVersion": "15.0.2",
+  "loginTheme": "iparapheur",
+  "loginWithEmailAllowed": true,
+  "maxDeltaTimeSeconds": 43200,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "oauth2DeviceCodeLifespan": 600,
+  "oauth2DevicePollingInterval": 5,
+  "offlineSessionIdleTimeout": 2592000,
+  "offlineSessionMaxLifespan": 5184000,
+  "offlineSessionMaxLifespanEnabled": false,
+  "permanentLockout": false,
+  "quickLoginCheckMilliSeconds": 1000,
+  "realm": "${env.KEYCLOAK_REALM}",
+  "refreshTokenMaxReuse": 0,
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "rememberMe": false,
+  "requiredCredentials": [
+    "password"
+  ],
+  "resetPasswordAllowed": true,
+  "revokeRefreshToken": false,
+  "roles": {
+    "realm": [
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "description": "${role_offline-access}",
+        "name": "offline_access"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "auditeur"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "deskbox"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "adminInstance"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "adminDelegueEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "adminEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "adminGroupeEntite"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": false,
+        "containerId": "ipng",
+        "name": "exploitant"
+      },
+      {
+        "clientRole": false,
+        "composite": false,
+        "description": "${role_uma_authorization}",
+        "name": "uma_authorization"
+      },
+      {
+        "attributes": {},
+        "clientRole": false,
+        "composite": true,
+        "composites": {
+          "client": {
+            "account": [
+              "manage-account",
+              "view-profile"
+            ]
+          },
+          "realm": [
+            "offline_access",
+            "uma_authorization"
+          ]
+        },
+        "containerId": "${env.KEYCLOAK_REALM}",
+        "description": "${role_default-roles}",
+        "name": "default-roles-${env.KEYCLOAK_REALM}"
+      }
+    ]
+  },
+  "scopeMappings": [
+    {
+      "client": "${env.KEYCLOAK_WEB_CLIENT_ID}",
+      "roles": [
+        "user"
+      ]
+    },
+    {
+      "client": "${env.KEYCLOAK_CLIENT_ID}",
+      "roles": [
+        "default-roles-${env.KEYCLOAK_REALM}",
+        "offline_access",
+        "uma_authorization"
+      ]
+    }
+  ],
+  "smtpServer": {},
+  "sslRequired": "external",
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionIdleTimeoutRememberMe": 0,
+  "ssoSessionMaxLifespan": 36000,
+  "ssoSessionMaxLifespanRememberMe": 0,
+  "supportedLocales": [
+    "fr"
+  ],
   "users": [
     {
-      "username": "rest-admin",
+      "clientRoles": {
+        "${env.KEYCLOAK_CLIENT_ID}": [
+          "uma_protection"
+        ]
+      },
+      "disableableCredentialTypes": [],
+      "emailVerified": false,
       "enabled": true,
-      "email": "rest-admin@example",
-      "firstName": "Rest",
-      "lastName": "Admin",
+      "groups": [],
+      "realmRoles": [
+        "default-roles-${env.KEYCLOAK_REALM}"
+      ],
+      "requiredActions": [],
+      "serviceAccountClientId": "${env.KEYCLOAK_CLIENT_ID}",
+      "username": "service-account-${env.KEYCLOAK_CLIENT_ID}"
+    },
+    {
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
+        ],
+        "realm-management": [
+          "manage-authorization",
+          "manage-realm",
+          "manage-clients",
+          "manage-users",
+          "manage-clients",
+          "view-clients"
+        ]
+      },
       "credentials": [
         {
           "type": "password",
           "value": "admin"
         }
       ],
+      "email": "rest-admin@dom.local",
+      "enabled": true,
+      "firstName": "Rest",
+      "lastName": "Admin",
       "realmRoles": [
         "admin",
         "user"
       ],
-      "clientRoles": {
-        "realm-management": [
-          "manage-users",
-          "manage-realm"
-        ],
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
+      "username": "rest-admin"
     },
     {
-      "username": "user",
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
+        ],
+        "realm-management": [
+          "manage-authorization",
+          "manage-realm",
+          "manage-clients",
+          "manage-users",
+          "manage-clients",
+          "view-clients"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin"
+        }
+      ],
+      "email": "soapui@dom.local",
       "enabled": true,
-      "email": "sample-user@example",
-      "firstName": "Sample",
-      "lastName": "User",
+      "firstName": "Soap",
+      "lastName": "Ui",
+      "realmRoles": [
+        "admin",
+        "user"
+      ],
+      "username": "soapui"
+    },
+    {
+      "clientRoles": {
+        "account": [
+          "manage-account",
+          "view-profile"
+        ]
+      },
       "credentials": [
         {
           "type": "password",
           "value": "password"
         }
       ],
+      "email": "sample-user@dom.local",
+      "enabled": true,
+      "firstName": "Sample",
+      "lastName": "User",
       "realmRoles": [
-        "user"
+        "user",
+        "admin"
       ],
-      "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
-        ]
-      }
+      "username": "user"
     }
   ],
-  "clients": [
-    {
-      "clientId": "ipcore-api",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [],
-      "notBefore": 0,
-      "bearerOnly": true,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": false,
-      "frontchannelLogout": false,
-      "protocol": "openid-connect",
-      "attributes": {
-        "saml.assertion.signature": "false",
-        "saml.force.post.binding": "false",
-        "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
-        "saml.server.signature": "false",
-        "saml.server.signature.keyinfo.ext": "false",
-        "exclude.session.state.from.auth.response": "false",
-        "saml_force_name_id_format": "false",
-        "saml.client.signature": "false",
-        "tls.client.certificate.bound.access.tokens": "false",
-        "saml.authnstatement": "false",
-        "display.on.consent.screen": "false",
-        "saml.onetimeuse.condition": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
-    },
-    {
-      "clientId": "ipcore-web",
-      "baseUrl": "/",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
-      "frontchannelLogout": false,
-      "protocol": "openid-connect",
-      "attributes": {
-        "saml.assertion.signature": "false",
-        "saml.force.post.binding": "false",
-        "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
-        "saml.server.signature": "false",
-        "saml.server.signature.keyinfo.ext": "false",
-        "exclude.session.state.from.auth.response": "false",
-        "saml_force_name_id_format": "false",
-        "saml.client.signature": "false",
-        "tls.client.certificate.bound.access.tokens": "false",
-        "saml.authnstatement": "false",
-        "display.on.consent.screen": "false",
-        "saml.onetimeuse.condition": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "web-origins",
-        "role_list",
-        "profile",
-        "roles",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
-    }
-  ]
+  "verifyEmail": false,
+  "waitIncrementSeconds": 60
 }

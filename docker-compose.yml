@@ -1,5 +1,6 @@
+#
 # i-Parapheur
-# Copyright (C) 2019-2020 Libriciel-SCOP
+# Copyright (C) 2019-2021 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -13,6 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 
 # ========================================================================
 
@@ -30,27 +32,65 @@
 version: '2.4'
 
 
+volumes:
+  matomo_internal_files: { }
+
+
 services:
 
 
   nginx:
-    image: nginx:1.16.1-alpine
-    restart: always
+    image: nginx:1.19.9-alpine
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
+    environment:
+      - APPLICATION_HOST
+      - KEYCLOAK_HOST
     volumes:
-      - ./src/main/resources/nginx/iparapheur.conf:/etc/nginx/conf.d/iparapheur.conf
-      - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
+      - matomo_internal_files:/var/www/html
+      - ./data/matomo/config/:/var/www/html/config/
+      - ./data/matomo/plugins/:/var/www/html/plugins/
+      - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
+      - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
+    links:
+      - matomo
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:0.3
-    restart: always
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.3
+    restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 1024M
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - CONTENT_HOST
+      - CONTENT_PORT
+      - MATOMO_TOKEN
+      - STATS_SERVICE_PROTOCOL
+      - VAULT_UNSEAL_KEY
+      - VAULT_TOKEN
+      - APPLICATION_PROTOCOL
+      - APPLICATION_HOST
+      - KEYCLOAK_AUTH_PROTOCOL
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - KEYCLOAK_DB_DATABASE
+      - KEYCLOAK_DB_USER
+      - KEYCLOAK_DB_PASSWORD
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+      - WORKFLOW_HOST
+      - WORKFLOW_PORT
+      - SECRET_PROTOCOL
+      - SECRET_HOST
+      - SECRET_PORT
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,35 +99,40 @@ services:
       workflow:
         condition: service_started
     volumes:
-      - ./src/main/resources/core/application.yml:/application.yml
       - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
-      - nginx:iparapheur.dom.local
+      - nginx:${APPLICATION_HOST}
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:0.1
-    restart: always
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.2.0
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
+    environment:
+      - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
+      - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
+    volumes:
+      - ${RGPD_DATA}:/usr/share/nginx/html/assets/rgpd.json
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:0.2
-    restart: always
+    image: registry.libriciel.fr/public/signature/workflow:1.0.1
+    restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 768M
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
-      - ./src/main/resources/workflow/application.yml:/application.yml
       - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:1.2.11
-    restart: always
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:1.4.0
+    restart: unless-stopped
     tty: true
     mem_limit: 256M
     volumes:
@@ -95,54 +140,97 @@ services:
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:1.10.1
-    restart: always
+    image: registry.libriciel.fr/public/signature/libersign:1.11.4
+    restart: unless-stopped
     tty: true
     mem_limit: 64M
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:2.1.0
-    restart: always
+    image: registry.libriciel.fr/public/signature/crypto:2.3.1
+    restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     volumes:
-      - ./src/main/resources/crypto/application.yml:/application.yml
       - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
-    restart: always
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.5.0
+    restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
+
+
+  pastell-connector:
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.2.0
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST:redis
+      - REDIS_PORT:6379
+
+
+  external-signature-connector:
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.0
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    volumes:
+      - ./src/main/resources/external-signature-connector/application.properties:/application.properties
+
+
+  legacy-bridge:
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.0
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    depends_on:
+      - core
+    external_links:
+      - nginx:${APPLICATION_HOST}
+    environment:
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - APPLICATION_HOST
+      - APPLICATION_PROTOCOL
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_WEB_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+    volumes:
+      - ./src/main/resources/legacy-bridge/application.yml:/application.yml
 
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 1536M
     environment:
       # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+      # TODO: -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.secureComms=none -Dsolr.base.url=/solr -Dindex.subsystem.name=solr6
       JAVA_OPTS: "
                   -XX:+UseContainerSupport
                   -Ddeployment.method=DOCKER_COMPOSE
 
-                  -Ddb.driver=org.postgresql.Driver
-                  -Ddb.username=alfresco
-                  -Ddb.password=alfresco
-                  -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
-                  -Dalfresco.host=alfresco
-                  -Dalfresco.port=8080
+          -Ddb.driver=org.postgresql.Driver
+          -Ddb.username=alfresco
+          -Ddb.password=alfresco
+          -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
+          -Dalfresco.host=${CONTENT_HOST}
+          -Dalfresco.port=${CONTENT_PORT}
                   -Dalf.root=/var/lib/alfresco
 
                   -Dheartbeat.enabled=false
-                  -Dtransform.service.enabled=false
+          -Dtransform.service.enabled=false
                   -Dlocal.transform.service.enabled=false
                   -Dlegacy.transform.service.enabled=false
                   -Dmessaging.subsystem.autoStart=false
-                  "
+                  -Dsystem.workflow.engine.activiti.enabled=false
+          "
     depends_on:
       postgres:
         condition: service_healthy
@@ -150,8 +238,29 @@ services:
       - ./data/alfresco:/usr/local/tomcat/alf_data
       # DOC: file needs to end in -context.xml and to be in this location.
       # Details on (Deployment - App Server) -> https://docs.alfresco.com/6.2/references/dev-extension-points-content-model-define-and-deploy.html
-      - ./src/main/resources/content/custom-model.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model.xml
+      - ./src/main/resources/content/ip-custom-models.xml:/usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
       - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
+
+
+  #solr6:
+  #  image: alfresco/alfresco-search-services:2.0.1
+  #  mem_limit: 2g
+  #  depends_on:
+  #    - alfresco
+  #  environment:
+  #    # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
+  #    - SOLR_ALFRESCO_HOST=alfresco
+  #    - SOLR_ALFRESCO_PORT=8080
+  #    - SOLR_SOLR_HOST=solr6
+  #    - SOLR_SOLR_PORT=8983
+  #    - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
+  #    - ALFRESCO_SECURE_COMMS=none
+  #    - SOLR_HEAP=1g
+  #    - "SOLR_JAVA_MEM=-Xms1024m -Xmx1024m"
+  #  volumes:
+  #    # https://hub.alfresco.com/t5/alfresco-content-services-blog/managing-alfresco-search-services-1-4-storage/ba-p/300972
+  #    - ./data/solr/contentstore:/opt/alfresco-search-services/contentstore
+  #    - ./data/solr/data:/opt/alfresco-search-services/data
 
 
   #libreoffice:
@@ -166,16 +275,16 @@ services:
 
   postgres:
     image: postgres:10.1
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 512M
     environment:
-      - POSTGRES_PASSWORD=libriciel2k18
-      - POSTGRES_USER=root
-      - DB_TO_CREATE=alfresco,flowable,keycloak,ipcore
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz,pastellconnector
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -184,56 +293,124 @@ services:
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
 
 
+  redis:
+    image: redis:6.0.9-alpine
+    restart: unless-stopped
+    tty: true
+    mem_limit: 128M
+    volumes:
+      - ./data/redis:/data
+
+
   keycloak:
-    image: jboss/keycloak:9.0.0
-    restart: always
+    image: jboss/keycloak:15.0.2
+    restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
-    mem_limit: 512M
+    mem_limit: 1536M
     environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_WEB_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+      - KEYCLOAK_USER
+      - KEYCLOAK_PASSWORD
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloak
-      - DB_PASSWORD=keycloak
-      - KEYCLOAK_IMPORT=/tmp/keycloak.json
+      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
+      - DB_USER=${KEYCLOAK_DB_USER}
+      - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      # This file will be generated from the given JSON, by the script file
+      - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
+      - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_FRONTEND_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
     volumes:
+      - ./src/main/resources/keycloak/startup-scripts:/opt/jboss/startup-scripts
       - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
+      # Resources to retrieve from iparapheur-theme pipeline artifact,
+      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
+      - ./src/main/resources/keycloak/themes/libriciel:/opt/jboss/keycloak/themes/libriciel
+      - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
       # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
-      # The problematic line was just commented out
-      # TODO : Remove it when keycloak 9.0.2 will be released.
+      #     WARNING : The issue was closed, but the issue was not actually fixed, to date.
+      #     The bug is easy to reproduce : On the first launch, the KEYCLOAK_USER/KEYCLOAK_PASSWORD variables will create the default user.
+      #     On the second launch, Keycloak will crash, because the user already exist. The problematic line (l.2) was just commented out.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 
 
   matomo:
-    image: matomo:3.13.0-apache
-    restart: always
+    image: matomo:4.2.1-fpm
+    restart: unless-stopped
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
     # We're assuming a generous 1G for the service, and a little bit for the DB.
-    mem_limit:  1024M
+    mem_limit: 1024M
+    volumes:
+      - matomo_internal_files:/var/www/html
+      - ./data/matomo/config/:/var/www/html/config/
+      - ./data/matomo/plugins/:/var/www/html/plugins/
     depends_on:
       - matomo-db
-    volumes:
-      - ./src/main/resources/matomo/config/:/var/www/html/config/
-      - ./src/main/resources/matomo/plugins/CustomDimensions:/var/www/html/plugins/CustomDimensions
     environment:
       - MATOMO_DATABASE_HOST=matomo-db
-      - MATOMO_DATABASE_USERNAME=matomo
-      - MATOMO_DATABASE_PASSWORD=matomo
-      - MATOMO_DATABASE_DBNAME=matomo
+      - MATOMO_DATABASE_USERNAME=${MATOMO_DB_USER}
+      - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD}
+      - MATOMO_DATABASE_DBNAME=${MATOMO_DB_DATABASE}
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   matomo-db:
     image: mariadb:10.3
-    restart: always
+    restart: unless-stopped
     tty: true
     mem_limit: 256M
     volumes:
       - ./data/matomo-db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=libriciel2k18
-      - MYSQL_DATABASE=matomo
-      - MYSQL_USER=matomo
-      - MYSQL_PASSWORD=matomo
+      - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
+      - MYSQL_USER=${MATOMO_DB_USER}
+      - MYSQL_PASSWORD=${MATOMO_DB_PASSWORD}
+
+
+  vault:
+    image: vault:1.6.2
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
+    environment:
+      - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+      - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+    cap_add:
+      - IPC_LOCK
+    command: vault server -config=/vault/config/vault.json
+    volumes:
+      - ./src/main/resources/vault/config:/vault/config
+      - ./src/main/resources/vault/policies:/vault/policies
+      - ./data/vault/data:/vault/data
+
+
+  prometheus:
+    image: prom/prometheus:v2.31.1
+    mem_limit: 256M
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    volumes:
+      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
+      - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+
+  filetransfer:
+    image: dutchcoders/transfer.sh:v1.2.4
+    mem_limit: 256M
+    restart: unless-stopped
+    command: --provider local --basedir /data/ --temp-path /tmp/
+    volumes:
+      - ./data/transfer/data:/data/
+      - ./data/transfer/tmp:/tmp/
+    environment:
+      - RANDOM_TOKEN_LENGTH=0

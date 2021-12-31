@@ -1,0 +1,130 @@
+#
+# i-Parapheur
+# Copyright (C) 2019-2021 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+server {
+
+  listen 443 ssl;
+  server_name ${APPLICATION_HOST};
+
+  ssl_certificate /etc/nginx/ssl/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+
+  client_max_body_size 2000M;
+  large_client_header_buffers 4 32k;
+
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_http_version 1.1;
+
+  location /auth {
+    proxy_pass http://keycloak:8080/auth;
+  }
+
+  location /api {
+    proxy_pass http://core:8080/api;
+  }
+
+  location /crypto {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_crypto crypto;
+    proxy_pass http://$upstream_crypto:8080/crypto;
+  }
+
+  location /workflow {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_workflow workflow;
+    proxy_pass http://$upstream_workflow:8080/crypto;
+  }
+
+  location /pastell-connector {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_pastell_connector pastell-connector;
+    proxy_pass http://$upstream_pastell_connector:8080/pastell-connector;
+  }
+
+  location /ws-iparapheur {
+    proxy_pass http://legacy-bridge:8080/ws-iparapheur;
+  }
+
+  location /pdf-stamp {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_pdf_stamp pdf-stamp;
+    proxy_pass http://$upstream_pdf_stamp:8080/pdf-stamp;
+  }
+
+  location /libersign {
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_libersign libersign;
+    proxy_pass http://$upstream_libersign:80/libersign;
+  }
+
+  location = /matomo/index.php {
+    include             fastcgi_params;
+    fastcgi_param       SCRIPT_FILENAME     /var/www/html/index.php;
+    fastcgi_pass        matomo:9000;
+  }
+
+  location = /matomo/piwik.php {
+    include             fastcgi_params;
+    fastcgi_param       SCRIPT_FILENAME     /var/www/html/piwik.php;
+    fastcgi_pass        matomo:9000;
+  }
+
+  location = /matomo/matomo.php {
+    include             fastcgi_params;
+    fastcgi_param       SCRIPT_FILENAME     /var/www/html/matomo.php;
+    fastcgi_pass        matomo:9000;
+  }
+
+  # Matomo: serving static files (don't put trailing slash on it)
+  location /matomo {
+    index               index.php;
+    alias               /var/www/html;
+    try_files           $uri $uri/ =404;
+  }
+
+  location /bl-xemwebviewer {
+      proxy_intercept_errors off;
+      proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
+  }
+
+#  location /ipng {
+#    proxy_set_header X-Forwarded-Host $host:$server_port;
+#    proxy_set_header X-Forwarded-Server $host;
+#    proxy_pass http://ipng-business:8081/ipng;
+#  }
+
+  location /filetransfer/ {
+    proxy_pass http://filetransfer:8080/;
+  }
+
+  # location /libersign {
+  #   proxy_pass http://libersign/;
+  # }
+
+  location ^~ / {
+    proxy_pass http://web:80/;
+  }
+
+  location ^~ /sockjs-node {
+    proxy_pass http://web:80/sockjs-node;
+  }
+
+}
