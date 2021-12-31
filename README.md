@@ -144,10 +144,16 @@ Any needed modification should be set in an additional `yml` file, that will ove
 docker-compose -f docker-compose.yml -f docker-compose.override-instance.yml up -d
 ```
 
-### Custom truststore
+### Defining a custom truststore
 
-On a custom CA, some Keycloak calls will be broken.  
-We need to create a specific truststore to allow the connexion, and add the truststore to the `override-instance.yml` file :
+On a custom CA-covered URL, some Keycloak calls will be broken.  
+We need to create a specific truststore to allow the connexion:
+
+```bash
+keytool -import -file data/nginx/ssl/fullchain.pem -alias iparapheur.dom.local -keystore truststore.jks
+```
+
+And link it to some specific elements, through the `override-instance.yml` file :
 
 ```yml
 version: '2.4'
