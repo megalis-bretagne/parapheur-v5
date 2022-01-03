@@ -1,7 +1,9 @@
 {
-  "path":"#string",
   "error":"##string",
+  "exception":"##string",
   "message":"#string",
+  "path":"#string",
+  "status": "#number",
   "timestamp":"#string",
-  "status": "#number"
+  "trace":"##string"
 }

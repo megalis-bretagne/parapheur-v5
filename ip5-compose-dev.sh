@@ -25,7 +25,7 @@ IGNORE_MATOMO_VERSION="0"
 export_dot_env() {
     set -o allexport
     # @see https://stackoverflow.com/a/29327295
-    eval "$(sed "s/\(<\|>\)//g" .env)"
+    eval "$(sed "s/\(<\|>\)//g" .env | sed "s/=https$/=http/g")"
     set +o allexport
 }
 

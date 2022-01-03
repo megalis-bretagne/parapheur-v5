@@ -40,7 +40,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |
