@@ -43,10 +43,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             | ADMIN            | cnoir        | a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |
 
     @searching
     Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
