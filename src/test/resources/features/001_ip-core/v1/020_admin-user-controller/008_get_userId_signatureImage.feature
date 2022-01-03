@@ -68,10 +68,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         Examples:
             | role             | username     | password | email                  | status |
             | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |
-            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |
-            |                  |              |          | ltransparent@dom.local | 401    |
+            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 404    |
+            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 404    |
+            |                  |              |          | ltransparent@dom.local | 404    |
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from a non-existing tenant', status)}
@@ -87,7 +87,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         Examples:
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |
