@@ -35,10 +35,10 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
     mem_limit: 512M
     memswap_limit: 512m
-    volumes:
-      - ./src/main/resources/core/application-dev.yml:/application.yml
     ports:
       - "8080:8080"
 
