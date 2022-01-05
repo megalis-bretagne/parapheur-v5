@@ -47,6 +47,8 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     mem_limit: 64m
     memswap_limit: 64m
+    environment:
+      - VERSION=5.0.0-beta01-DEV
     ports:
       - "4200:80"
 
