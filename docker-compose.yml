@@ -126,8 +126,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
   pes-viewer:
