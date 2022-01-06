@@ -42,9 +42,10 @@ stages:
 
 
 .packaging: &packaging
-  name: "$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
+  name: "i-Parapheur-$CI_COMMIT_REF_NAME"
   paths:
     - docker-compose.yml
+    # TODO : Check every needed thing for IPNG
     - docker-compose.ipng.yml
     - .env.dist
     - LICENSE.md
