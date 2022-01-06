@@ -259,7 +259,7 @@ Feature: Basic setup
 """
 		When method POST
 		Then status 201
-		# @fixme: cannot import certificate (UI/API) @20220103-16:00:00
+		# @fixme: cannot get seal certificates list (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-core/-/issues/164)
 		Examples:
 			| tenant         | type        | name                  | description                   | workflow                        | sealCertificate                                    |
 #			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    | Christian Buffin - Default tenant - Cachet serveur |

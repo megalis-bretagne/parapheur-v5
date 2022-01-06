@@ -1,0 +1,24 @@
+@ignore
+Feature:
+    Scenario:
+        Given url baseUrl
+            And path path
+            And header Accept = 'application/json'
+            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
+
+            # Monodoc PDF
+#            And multipart file mainFiles = {  read: '#(mainFilePath)' }
+#            And multipart files { mainFiles: [ { read: 'classpath:files/dummy.pdf' }, { read: 'classpath:files/helloworld.pdf' } ] }
+
+            # Monodoc PDF avec annexe
+#            And multipart file mainFiles = { read: 'classpath:files/dummy.pdf', 'contentType': 'application/pdf', 'fileName': 'dummy.pdf' }
+#            And multipart file annexeFiles = { read: 'classpath:files/helloworld.pdf', 'contentType': 'application/pdf', 'fileName': 'helloworld.pdf' }
+
+            # Multidoc PDF
+#            And multipart file mainFiles = { read: 'classpath:files/dummy.pdf', 'contentType': 'application/pdf', 'fileName': 'dummy.pdf' }
+#            And multipart file mainFiles = { read: 'classpath:files/helloworld.pdf', 'contentType': 'application/pdf', 'fileName': 'helloworld.pdf' }
+
+            # Monodoc XML
+#            And multipart file mainFiles = { read: 'classpath:files/PESALR1_unsigned.xml', 'contentType': 'application/xml', 'fileName': 'PESALR1_unsigned.xml' }
+      When method POST
+      Then status 201
