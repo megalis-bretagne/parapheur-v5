@@ -49,7 +49,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 404    |
 
     @searching
-    Scenario Outline: ${scenario.title.searching('TENANT_ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
+    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
