@@ -27,7 +27,7 @@ stages:
 # <editor-fold desc="Test">
 
 
-# FIXME : That would be nice to perform the pull, to check the images existences, at least
+# FIXME : That would be nice to perform the pull, to check the images existence, at least
 # pull:
 #  stage: test
 #  script:
