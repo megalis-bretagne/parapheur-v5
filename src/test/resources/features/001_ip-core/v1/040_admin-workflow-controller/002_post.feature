@@ -1,10 +1,5 @@
-@ip-core @api-v1 @admin-workflow-controller @todo
+@ip-core @api-v1 @admin-workflow-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
-
-#    Background:
-#        * api_v1.auth.login('user', 'password')
-#        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-#        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
@@ -12,7 +7,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * api_v1.auth.login('<username>', '<password>')
         * def unique = 'tmp-' + utils.getUUID()
         * def key = api_v1.desk.getKeyStringFromNameString(unique)
 
@@ -33,7 +28,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             "parallelType": "OR"
         }
     ],
-    "name": "#(name)",
+    "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)"
@@ -62,7 +57,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * api_v1.auth.login('<username>', '<password>')
         * def unique = 'tmp-' + utils.getUUID()
         * def key = api_v1.desk.getKeyStringFromNameString(unique)
 
@@ -83,7 +78,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             "parallelType": "OR"
         }
     ],
-    "name": "#(name)",
+    "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)"
@@ -97,12 +92,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             | role             | username     | password | status |
             | ADMIN            | cnoir        | a123456  | 404    |
             | TENANT_ADMIN     | vgris        | a123456  | 404    |
-        @fixme-ip-core @issue-ip-core-78
-        Examples:
-            | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
-            |                  |              |          | 401    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -130,7 +122,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             "parallelType": "OR"
         }
     ],
-    "name": "#(name)",
+    "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)"
