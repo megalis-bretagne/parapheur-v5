@@ -37,8 +37,8 @@ services:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 1G
+    memswap_limit: 1G
     ports:
       - "8080:8080"
 
@@ -55,8 +55,8 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 1G
+    memswap_limit: 1G
     ports:
       - "10080:8080"
 
