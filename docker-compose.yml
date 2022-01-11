@@ -105,7 +105,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.3.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -135,7 +135,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/pes-viewer:1.4.0
     restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     volumes:
       - ./data/pes-viewer/pesPJ:/pesPJ/
 
