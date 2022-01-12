@@ -48,7 +48,7 @@ services:
     mem_limit: 64m
     memswap_limit: 64m
     environment:
-      - VERSION=5.0.0-beta01-DEV
+      - VERSION=5.0.0-beta02-DEV
     ports:
       - "4200:80"
 
