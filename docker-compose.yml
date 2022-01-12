@@ -148,12 +148,10 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:2.3.1
+    image: registry.libriciel.fr/public/signature/crypto:2.3.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
-    volumes:
-      - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
   pdf-stamp:
