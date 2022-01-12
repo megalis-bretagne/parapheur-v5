@@ -57,6 +57,8 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
     mem_limit: 1G
     memswap_limit: 1G
+    volumes:
+      - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
     ports:
       - "10080:8080"
 
