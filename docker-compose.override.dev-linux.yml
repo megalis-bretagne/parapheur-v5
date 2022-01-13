@@ -35,10 +35,10 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
-    mem_limit: 512M
-    memswap_limit: 512m
-    volumes:
-      - ./src/main/resources/core/application-dev.yml:/application.yml
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
+    mem_limit: 1G
+    memswap_limit: 1G
     ports:
       - "8080:8080"
 
@@ -47,14 +47,18 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     mem_limit: 64m
     memswap_limit: 64m
+    environment:
+      - VERSION=5.0.0-beta02-DEV
     ports:
       - "4200:80"
 
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
-    mem_limit: 512M
-    memswap_limit: 512m
+    mem_limit: 1G
+    memswap_limit: 1G
+    volumes:
+      - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
     ports:
       - "10080:8080"
 
