@@ -63,5 +63,5 @@ Feature: Paramétrage métier SOLUDOC
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
 
         Examples:
-            | tenant  | email           | path                                  |
-            | SOLUDOC | ibleu@dom.local | classpath:files/signature - ibleu.png |
+            | tenant  | email           | path                                         |
+            | SOLUDOC | ibleu@dom.local | classpath:files/images/signature - ibleu.png |

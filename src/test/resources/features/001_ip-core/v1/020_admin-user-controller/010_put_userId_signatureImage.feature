@@ -11,7 +11,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/signature - ltransparent.png', 'contentType': 'image/png' }
+            And multipart file file = { read: 'classpath:files/images/signature - ltransparent.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
             And if (<status> === 200) utils.assert("response == ''")
@@ -35,7 +35,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
+            And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
             And utils.assert("$ == schemas.error")
@@ -62,7 +62,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
+            And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
             And utils.assert("$ == schemas.error")
@@ -85,7 +85,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
+            And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
             And utils.assert("$ == schemas.error")
@@ -116,10 +116,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
-            | status | email                  | path!                                          | contentType          | data                                        |
-            | 200    | ltransparent@dom.local | 'classpath:files/signature - ltransparent.png' | image/png            | a PNG file                                  |
-            | 404    |                        | 'classpath:files/signature - stranslucide.png' | image/png            | a PNG file while none is already configured |
+            | status | email                  | path!                                                 | contentType | data                                        |
+            | 200    | ltransparent@dom.local | 'classpath:files/images/signature - ltransparent.png' | image/png   | a PNG file                                  |
+            | 404    |                        | 'classpath:files/images/signature - stranslucide.png' | image/png   | a PNG file while none is already configured |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
-            | status | email                  | path!                                          | contentType          | data                                        |
-            | 400    | ltransparent@dom.local | 'classpath:files/certificate.p12'              | application/x-pkcs12 | a P12 file                                  |
+            | status | email                  | path!                             | contentType          | data       |
+            | 400    | ltransparent@dom.local | 'classpath:files/certificate.p12' | application/x-pkcs12 | a P12 file |
