@@ -37,8 +37,8 @@ services:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
-    mem_limit: 1G
-    memswap_limit: 1G
+    mem_limit: 2G
+    memswap_limit: 2G
     ports:
       - "8080:8080"
 
