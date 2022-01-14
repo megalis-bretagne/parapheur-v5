@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.4
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -106,12 +106,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.3.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
+      - VERSION=5.0.0-beta02
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -120,7 +121,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.0.1
+    image: registry.libriciel.fr/public/signature/workflow:1.1.0
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -135,7 +136,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/pes-viewer:1.4.0
     restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     volumes:
       - ./data/pes-viewer/pesPJ:/pesPJ/
 
@@ -148,12 +149,10 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:2.3.1
+    image: registry.libriciel.fr/public/signature/crypto:2.3.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
-    volumes:
-      - ./src/main/resources/crypto/sentry.properties:/sentry.properties
 
 
   pdf-stamp:
