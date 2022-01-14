@@ -22,14 +22,14 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And if (<status> !== 200) utils.assert("$ == schemas.error")
 
         Examples:
-            | role             | username     | password | email                  | status | path                                         |
-            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | classpath:files/signature - ltransparent.png |
-            | ADMIN            | cnoir        | a123456  | cnoir@dom.local        | 404    |                                              |
-            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 200    | classpath:files/signature - ltransparent.png |
-            | TENANT_ADMIN     | vgris        | a123456  | cnoir@dom.local        | 404    |                                              |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                                              |
-            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |                                              |
-            |                  |              |          | ltransparent@dom.local | 401    |                                              |
+            | role             | username     | password | email                  | status | path                                                |
+            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
+            | ADMIN            | cnoir        | a123456  | cnoir@dom.local        | 404    |                                                     |
+            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
+            | TENANT_ADMIN     | vgris        | a123456  | cnoir@dom.local        | 404    |                                                     |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                                                     |
+            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |                                                     |
+            |                  |              |          | ltransparent@dom.local | 401    |                                                     |
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from an existing tenant', status)}

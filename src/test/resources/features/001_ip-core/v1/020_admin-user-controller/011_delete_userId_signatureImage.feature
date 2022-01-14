@@ -11,7 +11,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
             And header Accept = 'application/json'
-            And multipart file file = { read: 'classpath:files/signature - stranslucide.png', 'contentType': 'image/png' }
+            And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method POST
         Then status 201
 

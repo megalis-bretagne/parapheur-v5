@@ -99,6 +99,6 @@ Feature: Basic setup
 		* call read('classpath:lib/setup/user.signatureImage.create.feature') __row
 
 		Examples:
-			| tenant         | email                  | path                                         |
-			| Default tenant | ltransparent@dom.local | classpath:files/signature - ltransparent.png |
-			| Default tenant | stranslucide@dom.local | classpath:files/signature - stranslucide.png |
+			| tenant         | email                  | path                                                |
+			| Default tenant | ltransparent@dom.local | classpath:files/images/signature - ltransparent.png |
+			| Default tenant | stranslucide@dom.local | classpath:files/images/signature - stranslucide.png |
