@@ -85,10 +85,9 @@ Feature: Basic setup
 	Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
 		* call read('classpath:lib/setup/subtype.create.feature') __row
 
-		# @fixme: cannot get seal certificates list (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-core/-/issues/164)
 		Examples:
 			| tenant         | type        | name                  | description                   | workflow                        | sealCertificate!                                     |
-#			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    | 'Christian Buffin - Default tenant - Cachet serveur' |
+			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    | 'Christian Buffin - Default tenant - Cachet serveur' |
 			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe | ''                                                   |
 			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         | ''                                                   |
 			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         | ''                                                   |
