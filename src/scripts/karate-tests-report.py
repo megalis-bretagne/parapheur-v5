@@ -25,7 +25,7 @@ import urllib.request
 def get_parser() -> argparse.ArgumentParser:
     defaults = {
         'path': os.path.dirname(os.path.dirname(os.path.dirname(__file__))) + '/build/karate-reports/',
-        'url': 'http://iparapheur.dom.local/api/v2/api-docs'
+        'url': 'http://iparapheur.dom.local/api/v3/api-docs'
     }
 
     # @todo: 3 statuses + meaning
@@ -65,12 +65,20 @@ def get_api_dict(url: str) -> dict:
         print(f"Error: could not reach URL {url}", file=sys.stderr)
         sys.exit(1)
 
+    regexp = re.compile(r'^https{0,1}://([^/]+)(/.+)$')
+    matches = regexp.match(data['servers'][0]['url'])
+    if matches != None:
+        prefix = matches[2]
+    else:
+        prefix = ''
+
     for path in sorted(data['paths'].keys()):
         for verb in sorted(data['paths'][path].keys(), key=functools.cmp_to_key(http_verbs_cmp)):
-            results[f"{verb.upper()} {path}"] = {
+            keys = data['paths'][path][verb].keys()
+            results[f"{verb.upper()} {prefix}{path}"] = {
                 # @todo: data['paths'][path][verb]['responses'].keys()
                 'operationId': data['paths'][path][verb]['operationId'],
-                'summary': data['paths'][path][verb]['summary'],
+                'summary': data['paths'][path][verb]['summary'] if 'summary' in keys else '',
                 'total': 0,
                 'passed': 0,
                 'failed': 0
