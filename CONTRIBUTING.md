@@ -11,14 +11,14 @@ This project contains a main `docker-compose.yml` file, that should start an i-P
 
 ## URLs
 
-| URL                                           | Description |
-| ---                                           | ---         |
-| http://iparapheur.dom.local/                  | IP web UI   |
-| http://iparapheur.dom.local:9009/             | Alfresco    |
-| http://iparapheur.dom.local:9090/             | Keycloak    |
-| http://iparapheur.dom.local/matomo/           | Matomo      |
-| http://iparapheur.dom.local/api/swagger-ui/#/ | Swagger UI  |
-| http://iparapheur.dom.local:8200/             | Vault       |
+| URL                                                   | Description |
+| ---                                                   | ---         |
+| http://iparapheur.dom.local/                          | IP web UI   |
+| http://iparapheur.dom.local:9009/                     | Alfresco    |
+| http://iparapheur.dom.local:9090/                     | Keycloak    |
+| http://iparapheur.dom.local/matomo/                   | Matomo      |
+| http://iparapheur.dom.local/api/swagger-ui/index.html | Swagger UI  |
+| http://iparapheur.dom.local:8200/                     | Vault       |
 
 ## Windows 10 VirtualBox redirect
 
