@@ -191,6 +191,27 @@ function fn(config) {
         // @todo: check if it really does not exist
         return '00000000-0000-0000-0000-000000000000';
     };
+    config.api_v1.entity['getListByPartialName'] = function (partialName) {
+        var result = [],
+            response = karate
+                .http(baseUrl)
+                .path('/api/v1/admin/tenant/')
+                .param('asc', true)
+                .param('pageSize', 100)
+                .param('searchTerm', partialName)
+                .param('sortBy', 'NAME')
+                .header('Accept', 'application/json')
+                .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+                .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting desk id by its tenantId and deskId');
+        }
+
+        response.body.data.forEach(tenant => result.push(tenant));
+
+        return result;
+    };
 
     /**
      * user
