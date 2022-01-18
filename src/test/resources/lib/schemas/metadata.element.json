@@ -1,0 +1,8 @@
+{
+  "id": "#uuid",
+  "key": "#string",
+  "name": "#string",
+  "index": "##number",
+  "type": "#regex (BOOLEAN|DATE|FLOAT|INTEGER|TEXT|URL)",
+  "restrictedValues": "#[] #string"
+}
