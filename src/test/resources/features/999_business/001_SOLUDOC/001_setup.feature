@@ -15,24 +15,24 @@ Feature: Paramétrage métier SOLUDOC
 
         Examples:
             | tenant         | userName   | email                | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Default tenant | ibleu      | ibleu@dom.local      | Inès      | Bleu     | a123456  | NONE      | disabled                   |
-            | Default tenant | webservice | webservice@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | Default tenant | kmauve     | kmauve@dom.local     | Karima    | Mauve    | a123456  | NONE      | disabled                   |
+            | Default tenant | ws-soludoc | ws-soludoc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Associate user "${email}" with tenant "${tenant}"
         * call read('classpath:lib/setup/tenant.user.associate.feature') __row
 
         Examples:
             | email                | tenant  |
-            | ibleu@dom.local      | SOLUDOC |
-            | webservice@dom.local | SOLUDOC |
+            | kmauve@dom.local     | SOLUDOC |
+            | ws-soludoc@dom.local | SOLUDOC |
 
     Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
             | tenant  | name       | email                |
-            | SOLUDOC | Maire      | ibleu@dom.local      |
-            | SOLUDOC | WebService | webservice@dom.local |
+            | SOLUDOC | Maire      | kmauve@dom.local     |
+            | SOLUDOC | WebService | ws-soludoc@dom.local |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
@@ -63,5 +63,5 @@ Feature: Paramétrage métier SOLUDOC
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
 
         Examples:
-            | tenant  | email           | path                                         |
-            | SOLUDOC | ibleu@dom.local | classpath:files/images/signature - ibleu.png |
+            | tenant  | email            | path                                          |
+            | SOLUDOC | kmauve@dom.local | classpath:files/images/signature - kmauve.png |
