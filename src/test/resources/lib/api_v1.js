@@ -333,6 +333,9 @@ function fn(config) {
         'delegation': {
             'element': karate.read('classpath:lib/schemas/delegation.element.json'),
             'index': karate.read('classpath:lib/schemas/delegation.index.json')
+        },
+        'metadata': {
+            'element': karate.read('classpath:lib/schemas/metadata.element.json')
         }
     };
 
