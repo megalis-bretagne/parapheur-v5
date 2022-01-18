@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-user-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Create user's signature image)
 
+    Background:
+        * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/setup/tenant.delete.feature') list
+
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'create a signature image for an existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')

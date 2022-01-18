@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-tenant-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
+    Background:
+        * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/setup/tenant.delete.feature') list
+
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}
         * api_v1.auth.login('user', 'password')

@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-tenant-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certificates)
 
+    Background:
+        * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/setup/tenant.delete.feature') list
+
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'get the seal certificates list of an existing tenant', status)}
         * api_v1.auth.login('user', 'password')

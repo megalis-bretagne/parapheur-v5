@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-workflow-controller
 Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefinitions)
 
+    Background:
+        * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/setup/tenant.delete.feature') list
+
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'get the workflow definition list from an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
