@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-tenant-controller
 Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
+	Background:
+		* api_v1.auth.login('user', 'password')
+		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* call read('classpath:lib/setup/tenant.delete.feature') list
+
 	@permissions
 	Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
 		* api_v1.auth.login('user', 'password')

@@ -1,6 +1,11 @@
 @ip-core @api-v1 @admin-workflow-controller
 Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
 
+    Background:
+        * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/setup/tenant.delete.feature') list
+
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
