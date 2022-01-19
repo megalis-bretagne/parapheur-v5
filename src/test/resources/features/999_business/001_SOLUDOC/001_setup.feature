@@ -1,4 +1,4 @@
-@business-soludoc @setup-business @proposal
+@business @soludoc @setup-soludoc @proposal
 Feature: Paramétrage métier SOLUDOC
     Background:
         * api_v1.auth.login('user', 'password')

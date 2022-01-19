@@ -75,8 +75,11 @@ function fn(config) {
         return api_v1.desk.getIdByName(tenantId, unique);
     };
     config.api_v1.desk['draft'] = {};
-    config.api_v1.desk.draft['getPayloadMonodoc'] = function (params, max) {
+    config.api_v1.desk.draft['getPayloadMonodoc'] = function (params, count, extra, start) {
+        start = start === undefined ? 1 : start;
+
         var result = [],
+            max = (count + start - 1),
             tenantId = api_v1.entity.getIdByName(params.tenant),
             deskId = api_v1.desk.getIdByName(tenantId, params.desktop),
             typeId = api_v1.type.getIdByName(tenantId, params.type),
@@ -86,13 +89,20 @@ function fn(config) {
             annexFilePath = params.annexFilePath === undefined ? 'classpath:files/pdf/annex-1_1.pdf' : params.annexFilePath,
             mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile
         ;
-        for (var i=1;i<=max;i++) {
+
+        for (var i=start;i<=max;i++) {
+            var draftFolderParams = {
+                limitDate: extra.limitDate === undefined ? null : extra.limitDate,
+                metadata: extra.metadata === undefined ? {} : extra.metadata,
+                name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
+                paperSignable: extra.paperSignable === undefined ? false : extra.paperSignable,
+                subtypeId: subtypeId,
+                typeId: typeId,
+                variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
+                visibility: extra.visibility === undefined ? 'Confidentiel' : extra.visibility,
+            };
             result.push({
-                draftFolderParams: {
-                    name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
-                    subtypeId: subtypeId,
-                    typeId: typeId
-                },
+                draftFolderParams: draftFolderParams,
                 annexFilePath: annexFilePath,
                 mainFilePath: mainFilePath,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
