@@ -31,14 +31,13 @@ Feature: Basic setup
 			| cnoir@dom.local | Libriciel SCOP                     |
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
-	@todo-karate
-	Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
+	Scenario Outline: Create desk "${name}" in "${tenant}"
 		* call read('classpath:lib/setup/desk.create.feature') __row
 
 		Examples:
-			| tenant         | name        | email                  |
-			| Default tenant | Translucide | stranslucide@dom.local |
-			| Default tenant | Transparent | ltransparent@dom.local |
+			| tenant         | name        | owners!                    | parent! | associated! | permissions!                                       |
+			| Default tenant | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+			| Default tenant | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
 	Scenario: Create a seal certificate in "Default tenant"
 		* def tenantId = api_v1.entity.getIdByName('Default tenant')
