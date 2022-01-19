@@ -5,6 +5,7 @@ Feature: Desk setup lib
     Scenario: Create desk
         * def tenantId = api_v1.entity.getIdByName(tenant)
         * def userId = api_v1.user.getIdByEmail(tenantId, email)
+        * def description = "Bureau " + name
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/desk'
@@ -18,7 +19,7 @@ Feature: Desk setup lib
     "availableSubtypeIdsList":[],
     "chainAllowed":true,
     "delegatingDesks":[],
-    "description": "Bureau #(name)",
+    "description": "#(description)",
     "filterableMetadataIdsList":[],
     "filterableSubtypeIdsList":[],
     "folderCreationAllowed": true,

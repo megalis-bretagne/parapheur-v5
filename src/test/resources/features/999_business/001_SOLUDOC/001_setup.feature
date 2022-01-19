@@ -45,19 +45,19 @@ Feature: Paramétrage métier SOLUDOC
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant  | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       |
-            | SOLUDOC | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          |
-            | SOLUDOC | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Montpellier       |                  | {"x":50,"y":50,"page":1} |
-            | SOLUDOC | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            |                          |
+            | tenant  | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       | workflowSelectionScript! |
+            | SOLUDOC | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          | ''                       |
+            | SOLUDOC | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Montpellier       |                  | {"x":50,"y":50,"page":1} | ''                       |
+            | SOLUDOC | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            |                          | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant  | type          | name                    | description                     | workflow  | sealCertificate! |
-            | SOLUDOC | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature | ''               |
-            | SOLUDOC | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature | ''               |
-            | SOLUDOC | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | Signature | ''               |
+            | tenant  | type          | name                    | description                     | workflow!   | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | SOLUDOC | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' | ''               | ''                       | []                          |
+            | SOLUDOC | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' | ''               | ''                       | []                          |
+            | SOLUDOC | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | 'Signature' | ''               | ''                       | []                          |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row

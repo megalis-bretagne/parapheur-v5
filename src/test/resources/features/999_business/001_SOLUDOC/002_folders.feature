@@ -1,7 +1,6 @@
 @business-soludoc @draft-business @proposal
 Feature: Création de dossiers brouillon pour le paramétrage métier SOLUDOC
 
-    # @todo: envoyer les dossiers dans le circuit (car WebService)
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
 """
