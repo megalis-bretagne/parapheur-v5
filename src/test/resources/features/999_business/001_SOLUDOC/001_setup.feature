@@ -26,20 +26,20 @@ Feature: Paramétrage métier SOLUDOC
             | kmauve@dom.local     | SOLUDOC |
             | ws-soludoc@dom.local | SOLUDOC |
 
-    Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
+    Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant  | name       | email                |
-            | SOLUDOC | Maire      | kmauve@dom.local     |
-            | SOLUDOC | WebService | ws-soludoc@dom.local |
+            | tenant  | name       | owners!                  | parent! | associated! | permissions!                                       |
+            | SOLUDOC | Mauve      | ['kmauve@dom.local']     | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+            | SOLUDOC | WebService | ['ws-soludoc@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant  | name      | deskName | type      |
-            | SOLUDOC | Signature | Maire    | SIGNATURE |
+            | SOLUDOC | Signature | Mauve    | SIGNATURE |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row

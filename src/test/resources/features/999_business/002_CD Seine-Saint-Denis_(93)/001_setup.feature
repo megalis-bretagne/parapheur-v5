@@ -30,15 +30,15 @@ Feature: Paramétrage métier CD Seine-Saint-Denis (93)
             | ibleu@dom.local   | CD Seine-Saint-Denis (93) |
             | ws-cd93@dom.local | CD Seine-Saint-Denis (93) |
 
-    Scenario Outline: Create desk "${name}" and associate it to "${email}" in "${tenant}"
+    Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant                    | name       | email             |
-            | CD Seine-Saint-Denis (93) | Bleu       | ibleu@dom.local   |
-            | CD Seine-Saint-Denis (93) | Rouge      | arouge@dom.local  |
-            | CD Seine-Saint-Denis (93) | Vert       | cvert@dom.local   |
-            | CD Seine-Saint-Denis (93) | WebService | ws-cd93@dom.local |
+            | tenant                    | name       | owners!               | parent! | associated! | permissions!                                       |
+            | CD Seine-Saint-Denis (93) | Bleu       | ['ibleu@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+            | CD Seine-Saint-Denis (93) | Rouge      | ['arouge@dom.local']  | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+            | CD Seine-Saint-Denis (93) | Vert       | ['cvert@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+            | CD Seine-Saint-Denis (93) | WebService | ['ws-cd93@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
@@ -65,7 +65,7 @@ Feature: Paramétrage métier CD Seine-Saint-Denis (93)
             | CD Seine-Saint-Denis (93) | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          |
             | CD Seine-Saint-Denis (93) | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Bobigny           |                  | {"x":50,"y":50,"page":1} |
             | CD Seine-Saint-Denis (93) | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Bobigny           | 93000            |                          |
-
+    # @fixme: Create subtype "HELIOS - Monodoc" for type "HELIOS" and "Signature HELIOS" workflow in "CD Seine-Saint-Denis (93)" -> http call failed after 30032 milliseconds
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
