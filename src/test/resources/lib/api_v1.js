@@ -124,6 +124,35 @@ function fn(config) {
 
         return response.body;
     };
+    config.api_v1.desk['getCreationPayload'] = function (tenantId, name, owners, parent, associated, permissions) {
+        for (var i=0;i<owners.length;i++) {
+            owners[i] = api_v1.user.getIdByEmail(tenantId, owners[i]);
+        }
+
+        for (var i=0;i<associated.length;i++) {
+            associated[i] = api_v1.desk.getIdByName(tenantId, associated[i]);
+        }
+
+        var payload = {
+            actionAllowed: permissions['action'] === undefined ? false : permissions['action'],
+            archivingAllowed: permissions['archiving'] === undefined ? false : permissions['archiving'],
+            associatedDeskIdsList: associated,
+            availableSubtypeIdsList: [],
+            chainAllowed: permissions['chain'] === undefined ? false : permissions['chain'],
+            delegatingDesks: [],
+            description: 'Bureau ' + name,
+            filterableMetadataIdsList:[],
+            filterableSubtypeIdsList:[],
+            folderCreationAllowed: permissions['creation'] === undefined ? false : permissions['creation'],
+            linkedDeskboxIds:[],
+            name: name,
+            ownerUserIdsList: owners,
+            parentDeskId: parent === '' ? null : api_v1.desk.getIdByName(tenantId, parent),
+            shortName: name,
+        };
+
+        return payload;
+    };
     config.api_v1.desk['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
