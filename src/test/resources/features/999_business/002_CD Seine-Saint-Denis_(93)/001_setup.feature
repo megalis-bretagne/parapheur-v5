@@ -1,4 +1,4 @@
-@business-cd93 @setup-business @proposal
+@business @cd93 @setup-cd93 @proposal
 Feature: Paramétrage métier CD Seine-Saint-Denis (93)
     Background:
         * api_v1.auth.login('user', 'password')
@@ -74,7 +74,7 @@ Feature: Paramétrage métier CD Seine-Saint-Denis (93)
             | tenant                    | type          | name                    | description                     | workflow!          | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
             | CD Seine-Saint-Denis (93) | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature'        | ''               | ''                                                             | []                                                                                         |
             | CD Seine-Saint-Denis (93) | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature'        | ''               | ''                                                             | []                                                                                         |
-            | CD Seine-Saint-Denis (93) | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | '' | ''               | 'classpath:files/workflowSelectionScript/cd93 - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
+            | CD Seine-Saint-Denis (93) | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | 'Signature HELIOS' | ''               | 'classpath:files/workflowSelectionScript/cd93 - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
