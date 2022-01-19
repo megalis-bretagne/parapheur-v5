@@ -214,6 +214,28 @@ function fn(config) {
     };
 
     /**
+     * metadata
+     */
+    config.api_v1['metadata'] = {};
+    config.api_v1.metadata['getIdByKey'] = function (tenantId, key) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/admin/tenant/' + tenantId + '/metadata')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .param('pageSize', 100)
+            .param('sortBy', 'KEY')
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting metadata id by its tenantId and key');
+        }
+
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'metadata', 'key', key, false);
+        return element['id'];
+    };
+
+    /**
      * user
      */
     config.api_v1['user'] = {};
