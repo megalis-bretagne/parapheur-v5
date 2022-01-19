@@ -9,7 +9,6 @@ Feature: My feature
 ##        * id.tenant.non_existing = api_v1.entity.getNonExistingId()
 #        * def tenantId = function(exists, name = 'Default tenant') { return exists == true ? api_v1.entity.getIdByName(name) : api_v1.entity.getNonExistingId() }
 #
-#    @wip
 ##    Scenario Outline: WIP - ${title.role(role)} ${title.status(status)} associate an existing desk to an existing user in an existing tenant
 #    Scenario Outline: ... ${title.role(role)} ... ${title.existing(tenant)} tenant
 ##        * print '/api/v1/admin/tenant/', id.tenant[<tenant> ? 'existing' : 'non_existing'] ,'/desk'
@@ -34,7 +33,6 @@ Feature: My feature
 #        * api_v1.auth.login('user', 'password')
 #        * def tenantId = function(exists, name = 'Default tenant') { return exists == true ? api_v1.entity.getIdByName(name) : api_v1.entity.getNonExistingId() }
 #
-#    @wip
 #    Scenario Outline: ... ${title.role(role)} ${scenario.title.status(status)} associate ${title.existing(desk_exists)} desk to ${title.existing(user_exists)} user in ${title.existing(tenant_exists)} tenant
 #        * print '/api/v1/admin/tenant/' + tenantId(tenant_exists)  + '/desk'
 #        * match <status> == '#number'
