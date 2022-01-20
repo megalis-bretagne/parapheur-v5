@@ -177,8 +177,6 @@ services:
     restart: unless-stopped
     tty: true
     mem_limit: 512M
-    volumes:
-      - ./src/main/resources/external-signature-connector/application.properties:/application.properties
 
 
   legacy-bridge:
