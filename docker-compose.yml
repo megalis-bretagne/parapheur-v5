@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.5
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -98,20 +98,18 @@ services:
         condition: service_started
       workflow:
         condition: service_started
-    volumes:
-      - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
       - nginx:${APPLICATION_HOST}
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.3.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.4.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta02
+      - VERSION=5.0.0-beta03
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -127,8 +125,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
   pes-viewer:
@@ -173,7 +169,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.0
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
