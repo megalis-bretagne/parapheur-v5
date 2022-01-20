@@ -14,7 +14,7 @@ Feature: Création de dossiers brouillon pour le paramétrage métier SOLUDOC
 }
 """
         * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, extra, start)
+        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 

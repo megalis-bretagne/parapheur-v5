@@ -56,14 +56,14 @@ Feature: Basic setup
 		* call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
 		Examples:
-			| tenant         | name                            | deskName    | type               |
+			| tenant         | name                            | deskName    | type               | mandatoryMetadata!    |
 			# @fixme: API (+UI)
-			# | Default tenant | Transparent - Mail              | Transparent | MAIL               |
+#			| Default tenant | Transparent - Mail              | Transparent | MAIL               | []                 |
 			# @todo: setup first -> check via API, via Web = 400
-			| Default tenant | Transparent - Cachet Serveur    | Transparent | SEAL               |
-			| Default tenant | Transparent - Signature         | Transparent | SIGNATURE          |
-			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE |
-			| Default tenant | Transparent - Visa              | Transparent | VISA               |
+			| Default tenant | Transparent - Cachet Serveur    | Transparent | SEAL               | []                 |
+			| Default tenant | Transparent - Signature         | Transparent | SIGNATURE          | []                 |
+			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE | []                 |
+			| Default tenant | Transparent - Visa              | Transparent | VISA               | []                 |
 
 	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java

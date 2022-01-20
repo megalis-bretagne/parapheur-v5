@@ -40,34 +40,31 @@ Feature: Paramétrage métier Sciences Po Paris
             | Sciences Po Paris | Cyan       | ['icyan@dom.local']    | ''      | ['Jaune', 'Magenta'] | {'action': true, 'archiving': true, 'chain': true} |
             | Sciences Po Paris | WebService | ['ws-spp@dom.local']   | ''      | []                   | {'action': true, 'creation': true}                 |
 
-#Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-#* call read('classpath:lib/setup/one-step-workflow.create.feature') __row
-#
-#Examples:
-#| tenant  | name      | deskName | type      |
-#| SOLUDOC | Signature | Maire    | SIGNATURE |
-#
-#Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-#* call read('classpath:lib/setup/type.create.feature') __row
-#
-#Examples:
-#| tenant  | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       | workflowSelectionScript! |
-#| SOLUDOC | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          | ''                       |
-#| SOLUDOC | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Montpellier       |                  | {"x":50,"y":50,"page":1} | ''                       |
-#| SOLUDOC | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            |                          | ''                       |
-#
-#Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
-#* call read('classpath:lib/setup/subtype.create.feature') __row
-#
-#Examples:
-#| tenant  | type          | name                    | description                     | workflow!   | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-#| SOLUDOC | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' | ''               | ''                       | []                          |
-#| SOLUDOC | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' | ''               | ''                       | []                          |
-#| SOLUDOC | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | 'Signature' | ''               | ''                       | []                          |
-#
-#Scenario Outline: Set the signature image for user "${email}"
-#* call read('classpath:lib/setup/user.signatureImage.create.feature') __row
-#
-#Examples:
-#| tenant  | email            | path                                          |
-#| SOLUDOC | kmauve@dom.local | classpath:files/images/signature - kmauve.png |
+    # @todo: autres metadonnées
+    Scenario Outline: Create metadata "${name}" of type ${type}
+        * call read('classpath:lib/setup/metadata.create.feature') __row
+
+        Examples:
+            | tenant            | key               | name                 | type | restrictedValues! |
+            | Sciences Po Paris | date_service_fait | Date du service fait | DATE | []                |
+
+    Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
+        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
+
+        Examples:
+            | tenant            | name | deskName | type | mandatoryMetadata!    |
+            | Sciences Po Paris | Visa | Cyan     | VISA | ['date_service_fait'] |
+
+    Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
+        * call read('classpath:lib/setup/type.create.feature') __row
+
+        Examples:
+            | tenant            | name  | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
+            | Sciences Po Paris | VISA | Visa PAdES  |          | PADES           | Montpellier       |                  |                    | ''                       |
+
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+        * call read('classpath:lib/setup/subtype.create.feature') __row
+
+        Examples:
+            | tenant            | type | name         | description  | workflow! | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | Sciences Po Paris | VISA | VISA_MONODOC | Visa monodoc | 'Visa'    | ''               | ''                       | []                          |

@@ -40,14 +40,6 @@ Feature: Paramétrage métier CD Seine-Saint-Denis (93)
             | CD Seine-Saint-Denis (93) | Vert       | ['cvert@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
             | CD Seine-Saint-Denis (93) | WebService | ['ws-cd93@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
-    Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
-
-        Examples:
-            | tenant                    | name             | deskName          | type      |
-            | CD Seine-Saint-Denis (93) | Signature        | Bleu              | SIGNATURE |
-            | CD Seine-Saint-Denis (93) | Signature HELIOS | ##VARIABLE_DESK## | SIGNATURE |
-
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/setup/metadata.create.feature') __row
 
@@ -56,6 +48,14 @@ Feature: Paramétrage métier CD Seine-Saint-Denis (93)
             | CD Seine-Saint-Denis (93) | GdaEntJurCode | Entité juridique  | INTEGER | []                                      |
             | CD Seine-Saint-Denis (93) | GdaBjMontant  | Montant du BJ     | FLOAT   | []                                      |
             | CD Seine-Saint-Denis (93) | GdaBjType     | Type de bordereau | INTEGER | [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] |
+
+    Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
+        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
+
+        Examples:
+            | tenant                    | name             | deskName          | type      | mandatoryMetadata! |
+            | CD Seine-Saint-Denis (93) | Signature        | Bleu              | SIGNATURE | []                 |
+            | CD Seine-Saint-Denis (93) | Signature HELIOS | ##VARIABLE_DESK## | SIGNATURE | []                 |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row

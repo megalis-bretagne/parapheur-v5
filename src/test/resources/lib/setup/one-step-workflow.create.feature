@@ -5,6 +5,24 @@ Feature: Workflow setup lib
         * def tenantId = api_v1.entity.getIdByName(tenant)
         * def deskId = deskName.indexOf('#') == 0 ? deskName : api_v1.desk.getIdByName(tenantId, deskName)
         * def key = api_v1.desk.getKeyStringFromNameString(name)
+        * def getWorkflowMandatoryMetadatas =
+"""
+function (tenantId, metadataKeys) {
+    var result = [];
+    for (var i=0;i<metadataKeys.length;i++) {
+        result.push({
+            id: api_v1.metadata.getIdByKey(tenantId, metadataKeys[i]),
+            key: null,
+            name: null,
+            index: null,
+            type: null,
+            restrictedValues: []
+        });
+    }
+    return result;
+}
+"""
+        * def mandatoryMetadata = getWorkflowMandatoryMetadatas(tenantId, mandatoryMetadata)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
@@ -20,7 +38,8 @@ Feature: Workflow setup lib
             "validationMode": "SIMPLE",
             "name": "#(type)",
             "type": "#(type)",
-            "parallelType": "OR"
+            "parallelType": "OR",
+            "mandatoryMetadata": #(mandatoryMetadata)
         }
     ],
     "name": "#(name)",
