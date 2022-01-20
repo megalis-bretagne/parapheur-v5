@@ -1,5 +1,5 @@
 @business @cd93 @folder @proposal
-Feature: Création de dossiers brouillon pour le paramétrage métier CD Seine-Saint-Denis (93)
+Feature: Création de dossiers pour le paramétrage métier CD Seine-Saint-Denis (93)
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
@@ -14,11 +14,11 @@ Feature: Création de dossiers brouillon pour le paramétrage métier CD Seine-S
 }
 """
         * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, extra, start)
+        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * karate.log(folders)
         * api_v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
-
+      # @fixme: HELIOS retourne 500
       Examples:
           | tenant                    | username | password | desktop    | type          | subtype                 | mainFile                                 | nameTemplate                                      | start! | count! | withOrWithout | extra!                            |
           | CD Seine-Saint-Denis (93) | ws-cd93  | a123456  | WebService | ACTES - PAdES | ACTES - PAdES - Monodoc | classpath:files/pdf/main-1_1.pdf         | ACTES - PAdES - Monodoc - sans annexe - %counter% | 1      | 10     | without       | {}                                |
