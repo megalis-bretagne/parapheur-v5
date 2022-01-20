@@ -40,7 +40,7 @@ services:
 
 
   nginx:
-    image: nginx:1.19.9-alpine
+    image: nginx:1.19.10-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.4.5
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -98,20 +98,18 @@ services:
         condition: service_started
       workflow:
         condition: service_started
-    volumes:
-      - ./src/main/resources/core/sentry.properties:/sentry.properties
     external_links:
       - nginx:${APPLICATION_HOST}
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.3.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.4.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta02
+      - VERSION=5.0.0-beta03
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -127,8 +125,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./src/main/resources/workflow/sentry.properties:/sentry.properties
 
 
   pes-viewer:
@@ -173,12 +169,10 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.0
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
-    volumes:
-      - ./src/main/resources/external-signature-connector/application.properties:/application.properties
 
 
   legacy-bridge:
@@ -293,7 +287,7 @@ services:
 
 
   redis:
-    image: redis:6.0.9-alpine
+    image: redis:6.0.16-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 128M
@@ -376,7 +370,7 @@ services:
 
 
   vault:
-    image: vault:1.6.2
+    image: vault:1.6.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -393,7 +387,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.31.1
+    image: prom/prometheus:v2.31.2
     mem_limit: 256M
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -404,7 +398,7 @@ services:
 
 
   filetransfer:
-    image: dutchcoders/transfer.sh:v1.2.4
+    image: dutchcoders/transfer.sh:v1.2.6
     mem_limit: 256M
     restart: unless-stopped
     command: --provider local --basedir /data/ --temp-path /tmp/
