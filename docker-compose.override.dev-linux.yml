@@ -106,6 +106,21 @@ services:
     ports:
       - "8889:8080"
 
+  feeder:
+    image: registry.libriciel.fr/public/signature/feeder:CI-public-upload
+    extra_hosts:
+      - "${APPLICATION_HOST}:host-gateway"
+    environment:
+      - APPLICATION_HOST
+      - APPLICATION_PROTOCOL
+      - parapheur_url=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
+    ports:
+      - 8003:8003
+
+    volumes:
+      - ./data/feeder/data:/opt/iParapheur-feeder
+      - /tmp:/tmp
+      - ./src/main/resources/feeder/application.properties:/config/application.properties
 
   # Non-libriciel services
 
