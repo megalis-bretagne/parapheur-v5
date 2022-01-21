@@ -176,7 +176,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.0
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -193,8 +193,6 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
-    volumes:
-      - ./src/main/resources/legacy-bridge/application.yml:/application.yml
 
 
   alfresco:
