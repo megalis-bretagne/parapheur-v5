@@ -66,16 +66,15 @@ Feature: Paramétrage métier ACTES HELIOS - grandes collectivités
             | ACTES HELIOS - grandes collectivités | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Bobigny           |                  | {"x":50,"y":50,"page":1} |
             | ACTES HELIOS - grandes collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Bobigny           | 93000            |                          |
 
-    # @fixme: Create subtype "HELIOS - Monodoc" for type "HELIOS" and "Signature HELIOS" workflow in "ACTES HELIOS - grandes collectivités" -> http call failed after 30032 milliseconds
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         # @todo: (modifier le script de sélection)
         Examples:
-            | tenant                               | type          | name                    | description                     | workflow!          | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
-            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature'        | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature'        | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | 'Signature HELIOS' | ''               | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
+            | tenant                               | type          | name                    | description                     | workflow!   | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
+            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' | ''               | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' | ''               | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | ''          | ''               | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
