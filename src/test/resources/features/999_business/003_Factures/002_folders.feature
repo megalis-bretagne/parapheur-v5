@@ -1,5 +1,5 @@
-@business @sciences-po-paris @folder @proposal
-Feature: Création de dossiers pour le paramétrage métier Sciences Po Paris
+@business @factures @folder @proposal
+Feature: Création de dossiers pour le paramétrage métier Factures
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
@@ -19,5 +19,5 @@ Feature: Création de dossiers pour le paramétrage métier Sciences Po Paris
         * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 
       Examples:
-          | tenant            | username | password | desktop    | type | subtype      | mainFile                         | nameTemplate      | start! | count! | withOrWithout | extra! |
-          | Sciences Po Paris | ws-spp   | a123456  | WebService | VISA | VISA_MONODOC | classpath:files/pdf/main-1_1.pdf | Facture_%counter% | 1      | 10     | without       | {}     |
+        | tenant   | username    | password | desktop    | type | subtype      | mainFile                         | nameTemplate      | start! | count! | withOrWithout | extra! |
+        | Factures | ws-factures | a123456  | WebService | VISA | VISA_MONODOC | classpath:files/pdf/main-1_1.pdf | Facture_%counter% | 1      | 10     | without       | {}     |
