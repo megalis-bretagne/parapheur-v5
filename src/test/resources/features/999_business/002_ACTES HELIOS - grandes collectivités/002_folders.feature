@@ -1,4 +1,4 @@
-@business @ahgc @folder @proposal
+@actes-helios-grandes-collectivites @business @folder @proposal
 Feature: Création de dossiers pour le paramétrage métier ACTES HELIOS - grandes collectivités
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
