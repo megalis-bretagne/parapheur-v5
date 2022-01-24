@@ -1,4 +1,4 @@
-@business @factures @setup-factures @proposal
+@business @factures @proposal @setup
 Feature: Paramétrage métier Factures
     Background:
         * api_v1.auth.login('user', 'password')
@@ -61,7 +61,7 @@ Feature: Paramétrage métier Factures
         Examples:
             | tenant   | name | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
             | Factures | VISA | Visa PAdES  |          | PADES           | Montpellier       |                  |                    | ''                       |
-
+    # @fixme: sous-type créé, mais http call failed after 30030 milliseconds for url: /api/v1/admin/tenant/<uuid>/typology/type/<uuid>/subtype
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
