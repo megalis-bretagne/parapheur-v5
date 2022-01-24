@@ -1,4 +1,4 @@
-@business @marchés-publics @setup-marchés-publics @proposal @wip
+@business @marchés-publics @proposal @setup
 Feature: Paramétrage métier "Marchés publics"
     Background:
         * api_v1.auth.login('user', 'password')
@@ -43,7 +43,6 @@ Feature: Paramétrage métier "Marchés publics"
             | Marchés publics | Safran     | ['vsafran@dom.local']    | 'Mandarine' | []          | {'action': true, 'archiving': true, 'chain': true} |
             | Marchés publics | WebService | ['ws-mp@dom.local']      | ''          | []          | {'action': true, 'creation': true}                 |
 
-    # @fixme: pour le circuit, je ne vois que le bureau "Corail" (le niveau le plus haut) et "Chef de"... à voir en v.4
     Scenario: Create a 4 steps workflow, 3 first steps are VISA, fourth step is a signature, first validator is "Safran", other validators are "Boss of"
         * def tenantId = api_v1.entity.getIdByName('Marchés publics')
         * def safranDeskId = api_v1.desk.getIdByName(tenantId, 'Safran')
@@ -56,10 +55,10 @@ Feature: Paramétrage métier "Marchés publics"
         {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
         {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"}
     ],
-    "name":"Validation et signaure",
-    "id":"validation_et_signaure",
-    "key":"validation_et_signaure",
-    "deploymentId":"validation_et_signaure"
+    "name":"Validation et signature",
+    "id":"validation_et_signature",
+    "key":"validation_et_signature",
+    "deploymentId":"validation_et_signature"
 }
 """
         Given url baseUrl
@@ -69,23 +68,23 @@ Feature: Paramétrage métier "Marchés publics"
         When method POST
         Then status 201
 
-#Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-#* call read('classpath:lib/setup/type.create.feature') __row
-#
-#Examples:
-#| tenant            | name  | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
-#| Marchés publics | VISA | Visa PAdES  |          | PADES           | Montpellier       |                  |                    | ''                       |
-#
-#Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
-#* call read('classpath:lib/setup/subtype.create.feature') __row
-#
-#Examples:
-#| tenant            | type | name         | description  | workflow! | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-#| Marchés publics | VISA | VISA_MONODOC | Visa monodoc | 'Visa'    | ''               | ''                       | []                          |
+    Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
+        * call read('classpath:lib/setup/type.create.feature') __row
 
-#Scenario Outline: Set the signature image for user "${email}"
-#* call read('classpath:lib/setup/user.signatureImage.create.feature') __row
-#
-#Examples:
-#| tenant                    | email            | path                                          |
-#| Marchés publics | ncorail@dom.local | classpath:files/images/signature - ncorail.png |
+        Examples:
+            | tenant          | name          | description   | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
+            | Marchés publics | Marché public | Marché public |          | PADES           | Montpellier       |                  |                    | ''                       |
+
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+        * call read('classpath:lib/setup/subtype.create.feature') __row
+
+        Examples:
+            | tenant          | type          | name         | description  | workflow!                 | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | Marchés publics | Marché public | Service fait | Service fait | 'Validation et signature' | ''               | ''                       | []                          |
+
+    Scenario Outline: Set the signature image for user "${email}"
+        * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
+
+        Examples:
+            | tenant          | email             | path                                           |
+            | Marchés publics | ncorail@dom.local | classpath:files/images/signature - ncorail.png |
