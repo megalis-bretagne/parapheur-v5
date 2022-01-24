@@ -116,9 +116,6 @@ server {
   }
 
   location /feeder/ {
-      proxy_set_header X-Forwarded-Host $host:$server_port;
-      proxy_set_header X-Forwarded-Server $host;
-      proxy_intercept_errors off;
       proxy_pass http://host.docker.internal:8003/;
   }
 

@@ -197,6 +197,18 @@ services:
       - ./src/main/resources/legacy-bridge/application.yml:/application.yml
 
 
+  feeder:
+    image: registry.libriciel.fr/public/signature/feeder:CI-public-upload
+    extra_hosts:
+      - "${APPLICATION_HOST}:host-gateway"
+    environment:
+      - parapheur_url=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
+    volumes:
+      - ./data/feeder/data:/opt/iParapheur-feeder
+      - /tmp:/tmp
+      - ./src/main/resources/feeder/application.properties:/config/application.properties
+
+
   alfresco:
     image: alfresco/alfresco-content-repository-community:6.2.0-ga
     restart: unless-stopped
