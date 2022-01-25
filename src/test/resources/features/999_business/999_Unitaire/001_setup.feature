@@ -43,14 +43,24 @@ Feature: Paramétrage métier "Unitaire"
             | Unitaire | refus  | Raison du refus         | TEXT | []                |
             | Unitaire | succes | Raison de la validation | TEXT | []                |
 
+    Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
+        * call read('classpath:lib/setup/seal-certificate.create.feature') __row
+
+        Examples:
+            | tenant   | path                                                  | password                        |
+            | Unitaire | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop |
+
+    # @todo: cpnnecteur mailsec https://pastell.partenaire.libriciel.fr/Entite/detail?id_e=5 ws-mailsec / a123456
+
     # @todo: métadonnée obligatoire en cas de refus
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant   | name                     | deskName | type      | mandatoryMetadata! |
-            | Unitaire | Signature et metadonnees | Marron   | SIGNATURE | ['succes']         |
-            | Unitaire | Visa et métadonnées      | Marron   | VISA      | ['succes']         |
+            | tenant   | name                          | deskName | type      | mandatoryMetadata! |
+            | Unitaire | Cachet serveur et metadonnees | Marron   | SEAL      | ['succes']         |
+            | Unitaire | Signature et metadonnees      | Marron   | SIGNATURE | ['succes']         |
+            | Unitaire | Visa et metadonnees           | Marron   | VISA      | ['succes']         |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row
@@ -58,10 +68,23 @@ Feature: Paramétrage métier "Unitaire"
         Examples:
             | tenant   | name  | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
             | Unitaire | CAdES | CAdES       |          | PKCS7           |                   |                  |                    | ''                       |
+            | Unitaire | PAdES | PAdES       |          | PADES           |                   |                  |                    | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant   | type  | name                     | description              | workflow!                  | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Unitaire | CAdES | Signature et metadonnees | Signature et metadonnees | 'Signature et metadonnees' | ''               | ''                       | []                          |
+            | tenant   | type  | name                          | description                   | workflow!                       | sealCertificate!                                     | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | Unitaire | CAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
+            | Unitaire | CAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      | ''                                                   | ''                       | []                          |
+            | Unitaire | CAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           | ''                                                   | ''                       | []                          |
+            | Unitaire | PAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
+            | Unitaire | PAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      | ''                                                   | ''                       | []                          |
+            | Unitaire | PAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           | ''                                                   | ''                       | []                          |
+
+    Scenario Outline: Set the signature image for user "${email}"
+        * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
+
+        Examples:
+            | tenant   | email             | path                                           |
+            | Unitaire | nmarron@dom.local | classpath:files/images/signature - nmarron.png |
