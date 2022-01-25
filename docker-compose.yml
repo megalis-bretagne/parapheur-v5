@@ -198,11 +198,11 @@ services:
 
 
   feeder:
-    image: registry.libriciel.fr/public/signature/feeder:CI-public-upload
+    image: registry.libriciel.fr/public/signature/feeder:1.0.0
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
-      - parapheur_url=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
+      - PARAPHEUR_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
     volumes:
       - ./data/feeder/data:/opt/iParapheur-feeder
       - /tmp:/tmp
