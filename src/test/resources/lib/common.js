@@ -126,6 +126,21 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         }
         return result;
     };
+    config.utils['getMimeTypeFromFilename'] = function(filename) {
+        var extension = filename.split(".").pop().toLowerCase(),
+            associations = {
+                'doc': 'application/msword',
+                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'odt': 'application/vnd.oasis.opendocument.text',
+                'pdf': 'application/pdf'
+            };
+        if (extension in associations) {
+            return associations[extension];
+        } else {
+            // @todo: warn
+            return 'application/octet-stream';
+        }
+    };
     /**
      * utils.string
      */
