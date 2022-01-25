@@ -39,16 +39,12 @@ Feature: Basic setup
 			| Default tenant | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
 			| Default tenant | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
-	Scenario: Create a seal certificate in "Default tenant"
-		* def tenantId = api_v1.entity.getIdByName('Default tenant')
+	Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
+		* call read('classpath:lib/setup/seal-certificate.create.feature') __row
 
-		Given url baseUrl
-			And path '/api/v1/admin/tenant/', tenantId, '/sealCertificate'
-			And header Accept = 'application/json'
-			And multipart file file = { read: 'classpath:files/Default tenant - Seal Certificate.p12', 'contentType': 'application/x-pkcs12' }
-			And multipart field password = 'christian.buffin@libriciel.coop'
-		When method POST
-		Then status 201
+		Examples:
+			| tenant         | path                                                  | password                        |
+			| Default tenant | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured

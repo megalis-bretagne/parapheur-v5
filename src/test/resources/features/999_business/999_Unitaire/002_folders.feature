@@ -1,4 +1,4 @@
-@business @unitaire @folder @proposal @wip
+@business @unitaire @folder @proposal
 Feature: Création de dossiers pour le paramétrage métier "Unitaire"
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
@@ -24,4 +24,3 @@ Feature: Création de dossiers pour le paramétrage métier "Unitaire"
           | Unitaire | ws-unitaire | a123456  | WebService | CAdES | Signature et metadonnees | classpath:files/office/main-1_1.docx | CAdES - Signature et métadonnées - DOCX %counter% | 1      | 10     | without       | {}     |
           | Unitaire | ws-unitaire | a123456  | WebService | CAdES | Signature et metadonnees | classpath:files/office/main-1_1.odt  | CAdES - Signature et métadonnées - ODT %counter%  | 1      | 10     | without       | {}     |
           | Unitaire | ws-unitaire | a123456  | WebService | CAdES | Signature et metadonnees | classpath:files/pdf/main-1_1.pdf     | CAdES - Signature et métadonnées - PDF %counter%  | 1      | 10     | without       | {}     |
-          | Unitaire | ws-unitaire | a123456  | WebService | CAdES | Signature et metadonnees | classpath:files/images/main-1_1.png  | CAdES - Signature et métadonnées - PNG %counter%  | 1      | 10     | without       | {}     |
