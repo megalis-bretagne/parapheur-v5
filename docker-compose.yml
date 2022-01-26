@@ -205,7 +205,6 @@ services:
       - PARAPHEUR_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
     volumes:
       - ./data/feeder/data:/opt/iParapheur-feeder
-      - /tmp:/tmp
       - ./src/main/resources/feeder/application.properties:/config/application.properties
 
 
