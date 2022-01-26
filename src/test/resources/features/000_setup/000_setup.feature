@@ -43,8 +43,8 @@ Feature: Basic setup
 		* call read('classpath:lib/setup/seal-certificate.create.feature') __row
 
 		Examples:
-			| tenant         | path                                                  | password                        |
-			| Default tenant | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop |
+			| tenant         | path                                                  | password                        | image! |
+			| Default tenant | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured

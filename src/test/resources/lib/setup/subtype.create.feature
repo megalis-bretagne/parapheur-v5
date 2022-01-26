@@ -41,6 +41,7 @@ function (tenantId, subtypeMetadataRequestList) {
     "ipngTypeKeys": [],
     "name": "#(name)",
     "sealCertificateId": "#(sealCertificateId)",
+    "secureMailServerId": "#(secureMailServerId)",
     "subtypeLayerRequestList": [],
     "subtypeMetadataList": [],
     "subtypeMetadataRequestList": #(metadataRequestList),
