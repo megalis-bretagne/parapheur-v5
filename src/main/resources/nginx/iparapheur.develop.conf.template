@@ -115,6 +115,18 @@ server {
       proxy_pass http://host.docker.internal:1807/;
   }
 
+  location /feeder/ {
+      proxy_pass http://host.docker.internal:8003/;
+  }
+
+  location /feeder/socket {
+      proxy_pass http://host.docker.internal:8003/socket;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+  }
+
+
   location ^~ / {
     proxy_pass http://host.docker.internal:4200/;
   }
