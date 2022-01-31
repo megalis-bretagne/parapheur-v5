@@ -60,7 +60,9 @@ server {
   }
 
   location /ws-iparapheur {
-    proxy_pass http://legacy-bridge:8080/ws-iparapheur;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_legacy_bridge legacy-bridge;
+    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
   }
 
   location /pdf-stamp {
@@ -102,7 +104,9 @@ server {
 
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
-      proxy_pass http://pes-viewer:8888/bl-xemwebviewer;
+      resolver 127.0.0.11 valid=30s;
+      set $upstream_pes_viewer pes-viewer;
+      proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
   }
 
 #  location /ipng {
@@ -112,15 +116,21 @@ server {
 #  }
 
   location /filetransfer/ {
-    proxy_pass http://filetransfer:8080/;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_filetransfer filetransfer;
+    proxy_pass http://$upstream_filetransfer:8080/;
   }
 
   location /feeder/ {
-      proxy_pass http://feeder:8003/;
+      resolver 127.0.0.11 valid=30s;
+      set $upstream_feeder feeder;
+      proxy_pass http://$upstream_feeder:8003/;
   }
 
   location /feeder/socket {
-      proxy_pass http://feeder:8003/socket;
+      resolver 127.0.0.11 valid=30s;
+      set $upstream_feeder feeder;
+      proxy_pass http://$upstream_feeder:8003/socket;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
@@ -131,11 +141,15 @@ server {
   # }
 
   location ^~ / {
-    proxy_pass http://web:80/;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_web web;
+    proxy_pass http://$upstream_web:80/;
   }
 
   location ^~ /sockjs-node {
-    proxy_pass http://web:80/sockjs-node;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_web web;
+    proxy_pass http://$upstream_web:80/sockjs-node;
   }
 
 }
