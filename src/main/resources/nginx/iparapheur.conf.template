@@ -50,7 +50,7 @@ server {
   location /workflow {
     resolver 127.0.0.11 valid=30s;
     set $upstream_workflow workflow;
-    proxy_pass http://$upstream_workflow:8080/crypto;
+    proxy_pass http://$upstream_workflow:8080/workflow;
   }
 
   location /pastell-connector {
