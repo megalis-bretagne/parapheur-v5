@@ -7,6 +7,7 @@ Feature: Subtype setup lib
         * def typeId = api_v1.type.getIdByName(tenantId, type)
         * def sealCertificateId = sealCertificate == '' ? null : api_v1.sealCertificate.getIdByName(tenantId, sealCertificate)
         * def script = workflowSelectionScript == '' ? '' : karate.readAsString(workflowSelectionScript)
+        * def secureMailServerId = secureMailServerId == '' ? null : secureMailServerId
         * def replaceMetadataKeyById =
 """
 function (tenantId, subtypeMetadataRequestList) {

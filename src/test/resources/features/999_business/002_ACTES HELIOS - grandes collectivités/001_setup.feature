@@ -71,10 +71,10 @@ Feature: Paramétrage métier ACTES HELIOS - grandes collectivités
 
         # @todo: (modifier le script de sélection)
         Examples:
-            | tenant                               | type          | name                    | description                     | workflow!   | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
-            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | ''          | ''               | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
+            | tenant                               | type          | name                    | description                     | workflow!   | secureMailServerId | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
+            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | ''          |                    | ''               | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row

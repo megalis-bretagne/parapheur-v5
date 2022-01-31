@@ -16,7 +16,7 @@
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="signatures.svg"
-   inkscape:export-filename="/home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/src/test/resources/files/images/signature - nmarron.png"
+   inkscape:export-filename="/home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/src/test/resources/files/images/signature - lfuchsia.png"
    inkscape:export-xdpi="96.75"
    inkscape:export-ydpi="96.75">
   <defs
@@ -29,10 +29,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="108.2527"
+     inkscape:cx="-6.4390996"
      inkscape:cy="84.674021"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      units="px"
      inkscape:window-width="1920"
@@ -57,7 +57,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-271.60001)"
-     style="display:inline">
+     style="display:none">
     <flowRoot
        xml:space="preserve"
        id="flowRoot834"
@@ -81,5 +81,105 @@
          x="5.3423557"
          y="287.29947"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#582900;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1">N. Marron</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="L. Fuschia"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="9.7332544"
+       y="16.628769"
+       id="text844-3"><tspan
+         sodipodi:role="line"
+         id="tspan842-6"
+         x="9.7332544"
+         y="16.628769"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#ff00ff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1">L. Fuchsia</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="F. Indigo"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#4b0082;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="10.831016"
+       y="14.485643"
+       id="text844-3-7"><tspan
+         sodipodi:role="line"
+         id="tspan842-6-5"
+         x="10.831016"
+         y="14.485643"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#4b0082;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1">F. Indigo</tspan><tspan
+         sodipodi:role="line"
+         x="10.831016"
+         y="27.818163"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#4b0082;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan859" /><tspan
+         sodipodi:role="line"
+         x="10.831016"
+         y="41.047329"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#4b0082;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan861" /></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="O. Pêche"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ecbd90;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="12.510438"
+       y="16.700191"
+       id="text844-3-7-3"><tspan
+         sodipodi:role="line"
+         x="12.510438"
+         y="16.700191"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#ecbd90;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan861-2">O. Pêche</tspan><tspan
+         sodipodi:role="line"
+         x="12.510438"
+         y="30.032711"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#ecbd90;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan893" /></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="D. Pourpre"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#9e0e40;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="5.4705839"
+       y="14.302796"
+       id="text844-3-7-3-9"><tspan
+         sodipodi:role="line"
+         x="5.4705839"
+         y="14.302796"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#9e0e40;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan919">D. Pourpre</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="M. Rose"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f33a6a;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="10.222242"
+       y="16.108715"
+       id="text844-3-7-3-9-7"><tspan
+         sodipodi:role="line"
+         x="10.222242"
+         y="16.108715"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#f33a6a;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
+         id="tspan942">M . Rose</tspan></text>
   </g>
 </svg>
