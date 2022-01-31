@@ -81,7 +81,6 @@ Feature: Paramétrage métier "Circuits unitaires"
             | Circuits unitaires | CAdES | CAdES       |          | PKCS7           |                   |                  |                    | ''                       |
             | Circuits unitaires | PAdES | PAdES       |          | PADES           |                   |                  |                    | ''                       |
 
-    # @fixme: secureMailServerId 1
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
