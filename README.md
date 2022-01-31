@@ -88,7 +88,7 @@ ou en environnement de développement :
 docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo matomo-db
 ```
 
-`http://iparapheur.dom.local/matomo/` for the installation page.  
+`https://iparapheur.dom.local/matomo/` for the installation page.  
 Click "Next" on the firsts pages. Values should already set by Docker's environment variables.
 
 ```
