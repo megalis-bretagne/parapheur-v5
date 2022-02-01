@@ -40,7 +40,7 @@ services:
 
 
   nginx:
-    image: nginx:1.19.10-alpine
+    image: nginx:1.21.6-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 64M
