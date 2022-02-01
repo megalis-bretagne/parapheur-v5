@@ -3,14 +3,14 @@ Feature: Paramétrage métier "Bons de commande"
 
     Background:
         * api_v1.auth.login('user', 'password')
-    @wip
+
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/setup/tenant.create.feature') __row
 
         Examples:
             | name             |
             | Bons de commande |
-    @wip
+
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
         * call read('classpath:lib/setup/user.create.feature') __row
 
@@ -22,7 +22,7 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | dpourpre | dpourpre@dom.local | Delphine  | Pourpre  | a123456  | NONE      | disabled                   |
             | Bons de commande | mrose    | mrose@dom.local    | Michèle   | Rose     | a123456  | NONE      | disabled                   |
             | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
-    @wip
+
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/setup/metadata.create.feature') __row
 
@@ -30,7 +30,7 @@ Feature: Paramétrage métier "Bons de commande"
             | tenant           | key     | name    | type  | restrictedValues!     |
             | Bons de commande | montant | Montant | FLOAT | []                    |
             | Bons de commande | service | Service | TEXT  | ['Indigo', 'Pourpre'] |
-    @wip
+
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
@@ -42,14 +42,14 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | Pourpre    | ['dpourpre@dom.local'] | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
             | Bons de commande | Rose       | ['mrose@dom.local']    | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
             | Bons de commande | WebService | ['ws-bdc@dom.local']   | ''      | ['Fuchsia', 'Rose'] | {'action': true, 'creation': true}                 |
-    @wip
+
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant           | name      | deskName          | type      | mandatoryMetadata! |
             | Bons de commande | Signature | ##VARIABLE_DESK## | SIGNATURE | ['montant']        |
-    @wip
+
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row
 
