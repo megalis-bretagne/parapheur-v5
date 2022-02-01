@@ -16,6 +16,50 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+
+upstream up_crypto {
+    server crypto:8080;
+}
+
+
+upstream up_workflow {
+    server workflow:8080;
+}
+
+upstream up_pastell_connector {
+    server pastell-connector:8080;
+}
+
+upstream up_legacy_bridge {
+    server legacy-bridge:8080;
+}
+
+upstream up_pdf_stamp {
+    server pdf-stamp:8080;
+}
+
+upstream up_libersign {
+    server libersign:80;
+}
+
+upstream up_pes_viewer {
+    server pes-viewer:8888;
+}
+
+upstream up_filetransfer {
+  server filetransfer:8080;
+}
+
+upstream up_feeder {
+  server feeder:8003;
+}
+
+upstream up_web {
+    server web:80;
+}
+
+
+
 server {
 
   listen 443 ssl;
@@ -26,6 +70,9 @@ server {
 
   client_max_body_size 2000M;
   large_client_header_buffers 4 32k;
+
+  resolver 127.0.0.11 valid=30s ipv6=off;
+  resolver_timeout  10s;
 
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
@@ -42,39 +89,27 @@ server {
   }
 
   location /crypto {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_crypto crypto;
-    proxy_pass http://$upstream_crypto:8080/crypto;
+    proxy_pass http://up_crypto/crypto;
   }
 
   location /workflow {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_workflow workflow;
-    proxy_pass http://$upstream_workflow:8080/workflow;
+    proxy_pass http://up_workflow/workflow;
   }
 
   location /pastell-connector {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_pastell_connector pastell-connector;
-    proxy_pass http://$upstream_pastell_connector:8080/pastell-connector;
+    proxy_pass http://up_pastell_connector/pastell-connector;
   }
 
   location /ws-iparapheur {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_legacy_bridge legacy-bridge;
-    proxy_pass http://$upstream_legacy_bridge:8080/ws-iparapheur;
+    proxy_pass http://up_legacy_bridge/ws-iparapheur;
   }
 
   location /pdf-stamp {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_pdf_stamp pdf-stamp;
-    proxy_pass http://$upstream_pdf_stamp:8080/pdf-stamp;
+    proxy_pass http://up_pdf_stamp/pdf-stamp;
   }
 
   location /libersign {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_libersign libersign;
-    proxy_pass http://$upstream_libersign:80/libersign;
+    proxy_pass http://up_libersign/libersign;
   }
 
   location = /matomo/index.php {
@@ -104,9 +139,7 @@ server {
 
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
-      resolver 127.0.0.11 valid=30s;
-      set $upstream_pes_viewer pes-viewer;
-      proxy_pass http://$upstream_pes_viewer:8888/bl-xemwebviewer;
+      proxy_pass http://up_pes_viewer/bl-xemwebviewer;
   }
 
 #  location /ipng {
@@ -116,40 +149,26 @@ server {
 #  }
 
   location /filetransfer/ {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_filetransfer filetransfer;
-    proxy_pass http://$upstream_filetransfer:8080/;
+    proxy_pass http://up_filetransfer/;
   }
 
   location /feeder/ {
-      resolver 127.0.0.11 valid=30s;
-      set $upstream_feeder feeder;
-      proxy_pass http://$upstream_feeder:8003/;
+      proxy_pass http://up_feeder/;
   }
 
   location /feeder/socket {
-      resolver 127.0.0.11 valid=30s;
-      set $upstream_feeder feeder;
-      proxy_pass http://$upstream_feeder:8003/socket;
+      proxy_pass http://up_feeder/socket;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
   }
 
-  # location /libersign {
-  #   proxy_pass http://libersign/;
-  # }
-
   location ^~ / {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_web web;
-    proxy_pass http://$upstream_web:80/;
+    proxy_pass http://up_web;
   }
 
   location ^~ /sockjs-node {
-    resolver 127.0.0.11 valid=30s;
-    set $upstream_web web;
-    proxy_pass http://$upstream_web:80/sockjs-node;
+    proxy_pass http://up_web/sockjs-node;
   }
 
 }
