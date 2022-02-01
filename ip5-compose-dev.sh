@@ -337,6 +337,7 @@ __reset__()
       touch ./data/.gitkeep
       chmod -R 777 ./data
       chown -r 6789:6789 data/feeder/data
+      chown -r 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
 }
