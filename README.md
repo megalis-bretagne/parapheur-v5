@@ -79,16 +79,16 @@ docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
 #### Matomo post-install setup
 
 ```bash
-docker-compose up -d nginx matomo
+docker-compose up -d nginx matomo matomo-db
 ```
 
 ou en environnement de développement :
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo
+docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo matomo-db
 ```
 
-`http://iparapheur.dom.local/matomo/` for the installation page.  
+`https://iparapheur.dom.local/matomo/` for the installation page.  
 Click "Next" on the firsts pages. Values should already set by Docker's environment variables.
 
 ```
