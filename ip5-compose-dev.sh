@@ -335,8 +335,8 @@ __reset__()
       sudo rm -rf ./data
       mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
       touch ./data/.gitkeep
-      chmod -R 777 ./data
-      chown -r 6789:6789 data/feeder/data
+      sudo chmod -R 0777 ./data
+      sudo chown -R 6789:6789 data/feeder/data
       chown -r 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
