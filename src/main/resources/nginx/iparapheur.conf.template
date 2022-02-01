@@ -21,7 +21,6 @@ upstream up_crypto {
     server crypto:8080;
 }
 
-
 upstream up_workflow {
     server workflow:8080;
 }
@@ -57,8 +56,6 @@ upstream up_feeder {
 upstream up_web {
     server web:80;
 }
-
-
 
 server {
 
