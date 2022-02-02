@@ -32,9 +32,10 @@ Feature: Paramétrage métier "Circuits unitaires"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant             | name       | owners!               | parent! | associated! | permissions!                                                         |
-            | Circuits unitaires | Marron     | ['nmarron@dom.local'] | ''      | []          | {'action': true}                                                     |
-            | Circuits unitaires | WebService | ['ws-cu@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
+            | tenant             | name       | owners!               | parent! | associated!   | permissions!                                                         |
+            | Circuits unitaires | Châtaigne  | ['nmarron@dom.local'] | ''      | []            | {'action': true}                                                     |
+            | Circuits unitaires | Marron     | ['nmarron@dom.local'] | ''      | ['Châtaigne'] | {'action': true}                                                     |
+            | Circuits unitaires | WebService | ['ws-cu@dom.local']   | ''      | []            | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/setup/metadata.create.feature') __row
@@ -65,20 +66,20 @@ Feature: Paramétrage métier "Circuits unitaires"
         Examples:
             | tenant             | name                          | deskName | type        | mandatoryMetadata! |
             | Circuits unitaires | Cachet serveur                | Marron   | SEAL        | []                 |
-            | Circuits unitaires | Cachet serveur et metadonnees | Marron   | SEAL        | ['succes']         |
+#            | Circuits unitaires | Cachet serveur et metadonnees | Marron   | SEAL        | ['succes']         |
             | Circuits unitaires | Mail securise                 | Marron   | SECURE_MAIL | []                 |
-            | Circuits unitaires | Mail securise et metadonnees  | Marron   | SECURE_MAIL | ['succes']         |
+#            | Circuits unitaires | Mail securise et metadonnees  | Marron   | SECURE_MAIL | ['succes']         |
             | Circuits unitaires | Signature                     | Marron   | SIGNATURE   | []                 |
-            | Circuits unitaires | Signature et metadonnees      | Marron   | SIGNATURE   | ['succes']         |
+#            | Circuits unitaires | Signature et metadonnees      | Marron   | SIGNATURE   | ['succes']         |
             | Circuits unitaires | Visa                          | Marron   | VISA        | []                 |
-            | Circuits unitaires | Visa et metadonnees           | Marron   | VISA        | ['succes']         |
+#            | Circuits unitaires | Visa et metadonnees           | Marron   | VISA        | ['succes']         |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
             | tenant             | name  | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
-            | Circuits unitaires | CAdES | CAdES       |          | PKCS7           |                   |                  |                    | ''                       |
+#            | Circuits unitaires | CAdES | CAdES       |          | PKCS7           |                   |                  |                    | ''                       |
             | Circuits unitaires | PAdES | PAdES       |          | PADES           |                   |                  |                    | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
@@ -86,22 +87,22 @@ Feature: Paramétrage métier "Circuits unitaires"
 
         Examples:
             | tenant             | type  | name                          | description                   | workflow!                       | secureMailServerId | sealCertificate!                                     | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Circuits unitaires | CAdES | Cachet serveur                | Cachet serveur                | 'Cachet serveur'                |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
-            | Circuits unitaires | CAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
-            | Circuits unitaires | CAdES | Mail securise                 | Mail securise                 | 'Mail securise'                 | 1                  | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | CAdES | Mail securise et metadonnees  | Mail securise et metadonnees  | 'Mail securise et metadonnees'  | 1                  | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | CAdES | Signature                     | Signature                     | 'Signature'                     |                    | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | CAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      |                    | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | CAdES | Visa                          | Visa                          | 'Visa'                          |                    | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | CAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Cachet serveur                | Cachet serveur                | 'Cachet serveur'                |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Mail securise                 | Mail securise                 | 'Mail securise'                 | 1                  | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Mail securise et metadonnees  | Mail securise et metadonnees  | 'Mail securise et metadonnees'  | 1                  | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Signature                     | Signature                     | 'Signature'                     |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Visa                          | Visa                          | 'Visa'                          |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | CAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           |                    | ''                                                   | ''                       | []                          |
             | Circuits unitaires | PAdES | Cachet serveur                | Cachet serveur                | 'Cachet serveur'                |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
-            | Circuits unitaires | PAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
+#            | Circuits unitaires | PAdES | Cachet serveur et metadonnees | Cachet serveur et metadonnees | 'Cachet serveur et metadonnees' |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
             | Circuits unitaires | PAdES | Mail securise                 | Mail securise                 | 'Mail securise'                 | 1                  | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | PAdES | Mail securise et metadonnees  | Mail securise et metadonnees  | 'Mail securise et metadonnees'  | 1                  | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | PAdES | Mail securise et metadonnees  | Mail securise et metadonnees  | 'Mail securise et metadonnees'  | 1                  | ''                                                   | ''                       | []                          |
             | Circuits unitaires | PAdES | Signature                     | Signature                     | 'Signature'                     |                    | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | PAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | PAdES | Signature et metadonnees      | Signature et metadonnees      | 'Signature et metadonnees'      |                    | ''                                                   | ''                       | []                          |
             | Circuits unitaires | PAdES | Visa                          | Visa                          | 'Visa'                          |                    | ''                                                   | ''                       | []                          |
-            | Circuits unitaires | PAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           |                    | ''                                                   | ''                       | []                          |
+#            | Circuits unitaires | PAdES | Visa et metadonnees           | Visa et metadonnees           | 'Visa et metadonnees'           |                    | ''                                                   | ''                       | []                          |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
