@@ -75,7 +75,7 @@
                     <type>d:text</type>
                 </property>
                 <property name="iparapheur:sealTags">
-                    <title>Parapheur signature tags</title>
+                    <title>Parapheur seal tags</title>
                     <type>d:text</type>
                 </property>
                 <property name="iparapheur:index">
