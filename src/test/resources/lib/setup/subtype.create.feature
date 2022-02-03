@@ -3,11 +3,44 @@ Feature: Subtype setup lib
 
     Scenario: Create subtype
         * def tenantId = api_v1.entity.getIdByName(tenant)
-        * def workflowKey = workflow == '' ? null : api_v1.workflow.getKeyByName(tenantId, workflow)
         * def typeId = api_v1.type.getIdByName(tenantId, type)
-        * def sealCertificateId = sealCertificate == '' ? null : api_v1.sealCertificate.getIdByName(tenantId, sealCertificate)
-        * def script = workflowSelectionScript == '' ? '' : karate.readAsString(workflowSelectionScript)
-        * def secureMailServerId = secureMailServerId == '' ? null : secureMailServerId
+        * def defaults =
+"""
+{
+    "annotationsAllowed": false,
+    "creationPermittedDeskIds": null,
+    "externalSignatureConfig": {},
+    "externalSignatureConfigId": null,
+    "filterableByDeskIds": null,
+    "ipngTypeKeys": [],
+    "name": "",
+    "sealCertificateId": "",
+    "secureMailServerId": "",
+    "subtypeLayerRequestList": [],
+    "subtypeMetadataList": [],
+    "subtypeMetadataRequestList": [],
+    "validationWorkflowId": "",
+    "workflowSelectionScript": ""
+}
+"""
+      * def isEmpty =
+"""
+function (value) {
+    // https://stackoverflow.com/a/32108184
+    var isEmptyObject = value && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype;
+    var isEmptyArray = Array.isArray(value) && value.length == 0;
+    if (value == undefined || value == null || value == '' || isEmptyObject || value == []) {
+        return true;
+    }
+    return false;
+}
+"""
+        * def payload = karate.merge(defaults, __row)
+        * payload['description'] = isEmpty(payload['description']) ? payload['name'] : payload['description']
+        * payload['sealCertificateId'] = isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
+        * payload['secureMailServerId'] = isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
+        * payload['validationWorkflowId'] = isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
+        * payload['workflowSelectionScript'] = isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
         * def replaceMetadataKeyById =
 """
 function (tenantId, subtypeMetadataRequestList) {
@@ -25,30 +58,36 @@ function (tenantId, subtypeMetadataRequestList) {
 }
 """
 
-        * def metadataRequestList = replaceMetadataKeyById(tenantId, subtypeMetadataRequestList)
+        * payload['subtypeMetadataRequestList'] = replaceMetadataKeyById(tenantId, payload['subtypeMetadataRequestList'])
+
+        * def cleanupPayload =
+"""
+function(payload, defaults) {
+    /*for (var key in payload) {
+        if (payload.hasOwnProperty(key) && !defaults.hasOwnProperty(key)) {
+             delete payload[key];
+        }
+    }*/
+    var keys = ['externalSignatureConfig', 'secureMailServerId', 'sealCertificateId', 'workflowSelectionScript'];
+    for (var key of keys) {
+        if (isEmpty(payload[key])) {
+            delete payload[key];
+        }
+    }
+
+    delete payload['tenant'];
+    delete payload['type'];
+
+    return payload;
+}
+"""
+
+        * def payload = cleanupPayload(payload, defaults);
+        * karate.log(payload)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
             And header Accept = 'application/json'
-            And request
-"""
-{
-    "annotationsAllowed": true,
-    "creationPermittedDeskIds": null,
-    "description": "#(description)",
-    "externalSignatureConfig": {},
-    "externalSignatureConfigId": null,
-    "filterableByDeskIds": null,
-    "ipngTypeKeys": [],
-    "name": "#(name)",
-    "sealCertificateId": "#(sealCertificateId)",
-    "secureMailServerId": "#(secureMailServerId)",
-    "subtypeLayerRequestList": [],
-    "subtypeMetadataList": [],
-    "subtypeMetadataRequestList": #(metadataRequestList),
-    "validationWorkflowId": "#(workflowKey)",
-    "workflowSelectionScript": "#(script)"
-}
-"""
+            And request payload
         When method POST
         Then status 201

@@ -35,13 +35,13 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant           | name       | owners!                | parent! | associated!         | permissions!                                       |
-            | Bons de commande | Fuchsia    | ['lfuchsia@dom.local'] | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
-            | Bons de commande | Indigo     | ['findigo@dom.local']  | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
-            | Bons de commande | Pêche      | ['opeche@dom.local']   | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
-            | Bons de commande | Pourpre    | ['dpourpre@dom.local'] | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
-            | Bons de commande | Rose       | ['mrose@dom.local']    | ''      | []                  | {'action': true, 'archiving': true, 'chain': true} |
-            | Bons de commande | WebService | ['ws-bdc@dom.local']   | ''      | ['Fuchsia', 'Rose'] | {'action': true, 'creation': true}                 |
+            | tenant           | name       | owners!                | parent! | associated!         | permissions!                                                         |
+            | Bons de commande | Fuchsia    | ['lfuchsia@dom.local'] | ''      | []                  | {'action': true}                                                     |
+            | Bons de commande | Indigo     | ['findigo@dom.local']  | ''      | []                  | {'action': true}                                                     |
+            | Bons de commande | Pêche      | ['opeche@dom.local']   | ''      | []                  | {'action': true}                                                     |
+            | Bons de commande | Pourpre    | ['dpourpre@dom.local'] | ''      | []                  | {'action': true}                                                     |
+            | Bons de commande | Rose       | ['mrose@dom.local']    | ''      | []                  | {'action': true}                                                     |
+            | Bons de commande | WebService | ['ws-bdc@dom.local']   | ''      | ['Fuchsia', 'Rose'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
@@ -54,16 +54,16 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant           | name            | description     | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
-            | Bons de commande | Bon de commande | Bon de commande |          | PADES           | Montpellier       |                  |                    | ''                       |
+            | tenant           | name            | description     | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition! | workflowSelectionScript! |
+            | Bons de commande | Bon de commande | Bon de commande |          | PADES           | Montpellier       |                  | false             |                    | ''                       |
 
-    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant           | type            | name                | description         | workflow!   | secureMailServerId | sealCertificate! | workflowSelectionScript!                             | subtypeMetadataRequestList!                                                              |
-            | Bons de commande | Bon de commande | Bureau variable     | Bureau variable     | 'Signature' |                    | ''               | ''                                                   | []                                                                                       |
-            | Bons de commande | Bon de commande | Script de sélection | Script de sélection | ''          |                    | ''               | 'classpath:files/workflowSelectionScript/bdc.groovy' | [{"metadataKey": "service", "defaultValue": null, "mandatory": true, "editable": false}] |
+            | tenant           | type            | name                | description         | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                             | subtypeMetadataRequestList!                                                              |
+            | Bons de commande | Bon de commande | Bureau variable     | Bureau variable     | Signature            |                    |                   | ''                                                   | []                                                                                       |
+            | Bons de commande | Bon de commande | Script de sélection | Script de sélection |                      |                    |                   | 'classpath:files/workflowSelectionScript/bdc.groovy' | [{"metadataKey": "service", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row

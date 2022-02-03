@@ -34,11 +34,11 @@ Feature: Paramétrage métier Factures
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant   | name       | owners!                   | parent! | associated!          | permissions!                                       |
-            | Factures | Jaune      | ['rjaune@dom.local']      | ''      | []                   | {'action': true}                                   |
-            | Factures | Magenta    | ['pmagenta@dom.local']    | ''      | []                   | {'action': true}                                   |
-            | Factures | Cyan       | ['icyan@dom.local']       | ''      | ['Jaune', 'Magenta'] | {'action': true, 'archiving': true, 'chain': true} |
-            | Factures | WebService | ['ws-factures@dom.local'] | ''      | []                   | {'action': true, 'creation': true}                 |
+            | tenant   | name       | owners!                   | parent! | associated!          | permissions!                                                         |
+            | Factures | Jaune      | ['rjaune@dom.local']      | ''      | []                   | {'action': true}                                                     |
+            | Factures | Magenta    | ['pmagenta@dom.local']    | ''      | []                   | {'action': true}                                                     |
+            | Factures | Cyan       | ['icyan@dom.local']       | ''      | ['Jaune', 'Magenta'] | {'action': true}                                                     |
+            | Factures | WebService | ['ws-factures@dom.local'] | ''      | []                   | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     # @todo: autres metadonnées
     Scenario Outline: Create metadata "${name}" of type ${type}
@@ -59,12 +59,12 @@ Feature: Paramétrage métier Factures
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant   | name | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
-            | Factures | VISA | Visa PAdES  |          | PADES           | Montpellier       |                  |                    | ''                       |
+            | tenant   | name | description | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition! | workflowSelectionScript! |
+            | Factures | VISA | Visa PAdES  |          | PADES           | Montpellier       |                  | false             |                    | ''                       |
     # @fixme: sous-type créé, mais http call failed after 30030 milliseconds for url: /api/v1/admin/tenant/<uuid>/typology/type/<uuid>/subtype
-    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant   | type | name         | description  | workflow! | secureMailServerId | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Factures | VISA | VISA_MONODOC | Visa monodoc | 'Visa'    |                    | ''               | ''                       | []                          |
+            | tenant   | type | name         | description  | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | Factures | VISA | VISA_MONODOC | Visa monodoc | Visa                 |                    |                   | ''                       | []                          |

@@ -30,9 +30,9 @@ Feature: Paramétrage métier ACTES HELIOS - petites collectivités
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant                               | name       | owners!               | parent! | associated! | permissions!                                       |
-            | ACTES HELIOS - petites collectivités | Mauve      | ['kmauve@dom.local']  | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | ACTES HELIOS - petites collectivités | WebService | ['ws-ahpc@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
+            | tenant                               | name       | owners!               | parent! | associated! | permissions!                                                         |
+            | ACTES HELIOS - petites collectivités | Mauve      | ['kmauve@dom.local']  | ''      | []          | {'action': true}                                                     |
+            | ACTES HELIOS - petites collectivités | WebService | ['ws-ahpc@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
@@ -45,19 +45,19 @@ Feature: Paramétrage métier ACTES HELIOS - petites collectivités
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant                               | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       | workflowSelectionScript! |
-            | ACTES HELIOS - petites collectivités | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          | ''                       |
-            | ACTES HELIOS - petites collectivités | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Montpellier       |                  | {"x":50,"y":50,"page":1} | ''                       |
-            | ACTES HELIOS - petites collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            |                          | ''                       |
+            | tenant                               | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       | workflowSelectionScript! |
+            | ACTES HELIOS - petites collectivités | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  | false             |                          | ''                       |
+            | ACTES HELIOS - petites collectivités | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Montpellier       |                  | false             | {"x":50,"y":50,"page":1} | ''                       |
+            | ACTES HELIOS - petites collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            | false             |                          | ''                       |
 
-    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant                               | type          | name                    | description                     | workflow!   | secureMailServerId | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | ACTES HELIOS - petites collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                       | []                          |
-            | ACTES HELIOS - petites collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                       | []                          |
-            | ACTES HELIOS - petites collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | 'Signature' |                    | ''               | ''                       | []                          |
+            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | ACTES HELIOS - petites collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                          |
+            | ACTES HELIOS - petites collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                          |
+            | ACTES HELIOS - petites collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | Signature            |                    |                   | ''                       | []                          |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
