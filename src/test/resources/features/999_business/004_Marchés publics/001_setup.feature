@@ -36,12 +36,12 @@ Feature: Paramétrage métier "Marchés publics"
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant          | name       | owners!                  | parent!     | associated! | permissions!                                       |
-            | Marchés publics | Corail     | ['ncorail@dom.local']    | ''          | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | Marchés publics | Orange     | ['sorange@dom.local']    | 'Corail'    | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | Marchés publics | Mandarine  | ['smandarine@dom.local'] | 'Orange'    | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | Marchés publics | Safran     | ['vsafran@dom.local']    | 'Mandarine' | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | Marchés publics | WebService | ['ws-mp@dom.local']      | ''          | []          | {'action': true, 'creation': true}                 |
+            | tenant          | name       | owners!                  | parent!     | associated! | permissions!                                                         |
+            | Marchés publics | Corail     | ['ncorail@dom.local']    | ''          | []          | {'action': true}                                                     |
+            | Marchés publics | Orange     | ['sorange@dom.local']    | 'Corail'    | []          | {'action': true}                                                     |
+            | Marchés publics | Mandarine  | ['smandarine@dom.local'] | 'Orange'    | []          | {'action': true}                                                     |
+            | Marchés publics | Safran     | ['vsafran@dom.local']    | 'Mandarine' | []          | {'action': true}                                                     |
+            | Marchés publics | WebService | ['ws-mp@dom.local']      | ''          | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario: Create a 4 steps workflow, 3 first steps are VISA, fourth step is a signature, first validator is "Safran", other validators are "Boss of"
         * def tenantId = api_v1.entity.getIdByName('Marchés publics')
@@ -72,15 +72,15 @@ Feature: Paramétrage métier "Marchés publics"
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant          | name          | description   | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition! | workflowSelectionScript! |
-            | Marchés publics | Marché public | Marché public |          | PADES           | Montpellier       |                  |                    | ''                       |
+            | tenant          | name          | description   | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition! | workflowSelectionScript! |
+            | Marchés publics | Marché public | Marché public |          | PADES           | Montpellier       |                  | false             |                    | ''                       |
 
-    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant          | type          | name         | description  | workflow!                 | secureMailServerId | sealCertificate! | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Marchés publics | Marché public | Service fait | Service fait | 'Validation et signature' |                    | ''               | ''                       | []                          |
+            | tenant          | type          | name         | description  | validationWorkflowId    | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
+            | Marchés publics | Marché public | Service fait | Service fait | Validation et signature |                    |                   | ''                       | []                          |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row

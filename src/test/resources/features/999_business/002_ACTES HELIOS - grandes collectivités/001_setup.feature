@@ -34,11 +34,11 @@ Feature: Paramétrage métier ACTES HELIOS - grandes collectivités
         * call read('classpath:lib/setup/desk.create.feature') __row
 
         Examples:
-            | tenant                               | name       | owners!               | parent! | associated! | permissions!                                       |
-            | ACTES HELIOS - grandes collectivités | Bleu       | ['ibleu@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | ACTES HELIOS - grandes collectivités | Rouge      | ['arouge@dom.local']  | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | ACTES HELIOS - grandes collectivités | Vert       | ['cvert@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
-            | ACTES HELIOS - grandes collectivités | WebService | ['ws-ahgc@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
+            | tenant                               | name       | owners!               | parent! | associated! | permissions!                                                         |
+            | ACTES HELIOS - grandes collectivités | Bleu       | ['ibleu@dom.local']   | ''      | []          | {'action': true}                                                     |
+            | ACTES HELIOS - grandes collectivités | Rouge      | ['arouge@dom.local']  | ''      | []          | {'action': true}                                                     |
+            | ACTES HELIOS - grandes collectivités | Vert       | ['cvert@dom.local']   | ''      | []          | {'action': true}                                                     |
+            | ACTES HELIOS - grandes collectivités | WebService | ['ws-ahgc@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/setup/metadata.create.feature') __row
@@ -61,20 +61,20 @@ Feature: Paramétrage métier ACTES HELIOS - grandes collectivités
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant                               | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       |
-            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  |                          |
-            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Bobigny           |                  | {"x":50,"y":50,"page":1} |
-            | ACTES HELIOS - grandes collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Bobigny           | 93000            |                          |
+            | tenant                               | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
+            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | Signature CAdES (ACTES)            | ACTES    | PKCS7           |                   |                  | false             |                          |
+            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | Signature PAdES (ACTES)            | ACTES    | PADES           | Bobigny           |                  | false             | {"x":50,"y":50,"page":1} |
+            | ACTES HELIOS - grandes collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Bobigny           | 93000            | false             |                          |
 
-    Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         # @todo: (modifier le script de sélection)
         Examples:
-            | tenant                               | type          | name                    | description                     | workflow!   | secureMailServerId | sealCertificate! | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
-            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | 'Signature' |                    | ''               | ''                                                             | []                                                                                         |
-            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | ''          |                    | ''               | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
+            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
+            | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature            |                    |                   | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature            |                    |                   | ''                                                             | []                                                                                         |
+            | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        |                      |                    |                   | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row

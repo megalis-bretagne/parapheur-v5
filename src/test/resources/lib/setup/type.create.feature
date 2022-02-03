@@ -2,23 +2,27 @@
 Feature: Type setup lib
 
     Scenario: Create type
+        * def defaults =
+"""
+{
+    "name": "",
+    "signatureFormat": "",
+    "protocol": "",
+    "signatureVisible": false,
+    "signatureLocation": "",
+    "signatureZipCode": "",
+    "signaturePosition": {}
+}
+"""
+        * def row = karate.merge(defaults, __row)
+        * def payload = karate.merge({"description": row['name']}, row)
+
         * def tenantId = api_v1.entity.getIdByName(tenant)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/typology/type'
             And header Accept = 'application/json'
-            And request
-"""
-{
-    "name": "#(name)",
-    "description": "#(description)",
-    "signatureFormat": "#(signatureFormat)",
-    "protocol": "#(protocol)",
-    "signatureVisible": true,
-    "signatureLocation": "#(signatureLocation)",
-    "signatureZipCode": "#(signatureZipCode)",
-    "signaturePosition": #(signaturePosition)
-}
-"""
+            And request payload
         When method POST
         Then status 201
+#

@@ -315,6 +315,30 @@ function fn(config) {
     };
 
     /**
+     * secureMail
+     */
+    config.api_v1['secureMailServer'] = {};
+    config.api_v1.secureMailServer['getIdByName'] = function (tenantId, name, containing = false) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/admin/tenant/' + tenantId + '/secureMail/server')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .param('asc', 'true')
+            .param('page', 0)
+            .param('pageSize', 100)
+            .param('sortBy', 'ID')
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting secure mail id by its name');
+        }
+
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'secureMail', 'name', name, containing);
+        return element['id'];
+    };
+
+    /**
      * user
      */
     config.api_v1['user'] = {};
@@ -520,15 +544,15 @@ function fn(config) {
      */
     config.api_v1['utils'] = {};
     config.api_v1.utils['filterSingleElementFromGetResponse'] = function (response, entity, field, value, containing = false) {
-        if (response.body.total === 0) {
+        /*if (response.body.total === 0) {
             filtered = [];
-        } else {
+        } else {*/
             if (containing === true) {
                 filtered = [karate.jsonPath(response.body, "$.data[0]")];//@todo: still filter, but reduce results
             } else {
                 filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
             }
-        }
+        // }
 
         var matching = containing === true ? 'containing' : 'matching', message;
 

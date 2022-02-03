@@ -68,26 +68,26 @@ Feature: Basic setup
 
 		# @fixme: remplir les colonnes signatureLocation | signatureZipCode | signaturePosition
 		Examples:
-			| tenant         | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signaturePosition!       |
-			| Default tenant | CACHET      | Cachet serveur    |          | PADES           |                   |                  |                          |
-			| Default tenant | SIGN_EXT    | Signature externe |          | PADES           |                   |                  |                          |
-			| Default tenant | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  |                          |
-			| Default tenant | SIGN_PES_V2 | Signature PES_V2  |          | PES_V2          |                   |                  |                          |
-			| Default tenant | SIGN_PKCS7  | Signature PKCS7   |          | PKCS7           |                   |                  |                          |
-			| Default tenant | VISA        | Visa              |          | PADES           |                   |                  |                          |
+			| tenant         | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
+			| Default tenant | CACHET      | Cachet serveur    |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_EXT    | Signature externe |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_PES_V2 | Signature PES_V2  |          | PES_V2          |                   |                  | false             |                          |
+			| Default tenant | SIGN_PKCS7  | Signature PKCS7   |          | PKCS7           |                   |                  | false             |                          |
+			| Default tenant | VISA        | Visa              |          | PADES           |                   |                  | false             |                          |
 
 	@todo-karate @signature-format
-	Scenario Outline: Create subtype "${name}" for type "${type}" and "${workflow}" workflow in "${tenant}"
+	Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
 		* call read('classpath:lib/setup/subtype.create.feature') __row
 
 		Examples:
-			| tenant         | type        | name                  | description                   | workflow!                         | secureMailServerId | sealCertificate!                                     | workflowSelectionScript! | subtypeMetadataRequestList! |
-			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | 'Transparent - Cachet Serveur'    |                    | 'Christian Buffin - Default tenant - Cachet serveur' | ''                       | []                          |
-			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | 'Transparent - Signature externe' |                    | ''                                                   | ''                       | []                          |
-			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | 'Transparent - Signature'         |                    | ''                                                   | ''                       | []                          |
-			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | 'Transparent - Signature'         |                    | ''                                                   | ''                       | []                          |
-			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | 'Transparent - Signature'         |                    | ''                                                   | ''                       | []                          |
-			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | 'Transparent - Visa'              |                    | ''                                                   | ''                       | []                          |
+			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataRequestList! |
+			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                          |
+			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                          |
+			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                          |
+			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                          |
+			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                          |
+			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                          |
 
 	Scenario Outline: Set the signature image for user "${email}"
 		* call read('classpath:lib/setup/user.signatureImage.create.feature') __row
