@@ -70,6 +70,14 @@
                     <title>Parapheur annotations</title>
                     <type>d:text</type>
                 </property>
+                <property name="iparapheur:signatureTags">
+                    <title>Parapheur signature tags</title>
+                    <type>d:text</type>
+                </property>
+                <property name="iparapheur:sealTags">
+                    <title>Parapheur signature tags</title>
+                    <type>d:text</type>
+                </property>
                 <property name="iparapheur:index">
                     <title>Document order</title>
                     <type>d:int</type>
