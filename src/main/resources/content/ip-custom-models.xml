@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.8</version>
+    <version>1.0</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
