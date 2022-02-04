@@ -14,17 +14,17 @@ Feature: Paramétrage métier ACTES HELIOS - petites collectivités
         * call read('classpath:lib/setup/user.create.feature') __row
 
         Examples:
-            | tenant         | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Default tenant | kmauve   | kmauve@dom.local  | Karima    | Mauve    | a123456  | NONE      | disabled                   |
-            | Default tenant | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
+            | ACTES HELIOS - petites collectivités | kmauve   | kmauve@dom.local  | Karima    | Mauve    | a123456  | NONE      | disabled                   |
+            | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
 
-    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
-        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
-
-        Examples:
-            | email             | tenant                               |
-            | kmauve@dom.local  | ACTES HELIOS - petites collectivités |
-            | ws-ahpc@dom.local | ACTES HELIOS - petites collectivités |
+#    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
+#        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
+#
+#        Examples:
+#            | email             | tenant                               |
+#            | kmauve@dom.local  | ACTES HELIOS - petites collectivités |
+#            | ws-ahpc@dom.local | ACTES HELIOS - petites collectivités |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row

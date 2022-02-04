@@ -14,23 +14,23 @@ Feature: Paramétrage métier "Marchés publics"
         * call read('classpath:lib/setup/user.create.feature') __row
 
         Examples:
-            | tenant         | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency |
-            | Default tenant | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | a123456  | NONE      | disabled                   |
-            | Default tenant | sorange    | sorange@dom.local    | Stéphanie | Orange    | a123456  | NONE      | disabled                   |
-            | Default tenant | smandarine | smandarine@dom.local | Sabrina   | Mandarine | a123456  | NONE      | disabled                   |
-            | Default tenant | vsafran    | vsafran@dom.local    | Vincent   | Safran    | a123456  | NONE      | disabled                   |
-            | Default tenant | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456  | NONE      | disabled                   |
+            | tenant          | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency |
+            | Marchés publics | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | a123456  | NONE      | disabled                   |
+            | Marchés publics | sorange    | sorange@dom.local    | Stéphanie | Orange    | a123456  | NONE      | disabled                   |
+            | Marchés publics | smandarine | smandarine@dom.local | Sabrina   | Mandarine | a123456  | NONE      | disabled                   |
+            | Marchés publics | vsafran    | vsafran@dom.local    | Vincent   | Safran    | a123456  | NONE      | disabled                   |
+            | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456  | NONE      | disabled                   |
 
-    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
-        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
-
-        Examples:
-            | email                | tenant          |
-            | ncorail@dom.local    | Marchés publics |
-            | sorange@dom.local    | Marchés publics |
-            | smandarine@dom.local | Marchés publics |
-            | vsafran@dom.local    | Marchés publics |
-            | ws-mp@dom.local      | Marchés publics |
+#    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
+#        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
+#
+#        Examples:
+#            | email                | tenant          |
+#            | ncorail@dom.local    | Marchés publics |
+#            | sorange@dom.local    | Marchés publics |
+#            | smandarine@dom.local | Marchés publics |
+#            | vsafran@dom.local    | Marchés publics |
+#            | ws-mp@dom.local      | Marchés publics |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
