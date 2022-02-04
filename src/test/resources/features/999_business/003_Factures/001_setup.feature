@@ -14,21 +14,21 @@ Feature: Paramétrage métier Factures
         * call read('classpath:lib/setup/user.create.feature') __row
 
         Examples:
-            | tenant         | userName    | email                 | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Default tenant | icyan       | icyan@dom.local       | Isabelle  | Cyan     | a123456  | NONE      | disabled                   |
-            | Default tenant | pmagenta    | pmagenta@dom.local    | Pierre    | Magenta  | a123456  | NONE      | disabled                   |
-            | Default tenant | rjaune      | rjaune@dom.local      | Rébecca   | Jaune    | a123456  | NONE      | disabled                   |
-            | Default tenant | ws-factures | ws-factures@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant   | userName    | email                 | firstName | lastName | password | privilege | notificationsCronFrequency |
+            | Factures | icyan       | icyan@dom.local       | Isabelle  | Cyan     | a123456  | NONE      | disabled                   |
+            | Factures | pmagenta    | pmagenta@dom.local    | Pierre    | Magenta  | a123456  | NONE      | disabled                   |
+            | Factures | rjaune      | rjaune@dom.local      | Rébecca   | Jaune    | a123456  | NONE      | disabled                   |
+            | Factures | ws-factures | ws-factures@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
 
-    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
-        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
-
-        Examples:
-            | email                 | tenant   |
-            | icyan@dom.local       | Factures |
-            | pmagenta@dom.local    | Factures |
-            | rjaune@dom.local      | Factures |
-            | ws-factures@dom.local | Factures |
+#    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
+#        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
+#
+#        Examples:
+#            | email                 | tenant   |
+#            | icyan@dom.local       | Factures |
+#            | pmagenta@dom.local    | Factures |
+#            | rjaune@dom.local      | Factures |
+#            | ws-factures@dom.local | Factures |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
