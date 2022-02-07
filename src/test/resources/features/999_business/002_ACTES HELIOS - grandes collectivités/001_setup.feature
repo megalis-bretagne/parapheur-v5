@@ -1,5 +1,5 @@
 @actes-helios-grandes-collectivites @business @proposal @setup
-Feature: Paramétrage métier ACTES HELIOS - grandes collectivités
+Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
     Background:
         * api_v1.auth.login('user', 'password')
 

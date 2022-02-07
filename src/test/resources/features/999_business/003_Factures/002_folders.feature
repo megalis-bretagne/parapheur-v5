@@ -1,5 +1,5 @@
 @business @factures @folder @proposal
-Feature: Création de dossiers pour le paramétrage métier Factures
+Feature: Création de dossiers pour le paramétrage métier "Factures"
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =

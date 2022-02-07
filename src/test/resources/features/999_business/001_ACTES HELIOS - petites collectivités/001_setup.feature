@@ -1,5 +1,5 @@
 @actes-helios-petites-collectivites @business @proposal @setup
-Feature: Paramétrage métier ACTES HELIOS - petites collectivités
+Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
     Background:
         * api_v1.auth.login('user', 'password')
 

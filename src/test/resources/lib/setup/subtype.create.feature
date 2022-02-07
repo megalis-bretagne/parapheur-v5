@@ -83,7 +83,6 @@ function(payload, defaults) {
 """
 
         * def payload = cleanupPayload(payload, defaults);
-        * karate.log(payload)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'

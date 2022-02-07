@@ -1,5 +1,5 @@
 @business @bons-de-commande @folder @proposal
-Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
+Feature: Création de dossiers pour le paramétrage métier "Bons de commande"
 
   Scenario Outline: Create ${count} "${subtype}" folders ${withOrWithout} annex
     * def params =
