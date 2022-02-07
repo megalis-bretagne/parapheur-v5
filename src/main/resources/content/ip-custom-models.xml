@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>0.8</version>
+    <version>1.0</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -68,6 +68,14 @@
                 </property>
                 <property name="iparapheur:annotations">
                     <title>Parapheur annotations</title>
+                    <type>d:text</type>
+                </property>
+                <property name="iparapheur:signatureTags">
+                    <title>Parapheur signature tags</title>
+                    <type>d:text</type>
+                </property>
+                <property name="iparapheur:sealTags">
+                    <title>Parapheur seal tags</title>
                     <type>d:text</type>
                 </property>
                 <property name="iparapheur:index">

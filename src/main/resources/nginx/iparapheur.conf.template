@@ -89,20 +89,12 @@ server {
     proxy_pass http://up_crypto/crypto;
   }
 
-  location /workflow {
-    proxy_pass http://up_workflow/workflow;
-  }
-
   location /pastell-connector {
     proxy_pass http://up_pastell_connector/pastell-connector;
   }
 
   location /ws-iparapheur {
     proxy_pass http://up_legacy_bridge/ws-iparapheur;
-  }
-
-  location /pdf-stamp {
-    proxy_pass http://up_pdf_stamp/pdf-stamp;
   }
 
   location /libersign {
@@ -162,10 +154,6 @@ server {
 
   location ^~ / {
     proxy_pass http://up_web;
-  }
-
-  location ^~ /sockjs-node {
-    proxy_pass http://up_web/sockjs-node;
   }
 
 }
