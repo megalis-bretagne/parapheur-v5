@@ -26,6 +26,8 @@ function fn(config) {
 
     // @todo: as pure javascript functions
     config.api_v1.auth['login'] = function (username, password, status = null) {
+        api_v1.auth.logout();
+
         karate.configure('headers', {
             Accept: 'application/json'
         });
@@ -55,6 +57,18 @@ function fn(config) {
         }
 
         return rv;
+    };
+    config.api_v1.auth['logout'] = function () {
+        response = karate
+            .http(baseUrl)
+            .path('/auth/realms/api/protocol/openid-connect/logout')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while logging out');
+        }
     };
 
     /**

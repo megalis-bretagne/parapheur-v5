@@ -1,5 +1,5 @@
 @business @factures @proposal @setup
-Feature: Paramétrage métier Factures
+Feature: Paramétrage métier "Factures"
     Background:
         * api_v1.auth.login('user', 'password')
 
@@ -7,7 +7,7 @@ Feature: Paramétrage métier Factures
         * call read('classpath:lib/setup/tenant.create.feature') __row
 
         Examples:
-            | name              |
+            | name     |
             | Factures |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"

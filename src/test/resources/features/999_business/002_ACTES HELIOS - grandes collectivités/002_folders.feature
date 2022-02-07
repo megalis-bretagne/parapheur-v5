@@ -1,5 +1,5 @@
 @actes-helios-grandes-collectivites @business @folder @proposal
-Feature: Création de dossiers pour le paramétrage métier ACTES HELIOS - grandes collectivités
+Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - grandes collectivités"
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
@@ -15,7 +15,6 @@ Feature: Création de dossiers pour le paramétrage métier ACTES HELIOS - grand
 """
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
-        * karate.log(folders)
         * api_v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
         #@fixme: HELIOS retourne 500 à l'envoi du dossier

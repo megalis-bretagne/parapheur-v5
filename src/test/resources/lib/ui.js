@@ -56,7 +56,7 @@ function fn(config) {
      * URL
      **/
     config.ui['url'] = {};
-    config.ui.url['logout'] = '/auth/realms/api/v1/protocol/openid-connect/logout';
+    config.ui.url['logout'] = '/auth/realms/api/protocol/openid-connect/logout';
 
     return config;
 }

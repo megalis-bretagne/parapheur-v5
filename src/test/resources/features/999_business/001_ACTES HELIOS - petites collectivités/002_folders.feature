@@ -1,5 +1,5 @@
 @actes-helios-petites-collectivites @business @folder @proposal
-Feature: Création de dossiers brouillon pour le paramétrage métier ACTES HELIOS - petites collectivités
+Feature: Création de dossiers brouillon pour le paramétrage métier "ACTES HELIOS - petites collectivités"
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
