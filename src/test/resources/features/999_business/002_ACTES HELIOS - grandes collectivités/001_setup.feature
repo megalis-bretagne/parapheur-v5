@@ -20,16 +20,6 @@ Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
             | ACTES HELIOS - grandes collectivités | ibleu    | ibleu@dom.local   | Inès      | Bleu     | a123456  | NONE      | disabled                   |
             | ACTES HELIOS - grandes collectivités | ws-ahgc  | ws-ahgc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
 
-#    Scenario Outline: Associate user "${email}" with tenant "${tenant}"
-#        * call read('classpath:lib/setup/tenant.user.associate.feature') __row
-#
-#        Examples:
-#            | email             | tenant                               |
-#            | arouge@dom.local  | ACTES HELIOS - grandes collectivités |
-#            | cvert@dom.local   | ACTES HELIOS - grandes collectivités |
-#            | ibleu@dom.local   | ACTES HELIOS - grandes collectivités |
-#            | ws-ahgc@dom.local | ACTES HELIOS - grandes collectivités |
-
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
 

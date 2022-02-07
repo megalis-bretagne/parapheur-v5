@@ -2,6 +2,7 @@
 Feature: Subtype setup lib
 
     Scenario: Create subtype
+        #* pause(5)
         * def tenantId = api_v1.entity.getIdByName(tenant)
         * def typeId = api_v1.type.getIdByName(tenantId, type)
         * def defaults =

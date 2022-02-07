@@ -26,8 +26,6 @@ function fn(config) {
 
     // @todo: as pure javascript functions
     config.api_v1.auth['login'] = function (username, password, status = null) {
-        api_v1.auth.logout();
-
         karate.configure('headers', {
             Accept: 'application/json'
         });

@@ -1,6 +1,7 @@
 @karate-function
 Feature: Authentication lib
     Background:
+        * api_v1.auth.logout()
         * configure cookies = null
 
 	Scenario: Assert success
