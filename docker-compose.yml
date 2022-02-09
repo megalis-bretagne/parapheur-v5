@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.5.0
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.5.1
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -103,13 +103,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.5.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.6.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta05
+      - VERSION=5.0.0-beta06
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -176,7 +176,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.3
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.4
     restart: unless-stopped
     tty: true
     mem_limit: 512M
