@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.5.1
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.5.2
     restart: unless-stopped
     tty: true
     mem_limit: 1024M
@@ -103,13 +103,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.6.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.6.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta06
+      - VERSION=5.0.0-beta07
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -118,7 +118,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.1.3
+    image: registry.libriciel.fr/public/signature/workflow:1.1.4
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -176,7 +176,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.4
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.0.5
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -215,24 +215,25 @@ services:
       # https://github.com/Alfresco/acs-community-deployment/blob/master/docker-compose/docker-compose.yml
       # TODO: -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.secureComms=none -Dsolr.base.url=/solr -Dindex.subsystem.name=solr6
       JAVA_OPTS: "
-                  -XX:+UseContainerSupport
-                  -Ddeployment.method=DOCKER_COMPOSE
+        -XX:+UseContainerSupport
+        -Ddeployment.method=DOCKER_COMPOSE
 
-          -Ddb.driver=org.postgresql.Driver
-          -Ddb.username=alfresco
-          -Ddb.password=alfresco
-          -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
-          -Dalfresco.host=${CONTENT_HOST}
-          -Dalfresco.port=${CONTENT_PORT}
-                  -Dalf.root=/var/lib/alfresco
+        -Ddb.driver=org.postgresql.Driver
+        -Ddb.username=alfresco
+        -Ddb.password=alfresco
+        -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
+        -Dalfresco.host=${CONTENT_HOST}
+        -Dalfresco.port=${CONTENT_PORT}
+        -Dalf.root=/var/lib/alfresco
 
-                  -Dheartbeat.enabled=false
-          -Dtransform.service.enabled=false
-                  -Dlocal.transform.service.enabled=false
-                  -Dlegacy.transform.service.enabled=false
-                  -Dmessaging.subsystem.autoStart=false
-                  -Dsystem.workflow.engine.activiti.enabled=false
-          "
+        -Dheartbeat.enabled=false
+        -Dmessaging.subsystem.autoStart=false
+        -Dsystem.workflow.engine.activiti.enabled=false
+
+        -Dtransform.service.enabled=false
+        -Dlocal.transform.service.enabled=false
+        -Dlegacy.transform.service.enabled=false
+      "
     depends_on:
       postgres:
         condition: service_healthy
