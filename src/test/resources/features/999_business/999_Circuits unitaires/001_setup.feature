@@ -69,43 +69,44 @@ Feature: Paramétrage métier "Circuits unitaires"
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant             | name          | protocol | signatureFormat | signatureLocation | signatureZipCode |
-            | Circuits unitaires | ACTES - CAdES | ACTES    | PKCS7           |                   |                  |
-            | Circuits unitaires | ACTES - PAdES | ACTES    | PADES           | Montpellier       |                  |
-            | Circuits unitaires | Automatique   | NONE     | AUTO            | Montpellier       | 34000            |
-            | Circuits unitaires | CAdES         | NONE     | PKCS7           |                   |                  |
-            | Circuits unitaires | HELIOS        | HELIOS   | PES_V2          | Montpellier       | 34000            |
-            | Circuits unitaires | PAdES         | NONE     | PADES           | Montpellier       |                  |
-            | Circuits unitaires | XAdES         | NONE     | PES_V2          | Montpellier       | 34000            |
+            | tenant             | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
+            | Circuits unitaires | ACTES - CAdES      | ACTES    | PKCS7           |                   |                  | false             | {}                       |
+            | Circuits unitaires | ACTES - PAdES      | ACTES    | PADES           | Montpellier       |                  | true              | {"x":50,"y":50,"page":1} |
+            | Circuits unitaires | Automatique        | NONE     | AUTO            | Montpellier       | 34000            | true              | {"x":50,"y":50,"page":1} |
+            | Circuits unitaires | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                       |
+            | Circuits unitaires | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                       |
+            | Circuits unitaires | PAdES              | NONE     | PADES           | Montpellier       |                  | true              | {"x":50,"y":50,"page":1} |
+            | Circuits unitaires | XAdES det          | NONE     | PES_V2_DETACHED | Montpellier       | 34000            | false             | {}                       |
+            # @fixme (ailleurs ?): protocol NONE -> PES_V2_DETACHED (XAdES det, tous format sauf XML), sinon avec HELIOS, on reste bien sur PES_V2 (XAdES env, uniquement format XML/PES_V2)
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant             | type          | name           | validationWorkflowId | sealCertificateId                                  | secureMailServerId            |
-            | Circuits unitaires | ACTES - CAdES | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | ACTES - CAdES | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | ACTES - CAdES | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | ACTES - PAdES | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
-            | Circuits unitaires | ACTES - PAdES | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | ACTES - PAdES | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | ACTES - PAdES | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | Automatique   | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | Automatique   | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | Automatique   | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | CAdES         | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | CAdES         | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | CAdES         | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | HELIOS        | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | HELIOS        | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | HELIOS        | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | PAdES         | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
-            | Circuits unitaires | PAdES         | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | PAdES         | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | PAdES         | Visa           | Visa                 |                                                    |                               |
-            | Circuits unitaires | XAdES         | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
-            | Circuits unitaires | XAdES         | Signature      | Signature            |                                                    |                               |
-            | Circuits unitaires | XAdES         | Visa           | Visa                 |                                                    |                               |
+            | tenant             | type               | name           | validationWorkflowId | sealCertificateId                                  | secureMailServerId            |
+            | Circuits unitaires | ACTES - CAdES      | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | ACTES - CAdES      | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | ACTES - CAdES      | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | ACTES - PAdES      | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
+            | Circuits unitaires | ACTES - PAdES      | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | ACTES - PAdES      | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | ACTES - PAdES      | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | Automatique        | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | Automatique        | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | Automatique        | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | CAdES              | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | CAdES              | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | CAdES              | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | HELIOS - XAdES env | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | HELIOS - XAdES env | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | HELIOS - XAdES env | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | PAdES              | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
+            | Circuits unitaires | PAdES              | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | PAdES              | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | PAdES              | Visa           | Visa                 |                                                    |                               |
+            | Circuits unitaires | XAdES det          | Mail securise  | Mail securise        |                                                    | Mail securise Pastell cbuffin |
+            | Circuits unitaires | XAdES det          | Signature      | Signature            |                                                    |                               |
+            | Circuits unitaires | XAdES det          | Visa           | Visa                 |                                                    |                               |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
