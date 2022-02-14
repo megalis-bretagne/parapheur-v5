@@ -132,8 +132,10 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 'doc': 'application/msword',
                 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'odt': 'application/vnd.oasis.opendocument.text',
+                'p7s': 'application/pkcs7-signature',
                 'pdf': 'application/pdf',
-                'png': 'image/png'
+                'png': 'image/png',
+                'xml': 'text/xml'
             };
         if (extension in associations) {
             return associations[extension];
