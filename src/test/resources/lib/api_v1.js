@@ -102,6 +102,10 @@ function fn(config) {
             mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile
         ;
 
+        if (typeof mainFilePath !== 'object') {
+            mainFilePath = {'file': mainFilePath, 'detached': null};
+        }
+
         for (var i=start;i<=max;i++) {
             var draftFolderParams = {
                 limitDate: extra.limitDate === undefined ? null : extra.limitDate,
@@ -114,12 +118,15 @@ function fn(config) {
                 visibility: extra.visibility === undefined ? 'Confidentiel' : extra.visibility,
             };
             result.push({
+                tenantId: tenantId,
                 draftFolderParams: draftFolderParams,
                 annexFilePath: annexFilePath,
-                mainFilePath: mainFilePath,
+                mainFilePath: mainFilePath['file'],
+                mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
             });
         }
+
         return result;
     };
     config.api_v1.desk.draft['getPayloadMultidoc'] = function (params, count, extra, start) {
