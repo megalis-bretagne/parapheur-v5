@@ -104,11 +104,6 @@ services:
       - "9009:8080"
 
 
-  #solr6:
-  #  ports:
-  #    - 8983:8983
-
-
   postgres:
     ports:
       - "5432:5432"
