@@ -11,3 +11,4 @@ Feature:
             And multipart file mainFiles = {  read: '#(mainFilesPaths[1])', contentType: utils.getMimeTypeFromFilename('#(mainFilesPaths[1])') }
         When method POST
         Then status 201
+        # @todo: Ajout des signatures détachées le cas échéant

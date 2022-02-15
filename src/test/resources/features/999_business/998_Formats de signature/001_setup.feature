@@ -69,7 +69,6 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | PAdES              | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                    |
             | Formats de signature | PAdES              | Signature      | Signature            |                                                    |                    |
             | Formats de signature | XAdES det          | Signature      | Signature            |                                                    |                    |
-            # UI -> {"subtypeMetadataList":[],"annotationsAllowed":false,"ipngTypeKeys":[],"name":"Signature","description":"Signature","validationWorkflowId":"signature","externalSignatureConfigId":null,"creationPermittedDeskIds":null,"filterableByDeskIds":null,"subtypeMetadataRequestList":[],"subtypeLayerRequestList":[]}
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
