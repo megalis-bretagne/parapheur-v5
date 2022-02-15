@@ -9,7 +9,7 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
     desktop: '<desktop>',
     type: '<type>',
     subtype: '<subtype>',
-    mainFile: '<mainFile>',
+    mainFile: <mainFile>,
     nameTemplate: '<nameTemplate>'
 }
 """

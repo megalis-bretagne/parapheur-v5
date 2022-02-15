@@ -9,7 +9,7 @@ Feature: Création de dossiers pour le paramétrage métier "Bons de commande"
     desktop: '<desktop>',
     type: '<type>',
     subtype: '<subtype>',
-    mainFile: '<mainFile>',
+    mainFile: <mainFile>,
     nameTemplate: '<nameTemplate>'
 }
 """
@@ -19,6 +19,6 @@ Feature: Création de dossiers pour le paramétrage métier "Bons de commande"
     * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 
     Examples:
-        | tenant           | username | password | desktop    | type            | subtype         | mainFile                                       | nameTemplate                              | start! | count! | withOrWithout | extra!                               |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable | classpath:files/pdf/main-1_1-tag_signature.pdf | Bon de commande service Indigo %counter%  | 1      | 10     | without       | { "metadata":{"service":"Indigo"} }  |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable | classpath:files/pdf/main-1_1-tag_signature.pdf | Bon de commande service Pourpre %counter% | 1      | 10     | without       | { "metadata":{"service":"Pourpre"} } |
+        | tenant           | username | password | desktop    | type            | subtype         | mainFile!                                        | nameTemplate                              | start! | count! | withOrWithout | extra!                               |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Indigo %counter%  | 1      | 10     | without       | { "metadata":{"service":"Indigo"} }  |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Pourpre %counter% | 1      | 10     | without       | { "metadata":{"service":"Pourpre"} } |
