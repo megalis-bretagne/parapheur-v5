@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<n:PES_Aller Id="PESALR1_22610001400134_ID2020020200727D013536" xmlns:n="http://www.minefi.gouv.fr/cp/helios/pes_v2/Rev0/aller" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <Enveloppe>
+    <Parametres>
+      <Version V="2"/>
+      <TypFic V="PESALR1"/>
+      <NomFic V="PESALR1_22610001400134_01D0003536_20200727061514"/>
+    </Parametres>
+    <Emetteur>
+      <Sigle V="ATOS - BULL SAS"/>
+      <Adresse V="CORIPES_477801_202005141352_P512"/>
+    </Emetteur>
+    <Recepteur>
+      <Sigle V="PAIERIE DEPARTEMENTALE"/>
+      <Adresse V="23 BOULEVARD DE STRASBOURG"/>
+    </Recepteur>
+  </Enveloppe>
+  <EnTetePES>
+    <DteStr V="2020-07-27"/>
+    <IdPost V="061090"/>
+    <IdColl V="22610001400134"/>
+    <CodCol V="020"/>
+    <CodBud V="00"/>
+    <LibelleColBud V="BUDGET DEPARTEMENTAL"/>
+  </EnTetePES>
+  <PES_DepenseAller>
+    <EnTeteDepense>
+      <IdVer V="2"/>
+      <InfoDematerialisee V="1"/>
+    </EnTeteDepense>
+    <Bordereau Id="ID2020020200727D013536">
+      <BlocBordereau>
+        <Exer V="2020"/>
+        <IdBord V="3536"/>
+        <DteBordEm V="2020-07-27"/>
+        <TypBord V="01"/>
+        <NbrPce V="1"/>
+        <MtCumulAnnuel V="215029006.88"/>
+        <MtBordHT V="3032"/>
+      </BlocBordereau>
+      <Piece>
+        <BlocPiece>
+          <InfoPce>
+            <IdPce V="13712"/>
+            <TypPce V="01"/>
+            <NatPce V="01"/>
+            <Obj V="F. PCH MAND 062020 VITALL 2020001824 7/20 VITALLIANCE"/>
+            <PJRef>
+              <Support V="01"/>
+              <IdUnique V="22610001400134DEP061202000202007240615506484QS4HV5"/>
+              <NomPJ V="TABLEAU DGCS 20190101 54.PDF"/>
+            </PJRef>
+            <PJRef>
+              <Support V="01"/>
+              <IdUnique V="22610001400134DEP0612020002020062306164603181VGFGP"/>
+              <NomPJ V="86002 RIB_VITALLIANCE.PDF"/>
+            </PJRef>
+            <CarteAchatNiveau1>false</CarteAchatNiveau1>
+          </InfoPce>
+        </BlocPiece>
+        <LigneDePiece>
+          <BlocLignePiece>
+            <InfoLignePce>
+              <IdLigne V="1"/>
+              <Nature V="6511211"/>
+              <Fonction V="52"/>
+              <LibVir1 V="F. PCH MAND 062020 VITALL"/>
+              <LibVir2 V="2020001824 7/20 VITALLIANCE"/>
+              <ModRegl V="03"/>
+              <TVAIntraCom V="0"/>
+              <MtHT V="3032"/>
+              <PJRef>
+                <Support V="01"/>
+                <IdUnique V="22610001400134DEP061202000202007270615150066TID0PO"/>
+                <NomPJ V="BORD2020001824 PCH+20 MAND 062020 VITALLIANCE LL 1554.PDF"/>
+              </PJRef>
+            </InfoLignePce>
+          </BlocLignePiece>
+          <Tiers>
+            <InfoTiers>
+              <IdTiers V="45105338300837"/>
+              <NatIdTiers V="01"/>
+              <RefTiers V="00000000086002"/>
+              <CatTiers V="50"/>
+              <NatJur V="03"/>
+              <Nom V="VITALLIANCE"/>
+            </InfoTiers>
+            <Adresse>
+              <TypAdr V="1"/>
+              <Adr2 V="5 RUE BLONDEL"/>
+              <CP V="92400"/>
+              <Ville V="COURBEVOIE"/>
+              <CodRes V="0"/>
+            </Adresse>
+            <CpteBancaire>
+              <IBAN V="FR7630066109120002004070173"/>
+              <LibBanc V="CREDIT INDUSTRIEL ET COM"/>
+              <TitCpte V="VITALLIANCE"/>
+            </CpteBancaire>
+          </Tiers>
+        </LigneDePiece>
+      </Piece>
+    </Bordereau>
+  </PES_DepenseAller>
+  <PES_PJ>
+    <EnTetePES_PJ>
+      <IdVer V="1"/>
+    </EnTetePES_PJ>
+    <PJ>
+      <Contenu>
+        <Fichier MIMEType="application/pdf">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</Fichier>
+      </Contenu>
+      <IdUnique V="22610001400134DEP061202000202007270615150066TID0PO"/>
+      <NomPJ V="BORD2020001824 PCH+20 MAND 062020 VITALLIANCE LL 1554.PDF"/>
+      <TypePJ V="003"/>
+      <Description V="BORD2020001824 PCH+20 MAND 062020 VITALLIANCE LL 1554.PDF"/>
+    </PJ>
+  </PES_PJ>
+</n:PES_Aller>
