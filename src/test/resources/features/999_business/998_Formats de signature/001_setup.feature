@@ -15,9 +15,9 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/setup/user.create.feature') __row
 
         Examples:
-            | tenant               | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Formats de signature | gnacarat | gnacarat@dom.local | Gilles    | Nacarat  | a123456  | NONE      | disabled                   |
-            | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant               | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               |
+            | Formats de signature | gnacarat | gnacarat@dom.local | Gilles    | Nacarat  | a123456  | NONE      | disabled                   | TITRE="Responsable des méthodes",VILLE="Agde",CODEPOSTAL="34300" |
+            | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.create.feature') __row
@@ -31,7 +31,7 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/setup/seal-certificate.create.feature') __row
 
         Examples:
-            | tenant             | path                                                  | password                        | image!                                                   |
+            | tenant               | path                                                  | password                        | image!                                                   |
             | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - circuits unitaires.png' |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"

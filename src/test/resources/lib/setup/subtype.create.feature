@@ -24,24 +24,13 @@ Feature: Subtype setup lib
     "workflowSelectionScript": ""
 }
 """
-      * def isEmpty =
-"""
-function (value) {
-    // https://stackoverflow.com/a/32108184
-    var isEmptyObject = value && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype;
-    var isEmptyArray = Array.isArray(value) && value.length == 0;
-    if (value == undefined || value == null || value == '' || isEmptyObject || value == []) {
-        return true;
-    }
-    return false;
-}
-"""
+
         * def payload = karate.merge(defaults, __row)
-        * payload['description'] = isEmpty(payload['description']) ? payload['name'] : payload['description']
-        * payload['sealCertificateId'] = isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
-        * payload['secureMailServerId'] = isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
-        * payload['validationWorkflowId'] = isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
-        * payload['workflowSelectionScript'] = isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
+        * payload['description'] = utils.isEmpty(payload['description']) ? payload['name'] : payload['description']
+        * payload['sealCertificateId'] = utils.isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
+        * payload['secureMailServerId'] = utils.isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
+        * payload['validationWorkflowId'] = utils.isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
+        * payload['workflowSelectionScript'] = utils.isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
         * def replaceMetadataKeyById =
 """
 function (tenantId, subtypeMetadataRequestList) {
@@ -71,7 +60,7 @@ function(payload, defaults) {
     }*/
     var keys = ['externalSignatureConfig', 'secureMailServerId', 'sealCertificateId', 'workflowSelectionScript'];
     for (var key of keys) {
-        if (isEmpty(payload[key])) {
+        if (utils.isEmpty(payload[key])) {
             delete payload[key];
         }
     }

@@ -147,6 +147,18 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     /**
      * utils.string
      */
+    config.utils['isEmpty'] = function (value) {
+        // https://stackoverflow.com/a/32108184
+        var isEmptyObject = value && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype;
+        var isEmptyArray = Array.isArray(value) && value.length == 0;
+        if (value == undefined || value == null || value == '' || isEmptyObject || value == []) {
+            return true;
+        }
+        return false;
+    };
+    /**
+     * utils.string
+     */
     config.utils['string'] = {
         'letters_lowercase': 'abcdefghijklmnopqrstuvwxyz',
         'letters_uppercase': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
