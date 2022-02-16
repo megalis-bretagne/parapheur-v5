@@ -227,8 +227,8 @@ services:
         -XX:+UseContainerSupport
         -XX:MinRAMPercentage=50
         -XX:MaxRAMPercentage=80
-        -Dalfresco.host=alfresco
-        -Dalfresco.port=8080
+        -Dalfresco.host=${CONTENT_HOST}
+        -Dalfresco.port=${CONTENT_PORT}
         -Dsystem.workflow.engine.activiti.enabled=false
         -Dcsrf.filter.enabled=false
         -Ddb.driver=org.postgresql.Driver
@@ -261,8 +261,8 @@ services:
   #   mem_limit: 1G
   #   environment:
   #     #Solr needs to know how to register itself with Alfresco
-  #     - SOLR_ALFRESCO_HOST=alfresco
-  #     - SOLR_ALFRESCO_PORT=8080
+  #     - SOLR_ALFRESCO_HOST=${CONTENT_HOST}
+  #     - SOLR_ALFRESCO_PORT=${CONTENT_PORT}
   #     #Alfresco needs to know how to call solr
   #     - SOLR_SOLR_HOST=solr6
   #     - SOLR_SOLR_PORT=8983
