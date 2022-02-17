@@ -47,8 +47,6 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
-            | Formats de signature | ACTES - CAdES      | ACTES    | PKCS7           |                   |                  | false              | {} |
-            | Formats de signature | ACTES - PAdES      | ACTES    | PADES           | Montpellier       |                  | true              | {"x":50,"y":50,"page":1} |
             | Formats de signature | Automatique        | NONE     | AUTO            | Montpellier       | 34000            | true              | {"x":50,"y":50,"page":1} |
             | Formats de signature | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                       |
             | Formats de signature | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                       |
@@ -60,9 +58,6 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | type               | name           | validationWorkflowId | sealCertificateId                                  | secureMailServerId |
-            | Formats de signature | ACTES - CAdES      | Signature      | Signature            |                                                    |                    |
-            | Formats de signature | ACTES - PAdES      | Cachet serveur | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | ACTES - PAdES      | Signature      | Signature            |                                                    |                    |
             | Formats de signature | Automatique        | Signature      | Signature            |                                                    |                    |
             | Formats de signature | CAdES              | Signature      | Signature            |                                                    |                    |
             | Formats de signature | HELIOS - XAdES env | Signature      | Signature            |                                                    |                    |
