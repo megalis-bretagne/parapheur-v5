@@ -74,6 +74,7 @@ services:
     ports:
       - "2757:8080"
 
+
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
     ports:
@@ -100,11 +101,13 @@ services:
     ports:
       - "8888:8888"
 
+
   pdf-stamp:
     mem_limit: 256M
     memswap_limit: 256m
     ports:
       - "8889:8080"
+
 
   feeder:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
@@ -114,11 +117,17 @@ services:
 
   # Non-libriciel services
 
+
   alfresco:
     mem_limit: 1024M
     memswap_limit: 1024m
     ports:
       - "9009:8080"
+
+
+  transform-core-aio:
+    ports:
+      - "8090:8090"
 
 
   #solr6:

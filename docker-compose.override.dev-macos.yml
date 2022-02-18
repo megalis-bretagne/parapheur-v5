@@ -104,9 +104,9 @@ services:
       - "9009:8080"
 
 
-  #solr6:
-  #  ports:
-  #    - 8983:8983
+  transform-core-aio:
+    ports:
+      - "8090:8090"
 
 
   postgres:
