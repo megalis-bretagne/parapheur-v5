@@ -31,8 +31,8 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/setup/seal-certificate.create.feature') __row
 
         Examples:
-            | tenant               | path                                                  | password                        | image!                                                   |
-            | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - circuits unitaires.png' |
+            | tenant               | path                                                  | password                        | image!                                                     |
+            | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
@@ -46,12 +46,12 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/setup/type.create.feature') __row
 
         Examples:
-            | tenant               | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
-            | Formats de signature | Automatique        | NONE     | AUTO            | Montpellier       | 34000            | true              | {"x":50,"y":50,"page":1} |
-            | Formats de signature | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                       |
-            | Formats de signature | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                       |
-            | Formats de signature | PAdES              | NONE     | PADES           | Montpellier       |                  | true              | {"x":50,"y":50,"page":1} |
-            | Formats de signature | XAdES det          | NONE     | PES_V2_DETACHED | Montpellier       | 34000            | false             | {}                       |
+            | tenant               | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
+            | Formats de signature | Automatique        | NONE     | AUTO            | Montpellier       | 34000            | true              | {"x":0,"y":0,"page":1} |
+            | Formats de signature | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                     |
+            | Formats de signature | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                     |
+            | Formats de signature | PAdES              | NONE     | PADES           | Montpellier       |                  | true              | {"x":0,"y":0,"page":1} |
+            | Formats de signature | XAdES det          | NONE     | PES_V2_DETACHED | Montpellier       | 34000            | false             | {}                     |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
