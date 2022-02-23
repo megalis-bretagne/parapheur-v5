@@ -19,6 +19,32 @@
 
 
 services:
+
+
+  ipng-business:
+    image: registry.libriciel.fr:443/public/signature/ipng:prod-docker
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "iparapheur.dom.local:host-gateway"
+    ports:
+      - 8081:8081
+    volumes:
+      - ./data/ipng/wallet:/wallet
+      - ./data/ipng/ca-certs:/crypto-config
+      - ./src/main/resources/ipng/application-dev.properties:/application.properties
+      - ./data/ipng/connection-profile.yml:/connection-profile.yml
+    restart: unless-stopped
+    networks:
+      - ipng
+
+  mongo:
+    image: mongo:4.2.18-bionic
+    ports:
+      - 27017:27017
+    networks:
+      - ipng
+
+
   nginx:
     networks:
       - ipng
