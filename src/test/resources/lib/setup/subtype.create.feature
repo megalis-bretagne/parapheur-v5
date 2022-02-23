@@ -10,10 +10,12 @@ Feature: Subtype setup lib
 {
     "annotationsAllowed": false,
     "creationPermittedDeskIds": null,
+    "digitalSignatureMandatory": false,
     "externalSignatureConfig": {},
     "externalSignatureConfigId": null,
     "filterableByDeskIds": null,
     "ipngTypeKeys": [],
+    "multiDocuments": false,
     "name": "",
     "sealCertificateId": "",
     "secureMailServerId": "",
