@@ -21,7 +21,7 @@
 <model name="iparapheur:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>i-Parapheur internal custom models</description>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
@@ -56,7 +56,6 @@
 
     <types>
 
-
         <type name="iparapheur:document">
             <title>i-Parapheur internal document model</title>
             <parent>cm:content</parent>
@@ -83,6 +82,21 @@
                     <type>d:int</type>
                     <constraints>
                         <constraint ref="iparapheur:indexConstraint"/>
+                    </constraints>
+                </property>
+            </properties>
+        </type>
+
+        <type name="iparapheur:pdfVisual">
+            <title>i-Parapheur internal PDF-transformed model</title>
+            <parent>cm:content</parent>
+
+            <properties>
+                <property name="iparapheur:sourceDocumentId">
+                    <title>The original document ID</title>
+                    <type>d:text</type>
+                    <constraints>
+                        <constraint ref="iparapheur:isNodeUuid"/>
                     </constraints>
                 </property>
             </properties>

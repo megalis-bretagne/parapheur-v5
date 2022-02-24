@@ -46,7 +46,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
     entrypoint: [ "echo", "Service disabled" ]
     environment:
-      - VERSION=5.0.0-beta01-DEV
+      - VERSION=5.0.0-develop
     ports:
       - "4200:80"
 
@@ -104,9 +104,9 @@ services:
       - "9009:8080"
 
 
-  #solr6:
-  #  ports:
-  #    - 8983:8983
+  transform-core-aio:
+    ports:
+      - "8090:8090"
 
 
   postgres:
