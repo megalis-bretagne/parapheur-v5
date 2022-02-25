@@ -62,10 +62,10 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.6.0
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.6.1
     restart: unless-stopped
     tty: true
-    mem_limit: 1024M
+    mem_limit: 1G
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
@@ -101,7 +101,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.7.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.7.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -206,6 +206,8 @@ services:
 
   alfresco:
     image: alfresco/alfresco-content-repository-community:7.1.0
+    restart: unless-stopped
+    tty: true
     mem_limit: 1536M
     environment:
       JAVA_TOOL_OPTIONS: "
@@ -239,6 +241,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      transform-core-aio:
+        condition: service_started
+      activemq:
+        condition: service_started
     volumes:
       - ./data/alfresco:/usr/local/tomcat/alf_data
       # DOC: file needs to end in -context.xml and to be in this location.
@@ -249,6 +255,8 @@ services:
 
   transform-core-aio:
     image: alfresco/alfresco-transform-core-aio:2.5.3
+    restart: unless-stopped
+    tty: true
     mem_limit: 512M
     environment:
       JAVA_OPTS: "-XX:+UseContainerSupport -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80"
@@ -274,6 +282,8 @@ services:
 
   activemq:
     image: alfresco/alfresco-activemq:5.16.1
+    restart: unless-stopped
+    tty: true
     mem_limit: 256M
 
 

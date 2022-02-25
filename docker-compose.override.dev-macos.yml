@@ -27,12 +27,6 @@ services:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
 
-  redis:
-    image: redis:6.0-alpine
-    ports:
-      - "6379:6379"
-
-
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
     environment:
@@ -49,6 +43,12 @@ services:
       - VERSION=5.0.0-develop
     ports:
       - "4200:80"
+
+
+  redis:
+    image: redis:6.0-alpine
+    ports:
+      - "6379:6379"
 
 
   pes-viewer:
@@ -119,6 +119,10 @@ services:
       - "9090:8080"
     # environment:
     #   - KEYCLOAK_LOGLEVEL=DEBUG
+
+
+  feeder:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
 
 
   smtp:
