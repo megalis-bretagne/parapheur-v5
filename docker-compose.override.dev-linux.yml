@@ -26,7 +26,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     mem_limit: 64M
-    memswap_limit: 64m
+    memswap_limit: 64M
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
@@ -45,8 +45,8 @@ services:
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
-    mem_limit: 64m
-    memswap_limit: 64m
+    mem_limit: 64M
+    memswap_limit: 64M
     environment:
       - VERSION=5.0.0-develop
     ports:
@@ -57,10 +57,12 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
     mem_limit: 1G
     memswap_limit: 1G
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
     volumes:
       - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
     ports:
-      - "10080:8080"
+      - "10080:10080"
 
 
   pastell-connector:
@@ -84,7 +86,7 @@ services:
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8085:8080"
 
@@ -97,14 +99,14 @@ services:
 
   pes-viewer:
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8888:8888"
 
 
   pdf-stamp:
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8889:8080"
 
@@ -120,7 +122,7 @@ services:
 
   alfresco:
     mem_limit: 1024M
-    memswap_limit: 1024m
+    memswap_limit: 1024M
     ports:
       - "9009:8080"
 
@@ -132,14 +134,14 @@ services:
 
   #solr6:
   #  mem_limit: 1536M
-  #  memswap_limit: 1536m
+  #  memswap_limit: 1536M
   #  ports:
   #    - 8983:8983
 
 
   postgres:
     mem_limit: 512M
-    memswap_limit: 512m
+    memswap_limit: 512M
     ports:
       - "5432:5432"
 
@@ -153,13 +155,13 @@ services:
 
   matomo:
     mem_limit: 512M
-    memswap_limit: 512m
+    memswap_limit: 512M
 
 
   redis:
     image: redis:6.0-alpine
     mem_limit: 64M
-    memswap_limit: 64m
+    memswap_limit: 64M
     ports:
       - "6379:6379"
 
