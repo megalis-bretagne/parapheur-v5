@@ -59,8 +59,6 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
-    mem_limit: 1G
-    memswap_limit: 1G
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
