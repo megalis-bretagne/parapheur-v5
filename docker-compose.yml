@@ -145,7 +145,7 @@ services:
     image: registry.libriciel.fr/public/signature/crypto:2.3.3
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
 
 
   pdf-stamp:
@@ -195,6 +195,9 @@ services:
 
   feeder:
     image: registry.libriciel.fr/public/signature/feeder:1.0.0
+    restart: unless-stopped
+    tty: true
+    mem_limit: 512M
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
