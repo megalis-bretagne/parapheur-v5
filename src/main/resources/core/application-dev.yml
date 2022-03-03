@@ -16,45 +16,5 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-server:
-  error:
-    includeException: true
-    includeBindingErrors: always
-    includeStacktrace: always
 
-services:
-  stats.provider: none
-  # Local services that are not mapped to an environment variable
-  pesviewer.host: iparapheur.dom.local
-  monitoring.host: iparapheur.dom.local
-  transformation.host: iparapheur.dom.local
-  crypto:
-    host: iparapheur.dom.local
-    port: 8085
-  workflow:
-    host: iparapheur.dom.local
-    port: 10080
-  pdfstamp:
-    host: iparapheur.dom.local
-    port: 8889
-  externalsignature:
-    host: iparapheur.dom.local
-    port: 2757
-  securemail:
-    host: iparapheur.dom.local
-    port: 8002
-  # Force reference url to iparapheur.dom.local for downloads
-  ipng.local-mode: true
-
-logging.level.coop.libriciel: debug
-
-springdoc:
-  api-docs.enabled: true
-  swagger-ui.oauth.clientId: ipcore-web
-
-# Dev mode, we'll go for the automatic update
-spring:
-  liquibase.enabled: false
-  jpa.hibernate.ddl-auto: update
-
-sentry.dsn: ""
+# Use this file to change some properties of ip-core as needed 
