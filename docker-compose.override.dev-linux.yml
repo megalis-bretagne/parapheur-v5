@@ -39,8 +39,8 @@ services:
       - ./src/main/resources/core/application-dev.yml:/application.yml
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev-container
-    mem_limit: 1G
-    memswap_limit: 1G
+    mem_limit: 2G
+    memswap_limit: 2G
     ports:
       - "8080:8080"
 
