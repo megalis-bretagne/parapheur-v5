@@ -100,6 +100,9 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
      * utils
      */
     config['utils'] = {};
+    config.utils['basename'] = function (path) {
+        return String(path).replace(/.*\/([^\/]+)$/, '$1');
+    };
     config.utils['eval'] = function (value) {
         var matches = (''+value).match(/^eval\((.*)\)$/),
             result = value;
@@ -107,6 +110,15 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
             result = karate.eval(matches[1]);//@todo: try/catch
         }
         return result;
+    };
+    config.utils['getDraftDocumentId'] = function (response, fileName) {
+        fileName = utils.basename(fileName);
+        for (var idx = 0;idx < response.documentList.length;idx++) {
+            if (fileName === response.documentList[idx].name && response.documentList[idx].id !== null) {
+                return response.documentList[idx].id;
+            }
+        }
+        return null;
     };
     // @see https://stackoverflow.com/a/14794066
     config.utils['isInteger'] = function (value) {
@@ -137,6 +149,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 'png': 'image/png',
                 'xml': 'text/xml'
             };
+        karate.log(extension);
         if (extension in associations) {
             return associations[extension];
         } else {
