@@ -1,11 +1,13 @@
 @ignore
 Feature:
     Scenario:
+        * def mainFileContentType = utils.getMimeTypeFromFilename('#(mainFilePath)')
+
         Given url baseUrl
             And path path
             And header Accept = 'application/json'
             And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
-            And multipart file mainFiles = {  read: '#(mainFilePath)', contentType: utils.getMimeTypeFromFilename('#(mainFilePath)') }
+            And multipart file mainFiles = {  read: '#(mainFilePath)', contentType: #(mainFileContentType) }
         When method POST
         Then status 201
         # Ajout de la signature détachée le cas échéant
