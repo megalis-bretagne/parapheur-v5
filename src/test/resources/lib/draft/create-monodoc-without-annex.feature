@@ -1,14 +1,17 @@
 @ignore
 Feature:
     Scenario:
-        * def mainFileContentType = utils.getMimeTypeFromFilename('#(mainFilePath)')
+        * def mainFileContentType = utils.getMimeTypeFromFilename(mainFilePath)
+        # @todo: à mettre ailleurs + dans les autres create-...
+        * karate.log(draftFolderParams)
+        * karate.log(mainFileContentType)
 
         Given url baseUrl
             And path path
             And header Accept = 'application/json'
-            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
+            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json', 'filename': 'blob' }
             And multipart file mainFiles = {  read: '#(mainFilePath)', contentType: #(mainFileContentType) }
         When method POST
         Then status 201
         # Ajout de la signature détachée le cas échéant
-        * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, documentId: response.documentList[0].id, detachedSignature: mainFileDetachedPath })
+        * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, deskId: deskId, documentId: utils.getDraftDocumentId(response, mainFilePath), detachedSignature: mainFileDetachedPath })

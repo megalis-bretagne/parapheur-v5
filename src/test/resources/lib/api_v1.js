@@ -115,10 +115,11 @@ function fn(config) {
                 subtypeId: subtypeId,
                 typeId: typeId,
                 variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
-                visibility: extra.visibility === undefined ? 'Confidentiel' : extra.visibility,
+                visibility: extra.visibility === undefined ? 'confidentiel' : extra.visibility,
             };
             result.push({
                 tenantId: tenantId,
+                deskId: deskId,
                 draftFolderParams: draftFolderParams,
                 annexFilePath: annexFilePath,
                 mainFilePath: mainFilePath['file'],
@@ -157,7 +158,7 @@ function fn(config) {
                 subtypeId: subtypeId,
                 typeId: typeId,
                 variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
-                visibility: extra.visibility === undefined ? 'Confidentiel' : extra.visibility,
+                visibility: extra.visibility === undefined ? 'confidentiel' : extra.visibility,
             };
             result.push({
                 draftFolderParams: draftFolderParams,
