@@ -62,7 +62,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.6.5
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.7.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -101,13 +101,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.7.5
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.8.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta13
+      - VERSION=5.0.0-beta14
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -142,21 +142,21 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:2.3.3
+    image: registry.libriciel.fr/public/signature/crypto:2.3.4
     restart: unless-stopped
     tty: true
     mem_limit: 1G
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.5.0
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.5.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.2.0
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.2.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -167,7 +167,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.1
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
