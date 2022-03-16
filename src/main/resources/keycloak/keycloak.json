@@ -258,7 +258,7 @@
     "description": "${role_default-roles}",
     "name": "default-roles-${env.KEYCLOAK_REALM}"
   },
-  "duplicateEmailsAllowed": false,
+  "duplicateEmailsAllowed": true,
   "editUsernameAllowed": false,
   "enabled": true,
   "failureFactor": 30,
@@ -267,7 +267,7 @@
   "internationalizationEnabled": true,
   "keycloakVersion": "15.0.2",
   "loginTheme": "iparapheur",
-  "loginWithEmailAllowed": true,
+  "loginWithEmailAllowed": false,
   "maxDeltaTimeSeconds": 43200,
   "maxFailureWaitSeconds": 900,
   "minimumQuickLoginWaitSeconds": 60,
