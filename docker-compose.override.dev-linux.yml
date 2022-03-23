@@ -29,6 +29,8 @@ services:
     memswap_limit: 64m
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - ./src/main/resources/nginx/stream-confs:/etc/nginx/streams.d
+      - ./src/main/resources/nginx/main.conf:/etc/nginx/nginx.conf
       - ./src/main/resources/nginx/ca.conf:/etc/nginx/conf.d/ca.conf
       - ./src/main/resources/nginx/peer0.conf:/etc/nginx/conf.d/peer0.conf
       - ./src/main/resources/nginx/peer1.conf:/etc/nginx/conf.d/peer1.conf
