@@ -28,6 +28,8 @@ services:
     memswap_limit: 64M
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - ./src/main/resources/nginx/stream-confs:/etc/nginx/streams.d
+      - ./src/main/resources/nginx/main.conf:/etc/nginx/nginx.conf
       - ./src/main/resources/nginx/ssl/:/etc/nginx/ssl/
     networks:
       - ipng
