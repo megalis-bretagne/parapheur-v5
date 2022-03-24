@@ -337,7 +337,6 @@ __reset__()
       touch ./data/.gitkeep
       sudo chmod -R 0777 ./data
       sudo chown -R 6789:6789 data/feeder/data
-      chown -r 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
 }
