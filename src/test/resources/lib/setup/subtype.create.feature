@@ -19,6 +19,7 @@ Feature: Subtype setup lib
     "name": "",
     "sealCertificateId": "",
     "secureMailServerId": "",
+    "subtypeLayerList": [],
     "subtypeLayerRequestList": [],
     "subtypeMetadataList": [],
     "subtypeMetadataRequestList": [],
