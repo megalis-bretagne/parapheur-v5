@@ -151,7 +151,6 @@ services:
   filetransfer:
     ports:
       - "1807:8080"
-    entrypoint: [ "echo", "Service disabled" ]
 
 
   matomo:
