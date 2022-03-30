@@ -129,7 +129,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/pes-viewer:1.5.0
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1536M
     volumes:
       - ./data/pes-viewer/pesPJ:/pesPJ/
 
