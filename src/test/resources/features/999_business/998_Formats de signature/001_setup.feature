@@ -38,9 +38,9 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant               | name           | deskName | type      | mandatoryMetadata! |
-            | Formats de signature | Cachet serveur | Nacarat  | SEAL      | []                 |
-            | Formats de signature | Signature      | Nacarat  | SIGNATURE | []                 |
+            | tenant               | name           | deskName | type      |
+            | Formats de signature | Cachet serveur | Nacarat  | SEAL      |
+            | Formats de signature | Signature      | Nacarat  | SIGNATURE |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row

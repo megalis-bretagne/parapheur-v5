@@ -47,8 +47,8 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant           | name      | deskName          | type      | mandatoryMetadata! |
-            | Bons de commande | Signature | ##VARIABLE_DESK## | SIGNATURE | ['montant']        |
+            | tenant           | name      | deskName          | type      | mandatoryValidationMetadata! |
+            | Bons de commande | Signature | ##VARIABLE_DESK## | SIGNATURE | ['montant']                  |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row

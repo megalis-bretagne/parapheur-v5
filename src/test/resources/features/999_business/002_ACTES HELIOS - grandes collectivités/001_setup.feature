@@ -43,9 +43,9 @@ Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant                               | name             | deskName          | type      | mandatoryMetadata! |
-            | ACTES HELIOS - grandes collectivités | Signature        | Bleu              | SIGNATURE | []                 |
-            | ACTES HELIOS - grandes collectivités | Signature HELIOS | ##VARIABLE_DESK## | SIGNATURE | []                 |
+            | tenant                               | name             | deskName          | type      | mandatoryValidationMetadata! |
+            | ACTES HELIOS - grandes collectivités | Signature        | Bleu              | SIGNATURE | []                           |
+            | ACTES HELIOS - grandes collectivités | Signature HELIOS | ##VARIABLE_DESK## | SIGNATURE | []                           |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row
