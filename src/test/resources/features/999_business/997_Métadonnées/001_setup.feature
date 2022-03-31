@@ -70,12 +70,12 @@ Feature: Paramétrage métier "Métadonnées"
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant      | type  | name                                   | multiDocuments! | validationWorkflowId                   | sealAutomatic! | sealCertificateId | secureMailServerId |
-            | Métadonnées | PAdES | Aucune métadonnée                      | false           | Aucune metadonnee                      | false          |                   |                    |
-            | Métadonnées | PAdES | Booleen rejet                          | false           | Booleen rejet                          | false          |                   |                    |
-            | Métadonnées | PAdES | Booleen validation                     | false           | Booleen validation                     | false          |                   |                    |
-            | Métadonnées | PAdES | Booleen rejet et validation            | false           | Booleen rejet et validation            | false          |                   |                    |
-            | Métadonnées | PAdES | Texte rejet                            | false           | Texte rejet                            | false          |                   |                    |
-            | Métadonnées | PAdES | Texte validation                       | false           | Texte validation                       | false          |                   |                    |
-            | Métadonnées | PAdES | Texte rejet et validation              | false           | Texte rejet et validation              | false          |                   |                    |
-            | Métadonnées | PAdES | Toutes métadonnées validation et rejet | false           | Toutes metadonnees validation et rejet | false          |                   |                    |
+            | tenant      | type  | name                        | multiDocuments! | validationWorkflowId                   | sealAutomatic! | sealCertificateId | secureMailServerId |
+            | Métadonnées | PAdES | Aucune métadonnée           | false           | Aucune metadonnee                      | false          |                   |                    |
+            | Métadonnées | PAdES | Booleen rejet               | false           | Booleen rejet                          | false          |                   |                    |
+            | Métadonnées | PAdES | Booleen validation          | false           | Booleen validation                     | false          |                   |                    |
+            | Métadonnées | PAdES | Booleen rejet et validation | false           | Booleen rejet et validation            | false          |                   |                    |
+            | Métadonnées | PAdES | Texte rejet                 | false           | Texte rejet                            | false          |                   |                    |
+            | Métadonnées | PAdES | Texte validation            | false           | Texte validation                       | false          |                   |                    |
+            | Métadonnées | PAdES | Texte rejet et validation   | false           | Texte rejet et validation              | false          |                   |                    |
+            | Métadonnées | PAdES | Toutes validation et rejet  | false           | Toutes metadonnees validation et rejet | false          |                   |                    |
