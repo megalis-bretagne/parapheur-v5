@@ -17,7 +17,7 @@ Feature: Création de dossiers pour le paramétrage métier "Formats de signatur
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('ws-fds', 'a123456')
         * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
-
+        # @todo: RTF à la place de DOC et ODT
         Examples:
             | type               | subtype        | mainFile!                                                                                                                                                            | nameTemplate                                                           | start! | count! | withOrWithout | extra! |
             | Automatique        | Signature      | 'classpath:files/formats/document_office/document_office.doc',                                                                                                       | Automatique - Signature - DOC                                          | 1      | 1      | without       | {}     |

@@ -27,7 +27,7 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
         | Texte rejet                            | Groupe - Rejet - Texte rejet                                     |
         | Texte validation                       | Groupe - Rejet - Texte validation                                |
         | Texte rejet et validation              | Groupe - Rejet - Texte rejet et validation                       |
-        | Toutes métadonnées validation et rejet | Groupe - Rejet - Toutes métadonnées validation et rejet          |
+#        | Toutes métadonnées validation et rejet | Groupe - Rejet - Toutes métadonnées validation et rejet          |
         | Aucune métadonnée                      | Groupe - Validation - Aucune métadonnée                          |
         | Booleen rejet                          | Groupe - Validation - Booleen rejet                              |
         | Booleen validation                     | Groupe - Validation - Booleen validation                         |
@@ -35,7 +35,7 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
         | Texte rejet                            | Groupe - Validation - Texte rejet                                |
         | Texte validation                       | Groupe - Validation - Texte validation                           |
         | Texte rejet et validation              | Groupe - Validation - Texte rejet et validation                  |
-        | Toutes métadonnées validation et rejet | Groupe - Validation - Toutes métadonnées validation et rejet     |
+#        | Toutes métadonnées validation et rejet | Groupe - Validation - Toutes métadonnées validation et rejet     |
         | Aucune métadonnée                      | Individuel - Rejet - Aucune métadonnée                           |
         | Booleen rejet                          | Individuel - Rejet - Booleen rejet                               |
         | Booleen validation                     | Individuel - Rejet - Booleen validation                          |
