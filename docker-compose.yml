@@ -16,18 +16,15 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# ========================================================================
 
-# This docker-compose file will spin up an ACS cluster on a local host or on a server and it requires a minimum of 16GB Memory to distribute among containers.
-# Limit container memory and assign X percentage to JVM.  There are couple of ways to allocate JVM Memory for ACS Containers
-# For example: 'JAVA_OPTS: "$JAVA_OPTS -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"'
-# But, as per Oracle docs (https://docs.oracle.com/javase/9/gctuning/parallel-collector1.htm#JSGCT-GUID-CAB83393-3438-44ED-98F0-D15641B43C7D)
-# If container memory is not explicitly set, then the above flags will default max heap to 1/4th of container's memory which may not be ideal.
-# Hence, setting up explicit Container memory and then assigning a percentage of it to the JVM for performance tuning.
+#
+# Do not modify this file, it will be reset on every update.
+# Any modification will be lost
+#
+# To modify anything from here, you should create a separate `docker-compose.override-instance-xxx.yml` file,
+# That will contain every overridden parameter.
+#
 
-# Note: The docker-compose file from github.com is a limited trial that goes into read-only mode after 2 days.
-# Get the latest docker-compose.yml file with a 30-day trial license by accessing the Alfresco Content Services trial download page at:
-# https://www.alfresco.com/platform/content-services-ecm/trial/download
 
 version: '2.4'
 
@@ -62,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.9.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.9.4
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -101,13 +98,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.10.3
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.10.4
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta20
+      - VERSION=5.0.0-beta21
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -116,7 +113,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.3.1
+    image: registry.libriciel.fr/public/signature/workflow:1.3.2
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -167,7 +164,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.0.3
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.0
     restart: unless-stopped
     tty: true
     mem_limit: 512M
