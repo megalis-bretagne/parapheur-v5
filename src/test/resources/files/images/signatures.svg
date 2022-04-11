@@ -17,7 +17,7 @@
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="signatures.svg"
-   inkscape:export-filename="/home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/src/test/resources/files/images/signature - gnacarat.png"
+   inkscape:export-filename="/home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/src/test/resources/files/images/signature - anankin.png"
    inkscape:export-xdpi="96.75"
    inkscape:export-ydpi="96.75">
   <defs
@@ -52,10 +52,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.5136719"
-     inkscape:cx="128.39782"
+     inkscape:cx="39.484068"
      inkscape:cy="132.41295"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer8"
+     inkscape:current-layer="layer11"
      showgrid="false"
      units="px"
      inkscape:window-width="1920"
@@ -241,7 +241,7 @@
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="G. Nacarat"
-     style="display:inline">
+     style="display:none">
     <flowRoot
        xml:space="preserve"
        id="flowRoot32-3"
@@ -257,6 +257,25 @@
            style="fill:#fc5d5d;fill-opacity:1;stroke:#000000;stroke-opacity:1" /></flowRegion><flowPara
          id="flowPara38-5"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#fc5d5d;fill-opacity:1;stroke:#000000;stroke-opacity:1">G. Nacarat</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer11"
+     inkscape:label="A. Nankin">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot32-3-36"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#d39911;fill-opacity:1;stroke:#000000;stroke-opacity:1;"
+       transform="matrix(0.26458333,0,0,0.26458333,1.3851543,0.50853759)"><flowRegion
+         id="flowRegion34-6-7"
+         style="fill:#d39911;fill-opacity:1;stroke:#000000;stroke-opacity:1;"><rect
+           id="rect36-7-5"
+           width="220.71428"
+           height="55"
+           x="19.642857"
+           y="23.5"
+           style="fill:#d39911;fill-opacity:1;stroke:#000000;stroke-opacity:1;" /></flowRegion><flowPara
+         id="flowPara38-5-3"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Stylish Calligraphy Demo';-inkscape-font-specification:'Stylish Calligraphy Demo';fill:#d39911;fill-opacity:1;stroke:#000000;stroke-opacity:1;">A. Nankin</flowPara></flowRoot>  </g>
   <g
      inkscape:groupmode="layer"
      id="layer9"
