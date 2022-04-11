@@ -313,6 +313,30 @@ function fn(config) {
     };
 
     /**
+     * externalSignature
+     */
+    config.api_v1['externalSignature'] = {};
+    config.api_v1.externalSignature['getIdByName'] = function (tenantId, name, containing = false) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/admin/tenant/' + tenantId + '/externalSignature/config')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .param('asc', 'true')
+            .param('page', 0)
+            .param('pageSize', 100)
+            .param('sortBy', 'ID')
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting external signature id by its name');
+        }
+
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'externalSignature', 'name', name, containing);
+        return element['id'];
+    };
+
+    /**
      * metadata
      */
     config.api_v1['metadata'] = {};
