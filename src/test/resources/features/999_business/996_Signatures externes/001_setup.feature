@@ -64,7 +64,6 @@ Feature: Paramétrage métier 'Signature externe'
             | tenant               | path                                                  | password                        | image!                                                     |
             | Signature externe | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
 
-    # SE | SE - SE | CS - SE | S - SE | SE - CS | SE - S
     Scenario Outline: Create '${name}' one-step-workflow and associate it to the '${deskName}' desk in '${tenant}'
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
@@ -104,6 +103,31 @@ Feature: Paramétrage métier 'Signature externe'
           | Signature externe - Signature         | signature_externe_-_signature         | Nankin | EXTERNAL_SIGNATURE | Nankin | SIGNATURE          |
           | Signature externe - Signature externe | signature_externe_-_signature_externe | Nankin | EXTERNAL_SIGNATURE | Nankin | EXTERNAL_SIGNATURE |
 
+    Scenario: Create a 4 steps "Signature - Signature externe - Signature externe - Cachet serveur" workflow
+        * def tenantId = api_v1.entity.getIdByName('Signature externe')
+        * def deskId = api_v1.desk.getIdByName(tenantId, 'Nankin')
+        * def payload =
+"""
+{
+    "steps":[
+        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
+        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"SEAL","type":"SEAL","parallelType":"OR"}
+    ],
+    "name":"Signature - Signature externe - Signature externe - Cachet serveur",
+    "id":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
+    "key":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
+    "deploymentId":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur"
+}
+"""
+        Given url baseUrl
+            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+            And header Accept = 'application/json'
+            And request payload
+        When method POST
+        Then status 201
+
     Scenario Outline: Create type '${name}' with '${signatureFormat}' signature format in '${tenant}'
         * call read('classpath:lib/setup/type.create.feature') __row
 
@@ -118,26 +142,27 @@ Feature: Paramétrage métier 'Signature externe'
         * call read('classpath:lib/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant            | type          | name                         | multiDocuments! | validationWorkflowId                  | sealAutomatic! | sealCertificateId                                  | secureMailServerId | externalSignatureConfigId |
-            | Signature externe | ACTES - PAdES | Docage - Signature           | false           | Signature externe                     | null           |                                                    |                    | Docage                    |
-            | Signature externe | ACTES - PAdES | Universign - Signature       | false           | Signature externe                     | null           |                                                    |                    | Universign                |
-            | Signature externe | ACTES - PAdES | Yousign - Signature          | false           | Signature externe                     | null           |                                                    |                    | Yousign                   |
-            | Signature externe | Automatique   | Docage - Signature           | false           | Signature externe                     | null           |                                                    |                    | Docage                    |
-            | Signature externe | Automatique   | Universign - Signature       | false           | Signature externe                     | null           |                                                    |                    | Universign                |
-            | Signature externe | Automatique   | Yousign - Signature          | false           | Signature externe                     | null           |                                                    |                    | Yousign                   |
-            | Signature externe | Automatique   | Docage - Signature multi     | true            | Signature externe                     | null           |                                                    |                    | Docage                    |
-            | Signature externe | Automatique   | Universign - Signature multi | true            | Signature externe                     | null           |                                                    |                    | Universign                |
-            | Signature externe | Circuits      | Yousign - CS - SE            | true            | Cachet serveur - Signature externe    | null           | Christian Buffin - Default tenant - Cachet serveur |                    | Yousign                   |
-            | Signature externe | Circuits      | Yousign - S - SE             | true            | Signature - Signature externe         | null           |                                                    |                    | Yousign                   |
-            | Signature externe | Circuits      | Yousign - SE - CS            | true            | Signature externe - Cachet serveur    | null           | Christian Buffin - Default tenant - Cachet serveur |                    | Yousign                   |
-            | Signature externe | Circuits      | Yousign - SE - S             | true            | Signature externe - Signature         | null           |                                                    |                    | Yousign                   |
-            | Signature externe | Circuits      | Yousign - SE - SE            | true            | Signature externe - Signature externe | null           |                                                    |                    | Yousign                   |
-            | Signature externe | PAdES         | Docage - Signature           | false           | Signature externe                     | null           |                                                    |                    | Docage                    |
-            | Signature externe | PAdES         | Universign - Signature       | false           | Signature externe                     | null           |                                                    |                    | Universign                |
-            | Signature externe | PAdES         | Yousign - Signature          | false           | Signature externe                     | null           |                                                    |                    | Yousign                   |
-            | Signature externe | PAdES         | Docage - Signature multi     | true            | Signature externe                     | null           |                                                    |                    | Docage                    |
-            | Signature externe | PAdES         | Universign - Signature multi | true            | Signature externe                     | null           |                                                    |                    | Universign                |
-            | Signature externe | PAdES         | Yousign - Signature multi    | true            | Signature externe                     | null           |                                                    |                    | Yousign                   |
+            | tenant            | type          | name                         | multiDocuments! | validationWorkflowId                                               | sealAutomatic! | sealCertificateId                                  | secureMailServerId | externalSignatureConfigId |
+            | Signature externe | ACTES - PAdES | Docage - Signature           | false           | Signature externe                                                  | null           |                                                    |                    | Docage                    |
+            | Signature externe | ACTES - PAdES | Universign - Signature       | false           | Signature externe                                                  | null           |                                                    |                    | Universign                |
+            | Signature externe | ACTES - PAdES | Yousign - Signature          | false           | Signature externe                                                  | null           |                                                    |                    | Yousign                   |
+            | Signature externe | Automatique   | Docage - Signature           | false           | Signature externe                                                  | null           |                                                    |                    | Docage                    |
+            | Signature externe | Automatique   | Universign - Signature       | false           | Signature externe                                                  | null           |                                                    |                    | Universign                |
+            | Signature externe | Automatique   | Yousign - Signature          | false           | Signature externe                                                  | null           |                                                    |                    | Yousign                   |
+            | Signature externe | Automatique   | Docage - Signature multi     | true            | Signature externe                                                  | null           |                                                    |                    | Docage                    |
+            | Signature externe | Automatique   | Universign - Signature multi | true            | Signature externe                                                  | null           |                                                    |                    | Universign                |
+            | Signature externe | Circuits      | Yousign - CS - SE            | true            | Cachet serveur - Signature externe                                 | null           | Christian Buffin - Default tenant - Cachet serveur |                    | Yousign                   |
+            | Signature externe | Circuits      | Yousign - S - SE             | true            | Signature - Signature externe                                      | null           |                                                    |                    | Yousign                   |
+            | Signature externe | Circuits      | Yousign - S - SE - SE - CS   | true            | Signature - Signature externe - Signature externe - Cachet serveur | null           | Christian Buffin - Default tenant - Cachet serveur |                    | Yousign                   |
+            | Signature externe | Circuits      | Yousign - SE - CS            | true            | Signature externe - Cachet serveur                                 | null           | Christian Buffin - Default tenant - Cachet serveur |                    | Yousign                   |
+            | Signature externe | Circuits      | Yousign - SE - S             | true            | Signature externe - Signature                                      | null           |                                                    |                    | Yousign                   |
+            | Signature externe | Circuits      | Yousign - SE - SE            | true            | Signature externe - Signature externe                              | null           |                                                    |                    | Yousign                   |
+            | Signature externe | PAdES         | Docage - Signature           | false           | Signature externe                                                  | null           |                                                    |                    | Docage                    |
+            | Signature externe | PAdES         | Universign - Signature       | false           | Signature externe                                                  | null           |                                                    |                    | Universign                |
+            | Signature externe | PAdES         | Yousign - Signature          | false           | Signature externe                                                  | null           |                                                    |                    | Yousign                   |
+            | Signature externe | PAdES         | Docage - Signature multi     | true            | Signature externe                                                  | null           |                                                    |                    | Docage                    |
+            | Signature externe | PAdES         | Universign - Signature multi | true            | Signature externe                                                  | null           |                                                    |                    | Universign                |
+            | Signature externe | PAdES         | Yousign - Signature multi    | true            | Signature externe                                                  | null           |                                                    |                    | Yousign                   |
 
     Scenario Outline: Set the signature image for user '${email}'
         * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
