@@ -55,14 +55,14 @@ Feature: Paramétrage métier "Circuits unitaires"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant             | name                          | deskName | type        | mandatoryMetadata! |
-            | Circuits unitaires | Cachet serveur                | Marron   | SEAL        | []                 |
+            | tenant             | name           | deskName | type        | mandatoryValidationMetadata! |
+            | Circuits unitaires | Cachet serveur | Marron   | SEAL        | []                           |
 #            | Circuits unitaires | Cachet serveur et metadonnees | Marron   | SEAL        | ['succes']         |
-            | Circuits unitaires | Mail securise                 | Marron   | SECURE_MAIL | []                 |
+            | Circuits unitaires | Mail securise  | Marron   | SECURE_MAIL | []                           |
 #            | Circuits unitaires | Mail securise et metadonnees  | Marron   | SECURE_MAIL | ['succes']         |
-            | Circuits unitaires | Signature                     | Marron   | SIGNATURE   | []                 |
+            | Circuits unitaires | Signature      | Marron   | SIGNATURE   | []                           |
 #            | Circuits unitaires | Signature et metadonnees      | Marron   | SIGNATURE   | ['succes']         |
-            | Circuits unitaires | Visa                          | Marron   | VISA        | []                 |
+            | Circuits unitaires | Visa           | Marron   | VISA        | []                           |
 #            | Circuits unitaires | Visa et metadonnees           | Marron   | VISA        | ['succes']         |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"

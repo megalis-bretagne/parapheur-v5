@@ -42,8 +42,8 @@ Feature: Paramétrage métier "Factures"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant   | name | deskName | type | mandatoryMetadata!    |
-            | Factures | Visa | Cyan     | VISA | ['date_service_fait'] |
+            | tenant   | name | deskName | type | mandatoryValidationMetadata! |
+            | Factures | Visa | Cyan     | VISA | ['date_service_fait']        |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/setup/type.create.feature') __row
