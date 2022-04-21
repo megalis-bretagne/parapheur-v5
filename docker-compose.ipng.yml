@@ -21,7 +21,7 @@
 services:
 
 
-  ipng-business:
+  ipng:
     image: registry.libriciel.fr:443/public/signature/ipng:1.0.0-beta01
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -34,41 +34,8 @@ services:
       - ./src/main/resources/ipng/application-dev.properties:/application.properties
       - ./data/ipng/connection-profile.yml:/connection-profile.yml
     restart: unless-stopped
-    networks:
-      - ipng
 
   mongo:
     image: mongo:4.2.18-bionic
     ports:
       - 27017:27017
-    networks:
-      - ipng
-
-
-  nginx:
-    networks:
-      - ipng
-      - default
-
-  core:
-    volumes:
-      - ./src/main/resources/core/application-dev-ipng.yml:/application.yml
-    networks:
-      - ipng
-      - default
-
-  keycloak:
-    networks:
-      - ipng
-      - default
-
-  redis:
-    networks:
-      - ipng
-      - default
-
-
-networks:
-  ipng:
-    external: true
-    name: ipng_ipng

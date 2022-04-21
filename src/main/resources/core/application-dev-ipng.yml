@@ -20,7 +20,7 @@
 services:
   ipng:
     provider: ipng
-    host: ipng-business
+    host: ipng
 
 
 ipng:
