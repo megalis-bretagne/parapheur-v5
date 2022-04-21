@@ -22,7 +22,7 @@ services:
 
 
   ipng-business:
-    image: registry.libriciel.fr:443/public/signature/ipng:prod-docker
+    image: registry.libriciel.fr:443/public/signature/ipng:1.0.0-beta01
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "iparapheur.dom.local:host-gateway"
