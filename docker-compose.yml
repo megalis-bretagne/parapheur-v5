@@ -37,7 +37,7 @@ services:
 
 
   nginx:
-    image: nginx:1.21.6-alpine
+    image: nginx:1.21.6
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.1
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.2
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -98,13 +98,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.11.1
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.11.2
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta24
+      - VERSION=5.0.0-beta25
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -164,7 +164,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.1
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -205,7 +205,7 @@ services:
 
 
   alfresco:
-    image: alfresco/alfresco-content-repository-community:7.1.0
+    image: alfresco/alfresco-content-repository-community:7.1.1.2
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -254,7 +254,7 @@ services:
 
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:2.5.3
+    image: alfresco/alfresco-transform-core-aio:2.5.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M

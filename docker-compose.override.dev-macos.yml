@@ -22,7 +22,7 @@ services:
 
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
