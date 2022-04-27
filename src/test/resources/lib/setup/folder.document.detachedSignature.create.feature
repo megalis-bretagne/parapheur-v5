@@ -2,7 +2,7 @@
 Feature:
 
     Scenario:
-        * def detachedSignatureContentType = utils.getMimeTypeFromFilename('#(detachedSignature)')
+        * def detachedSignatureContentType = utils.getMimeTypeFromFilename(detachedSignature)
 
         Given url baseUrl
             And path '/api/v1/tenant/' + tenantId + '/folder/' + folderId + '/document/' + documentId + '/detachedSignature'
