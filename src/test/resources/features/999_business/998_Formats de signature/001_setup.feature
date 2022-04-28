@@ -53,7 +53,7 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                     |
             | Formats de signature | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                     |
             | Formats de signature | PAdES              | NONE     | PADES           | Montpellier       |                  | true              | {"x":0,"y":0,"page":1} |
-            | Formats de signature | XAdES det          | NONE     | PES_V2_DETACHED | Montpellier       | 34000            | false             | {}                     |
+            | Formats de signature | XAdES det          | NONE     | XADES_DETACHED | Montpellier       | 34000            | false             | {}                     |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row

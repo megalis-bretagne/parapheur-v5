@@ -76,8 +76,8 @@ Feature: Paramétrage métier "Circuits unitaires"
             | Circuits unitaires | CAdES              | NONE     | PKCS7           |                   |                  | false             | {}                       |
             | Circuits unitaires | HELIOS - XAdES env | HELIOS   | PES_V2          | Montpellier       | 34000            | false             | {}                       |
             | Circuits unitaires | PAdES              | NONE     | PADES           | Montpellier       |                  | true              | {"x":50,"y":50,"page":1} |
-            | Circuits unitaires | XAdES det          | NONE     | PES_V2_DETACHED | Montpellier       | 34000            | false             | {}                       |
-            # @fixme (ailleurs ?): protocol NONE -> PES_V2_DETACHED (XAdES det, tous format sauf XML), sinon avec HELIOS, on reste bien sur PES_V2 (XAdES env, uniquement format XML/PES_V2)
+            | Circuits unitaires | XAdES det          | NONE     | XADES_DETACHED | Montpellier       | 34000            | false             | {}                       |
+            # @fixme (ailleurs ?): protocol NONE -> XADES_DETACHED (XAdES det, tous format sauf XML), sinon avec HELIOS, on reste bien sur PES_V2 (XAdES env, uniquement format XML/PES_V2)
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/setup/subtype.create.feature') __row
