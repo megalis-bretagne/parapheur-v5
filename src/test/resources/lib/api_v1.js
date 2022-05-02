@@ -588,6 +588,8 @@ function fn(config) {
      */
     config.api_v1['utils'] = {};
     config.api_v1.utils['filterSingleElementFromGetResponse'] = function (response, entity, field, value, containing = false) {
+        value = value.replace("'", "\\'");
+
         /*if (response.body.total === 0) {
             filtered = [];
         } else {*/
