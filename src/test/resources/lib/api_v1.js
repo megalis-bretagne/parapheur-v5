@@ -191,7 +191,7 @@ function fn(config) {
 
         return response.body;
     };
-    config.api_v1.desk['getCreationPayload'] = function (tenantId, name, owners, parent, associated, permissions) {
+    config.api_v1.desk['getCreationPayload'] = function (tenantId, name, shortName, owners, parent, associated, permissions) {
         for (var i=0;i<owners.length;i++) {
             owners[i] = api_v1.user.getIdByEmail(tenantId, owners[i]);
         }
@@ -215,7 +215,7 @@ function fn(config) {
             name: name,
             ownerUserIdsList: owners,
             parentDeskId: parent === '' ? null : api_v1.desk.getIdByName(tenantId, parent),
-            shortName: name,
+            shortName: shortName,
         };
 
         return payload;

@@ -59,7 +59,7 @@ function (tenantId, subtypeMetadataRequestList) {
         * def cleanupPayload =
 """
 function(payload, defaults) {
-    var keys = ['externalSignatureConfig', 'secureMailServerId', 'sealCertificateId', 'workflowSelectionScript'];
+    var keys = ['externalSignatureConfig', 'multiDocuments', 'secureMailServerId', 'sealCertificateId', 'subtypeLayerRequestList', 'subtypeMetadataRequestList', 'workflowSelectionScript'];
     for (var key of keys) {
         if (utils.isEmpty(payload[key])) {
             delete payload[key];
