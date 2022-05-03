@@ -120,16 +120,6 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Service des Marchés Publics           | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+giscard+benoit-xvi@libriciel.coop']                            | 'Directeur des Marchés Publics'      | ['Directrice Générale des Services', 'Directeur des Marchés Publics', 'Président du département'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Ressources Humaines       | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                             | 'Directrice des Ressources Humaines' | []                                                                                                | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
 
-    # --------------------------------------------------------------------
-
-# @todo
-# OK -> S_CS_Pres
-# OK -> S_Pres_MS_ServFin
-# S_Var_OU_Pres
-# V_DGSETDirFin_SE_SG_S_PresOU1VP
-# V_DGS_S_PresOU1VP_SE_SG
-# VVS_Chefde
-
     Scenario Outline: Create "${name}" workflow in "${tenant}"
         * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
 
@@ -195,7 +185,7 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    Scenario: Create "S_Pres_MS_ServFin" workflow in "Benoit XVI"
+    Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
         * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
         * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
         * def appDeskId = api_v1.desk.getIdByName(tenantId, 'APPLICATIONS')
@@ -220,7 +210,86 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    # --------------------------------------------------------------------
+    Scenario: Create "V_DGSETDirFin_SE_SG_S_PresOU1VP" workflow in "Benoit XVI"
+        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
+        * def dfinDeskId = api_v1.desk.getIdByName(tenantId, 'Directeur des Finances')
+        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
+        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
+        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
+        * def id = 'v_dgsetdirfin_se_sg_s_presou1vp'
+        * def payload =
+"""
+{
+    "steps":[
+        {"validators":["#(dgsDeskId)","#(dfinDeskId)"],"validationMode":"AND","name":"Visa","type":"VISA","parallelType":"AND"},
+        {"validators":["#(secgenDeskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validators":["#(presDeskId)","#(premvicepresDeskId)"],"validationMode":"OR","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"}
+    ],
+    "name":"V_DGSETDirFin_SE_SG_S_PresOU1VP",
+    "id":"#(id)",
+    "key":"#(id)",
+    "deploymentId":"#(id)"
+}
+"""
+        Given url baseUrl
+            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+            And header Accept = 'application/json'
+            And request payload
+        When method POST
+        Then status 201
+
+    Scenario: Create "V_DGS_S_PresOU1VP_SE_SG" workflow in "Benoit XVI"
+        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
+        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
+        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
+        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
+        * def id = 'v_dgs_s_presou1vp_se_sg'
+        * def payload =
+"""
+{
+    "steps":[
+        {"validators":["#(dgsDeskId)"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
+        {"validators":["#(presDeskId)","#(premvicepresDeskId)"],"validationMode":"OR","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
+        {"validators":["#(secgenDeskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"}
+    ],
+    "name":"V_DGS_S_PresOU1VP_SE_SG",
+    "id":"#(id)",
+    "key":"#(id)",
+    "deploymentId":"#(id)"
+}
+"""
+        Given url baseUrl
+            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+            And header Accept = 'application/json'
+            And request payload
+        When method POST
+        Then status 201
+
+    Scenario: Create "VVS_Chefde" workflow in "Benoit XVI"
+        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+        * def id = 'vs_chefde'
+        * def payload =
+"""
+{
+    "steps":[
+        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
+        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
+        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
+    ],
+    "name":"VVS_Chefde",
+    "id":"#(id)",
+    "key":"#(id)",
+    "deploymentId":"#(id)"
+}
+"""
+        Given url baseUrl
+            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+            And header Accept = 'application/json'
+            And request payload
+        When method POST
+        Then status 201
 
 #Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
 #* call read('classpath:lib/setup/type.create.feature') __row
