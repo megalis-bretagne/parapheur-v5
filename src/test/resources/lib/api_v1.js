@@ -170,6 +170,13 @@ function fn(config) {
         }
         return result;
     };
+    config.api_v1.desk['getAllIdsByNames'] = function (tenantId, names, containing = false) {
+        result = [];
+        for (var i=0 ; i < names.length ; i++) {
+            result.push(api_v1.desk.getIdByName(tenantId, names[i], containing));
+        }
+        return result;
+    };
     config.api_v1.desk['getById'] = function (tenantId, deskId) {
         response = karate
             .http(baseUrl)
