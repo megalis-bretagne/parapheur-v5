@@ -346,6 +346,27 @@ function fn(config) {
     /**
      * metadata
      */
+    config.api_v1['layer'] = {};
+    config.api_v1.layer['getIdByName'] = function (tenantId, name, containing = false) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/admin/tenant/' + tenantId + '/layer')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
+            .param('searchTerm', name)
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting layer id by its tenantId and name');
+        }
+
+        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'layer', 'name', name, containing);
+        return element['id'];
+    };
+
+    /**
+     * metadata
+     */
     config.api_v1['metadata'] = {};
     config.api_v1.metadata['getIdByKey'] = function (tenantId, key) {
         response = karate

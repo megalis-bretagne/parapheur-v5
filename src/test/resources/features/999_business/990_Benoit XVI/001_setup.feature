@@ -11,7 +11,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | name       |
             | Benoit XVI |
 
-    # @todo: il faut maintenant utiliser ces métadonnées
+    # @todo: il faut maintenant utiliser ces métadonnées (je ne les vois pas utilisées sur la recette)
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/setup/metadata.create.feature') __row
 
@@ -67,7 +67,21 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    # @todo: Calques d'impression des dossiers
+    Scenario Outline: Create layer "${name}" in "${tenant}"
+        * call read('classpath:lib/setup/layer.create.feature') __row
+
+        Examples:
+            | tenant     | name          |
+            | Benoit XVI | Test calque   |
+            | Benoit XVI | Test calque 2 |
+
+    Scenario Outline: Create stamp for layer "${layer}" in "${tenant}"
+        * call read('classpath:lib/setup/stamp.create.feature') __row
+
+        Examples:
+            | tenant     | layer         | file!                                              | payload!                                                                                                                                                                                                                                           |
+            | Benoit XVI | Test calque   | null                                               | {"id":"new_stamp_temp_id", "signatureRank":0, "type":"TEXT", "value":"Ce document est signé électroniquement", "fontSize":10, "textColor":"BLACK", "x":50, "y":50, "page":-1, "afterSignature":true }                                              |
+            | Benoit XVI | Test calque 2 | 'classpath:files/images/tampon - service_fait.png' | {"id":"new_stamp_temp_id","page":-1,"width":0,"height":0,"x":50,"y":50,"pageRotation":0,"rectangleOrigin":"TOP_RIGHT","signatureRank":0,"afterSignature":false,"type":"IMAGE","value":null,"fontSize":10,"textColor":"BLACK"} |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
         * call read('classpath:lib/setup/user.create.feature') __row
@@ -119,7 +133,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Service Finances                      | Service Finances        | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+marlin+benoit-xvi@libriciel.coop']                             | 'Directeur des Finances'             | []                                                                                                | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Marchés Publics           | Service Marches Publics | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+giscard+benoit-xvi@libriciel.coop']                            | 'Directeur des Marchés Publics'      | ['Directrice Générale des Services', 'Directeur des Marchés Publics', 'Président du département'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Ressources Humaines       | Service RH              |  ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                            | 'Directrice des Ressources Humaines' | []                                                                                                | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
-    # @fixme: ne fait rien en dom.local + 8 échecs après la mise à jour (cf karate-report)
+    # @fixme: ne fait rien en dom.local (même via l'UI)
     Scenario Outline: Update desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.update.feature') __row
 
@@ -193,6 +207,7 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
+    # @fixme: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
     Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
         * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
         * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
@@ -316,7 +331,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | MARCHES XADES      | NONE     | XADES_DETACHED  | Montpellier       | 34000            | false             | {}                        |
             | Benoit XVI | PES                | HELIOS   | PES_V2          | Lyon              | 69000            | false             | {}                        |
 
-    # @fixme: http call failed after 30031 milliseconds for url
+    # @fixme: http call failed after 30031 milliseconds for url (pas systématiquement)
     # Create subtype "Courrier à signer Président" for type "COURRIERS" and "S_CS_Pres" workflow in "Benoit XVI" -> éditable
     # Create subtype "Document à signer" for type "DOCUMENTS INTERNES" and "S_Consultant" workflow in "Benoit XVI" -> non éditable (Erreur lors de la récupération du sous-Type)
     # Create subtype "Service Fait" for type "FACTURES" and "V_Var_SF" workflow in "Benoit XVI" -> non éditable (Erreur lors de la récupération du sous-Type)
