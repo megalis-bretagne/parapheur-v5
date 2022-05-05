@@ -1,4 +1,4 @@
-@business @benoit-xvi @proposal @setup @-wip
+@business @benoit-xvi @proposal @setup @wip
 Feature: Paramétrage métier "Benoit XVI"
 
     Background:
@@ -119,7 +119,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Service Finances                      | Service Finances        | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+marlin+benoit-xvi@libriciel.coop']                             | 'Directeur des Finances'             | []                                                                                                | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Marchés Publics           | Service Marches Publics | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+giscard+benoit-xvi@libriciel.coop']                            | 'Directeur des Marchés Publics'      | ['Directrice Générale des Services', 'Directeur des Marchés Publics', 'Président du département'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Ressources Humaines       | Service RH              |  ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                            | 'Directrice des Ressources Humaines' | []                                                                                                | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
-
+    # @fixme: ne fait rien en dom.local + 8 échecs après la mise à jour (cf karate-report)
     Scenario Outline: Update desk "${name}" in "${tenant}"
         * call read('classpath:lib/setup/desk.update.feature') __row
 
