@@ -79,9 +79,9 @@ Feature: Paramétrage métier "Benoit XVI"
         * call read('classpath:lib/setup/stamp.create.feature') __row
 
         Examples:
-            | tenant     | layer         | file!                                              | payload!                                                                                                                                                                                                                                           |
-            | Benoit XVI | Test calque   | null                                               | {"id":"new_stamp_temp_id", "signatureRank":0, "type":"TEXT", "value":"Ce document est signé électroniquement", "fontSize":10, "textColor":"BLACK", "x":50, "y":50, "page":-1, "afterSignature":true }                                              |
-            | Benoit XVI | Test calque 2 | 'classpath:files/images/tampon - service_fait.png' | {"id":"new_stamp_temp_id","page":-1,"width":0,"height":0,"x":50,"y":50,"pageRotation":0,"rectangleOrigin":"TOP_RIGHT","signatureRank":0,"afterSignature":false,"type":"IMAGE","value":null,"fontSize":10,"textColor":"BLACK"} |
+            | tenant     | layer         | file!                                              | payload!                                                                                                                                                                                                                        |
+            | Benoit XVI | Test calque   | null                                               | { "afterSignature": true, "fontSize": 10, "page": -1, "signatureRank": 0, "textColor": "BLACK", "type": "TEXT", "value": "Ce document est signé électroniquement", "x": 50, "y": 50 }                                           |
+            | Benoit XVI | Test calque 2 | 'classpath:files/images/tampon - service_fait.png' | { "afterSignature": false, "fontSize": 10, "height": 0, "page": -1, "pageRotation": 0, "rectangleOrigin": "TOP_RIGHT", "signatureRank": 0, "textColor": "BLACK", "type": "IMAGE", "value": null, "width": 0, "x": 50, "y": 50 } |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
         * call read('classpath:lib/setup/user.create.feature') __row

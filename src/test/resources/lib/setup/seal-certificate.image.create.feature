@@ -2,7 +2,7 @@
 Feature: Seal certificate setup lib
 
     Scenario: Create a seal certificate image
-        * def contentType = utils.getMimeTypeFromFilename('#(path)')
+        * def contentType = utils.file.mime('#(path)')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + tenantId + '/sealCertificate/' + sealCertificateId + '/signatureImage'

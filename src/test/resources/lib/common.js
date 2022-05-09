@@ -100,9 +100,6 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
      * utils
      */
     config['utils'] = {};
-    config.utils['basename'] = function (path) {
-        return String(path).replace(/.*\/([^\/]+)$/, '$1');
-    };
     config.utils['eval'] = function (value) {
         var matches = (''+value).match(/^eval\((.*)\)$/),
             result = value;
@@ -111,8 +108,37 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         }
         return result;
     };
+    config.utils['file'] = {};
+    config.utils.file['basename'] = function (path) {
+        return String(path).replace(/.*\/([^\/]+)$/, '$1');
+    };
+    config.utils.file['mime'] = function(filename) {
+        var extension = filename.split(".").pop().toLowerCase(),
+            associations = {
+                'doc': 'application/msword',
+                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'odt': 'application/vnd.oasis.opendocument.text',
+                'p7s': 'application/pkcs7-signature',
+                'pdf': 'application/pdf',
+                'png': 'image/png',
+                'xml': 'text/xml'
+            };
+        if (extension in associations) {
+            return associations[extension];
+        } else {
+            // @todo: warn
+            return 'application/octet-stream';
+        }
+    };
+    config.utils.file['payload'] = function(path, defaultValue) {
+        defaultValue = typeof defaultValue === undefined ? null : defaultValue;
+        if (utils.isEmpty(path) === false) {
+            return { read: path, 'contentType': utils.file.mime(path), 'filename': utils.file.basename(path) };
+        }
+        return defaultValue;
+    }
     config.utils['getDraftDocumentId'] = function (response, fileName) {
-        fileName = utils.basename(fileName);
+        fileName = utils.file.basename(fileName);
         for (var idx = 0;idx < response.documentList.length;idx++) {
             if (fileName === response.documentList[idx].name && response.documentList[idx].id !== null) {
                 return response.documentList[idx].id;
@@ -137,25 +163,6 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
             karate.fail(result.message);
         }
         return result;
-    };
-    config.utils['getMimeTypeFromFilename'] = function(filename) {
-        var extension = filename.split(".").pop().toLowerCase(),
-            associations = {
-                'doc': 'application/msword',
-                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'odt': 'application/vnd.oasis.opendocument.text',
-                'p7s': 'application/pkcs7-signature',
-                'pdf': 'application/pdf',
-                'png': 'image/png',
-                'xml': 'text/xml'
-            };
-        karate.log(extension);
-        if (extension in associations) {
-            return associations[extension];
-        } else {
-            // @todo: warn
-            return 'application/octet-stream';
-        }
     };
     /**
      * utils.string

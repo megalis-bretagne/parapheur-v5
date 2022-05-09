@@ -1,8 +1,8 @@
 @ignore
 Feature:
     Scenario:
-      * def mainFileContentType = utils.getMimeTypeFromFilename(mainFilePath)
-      * def annexFileContentType = utils.getMimeTypeFromFilename(annexFilePath)
+      * def mainFileContentType = utils.file.mime(mainFilePath)
+      * def annexFileContentType = utils.file.mime(annexFilePath)
 
         Given url baseUrl
           And path path
