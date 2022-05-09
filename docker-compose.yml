@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.7
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.8
     restart: unless-stopped
     tty: true
     mem_limit: 1G
