@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.6
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.7
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -164,14 +164,14 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.4
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.5
     restart: unless-stopped
     tty: true
     mem_limit: 512M
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.5
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.6
     restart: unless-stopped
     tty: true
     mem_limit: 512M
