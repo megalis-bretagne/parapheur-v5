@@ -194,7 +194,7 @@ services:
     image: registry.libriciel.fr/public/signature/feeder:1.0.2
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
