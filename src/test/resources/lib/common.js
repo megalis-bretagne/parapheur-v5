@@ -137,6 +137,19 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         }
         return defaultValue;
     }
+    config.utils['filterMap'] = function (map) {
+        var result = {};
+
+        for (const key in map) {
+            const value = map[key];
+            karate.log({value: value, key: key});
+            if (utils.isEmpty(value) === false) {
+                result[key] = value;
+            }
+        }
+
+        return result;
+    };
     config.utils['getDraftDocumentId'] = function (response, fileName) {
         fileName = utils.file.basename(fileName);
         for (var idx = 0;idx < response.documentList.length;idx++) {

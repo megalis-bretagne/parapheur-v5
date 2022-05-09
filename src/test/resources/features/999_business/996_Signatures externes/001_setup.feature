@@ -27,35 +27,14 @@ Feature: Paramétrage métier 'Signatures externes'
             | Signatures externes | Nankin     | ['anankin@dom.local'] | ''      | []          | {'action': true}                                                     |
             | Signatures externes | WebService | ['ws-se@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
-    Scenario: Create external signature config for 'Docage'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
+    Scenario Outline: Create external signature "${name}" in "${tenant}"
+        * call read('classpath:lib/setup/external-signature.create.feature') __row
 
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Docage','url':'https://api.docage.com','serviceName':'docage','login':'signature@libriciel.coop','password':'44ba77ae-f081-49c0-8240-868ef5c69b67'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Universign'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Universign','url':'https://sign.test.cryptolog.com/sign/rpc/','serviceName':'universign','login':'stephane.vast@libriciel.coop','password':'29Xdx6xW2H8rd9Cs377NCKJyx'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Yousign'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Yousign','url':'https://staging-api.yousign.com','serviceName':'yousign','token':'d57a9d267085963488746561cf22a02a'}
-        When method POST
-        Then status 201
+        Examples:
+            | tenant              | name       | url                                       | serviceName | login                        | password                             | token                            |
+            | Signatures externes | Docage     | https://api.docage.com                    | docage      | signature@libriciel.coop     | 44ba77ae-f081-49c0-8240-868ef5c69b67 |                                  |
+            | Signatures externes | Universign | https://sign.test.cryptolog.com/sign/rpc/ | universign  | stephane.vast@libriciel.coop | 29Xdx6xW2H8rd9Cs377NCKJyx            |                                  |
+            | Signatures externes | Yousign    | https://staging-api.yousign.com           | yousign     |                              |                                      | d57a9d267085963488746561cf22a02a |
 
     Scenario Outline: Create a seal certificate from file '${path}' in '${tenant}'
         * call read('classpath:lib/setup/seal-certificate.create.feature') __row

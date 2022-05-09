@@ -1,4 +1,5 @@
-@business @benoit-xvi @proposal @setup @wip
+@business @benoit-xvi @proposal @setup
+
 Feature: Paramétrage métier "Benoit XVI"
 
     Background:
@@ -37,35 +38,14 @@ Feature: Paramétrage métier "Benoit XVI"
             | tenant     | name            | url                                      | login                                 | password | entity |
             | Benoit XVI | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
 
-    Scenario: Create external signature config for 'Docage'
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+    Scenario Outline: Create external signature "${name}" in "${tenant}"
+        * call read('classpath:lib/setup/external-signature.create.feature') __row
 
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'SE Docage','url':'https://api.docage.com','serviceName':'docage','login':'signature@libriciel.coop','password':'44ba77ae-f081-49c0-8240-868ef5c69b67'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Universign'
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'SE Universign','url':'https://sign.test.cryptolog.com/sign/rpc/','serviceName':'universign','login':'stephane.vast@libriciel.coop','password':'29Xdx6xW2H8rd9Cs377NCKJyx'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Yousign'
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'SE Yousign','url':'https://staging-api.yousign.com','serviceName':'yousign','token':'d57a9d267085963488746561cf22a02a'}
-        When method POST
-        Then status 201
+        Examples:
+            | tenant     | name          | url                                       | serviceName | login                        | password                             | token                            |
+            | Benoit XVI | SE Docage     | https://api.docage.com                    | docage      | signature@libriciel.coop     | 44ba77ae-f081-49c0-8240-868ef5c69b67 |                                  |
+            | Benoit XVI | SE Universign | https://sign.test.cryptolog.com/sign/rpc/ | universign  | stephane.vast@libriciel.coop | 29Xdx6xW2H8rd9Cs377NCKJyx            |                                  |
+            | Benoit XVI | SE Yousign    | https://staging-api.yousign.com           | yousign     |                              |                                      | d57a9d267085963488746561cf22a02a |
 
     Scenario Outline: Create layer "${name}" in "${tenant}"
         * call read('classpath:lib/setup/layer.create.feature') __row
