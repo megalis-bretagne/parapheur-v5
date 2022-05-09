@@ -28,6 +28,15 @@ services:
       - "iparapheur.dom.local:host-gateway"
     ports:
       - 8081:8081
+    environment:
+      - KEYCLOAK_AUTH_PROTOCOL
+      - APPLICATION_PROTOCOL
+      - APPLICATION_HOST
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+      - IPNG_HOST
     volumes:
       - ./data/ipng/wallet:/wallet
       - ./data/ipng/ca-certs:/crypto-config
