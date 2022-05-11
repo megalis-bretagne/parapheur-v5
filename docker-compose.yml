@@ -317,7 +317,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:16.1.1
+    image: jboss/keycloak:15.0.2
     restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
