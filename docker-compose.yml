@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.9
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.10
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -317,7 +317,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:16.1.1
+    image: jboss/keycloak:15.0.2
     restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
