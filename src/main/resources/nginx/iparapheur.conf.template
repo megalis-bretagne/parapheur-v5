@@ -82,7 +82,7 @@ server {
   }
 
   location /api {
-    proxy_read_timeout 180;
+    proxy_read_timeout 300;
     proxy_pass http://core:8080/api;
   }
 

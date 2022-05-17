@@ -167,7 +167,7 @@ services:
     image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.7
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
 
 
   legacy-bridge:
