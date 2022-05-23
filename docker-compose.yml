@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.12
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.13
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -98,13 +98,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.11.9
+    image: registry.libriciel.fr:443/public/signature/ip-web:0.11.10
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta34
+      - VERSION=5.0.0-beta35
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -164,7 +164,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.8
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -334,6 +334,7 @@ services:
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
       - DB_USER=${KEYCLOAK_DB_USER}
       - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      # - KEYCLOAK_LOGLEVEL=TRACE
       # This file will be generated from the given JSON, by the script file
       - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
