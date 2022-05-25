@@ -49,7 +49,56 @@ function fn(config) {
     config.ui.locator.header['Profil'] = '//app-header//*[@routerlink=\'/profile\']';
     config.ui.locator.header['Déconnexion'] = '//app-header//fa-icon[last()]';
     config.ui.locator['input'] = function (text) {
-        return '//input[@id=//label[contains(., \'' + text + '\')]/@for]';
+        // return '//input[@id=//label[contains(., \'' + text + '\')]/@for]';
+            return '//input[@id=//label[contains(., \'' + text.replace("'", "\\\u0027") + '\')]/@for]';
+    };
+
+    /**
+     * URL
+     **/
+    config.ui['admin'] = {};
+    config.ui.admin['getRoleIndex'] = function(name) {
+        switch(name) {
+            case 'Administrateur':
+                return 1;
+            case 'Administrateur d\'entité':
+                return 2;
+            case 'Administrateur fonctionnel':
+                return 3;
+            case 'Aucun privilège':
+                return 4;
+        }
+        karate.fail('Role "' + name + '" does not exist');
+    };
+    config.ui.admin['selectTenant'] = function(tenant) {
+        waitFor("//input[@aria-autocomplete='list']");
+        click("//input[@aria-autocomplete='list']");
+        input("//input[@aria-autocomplete='list']", tenant);
+        click("//div[@class='ng-dropdown-panel-items scroll-host']//*[text()='" + tenant + "']");
+    };
+
+    /**
+     * Elements
+     **/
+    config.ui['element'] = {};
+    config.ui.element['breadcrumb'] = function(path) {
+        var idx, tokens = path.split(/\s*\/\s*/), result = '';
+        for (idx = 0; idx < tokens.length ; idx++) {
+            if (idx === 0) {
+                result = "//li//*[normalize-space(text())='" + tokens[idx] + "']";
+            } else {
+                result += "/ancestor::li/following-sibling::li//*[normalize-space(text())='" + tokens[idx] + "']";
+            }
+        }
+        return result;
+    };
+
+    /**
+     * Toast
+     **/
+    config.ui['toast'] = {};
+    config.ui.toast['success'] = function(message) {
+        return "//div[contains(@class, 'toast-success')]//*[contains(normalize-space(text()), '" + message + "')]";
     };
 
     /**
@@ -57,6 +106,23 @@ function fn(config) {
      **/
     config.ui['url'] = {};
     config.ui.url['logout'] = '/auth/realms/api/protocol/openid-connect/logout';
+
+    /**
+     * User
+     **/
+    config.ui['user'] = {};
+    config.ui.user['login'] = function(username, password) {
+        karate.call('classpath:lib/ui/user/login.feature', { username: username, password: password });
+    };
+    config.ui.user['logout'] = function() {
+        ui.user.menu("{^}Se déconnecter");
+        waitFor('{^}Veuillez saisir vos identifiants de connexion');
+    };
+    config.ui.user['menu'] = function(locator) {
+        mouse().move("//div[contains(@class, 'header-menu ')]").go();
+        click(locator);
+        // @todo: move somewhere else
+    };
 
     return config;
 }

@@ -33,7 +33,20 @@ function fn() {
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
         CHROME_BIN: '/usr/bin/chromium-browser',
-        headless: String(karate.properties['karate.headless']).toLowerCase() !== 'false'
+        headless: (function(){
+            var headless = String(karate.properties['karate.headless']).toLowerCase();
+            if (headless === '' || headless === 'true') {
+                return true;
+            } else if (headless === 'false') {
+                return false;
+            } else {
+                karate.fail(
+                    'Invalid value for karate.headless ('
+                    + String(karate.properties['karate.headless'])
+                    + '), please use one of: false, true'
+                );
+            }
+        })()
     };
 
     if (env === 'dev') {
