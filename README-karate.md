@@ -13,10 +13,10 @@
     - [x] Créer un Administrateur
     - [x] Créer un Administrateur d'entité puis se connecter
     - [x] Créer un user sans droit avec notif unitaire
-    - [ ] Créer un user sans droit avec une image de signature
-    - [ ] Créer un utilisateur WebService
-    - [ ] Créer un bureau pour visa pour le user sans droit
-    - [ ] Créer un bureau pour le WebService
+    - [x] Créer un user sans droit avec une image de signature
+    - [x] Créer un utilisateur WebService
+    - [x] Créer un bureau pour visa pour le user sans droit
+    - [x] Créer un bureau pour le WebService
     - [ ] Créer un circuit 1 étape de signature du bureau signataire
     - [ ] Créer un circuit de validation Visa
     - [ ] Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
