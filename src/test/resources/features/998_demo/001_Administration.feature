@@ -97,3 +97,69 @@ Feature: 001 - Administration
             | tenant | title      | shortName  | owners!     | permissions!                                                                             |
             | Démo   | WebService | WebService | ['ws@demo'] | ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit'] |
 
+    # @fixme: qui est le bureau signataire ?
+    Scenario Outline: Créer un circuit 1 étape de signature du bureau signataire
+        * ui.user.login("admin-entite@demo", "a123456")
+        * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
+
+        Examples:
+            | tenant | name      | type      | desk   |
+            | Démo   | Signature | Signature | Viseur |
+
+    Scenario Outline: Créer un circuit de validation Visa
+        * ui.user.login("admin-entite@demo", "a123456")
+        * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
+
+        Examples:
+            | tenant | name | type | desk   |
+            | Démo   | Visa | Visa | Viseur |
+
+    @wip
+    Scenario: Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
+        * def row =
+"""
+{
+    tenant: "Démo",
+    name: "ACTES",
+    description: "ACTES",
+    protocol: "ACTES",
+    format: "PAdES",
+    ville: "Pont-à-Mousson"
+}
+"""
+
+        * ui.user.login("admin-entite@demo", "a123456")
+#        * call read('classpath:lib/ui/type/create.feature') row
+
+        # ------------------------------------------------------------------------------------------------
+        # Sous-type
+        # ------------------------------------------------------------------------------------------------
+        * def row =
+"""
+{
+}
+"""
+        * def tenant = "Démo"
+        * def type = "ACTES"
+        * def name = "Délibération"
+        * def description = "Délibération"
+        * def workflow = "Signature"
+
+        Given assert exists("//app-header") == true
+        And click("//app-header//*[@routerLink='/admin']")
+        Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
+
+        When ui.admin.selectTenant(tenant)
+        And click("{^}Typologie des dossiers")
+        Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+
+        When click("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
+        And input("{^}Nom", name)
+        And input("{^}Description", description)
+
+        When click("{^}Circuits")
+        * pause(5)
+
+#        And input("#selectValidationWorkflow input", workflow)
+#        And click("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]")
+        * pause(5)

@@ -17,8 +17,8 @@
     - [x] Créer un utilisateur WebService
     - [x] Créer un bureau pour visa pour le user sans droit
     - [x] Créer un bureau pour le WebService
-    - [ ] Créer un circuit 1 étape de signature du bureau signataire
-    - [ ] Créer un circuit de validation Visa
+    - [x] Créer un circuit 1 étape de signature du bureau signataire
+    - [x] Créer un circuit de validation Visa
     - [ ] Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
 - [ ] Utilisation
     - [ ] Tester un flux .doc avec tag + un fichier .odt depuis bureau ws -> signataire -> Fin de circuit
