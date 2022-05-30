@@ -39,7 +39,7 @@ function fn(config) {
             }
         }
 
-        rv = karate.call('classpath:lib/auth/post_' + String(status) + '.feature', {
+        rv = karate.call('classpath:lib/api/auth/post_' + String(status) + '.feature', {
             username: username,
             password: password
         });
@@ -82,7 +82,7 @@ function fn(config) {
             parentDeskId: null,
             tenantId: tenantId
         };
-        karate.call('classpath:lib/desk/createTemporary.feature', data);
+        karate.call('classpath:lib/api/desk/createTemporary.feature', data);
 
         return api_v1.desk.getIdByName(tenantId, unique);
     };
@@ -251,7 +251,7 @@ function fn(config) {
     config.api_v1['entity'] = {};
     config.api_v1.entity['createTemporary'] = function () {
         var name = 'tmp-' + java.util.UUID.randomUUID() + '';
-        karate.call('classpath:lib/tenant/createTemporary.feature', {name: name});
+        karate.call('classpath:lib/api/tenant/createTemporary.feature', {name: name});
         return api_v1.entity.getIdByName(name);
     };
     config.api_v1.entity['getIdByName'] = function (name, containing = false) {
@@ -428,7 +428,7 @@ function fn(config) {
             notificationsRedirectionMail: email,
             tenantId: tenantId
         };
-        karate.call('classpath:lib/user/createTemporary.feature', data);
+        karate.call('classpath:lib/api/user/createTemporary.feature', data);
 
         return api_v1.user.getIdByEmail(tenantId, email);
     };
@@ -494,45 +494,45 @@ function fn(config) {
      */
     config['schemas'] = {
         'auth': {
-            'post_200': karate.read('classpath:lib/schemas/auth/post_200.json'),
-            'post_401': karate.read('classpath:lib/schemas/auth/post_401.json'),
+            'post_200': karate.read('classpath:lib/api/schemas/auth/post_200.json'),
+            'post_401': karate.read('classpath:lib/api/schemas/auth/post_401.json'),
         },
         'tenant': {
-            'element': karate.read('classpath:lib/schemas/tenant.element.json'),
-            'index': karate.read('classpath:lib/schemas/tenant.index.json'),
-            'index_element': karate.read('classpath:lib/schemas/tenant.index.element.json')
+            'element': karate.read('classpath:lib/api/schemas/tenant.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/tenant.index.json'),
+            'index_element': karate.read('classpath:lib/api/schemas/tenant.index.element.json')
         },
         'user': {
-            'element': karate.read('classpath:lib/schemas/user.element.json'),
-            'index': karate.read('classpath:lib/schemas/user.index.json')
+            'element': karate.read('classpath:lib/api/schemas/user.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/user.index.json')
         },
         'desk': {
-            'element': karate.read('classpath:lib/schemas/desk.element.json'),
-            'index': karate.read('classpath:lib/schemas/desk.index.json')
+            'element': karate.read('classpath:lib/api/schemas/desk.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/desk.index.json')
         },
         'workflow': {
-            'element': karate.read('classpath:lib/schemas/workflow.element.json'),
-            'index': karate.read('classpath:lib/schemas/workflow.index.json')
+            'element': karate.read('classpath:lib/api/schemas/workflow.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/workflow.index.json')
         },
         'type': {
-            'element': karate.read('classpath:lib/schemas/type.element.json'),
-            // 'index': karate.read('classpath:lib/schemas/type.index.json')
+            'element': karate.read('classpath:lib/api/schemas/type.element.json'),
+            // 'index': karate.read('classpath:lib/api/schemas/type.index.json')
         },
         'subtype': {
-            'element': karate.read('classpath:lib/schemas/subtype.element.json'),
-            // 'index': karate.read('classpath:lib/schemas/type.index.json')
+            'element': karate.read('classpath:lib/api/schemas/subtype.element.json'),
+            // 'index': karate.read('classpath:lib/api/schemas/type.index.json')
         },
-        'error': karate.read('classpath:lib/schemas/error.json'),
+        'error': karate.read('classpath:lib/api/schemas/error.json'),
         'sealCertificate': {
-            'element': karate.read('classpath:lib/schemas/sealCertificate.element.json'),
-            'index': karate.read('classpath:lib/schemas/sealCertificate.index.json')
+            'element': karate.read('classpath:lib/api/schemas/sealCertificate.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/sealCertificate.index.json')
         },
         'delegation': {
-            'element': karate.read('classpath:lib/schemas/delegation.element.json'),
-            'index': karate.read('classpath:lib/schemas/delegation.index.json')
+            'element': karate.read('classpath:lib/api/schemas/delegation.element.json'),
+            'index': karate.read('classpath:lib/api/schemas/delegation.index.json')
         },
         'metadata': {
-            'element': karate.read('classpath:lib/schemas/metadata.element.json')
+            'element': karate.read('classpath:lib/api/schemas/metadata.element.json')
         }
     };
 

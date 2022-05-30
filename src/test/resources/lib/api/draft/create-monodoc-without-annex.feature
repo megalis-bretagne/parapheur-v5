@@ -14,4 +14,4 @@ Feature:
         When method POST
         Then status 201
         # Ajout de la signature détachée le cas échéant
-        * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, deskId: deskId, documentId: utils.getDraftDocumentId(response, mainFilePath), detachedSignature: mainFileDetachedPath })
+        * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/api/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, deskId: deskId, documentId: utils.getDraftDocumentId(response, mainFilePath), detachedSignature: mainFileDetachedPath })

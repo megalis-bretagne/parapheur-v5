@@ -4,7 +4,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
     Background:
         * api_v1.auth.login('user', 'password')
         * def list = api_v1.entity.getListByPartialName('tmp-')
-        * call read('classpath:lib/setup/tenant.delete.feature') list
+        * call read('classpath:lib/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}

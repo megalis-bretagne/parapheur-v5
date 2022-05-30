@@ -16,7 +16,7 @@ Feature: Création de dossiers pour le paramétrage métier "Formats de signatur
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('ws-fds', 'a123456')
-        * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
+        * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 
         Examples:
             | type               | subtype        | mainFile!                                                                                                                                                            | nameTemplate                                                         | start! | count! | withOrWithout | extra! |

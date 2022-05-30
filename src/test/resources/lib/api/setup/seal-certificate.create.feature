@@ -12,4 +12,4 @@ Feature: Seal certificate setup lib
         When method POST
         Then status 201
 
-        * eval if (image != '') karate.call('classpath:lib/setup/seal-certificate.image.create.feature', { tenantId: tenantId, sealCertificateId: response.id, path: image })
+        * eval if (image != '') karate.call('classpath:lib/api/setup/seal-certificate.image.create.feature', { tenantId: tenantId, sealCertificateId: response.id, path: image })

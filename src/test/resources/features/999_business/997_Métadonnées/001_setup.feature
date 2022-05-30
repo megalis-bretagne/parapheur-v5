@@ -6,14 +6,14 @@ Feature: Paramétrage métier "Métadonnées"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/setup/tenant.create.feature') __row
+        * call read('classpath:lib/api/setup/tenant.create.feature') __row
 
         Examples:
             | name        |
             | Métadonnées |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/setup/user.create.feature') __row
+        * call read('classpath:lib/api/setup/user.create.feature') __row
 
         Examples:
             | tenant      | userName  | email               | firstName | lastName | password | privilege | notificationsCronFrequency |
@@ -21,7 +21,7 @@ Feature: Paramétrage métier "Métadonnées"
             | Métadonnées | ws-meta   | ws-meta@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
-        * call read('classpath:lib/setup/metadata.create.feature') __row
+        * call read('classpath:lib/api/setup/metadata.create.feature') __row
 
         Examples:
             | tenant      | key                      | name                       | type    | restrictedValues!                                                                                   |
@@ -38,7 +38,7 @@ Feature: Paramétrage métier "Métadonnées"
             | Métadonnées | url_restreint            | URL restreint              | URL     | ['http://www.lesoir.be', 'https://www.libriciel.fr/nos-logiciels/', 'https://gitlab.libriciel.fr/'] |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/setup/desk.create.feature') __row
+        * call read('classpath:lib/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant      | name       | owners!                 | parent! | associated! | permissions!                                                         |
@@ -46,7 +46,7 @@ Feature: Paramétrage métier "Métadonnées"
             | Métadonnées | WebService | ['ws-meta@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant      | name                                   | deskName | type | mandatoryValidationMetadata!                                                                                                                                               | mandatoryRejectionMetadata!                                                                                                                                                |
@@ -60,14 +60,14 @@ Feature: Paramétrage métier "Métadonnées"
             | Métadonnées | Toutes metadonnees validation et rejet | Capucine | VISA | ['booleen','date','date_restreinte','nombre_virgule','nombre_virgule_restreint','nombre_entier','nombre_entier_restreint','texte','texte_restreint','url','url_restreint'] | ['booleen','date','date_restreinte','nombre_virgule','nombre_virgule_restreint','nombre_entier','nombre_entier_restreint','texte','texte_restreint','url','url_restreint'] |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/setup/type.create.feature') __row
+        * call read('classpath:lib/api/setup/type.create.feature') __row
 
         Examples:
             | tenant      | name  | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
             | Métadonnées | PAdES | NONE     | PADES           | Montpellier       |                  | true              | {"x":0,"y":0,"page":1} |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/setup/subtype.create.feature') __row
+        * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant      | type  | name                        | multiDocuments! | validationWorkflowId                   | sealAutomatic! | sealCertificateId | secureMailServerId |

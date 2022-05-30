@@ -6,7 +6,7 @@ Feature: Paramétrage métier "Benoit XVI"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/setup/tenant.create.feature') __row
+        * call read('classpath:lib/api/setup/tenant.create.feature') __row
 
         Examples:
             | name       |
@@ -14,7 +14,7 @@ Feature: Paramétrage métier "Benoit XVI"
 
     # @todo: il faut maintenant utiliser ces métadonnées (je ne les vois pas utilisées sur la recette)
     Scenario Outline: Create metadata "${name}" of type ${type}
-        * call read('classpath:lib/setup/metadata.create.feature') __row
+        * call read('classpath:lib/api/setup/metadata.create.feature') __row
 
         Examples:
             | tenant     | key                  | name                 | type  | restrictedValues!                                                      |
@@ -24,7 +24,7 @@ Feature: Paramétrage métier "Benoit XVI"
 
     # @todo: même certificat que Benoît (Test cachet LS + mot de passe)
     Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
-        * call read('classpath:lib/setup/seal-certificate.create.feature') __row
+        * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
 
         Examples:
             | tenant     | path                                                  | password                        | image!                                           |
@@ -32,14 +32,14 @@ Feature: Paramétrage métier "Benoit XVI"
 
     # @todo: même configuration que Benoît (id entité ?)
     Scenario Outline:
-        * call read('classpath:lib/setup/secure-mail.create.feature') __row
+        * call read('classpath:lib/api/setup/secure-mail.create.feature') __row
 
         Examples:
             | tenant     | name            | url                                      | login                                 | password | entity |
             | Benoit XVI | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
 
     Scenario Outline: Create external signature "${name}" in "${tenant}"
-        * call read('classpath:lib/setup/external-signature.create.feature') __row
+        * call read('classpath:lib/api/setup/external-signature.create.feature') __row
 
         Examples:
             | tenant     | name          | url                                       | serviceName | login                        | password                             | token                            |
@@ -48,7 +48,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | SE Yousign    | https://staging-api.yousign.com           | yousign     |                              |                                      | d57a9d267085963488746561cf22a02a |
 
     Scenario Outline: Create layer "${name}" in "${tenant}"
-        * call read('classpath:lib/setup/layer.create.feature') __row
+        * call read('classpath:lib/api/setup/layer.create.feature') __row
 
         Examples:
             | tenant     | name          |
@@ -56,7 +56,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Test calque 2 |
 
     Scenario Outline: Create stamp for layer "${layer}" in "${tenant}"
-        * call read('classpath:lib/setup/stamp.create.feature') __row
+        * call read('classpath:lib/api/setup/stamp.create.feature') __row
 
         Examples:
             | tenant     | layer         | file!                                              | payload!                                                                                                                                                                                                                        |
@@ -64,7 +64,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Test calque 2 | 'classpath:files/images/tampon - service_fait.png' | { "afterSignature": false, "fontSize": 10, "height": 0, "page": -1, "pageRotation": 0, "rectangleOrigin": "TOP_RIGHT", "signatureRank": 0, "textColor": "BLACK", "type": "IMAGE", "value": null, "width": 0, "x": 50, "y": 50 } |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/setup/user.create.feature') __row
+        * call read('classpath:lib/api/setup/user.create.feature') __row
 
         Examples:
             | tenant     | userName                         | email                                                  | firstName   | lastName           | password | privilege    | notificationsCronFrequency | complementaryField |
@@ -90,7 +90,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | wswebgfc@demortain-benoit-xvi    | benoit.demortain+webgfc+benoit-xvi@libriciel.coop      | User        | Webgfc             | a123456  | NONE         | disabled                   |                    |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/setup/desk.create.feature') __row
+        * call read('classpath:lib/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant     | name                                  | shortName               | owners!                                                                                                                                 | parent!                              | associated!                                                                                       | permissions!                                                            |
@@ -115,7 +115,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Service des Ressources Humaines       | Service RH              |  ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                            | 'Directrice des Ressources Humaines' | []                                                                                                | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
     # @fixme: ne fait rien en dom.local (même via l'UI)
     Scenario Outline: Update desk "${name}" in "${tenant}"
-        * call read('classpath:lib/setup/desk.update.feature') __row
+        * call read('classpath:lib/api/setup/desk.update.feature') __row
 
         Examples:
             | tenant     | name                     | shortName             | owners!                                                                        | parent! | associated!                                                     | permissions!                                                          |
@@ -123,7 +123,7 @@ Feature: Paramétrage métier "Benoit XVI"
 
     # @fixme: see https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
     Scenario Outline: Create "${name}" workflow in "${tenant}"
-        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant     | name            | deskName                              | type               | mandatoryValidationMetadata! | mandatoryRejectionMetadata! |
@@ -295,7 +295,7 @@ Feature: Paramétrage métier "Benoit XVI"
         Then status 201
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/setup/type.create.feature') __row
+        * call read('classpath:lib/api/setup/type.create.feature') __row
 
         Examples:
             | tenant     | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!        |
@@ -319,7 +319,7 @@ Feature: Paramétrage métier "Benoit XVI"
     # @fixme: erreur 500
     # Create subtype "Acte Engagement Sign Pres" for type "MARCHES AUTO" and "S_Pres" workflow in "Benoit XVI" -> non éditable (Erreur lors de la récupération du sous-Type)
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/setup/subtype.create.feature') __row
+        * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant     | type               | name                        | annotationsAllowed! | multiDocuments! | creationPermittedDeskIds!                                                                                                               | creationWorkflowId | validationWorkflowId            | externalSignatureConfigId | sealAutomatic! | sealCertificateId                                  | secureMailServerId | digitalSignatureMandatory! |
@@ -343,7 +343,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | PES                | Bordereau                   | false               | false           | ['Application Gestion Financière', 'Application Pastell', 'Service Finances']                                                           |                    | S_Pres                          |                           | null           |                                                    |                    | true                       |
 
     Scenario Outline: Set the signature image for user "${email}"
-        * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant     | email                                               | path                                                       |

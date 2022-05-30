@@ -18,7 +18,7 @@ Feature: Draft folders creation
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('<username>', '<password>')
-        * def result = call read('classpath:lib/draft/create-monodoc-<withOrWithout>-annex.feature') folders
+        * def result = call read('classpath:lib/api/draft/create-monodoc-<withOrWithout>-annex.feature') folders
 
     Examples:
         | tenant         | username     | password | desktop     | type        | subtype             | mainFile!                                  | nameTemplate                                | start! | count! | withOrWithout | extra! |

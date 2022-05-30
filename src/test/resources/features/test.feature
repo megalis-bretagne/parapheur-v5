@@ -22,8 +22,8 @@ function (max) {
         # 31 -> OK
         # 32 -> 400 Bad Request Request Header Or Cookie Too Large
         * def names = createTmpNumberedTenants(30)
-        * call read('classpath:lib/setup/tenant.create.feature') names
+        * call read('classpath:lib/api/setup/tenant.create.feature') names
 
     Scenario: Cleanup
         * def list = api_v1.entity.getListByPartialName('tmp-')
-        * call read('classpath:lib/setup/tenant.delete.feature') list
+        * call read('classpath:lib/api/setup/tenant.delete.feature') list
