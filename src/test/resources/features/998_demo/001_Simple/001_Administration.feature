@@ -1,5 +1,5 @@
 @ip-web @l10n @demo-bde
-Feature: 001 - Administration
+Feature: 001 - Scénario de démo simple, partie administration
 
     Background:
         * configure driver = ui.driver.configure
