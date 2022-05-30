@@ -4,7 +4,9 @@
 
 ## Démo
 
-### [Scénario original](https://lsoffice.libriciel.fr/sheet/#/2/sheet/view/gpOCRl+pGFDsfLs8K4h8laRKd0M3-ySbXnkvbHbC7Ok/)
+### [Scénario original](https://lsoffice.libriciel.fr/pad/#/2/pad/edit/7luyoZ1VSHfCwGkVYwqWtSEU/)
+
+- [Comparatif du scénario sur plusieurs beta](https://lsoffice.libriciel.fr/sheet/#/2/sheet/view/gpOCRl+pGFDsfLs8K4h8laRKd0M3-ySbXnkvbHbC7Ok/)
 
 - [ ] Administration
     - [x] Connexion avec un superadmin
@@ -19,7 +21,7 @@
     - [x] Créer un bureau pour le WebService
     - [x] Créer un circuit 1 étape de signature du bureau signataire
     - [x] Créer un circuit de validation Visa
-    - [ ] Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
+    - [x] Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
 - [ ] Utilisation
     - [ ] Tester un flux .doc avec tag + un fichier .odt depuis bureau ws -> signataire -> Fin de circuit
     - [ ] Saisir des annotations publiques et privées

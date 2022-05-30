@@ -81,13 +81,14 @@ Feature: 001 - Administration
             | tenant | username | lastName | firstName | email             | password | role            |
             | Démo   | ws@demo  | Service  | Web       | ws-demo@dom.local | a123456  | Aucun privilège |
 
-    Scenario Outline: Créer un bureau pour visa pour le user sans droit
+    Scenario Outline: Créer un bureau ${title} pour un utilisateur sans droit
         * ui.user.login("admin-entite@demo", "a123456")
         * call read('classpath:lib/ui/desk/create.feature') __row
 
         Examples:
-            | tenant | title  | shortName | owners!        | permissions!             |
-            | Démo   | Viseur | Viseur    | ['user1@demo'] | ['Traiter des dossiers'] |
+            | tenant | title     | shortName | owners!        | permissions!             |
+            | Démo   | DGS       | DGS       | ['user1@demo'] | ['Traiter des dossiers'] |
+            | Démo   | Président | Président | ['user1@demo'] | ['Traiter des dossiers'] |
 
     Scenario Outline: Créer un bureau pour le WebService
         * ui.user.login("admin-entite@demo", "a123456")
@@ -97,14 +98,13 @@ Feature: 001 - Administration
             | tenant | title      | shortName  | owners!     | permissions!                                                                             |
             | Démo   | WebService | WebService | ['ws@demo'] | ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit'] |
 
-    # @fixme: qui est le bureau signataire ?
-    Scenario Outline: Créer un circuit 1 étape de signature du bureau signataire
+    Scenario Outline: Créer un circuit 1 étape de signature du bureau ${desk}
         * ui.user.login("admin-entite@demo", "a123456")
         * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
 
         Examples:
-            | tenant | name      | type      | desk   |
-            | Démo   | Signature | Signature | Viseur |
+            | tenant | name      | type      | desk |
+            | Démo   | Signature | Signature | DGS  |
 
     Scenario Outline: Créer un circuit de validation Visa
         * ui.user.login("admin-entite@demo", "a123456")
@@ -112,10 +112,10 @@ Feature: 001 - Administration
 
         Examples:
             | tenant | name | type | desk   |
-            | Démo   | Visa | Visa | Viseur |
+            | Démo   | Visa | Visa | DGS |
 
-    @wip
     Scenario: Créer un type Monodoc/sous-type ACTES/Délibération en PAdES, protocole ACTES
+        # Type
         * def row =
 """
 {
@@ -129,37 +129,18 @@ Feature: 001 - Administration
 """
 
         * ui.user.login("admin-entite@demo", "a123456")
-#        * call read('classpath:lib/ui/type/create.feature') row
+        * call read('classpath:lib/ui/type/create.feature') row
 
-        # ------------------------------------------------------------------------------------------------
         # Sous-type
-        # ------------------------------------------------------------------------------------------------
         * def row =
 """
 {
+    tenant: "Démo",
+    type: "ACTES",
+    name: "Délibération",
+    description: "Délibération",
+    workflow: "Signature"
 }
 """
-        * def tenant = "Démo"
-        * def type = "ACTES"
-        * def name = "Délibération"
-        * def description = "Délibération"
-        * def workflow = "Signature"
 
-        Given assert exists("//app-header") == true
-        And click("//app-header//*[@routerLink='/admin']")
-        Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
-
-        When ui.admin.selectTenant(tenant)
-        And click("{^}Typologie des dossiers")
-        Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-
-        When click("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
-        And input("{^}Nom", name)
-        And input("{^}Description", description)
-
-        When click("{^}Circuits")
-        * pause(5)
-
-#        And input("#selectValidationWorkflow input", workflow)
-#        And click("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]")
-        * pause(5)
+        * call read('classpath:lib/ui/subtype/create.feature') row
