@@ -98,7 +98,11 @@ function fn(config) {
      **/
     config.ui['toast'] = {};
     config.ui.toast['success'] = function(message) {
-        return "//div[contains(@class, 'toast-success')]//*[contains(normalize-space(text()), '" + message + "')]";
+        if (typeof message !== 'undefined') {
+            return "//div[contains(@class, 'toast-success')]//*[contains(normalize-space(text()), '" + message + "')]";
+        } else {
+            return "//div[contains(@class, 'toast-success')]";
+        }
     };
 
     /**
