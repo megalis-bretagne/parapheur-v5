@@ -8,6 +8,8 @@
 
 - [Comparatif du scénario sur plusieurs beta](https://lsoffice.libriciel.fr/sheet/#/2/sheet/view/gpOCRl+pGFDsfLs8K4h8laRKd0M3-ySbXnkvbHbC7Ok/)
 
+---
+
 - [ ] Administration
     - [x] Connexion avec un superadmin
     - [x] Créer une entité

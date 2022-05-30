@@ -15,7 +15,7 @@ Feature: UI type lib
             And input(ui.locator.input("Description"), description)
 
         When click("{^}Protocole et format de signature")
-            # @fixme: wait for element
+            # @todo: wait for element
             * pause(5)
             # Protocole
             And input("#protocolInput input", protocol)
@@ -23,14 +23,12 @@ Feature: UI type lib
             # Format de signature
             And input("#popupSigningFormatInput input", format)
             And click("//*[@id='popupSigningFormatInput']//*[contains(@class, 'ng-option ')]")
-
             And input("{^}Ville de signature", ville)
 
-        # @todo: SSI PAdES, etc...
         When click("{^}Tampon de signature")
-            And click("{^}Afficher")
+            And if (stamp === true) click("//*[text()='Afficher']")
 
         When waitForEnabled(ui.locator.button("Enregistrer")).click()
         Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-          And waitFor(ui.toast.success("Le type " + name + " a été créé avec succès"))
-          And waitFor("//tbody//td[contains(text(),'" + name + "')]")
+            And waitFor(ui.toast.success("Le type " + name + " a été créé avec succès"))
+            And waitFor("//tbody//td[contains(text(),'" + name + "')]")
