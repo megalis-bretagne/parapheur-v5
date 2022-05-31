@@ -20,5 +20,7 @@ Feature: UI workflow lib
             And click("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]")
             And waitForEnabled(ui.locator.button("Ajouter")).click()
             And waitForEnabled(ui.locator.button("Créer le circuit")).click()
-        #Then waitFor(ui.toast.success("Le circuit " + "Signature" + " a été créé avec succès"))
+        #Then waitFor(ui.toast.success("Le circuit " + name + " a été créé avec succès"))
+        # @fixme IP: Le circuit undefined a été créé avec succès
+        #* karate.log(script("//div[contains(@class, 'toast-')]", "_.outerHTML"))
             And waitFor("//tbody//td[normalize-space(.)='" + type + "']")

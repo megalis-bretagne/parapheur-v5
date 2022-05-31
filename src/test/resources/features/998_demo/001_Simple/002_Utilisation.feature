@@ -82,6 +82,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(tableBody + "/tr[2]//td[4][normalize-space(text())='Annotation publique FLO']")
         * waitFor(tableBody + "/tr[2]//td[5][normalize-space(text())='<action>']")
         * waitFor(tableBody + "/tr[2]//td[6][normalize-space(text())='<state>']")
+        # @todo: étape de fin de circuit
 
         Examples:
             | badge           | title             | name           | action | state  |
