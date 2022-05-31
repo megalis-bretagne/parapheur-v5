@@ -25,8 +25,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
       Examples:
-          | tenant | username | password | desk       | document                                                | type  | subtype | nameTemplate           | count! |
-          | Démo   | ws@demo  | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération %counter% | 2      |
+          | tenant | username | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
+          | Démo   | ws@demo  | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
+          | Démo   | ws@demo  | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
         * ui.user.login("flosserand@demo", "a123456")
@@ -40,14 +41,14 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor("{}Annotation privée").input("Annotation privée FLO")
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        # @todo: trouver le bon contenu
-        * waitFor(ui.toast.success())
-#        * waitFor(ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))
+        * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
-            | name           | action |
-            | Délibération 1 | Visa   |
-            | Délibération 2 | Rejet  |
+            | name               | action |
+            | Délibération PDF 1 | Visa   |
+            | Délibération PDF 2 | Rejet  |
+            | Délibération ODT 1 | Visa   |
+            | Délibération ODT 2 | Rejet  |
 
     Scenario Outline: Vérifications (annotations, journal des événements) du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo", "a123456")
@@ -85,6 +86,8 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: étape de fin de circuit
 
         Examples:
-            | badge           | title             | name           | action | state  |
-            | .badge-finished | en fin de circuit | Délibération 1 | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération 2 | Visa   | Rejeté |
+            | badge           | title             | name               | action | state  |
+            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération ODT 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération ODT 2 | Visa   | Rejeté |
