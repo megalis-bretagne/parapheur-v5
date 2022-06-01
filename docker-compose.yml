@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.14
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.11.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -98,13 +98,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta36
+      - VERSION=5.0.0-beta37
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -113,7 +113,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.4.2
+    image: registry.libriciel.fr/public/signature/workflow:1.5.0
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -164,14 +164,14 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.1
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.2
     restart: unless-stopped
     tty: true
     mem_limit: 1G
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.9
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.10
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -308,7 +308,7 @@ services:
 
 
   redis:
-    image: redis:6.0.16-alpine
+    image: redis:6.2.1-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 128M
