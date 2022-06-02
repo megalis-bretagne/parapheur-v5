@@ -1,4 +1,4 @@
-@ip-web @l10n @demo-bde
+@ip-web @l10n @demo-simple-simple-bde
 Feature: 002 - Scénario de démo simple, partie utilisation
 
     Background:
@@ -25,12 +25,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
       Examples:
-          | tenant | username | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
-          | Démo   | ws@demo  | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
-          | Démo   | ws@demo  | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
+          | tenant | username       | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
+          | Démo   | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
+          | Démo   | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
-        * ui.user.login("flosserand@demo", "a123456")
+        * ui.user.login("flosserand@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo / Président / Dossiers en cours"))
@@ -51,7 +51,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Délibération ODT 2 | Rejet  |
 
     Scenario Outline: Vérifications (annotations, journal des événements) du dossier ${title} "${name}" (ACTES/Visa)
-        * ui.user.login("ws@demo", "a123456")
+        * ui.user.login("ws@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo / WebService / Dossiers en cours"))

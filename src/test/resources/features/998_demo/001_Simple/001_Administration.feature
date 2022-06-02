@@ -1,4 +1,4 @@
-@ip-web @l10n @demo-bde
+@ip-web @l10n @demo-simple-bde
 Feature: 001 - Scénario de démo simple, partie administration
 
     Background:
@@ -10,15 +10,15 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario: Créer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo" }
+        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     Scenario: Supprimer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/delete.feature') { tenant: "Démo" }
+        * call read('classpath:lib/ui/tenant/delete.feature') { tenant: "Démo simple" }
 
     Scenario: Créer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo" }
+        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     Scenario Outline: Créer un utilisateur ${role} et connexion avec celui-ci
         * ui.user.login("user", "password")
@@ -28,12 +28,12 @@ Feature: 001 - Scénario de démo simple, partie administration
         * ui.user.login(username, password)
 
         Examples:
-            | tenant | username          | lastName  | firstName | email                  | password | role                    |
-            | Démo   | admin@demo        | Demortain | Benoit    | admin@dom.local        | a123456  | Administrateur          |
-            | Démo   | admin-entite@demo | Buffin    | Christian | admin-entite@dom.local | a123456  | Administrateur d'entité |
+            | tenant      | username                 | lastName  | firstName | email                  | password | role                    |
+            | Démo simple | admin@demo-simple        | Demortain | Benoit    | admin@dom.local        | a123456  | Administrateur          |
+            | Démo simple | admin-entite@demo-simple | Buffin    | Christian | admin-entite@dom.local | a123456  | Administrateur d'entité |
 
     Scenario Outline: Créer un user sans droit avec notif unitaire
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/user/create.feature') __row
         * ui.user.logout()
 
@@ -49,12 +49,12 @@ Feature: 001 - Scénario de démo simple, partie administration
         Then waitFor(ui.toast.success("Préférences utilisateur éditées avec succès."))
 
         Examples:
-            | tenant | username       | lastName | firstName | email                    | password | role            |
-            | Démo   | mpiaumier@demo | Piaumier | Matthieu  | mpiaumier-demo@dom.local | a123456  | Aucun privilège |
+            | tenant      | username              | lastName | firstName | email                    | password | role            |
+            | Démo simple | mpiaumier@demo-simple | Piaumier | Matthieu  | mpiaumier-demo@dom.local | a123456  | Aucun privilège |
 
     # @info: l'ajout de l'image de signature se fait par web-service
     Scenario Outline: Créer un user sans droit avec une image de signature
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/user/create.feature') __row
         * ui.user.logout()
 
@@ -70,63 +70,63 @@ Feature: 001 - Scénario de démo simple, partie administration
         Then status 201
 
         Examples:
-            | tenant | username             | lastName  | firstName | email                     | password | role            |
-            | Démo   | flosserand@demo | Losserand | Frédéric  | flosserand-demo@dom.local | a123456  | Aucun privilège |
+            | tenant      | username               | lastName  | firstName | email                     | password | role            |
+            | Démo simple | flosserand@demo-simple | Losserand | Frédéric  | flosserand-demo@dom.local | a123456  | Aucun privilège |
 
     Scenario Outline: Créer un utilisateur WebService
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/user/create.feature') __row
 
         Examples:
-            | tenant | username | lastName | firstName | email             | password | role            |
-            | Démo   | ws@demo  | Service  | Web       | ws-demo@dom.local | a123456  | Aucun privilège |
+            | tenant      | username       | lastName | firstName | email             | password | role            |
+            | Démo simple | ws@demo-simple | Service  | Web       | ws-demo@dom.local | a123456  | Aucun privilège |
 
     Scenario Outline: Créer un bureau ${title} pour un utilisateur sans droit
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/desk/create.feature') __row
 
         Examples:
-            | tenant | title     | shortName | owners!             | permissions!             |
-            | Démo   | DGS       | DGS       | ['mpiaumier@demo']  | ['Traiter des dossiers'] |
-            | Démo   | Président | Président | ['flosserand@demo'] | ['Traiter des dossiers'] |
+            | tenant      | title     | shortName | owners!                    | permissions!             |
+            | Démo simple | DGS       | DGS       | ['mpiaumier@demo-simple']  | ['Traiter des dossiers'] |
+            | Démo simple | Président | Président | ['flosserand@demo-simple'] | ['Traiter des dossiers'] |
 
     Scenario Outline: Créer un bureau pour le WebService
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/desk/create.feature') __row
 
         Examples:
-            | tenant | title      | shortName  | owners!     | permissions!                                                                             |
-            | Démo   | WebService | WebService | ['ws@demo'] | ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit'] |
+            | tenant      | title      | shortName  | owners!            | permissions!                                                                             |
+            | Démo simple | WebService | WebService | ['ws@demo-simple'] | ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit'] |
 
     Scenario Outline: Créer un circuit 1 étape de signature du bureau ${desk}
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
 
         Examples:
-            | tenant | name      | type      | desk      |
-            | Démo   | Signature | Signature | Président |
+            | tenant      | name      | type      | desk      |
+            | Démo simple | Signature | Signature | Président |
 
     Scenario Outline: Créer un circuit 1 étape de visa du bureau ${desk}
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
 
         Examples:
-            | tenant | name | type | desk      |
-            | Démo   | Visa | Visa | Président |
+            | tenant      | name | type | desk      |
+            | Démo simple | Visa | Visa | Président |
 
     Scenario Outline: Créer un type ACTES/PAdES
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/type/create.feature') __row
 
         Examples:
-            | tenant | name  | description | protocol | format | ville          | stamp! |
-            | Démo   | ACTES | ACTES       | ACTES    | PAdES  | Pont-à-Mousson | true   |
+            | tenant      | name  | description | protocol | format | ville          | stamp! |
+            | Démo simple | ACTES | ACTES       | ACTES    | PAdES  | Pont-à-Mousson | true   |
 
     Scenario Outline: Créer un sous-type ${type}/${name} pour le circuit ${workflow}
-        * ui.user.login("admin-entite@demo", "a123456")
+        * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/subtype/create.feature') __row
 
         Examples:
-            | tenant | type  | name         | description  | workflow  |
-            | Démo   | ACTES | Délibération | Délibération | Signature |
-            | Démo   | ACTES | Visa         | Visa         | Visa      |
+            | tenant      | type  | name         | description  | workflow  |
+            | Démo simple | ACTES | Délibération | Délibération | Signature |
+            | Démo simple | ACTES | Visa         | Visa         | Visa      |
