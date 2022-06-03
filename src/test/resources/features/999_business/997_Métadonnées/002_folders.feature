@@ -16,7 +16,7 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
     * api_v1.auth.login('user', 'password')
     * def folders = api_v1.desk.draft.getPayloadMonodoc(params, 1, {}, 1)
     * api_v1.auth.login('ws-meta', 'a123456')
-    * def result = call read('classpath:lib/draft/create-and-send-monodoc-without-annex.feature') folders
+    * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-without-annex.feature') folders
 
     Examples:
         | subtype                     | nameTemplate                                          |

@@ -10,6 +10,7 @@ Feature: Subtype setup lib
 {
     "annotationsAllowed": false,
     "creationPermittedDeskIds": null,
+    "creationWorkflowId": null,
     "digitalSignatureMandatory": false,
     "externalSignatureConfig": {},
     "externalSignatureConfigId": null,
@@ -27,8 +28,9 @@ Feature: Subtype setup lib
     "workflowSelectionScript": ""
 }
 """
-
         * def payload = karate.merge(defaults, __row)
+        * payload['creationPermittedDeskIds'] = utils.isEmpty(payload['creationPermittedDeskIds']) ? null : api_v1.desk.getAllIdsByNames(tenantId, payload['creationPermittedDeskIds'])
+        * payload['creationWorkflowId'] = utils.isEmpty(payload['creationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['creationWorkflowId'])
         * payload['description'] = utils.isEmpty(payload['description']) ? payload['name'] : payload['description']
         * payload['externalSignatureConfigId'] = utils.isEmpty(payload['externalSignatureConfigId']) ? null : api_v1.externalSignature.getIdByName(tenantId, payload['externalSignatureConfigId'])
         * payload['sealCertificateId'] = utils.isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
@@ -57,12 +59,7 @@ function (tenantId, subtypeMetadataRequestList) {
         * def cleanupPayload =
 """
 function(payload, defaults) {
-    /*for (var key in payload) {
-        if (payload.hasOwnProperty(key) && !defaults.hasOwnProperty(key)) {
-             delete payload[key];
-        }
-    }*/
-    var keys = ['externalSignatureConfig', 'secureMailServerId', 'sealCertificateId', 'workflowSelectionScript'];
+    var keys = ['externalSignatureConfig', 'multiDocuments', 'secureMailServerId', 'sealCertificateId', 'subtypeLayerRequestList', 'subtypeMetadataRequestList', 'workflowSelectionScript'];
     for (var key of keys) {
         if (utils.isEmpty(payload[key])) {
             delete payload[key];

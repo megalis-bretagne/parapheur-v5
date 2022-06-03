@@ -1,7 +1,7 @@
 @ignore
 Feature:
     Scenario:
-        * def result = call read('classpath:lib/draft/create-monodoc-with-annex.feature') __arg
+        * def result = call read('classpath:lib/api/draft/create-monodoc-without-annex.feature') __arg
 
         Given url baseUrl
             And path path + '/' + result.response.id

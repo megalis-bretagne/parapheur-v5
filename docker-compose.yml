@@ -37,7 +37,7 @@ services:
 
 
   nginx:
-    image: nginx:1.21.6-alpine
+    image: nginx:1.21.6
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -59,7 +59,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.1
+    image: registry.libriciel.fr:443/public/signature/ip-core:0.10.14
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -98,13 +98,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:0.11.1
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta24
+      - VERSION=5.0.0-beta36
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -113,7 +113,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.4.0
+    image: registry.libriciel.fr/public/signature/workflow:1.4.2
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -139,7 +139,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:2.3.5
+    image: registry.libriciel.fr/public/signature/crypto:2.3.6
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -153,7 +153,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.1
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -164,14 +164,14 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.1.1
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.1
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.3
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.1.9
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -191,10 +191,10 @@ services:
 
 
   feeder:
-    image: registry.libriciel.fr/public/signature/feeder:1.0.1
+    image: registry.libriciel.fr/public/signature/feeder:1.0.3
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     environment:
@@ -205,7 +205,7 @@ services:
 
 
   alfresco:
-    image: alfresco/alfresco-content-repository-community:7.1.0
+    image: alfresco/alfresco-content-repository-community:7.1.1.2
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -254,7 +254,7 @@ services:
 
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:2.5.3
+    image: alfresco/alfresco-transform-core-aio:2.5.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -317,7 +317,7 @@ services:
 
 
   keycloak:
-    image: jboss/keycloak:15.0.2
+    image: quay.io/keycloak/keycloak:16.1.1
     restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
@@ -334,6 +334,7 @@ services:
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
       - DB_USER=${KEYCLOAK_DB_USER}
       - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      # - KEYCLOAK_LOGLEVEL=TRACE
       # This file will be generated from the given JSON, by the script file
       - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"

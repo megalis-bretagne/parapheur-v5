@@ -16,7 +16,7 @@ Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - gran
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('<username>', '<password>')
-        * def result = call read('classpath:lib/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
+        * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
         #@fixme: HELIOS retourne 500 à l'envoi du dossier
         #core_1                          | 2022-01-20 10:55:37.409 DEBUG 6 --- [nio-8080-exec-9] c.l.i.services.groovy.GroovyService      : Groovy resultCatcher:GroovyResultCatcher(workflowDefinitionId=signature_helios, variableDesks=[Bleu])
         #workflow_1                      | 2022-01-20 10:55:37.411 DEBUG 1 --- [nio-8080-exec-1] c.l.workflow.controller.TaskController   : Perform task:75664fd0-79df-11ec-82a2-0242ac1b0014 action:START user:b752d7da-847d-4cd6-b378-77f9f286bbff variables:{workflow_internal_validation_workflow_id=signature_helios}

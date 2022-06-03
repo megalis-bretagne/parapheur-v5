@@ -5,14 +5,14 @@ Feature: Paramétrage métier 'Signatures externes'
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant '${name}'
-        * call read('classpath:lib/setup/tenant.create.feature') __row
+        * call read('classpath:lib/api/setup/tenant.create.feature') __row
 
         Examples:
             | name                |
             | Signatures externes |
 
     Scenario Outline: Create user '${userName}' with role '${privilege}' in '${tenant}'
-        * call read('classpath:lib/setup/user.create.feature') __row
+        * call read('classpath:lib/api/setup/user.create.feature') __row
 
         Examples:
             | tenant              | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               |
@@ -20,52 +20,31 @@ Feature: Paramétrage métier 'Signatures externes'
             | Signatures externes | ws-se    | ws-se@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |
 
     Scenario Outline: Create desk '${name}' in '${tenant}'
-        * call read('classpath:lib/setup/desk.create.feature') __row
+        * call read('classpath:lib/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant              | name       | owners!               | parent! | associated! | permissions!                                                         |
             | Signatures externes | Nankin     | ['anankin@dom.local'] | ''      | []          | {'action': true}                                                     |
             | Signatures externes | WebService | ['ws-se@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
-    Scenario: Create external signature config for 'Docage'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
+    Scenario Outline: Create external signature "${name}" in "${tenant}"
+        * call read('classpath:lib/api/setup/external-signature.create.feature') __row
 
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Docage','url':'https://api.docage.com','serviceName':'docage','login':'signature@libriciel.coop','password':'44ba77ae-f081-49c0-8240-868ef5c69b67'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Universign'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Universign','url':'https://sign.test.cryptolog.com/sign/rpc/','serviceName':'universign','login':'stephane.vast@libriciel.coop','password':'29Xdx6xW2H8rd9Cs377NCKJyx'}
-        When method POST
-        Then status 201
-
-    Scenario: Create external signature config for 'Yousign'
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/' + tenantId + '/externalSignature/config'
-            And header Accept = 'application/json'
-            And request {'name':'Yousign','url':'https://staging-api.yousign.com','serviceName':'yousign','token':'d57a9d267085963488746561cf22a02a'}
-        When method POST
-        Then status 201
+        Examples:
+            | tenant              | name       | url                                       | serviceName | login                        | password                             | token                            |
+            | Signatures externes | Docage     | https://api.docage.com                    | docage      | signature@libriciel.coop     | 44ba77ae-f081-49c0-8240-868ef5c69b67 |                                  |
+            | Signatures externes | Universign | https://sign.test.cryptolog.com/sign/rpc/ | universign  | stephane.vast@libriciel.coop | 29Xdx6xW2H8rd9Cs377NCKJyx            |                                  |
+            | Signatures externes | Yousign    | https://staging-api.yousign.com           | yousign     |                              |                                      | d57a9d267085963488746561cf22a02a |
 
     Scenario Outline: Create a seal certificate from file '${path}' in '${tenant}'
-        * call read('classpath:lib/setup/seal-certificate.create.feature') __row
+        * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
 
         Examples:
             | tenant              | path                                                  | password                        | image!                                                     |
             | Signatures externes | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
 
     Scenario Outline: Create '${name}' one-step-workflow and associate it to the '${deskName}' desk in '${tenant}'
-        * call read('classpath:lib/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant              | name                | deskName | type               |
@@ -129,7 +108,7 @@ Feature: Paramétrage métier 'Signatures externes'
         Then status 201
 
     Scenario Outline: Create type '${name}' with '${signatureFormat}' signature format in '${tenant}'
-        * call read('classpath:lib/setup/type.create.feature') __row
+        * call read('classpath:lib/api/setup/type.create.feature') __row
 
         Examples:
             | tenant              | name          | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
@@ -139,7 +118,7 @@ Feature: Paramétrage métier 'Signatures externes'
             | Signatures externes | PAdES         | NONE     | PADES           | Montpellier       |                  | true              | {'x':0,'y':0,'page':1} |
 
     Scenario Outline: Create subtype '${name}' for type '${type}' and '${validationWorkflowId}' workflow in '${tenant}'
-        * call read('classpath:lib/setup/subtype.create.feature') __row
+        * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant              | type          | name                         | multiDocuments! | validationWorkflowId                                                   | sealAutomatic! | sealCertificateId                                  | secureMailServerId | externalSignatureConfigId |
@@ -165,7 +144,7 @@ Feature: Paramétrage métier 'Signatures externes'
             | Signatures externes | PAdES         | Yousign - Signature multi    | true            | Signatures externes                                                    | null           |                                                    |                    | Yousign                   |
 
     Scenario Outline: Set the signature image for user '${email}'
-        * call read('classpath:lib/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant              | email             | path                                           |

@@ -16,7 +16,7 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
     * api_v1.auth.login('user', 'password')
     * def folders = api_v1.desk.draft.getPayloadMultidoc(params, <count>, <extra>, <start>)
     * api_v1.auth.login('<username>', '<password>')
-    * def result = call read('classpath:lib/draft/create-and-send-multidoc-<withOrWithout>-annex.feature') folders
+    * def result = call read('classpath:lib/api/draft/create-and-send-multidoc-<withOrWithout>-annex.feature') folders
 
     # @todo: mainFiles n'est pas utilisé dans la préparation du payload
     Examples:
