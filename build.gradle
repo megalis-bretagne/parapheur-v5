@@ -43,6 +43,7 @@ test {
     systemProperty "karate.options", System.properties.getProperty("karate.options")
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     systemProperty "karate.headless", System.properties.getProperty("karate.headless")
+    systemProperty "karate.baseUrl", System.properties.getProperty("karate.baseUrl")
     // Ensuring that the tests are always run, prevent us to add `clear` on every task
     outputs.upToDateWhen { false }
 }

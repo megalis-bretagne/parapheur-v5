@@ -23,17 +23,18 @@ function fn() {
     if (!env) {
         env = 'dev';
     }
+    const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
 
     var config = {
         env: env,
         //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
         //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
-        baseUrl: 'http://iparapheur.dom.local/',
+        baseUrl: baseUrl,
         // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
         CHROME_BIN: '/usr/bin/chromium-browser',
-        headless: (function(){
+        headless: (function () {
             var headless = String(karate.properties['karate.headless']).toLowerCase();
             if (headless === '' || headless === 'true') {
                 return true;
@@ -56,7 +57,7 @@ function fn() {
         // customize
     }
 
-    karate.configure('headers', { Accept: 'application/json' });
+    karate.configure('headers', {Accept: 'application/json'});
 
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     config = karate.call('classpath:lib/api_v1.js', config);
