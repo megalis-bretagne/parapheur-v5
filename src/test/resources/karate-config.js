@@ -56,6 +56,8 @@ function fn() {
         // e.g. config.foo = 'bar';
     } else if (env === 'e2e') {
         // customize
+    } else if (env === 'ci') {
+        karate.configure('driverTarget', {docker: 'ptrthomas/karate-chrome'});
     }
 
     karate.configure('headers', {Accept: 'application/json'});
