@@ -258,6 +258,7 @@
     "description": "${role_default-roles}",
     "name": "default-roles-${env.KEYCLOAK_REALM}"
   },
+  "displayName": "i-Parapheur",
   "duplicateEmailsAllowed": true,
   "editUsernameAllowed": false,
   "enabled": true,
