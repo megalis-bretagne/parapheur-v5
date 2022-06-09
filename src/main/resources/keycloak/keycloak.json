@@ -6,7 +6,7 @@
   "accessTokenLifespanForImplicitFlow": 900,
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
-  "bruteForceProtected": false,
+  "bruteForceProtected": true,
   "clients": [
     {
       "attributes": {
@@ -265,7 +265,7 @@
   "groups": [],
   "id": "i-Parapheur",
   "internationalizationEnabled": true,
-  "keycloakVersion": "15.0.2",
+  "keycloakVersion": "16.1.1",
   "loginTheme": "iparapheur",
   "loginWithEmailAllowed": false,
   "maxDeltaTimeSeconds": 43200,
