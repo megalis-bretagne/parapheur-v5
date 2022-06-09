@@ -6,7 +6,7 @@
   "accessTokenLifespanForImplicitFlow": 900,
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
-  "bruteForceProtected": false,
+  "bruteForceProtected": true,
   "clients": [
     {
       "attributes": {
@@ -258,6 +258,7 @@
     "description": "${role_default-roles}",
     "name": "default-roles-${env.KEYCLOAK_REALM}"
   },
+  "displayName": "i-Parapheur",
   "duplicateEmailsAllowed": true,
   "editUsernameAllowed": false,
   "enabled": true,
@@ -265,7 +266,7 @@
   "groups": [],
   "id": "i-Parapheur",
   "internationalizationEnabled": true,
-  "keycloakVersion": "15.0.2",
+  "keycloakVersion": "16.1.1",
   "loginTheme": "iparapheur",
   "loginWithEmailAllowed": false,
   "maxDeltaTimeSeconds": 43200,
