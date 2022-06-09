@@ -1,10 +1,14 @@
 @business @benoit-xvi @proposal @setup
+# @info: circuits pas employés dans les sous-types (et donc commentés) CS_Dir_MP, Se_Dir_MP, S_Var_OU_Pres, V_DGS_S_PresOU1VP_SE_SG
+# @todo: vérifier sur la plate-forme de recette
+# @todo: pour le circuit, essayer du type selectionCircuit { circuit "signature_helios"; } -> issue
+# @todo: paramétrage Pastell, id 59 (pastell formations) (conv à cosigner externe), export BDE azerty11 (SIGN_MP_CONVENTIONS_V5_azerty11.json)
 
 Feature: Paramétrage métier "Benoit XVI"
 
     Background:
         * api_v1.auth.login('user', 'password')
-
+    @wip
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/api/setup/tenant.create.feature') __row
 
@@ -12,7 +16,8 @@ Feature: Paramétrage métier "Benoit XVI"
             | name       |
             | Benoit XVI |
 
-    # @todo: il faut maintenant utiliser ces métadonnées (je ne les vois pas utilisées sur la recette)
+    # @info: montant et service_gestionnaire -> dans le script de sélection du sous-type BONS DE COMMANDE/Bon de commande (benoit-xvi-bdc-bdc.groovy)
+    @wip
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/api/setup/metadata.create.feature') __row
 
@@ -21,16 +26,14 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | date_service_fait    | Date du service fait | DATE  | []                                                                     |
             | Benoit XVI | montant              | Montant HT           | FLOAT | []                                                                     |
             | Benoit XVI | service_gestionnaire | Service gestionnaire | TEXT  | ['finances', 'informatique', 'marchés publics', 'ressources humaines'] |
-
-    # @todo: même certificat que Benoît (Test cachet LS + mot de passe)
+    @wip
     Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
         * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
 
         Examples:
             | tenant     | path                                                  | password                        | image!                                           |
             | Benoit XVI | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - benoit xvi.png' |
-
-    # @todo: même configuration que Benoît (id entité ?)
+    @wip
     Scenario Outline:
         * call read('classpath:lib/api/setup/secure-mail.create.feature') __row
 
@@ -51,17 +54,17 @@ Feature: Paramétrage métier "Benoit XVI"
         * call read('classpath:lib/api/setup/layer.create.feature') __row
 
         Examples:
-            | tenant     | name          |
-            | Benoit XVI | Test calque   |
-            | Benoit XVI | Test calque 2 |
+            | tenant     | name           |
+#            | Benoit XVI | Test calque    |
+            | Benoit XVI | Test calque SF |
 
     Scenario Outline: Create stamp for layer "${layer}" in "${tenant}"
         * call read('classpath:lib/api/setup/stamp.create.feature') __row
 
         Examples:
-            | tenant     | layer         | file!                                              | payload!                                                                                                                                                                                                                        |
-            | Benoit XVI | Test calque   | null                                               | { "afterSignature": true, "fontSize": 10, "page": -1, "signatureRank": 0, "textColor": "BLACK", "type": "TEXT", "value": "Ce document est signé électroniquement", "x": 50, "y": 50 }                                           |
-            | Benoit XVI | Test calque 2 | 'classpath:files/images/tampon - service_fait.png' | { "afterSignature": false, "fontSize": 10, "height": 0, "page": -1, "pageRotation": 0, "rectangleOrigin": "TOP_RIGHT", "signatureRank": 0, "textColor": "BLACK", "type": "IMAGE", "value": null, "width": 0, "x": 50, "y": 50 } |
+            | tenant     | layer          | file!                                                     | payload!                                                                                                                                                                                                                        |
+#            | Benoit XVI | Test calque    | null                                                      | { "afterSignature": true, "fontSize": 10, "page": -1, "signatureRank": 0, "textColor": "BLACK", "type": "TEXT", "value": "Ce document est signé électroniquement", "x": 50, "y": 50 }                                           |
+            | Benoit XVI | Test calque SF | 'classpath:files/images/calque - tampon_service_fait.png' | { "afterSignature": false, "fontSize": 10, "height": 0, "page": -1, "pageRotation": 0, "rectangleOrigin": "TOP_RIGHT", "signatureRank": 0, "textColor": "BLACK", "type": "IMAGE", "value": null, "width": 0, "x": 50, "y": 50 } |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
         * call read('classpath:lib/api/setup/user.create.feature') __row
@@ -89,6 +92,16 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | wswebdelib@demortain-benoit-xvi  | benoit.demortain+webdelib+benoit-xvi@libriciel.coop    | User        | Webdelib           | a123456  | NONE         | disabled                   |                    |
             | Benoit XVI | wswebgfc@demortain-benoit-xvi    | benoit.demortain+webgfc+benoit-xvi@libriciel.coop      | User        | Webgfc             | a123456  | NONE         | disabled                   |                    |
 
+    Scenario Outline: Set the signature image for user "${email}"
+        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+
+        Examples:
+            | tenant     | email                                               | path                                                                  |
+            | Benoit XVI | benoit.demortain+admin50+benoit-xvi@libriciel.coop  | classpath:files/images/signature - admin@demortain-benoit-xvi.png     |
+            | Benoit XVI | benoit.demortain+carignon+benoit-xvi@libriciel.coop | classpath:files/images/signature - fcarignon@demortain-benoit-xvi.png |
+            | Benoit XVI | benoit.demortain+tarpex+benoit-xvi@libriciel.coop   | classpath:files/images/signature - rtarpex@demortain-benoit-xvi.png   |
+            | Benoit XVI | benoit.demortain+primo+benoit-xvi@libriciel.coop    | classpath:files/images/signature - dprimo@demortain-benoit-xvi.png    |
+
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/api/setup/desk.create.feature') __row
 
@@ -112,7 +125,7 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | Service Informatique                  | Service Informatique    | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+boulier+benoit-xvi@libriciel.coop']                            | 'Directeur de l\'Informatique'       | []                                                                                                | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service Finances                      | Service Finances        | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+marlin+benoit-xvi@libriciel.coop']                             | 'Directeur des Finances'             | []                                                                                                | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
             | Benoit XVI | Service des Marchés Publics           | Service Marches Publics | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+giscard+benoit-xvi@libriciel.coop']                            | 'Directeur des Marchés Publics'      | ['Directrice Générale des Services', 'Directeur des Marchés Publics', 'Président du département'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true}    |
-            | Benoit XVI | Service des Ressources Humaines       | Service RH              |  ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                            | 'Directrice des Ressources Humaines' | []                                                                                                | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
+            | Benoit XVI | Service des Ressources Humaines       | Service RH              | ['benoit.demortain+admin50+benoit-xvi@libriciel.coop', 'benoit.demortain+parisi+benoit-xvi@libriciel.coop']                            | 'Directrice des Ressources Humaines' | []                                                                                                 | {'action': true, 'archiving': true, 'chain': false, 'creation': true}   |
     # @fixme: ne fait rien en dom.local (même via l'UI)
     Scenario Outline: Update desk "${name}" in "${tenant}"
         * call read('classpath:lib/api/setup/desk.update.feature') __row
@@ -121,22 +134,21 @@ Feature: Paramétrage métier "Benoit XVI"
             | tenant     | name                     | shortName             | owners!                                                                        | parent! | associated!                                                     | permissions!                                                          |
             | Benoit XVI | Président du département | President Departement | ['benoit.demortain+tarpex+benoit-xvi@libriciel.coop', 'sample-user@dom.local'] | ''      | ['Directeur des Finances', '1er Vice Président du Département'] | {'action': true, 'archiving': true, 'chain': true, 'creation': false} |
 
-    # @fixme: see https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
     Scenario Outline: Create "${name}" workflow in "${tenant}"
         * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant     | name            | deskName                              | type               | mandatoryValidationMetadata! | mandatoryRejectionMetadata! |
-            | Benoit XVI | CS_Dir_MP       | Directeur des Marchés Publics         | SEAL               | []                           | []                          |
+#            | Benoit XVI | CS_Dir_MP       | Directeur des Marchés Publics         | SEAL               | []                           | []                          |
             | Benoit XVI | CS_Pres         | Président du département              | SEAL               | []                           | []                          |
             | Benoit XVI | S_BurVar_script | ##VARIABLE_DESK##                     | SIGNATURE          | []                           | []                          |
             | Benoit XVI | S_Consultant    | Consultant Fonctionnel Libriciel SCOP | SIGNATURE          | []                           | []                          |
-            | Benoit XVI | Se_Dir_MP       | Directeur des Marchés Publics         | EXTERNAL_SIGNATURE | []                           | []                          |
+#            | Benoit XVI | Se_Dir_MP       | Directeur des Marchés Publics         | EXTERNAL_SIGNATURE | []                           | []                          |
             | Benoit XVI | S_Pres          | Président du département              | SIGNATURE          | []                           | []                          |
             | Benoit XVI | V_Chefde        | ##BOSS_OF##                           | VISA               | []                           | []                          |
             | Benoit XVI | V_DGS           | Directrice Générale des Services      | VISA               | []                           | []                          |
             | Benoit XVI | V_Pres          | Président du département              | VISA               | []                           | []                          |
-            | Benoit XVI | V_Var_SF        | ##VARIABLE_DESK##                     | VISA               | []                           | []                          |
+            | Benoit XVI | V_Var_SF        | ##VARIABLE_DESK##                     | VISA               | ['date_service_fait']        | []                          |
 
     Scenario: Create "S_CS_Pres" workflow in "Benoit XVI"
         * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
@@ -187,31 +199,32 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    # @fixme: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
-    Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-        * def appDeskId = api_v1.desk.getIdByName(tenantId, 'APPLICATIONS')
-        * def id = 's_var_ou_pres'
-        * def payload =
-"""
-{
-    "steps":[
-        {"validators":["##VARIABLE_DESK##","#(presDeskId)"],"validationMode":"AND","name":"Visa","type":"VISA","parallelType":"AND"},
-        {"validators":["#(presDeskId)","#(appDeskId)","##EMITTER##"],"validationMode":"OR","name":"Visa","type":"VISA","parallelType":"OR"}
-    ],
-    "name":"S_Var_OU_Pres",
-    "id":"#(id)",
-    "key":"#(id)",
-    "deploymentId":"#(id)"
-}
-"""
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
-            And header Accept = 'application/json'
-            And request payload
-        When method POST
-        Then status 201
+    # @info: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
+    # @info: ce circuit n'est pas autorisé
+#    Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
+#        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+#        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
+#        * def appDeskId = api_v1.desk.getIdByName(tenantId, 'APPLICATIONS')
+#        * def id = 's_var_ou_pres'
+#        * def payload =
+#"""
+#{
+#    "steps":[
+#        {"validators":["##VARIABLE_DESK##","#(presDeskId)"],"validationMode":"AND","name":"Visa","type":"VISA","parallelType":"AND"},
+#        {"validators":["#(presDeskId)","#(appDeskId)","##EMITTER##"],"validationMode":"OR","name":"Visa","type":"VISA","parallelType":"OR"}
+#    ],
+#    "name":"S_Var_OU_Pres",
+#    "id":"#(id)",
+#    "key":"#(id)",
+#    "deploymentId":"#(id)"
+#}
+#"""
+#        Given url baseUrl
+#            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+#            And header Accept = 'application/json'
+#            And request payload
+#        When method POST
+#        Then status 201
 
     Scenario: Create "V_DGSETDirFin_SE_SG_S_PresOU1VP" workflow in "Benoit XVI"
         * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
@@ -242,33 +255,33 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    Scenario: Create "V_DGS_S_PresOU1VP_SE_SG" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
-        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
-        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
-        * def id = 'v_dgs_s_presou1vp_se_sg'
-        * def payload =
-"""
-{
-    "steps":[
-        {"validators":["#(dgsDeskId)"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["#(presDeskId)","#(premvicepresDeskId)"],"validationMode":"OR","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
-        {"validators":["#(secgenDeskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"}
-    ],
-    "name":"V_DGS_S_PresOU1VP_SE_SG",
-    "id":"#(id)",
-    "key":"#(id)",
-    "deploymentId":"#(id)"
-}
-"""
-        Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
-            And header Accept = 'application/json'
-            And request payload
-        When method POST
-        Then status 201
+#    Scenario: Create "V_DGS_S_PresOU1VP_SE_SG" workflow in "Benoit XVI"
+#        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+#        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
+#        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
+#        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
+#        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
+#        * def id = 'v_dgs_s_presou1vp_se_sg'
+#        * def payload =
+#"""
+#{
+#    "steps":[
+#        {"validators":["#(dgsDeskId)"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
+#        {"validators":["#(presDeskId)","#(premvicepresDeskId)"],"validationMode":"OR","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
+#        {"validators":["#(secgenDeskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"}
+#    ],
+#    "name":"V_DGS_S_PresOU1VP_SE_SG",
+#    "id":"#(id)",
+#    "key":"#(id)",
+#    "deploymentId":"#(id)"
+#}
+#"""
+#        Given url baseUrl
+#            And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+#            And header Accept = 'application/json'
+#            And request payload
+#        When method POST
+#        Then status 201
 
     Scenario: Create "VVS_Chefde" workflow in "Benoit XVI"
         * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
@@ -318,6 +331,8 @@ Feature: Paramétrage métier "Benoit XVI"
     # Create subtype "Acte d'Engagement" for type "MARCHES AUTO" and "S_Pres" workflow in "Benoit XVI" -> non éditable (Erreur lors de la récupération du sous-Type)
     # @fixme: erreur 500
     # Create subtype "Acte Engagement Sign Pres" for type "MARCHES AUTO" and "S_Pres" workflow in "Benoit XVI" -> non éditable (Erreur lors de la récupération du sous-Type)
+    # @todo: subtypeLayerList
+    # @todo: BONS DE COMMANDE/Bon de commande (benoit-xvi-bdc-bdc.groovy)
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
         * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
