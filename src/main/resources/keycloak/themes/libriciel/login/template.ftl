@@ -34,7 +34,6 @@
         </#list>
     </#if>
     <script src="${url.resourcesPath}/js/login.js" type="text/javascript"></script>
-    <script src="${url.resourcesPath}/js/ls-elements.js" type="text/javascript"></script>
 </head>
 
 <body class="grid-container">
@@ -95,12 +94,13 @@
         </div>
     </div>
 </main>
-<ls-footer class="ls-login-footer" application_name="${properties.productName} ${properties.productVersion!}" active="${properties.productActiveFooter!}"></ls-footer>
+<ls-lib-footer class="ls-login-footer" application_name="${properties.productName} ${properties.productVersion!}" active="${properties.productActiveFooter!}"></ls-lib-footer>
 <#--<footer class="footer">-->
-        <#--<#include "footer.ftl">-->
+<#--        <#include "footer.ftl">-->
 <#--</footer>-->
 </body>
+<script src="${url.resourcesPath}/js/ls-elements.js" type="text/javascript"></script>
 <!-- Load this after body because of the size of this JS script -->
-<script type="text/javascript" src="${url.resourcesPath}/js/zxcvbn.js"></script>
+<#--<script type="text/javascript" src="${url.resourcesPath}/js/zxcvbn.js"></script>-->
 </html>
 </#macro>
