@@ -4,6 +4,24 @@ Feature: Subtype setup lib
     Scenario: Create subtype
         * pause(5)
         * def tenantId = api_v1.entity.getIdByName(tenant)
+        * def prepareSubtypeLayerList =
+"""
+function (tenantId, subtypeLayerList) {
+    var result = [];
+    for (var i = 0;i < subtypeLayerList.length;i++) {
+        for (const [layer, association] of Object.entries(subtypeLayerList[i])) {
+            var layerId = api_v1.layer.getIdByName(tenantId, layer);
+            result.push({
+                "layerId": layerId,
+                "association": association,
+                "compositeId": { "layerId": layerId }
+            });
+        }
+    }
+    return result;
+}
+"""
+
         * def typeId = api_v1.type.getIdByName(tenantId, type)
         * def defaults =
 """
@@ -35,6 +53,7 @@ Feature: Subtype setup lib
         * payload['externalSignatureConfigId'] = utils.isEmpty(payload['externalSignatureConfigId']) ? null : api_v1.externalSignature.getIdByName(tenantId, payload['externalSignatureConfigId'])
         * payload['sealCertificateId'] = utils.isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
         * payload['secureMailServerId'] = utils.isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
+        * payload['subtypeLayerList'] = utils.isEmpty(payload['subtypeLayerList']) ? [] : prepareSubtypeLayerList(tenantId, subtypeLayerList)
         * payload['validationWorkflowId'] = utils.isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
         * payload['workflowSelectionScript'] = utils.isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
         * def replaceMetadataKeyById =

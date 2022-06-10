@@ -207,6 +207,7 @@ function fn(config) {
             availableSubtypeIdsList: [],
             chainAllowed: permissions['chain'] === undefined ? false : permissions['chain'],
             delegatingDesks: [],
+            delegationManagerIdsList: [],
             description: 'Bureau ' + name,
             filterableMetadataIdsList:[],
             filterableSubtypeIdsList:[],
@@ -216,6 +217,7 @@ function fn(config) {
             ownerUserIdsList: owners,
             parentDeskId: parent === '' ? null : api_v1.desk.getIdByName(tenantId, parent),
             shortName: shortName,
+            supervisorIdsList: []
         };
 
         return payload;
@@ -616,29 +618,30 @@ function fn(config) {
      */
     config.api_v1['utils'] = {};
     config.api_v1.utils['filterSingleElementFromGetResponse'] = function (response, entity, field, value, containing = false) {
+        var matching = containing === true ? 'containing' : 'matching', message;
         value = value.replace("'", "\\'");
 
-        /*if (response.body.total === 0) {
-            filtered = [];
-        } else {*/
-            if (containing === true) {
-                filtered = [karate.jsonPath(response.body, "$.data[0]")];//@todo: still filter, but reduce results
-            } else {
-                filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
-            }
-        // }
-
-        var matching = containing === true ? 'containing' : 'matching', message;
-
-        if (filtered.length === 0) {
-            message = 'No ' + entity + ' found ' + matching + ' field ' + field + ' ' + '""' + value + '""';
-            karate.fail(message);
-        } else if (filtered.length > 1) {
-            message = filtered.length + ' ' + entity + ' found ' + matching + ' field ' + field + ' ' + '""' + value + '"": ' + JSON.stringify(filtered);
-            karate.fail(message);
+        if (containing === true) {
+            //@todo: still filter, but reduce results
+            filtered = [karate.jsonPath(response.body, "$.data[0]")];
+        } else {
+            filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
+            karate.log("$.data[?(@." + field + "=='" + value + "')]");
+            karate.log(filtered);
         }
 
-        return filtered[0];
+        if (filtered.length === 0) {
+            message = 'No ' + entity + ' found ' + matching + ' field ' + field + ' ' + '"' + value + '"';
+        } else if (filtered.length > 1) {
+            message = filtered.length + ' ' + entity + ' found ' + matching + ' field ' + field + ' ' + '"' + value + '": ' + JSON.stringify(filtered);
+        }
+
+        if (typeof message === 'undefined') {
+            return filtered[0];
+        } else {
+            karate.fail(message);
+            return {};
+        }
     };
 
     /**
