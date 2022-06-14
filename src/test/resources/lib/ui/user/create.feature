@@ -10,7 +10,7 @@ Feature: UI user lib
             And click("{^}Utilisateurs")
         Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Utilisateurs"))
 
-        When click("{^}Ajouter un utilisateur")
+        When click("{^}Créer un utilisateur")
             And input("#editInfoUserNameInput", username)
             And input("#editInfoLastNameInput", lastName)
             And input(ui.locator.input("Prénom"), firstName)

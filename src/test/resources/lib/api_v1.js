@@ -115,7 +115,7 @@ function fn(config) {
                 subtypeId: subtypeId,
                 typeId: typeId,
                 variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
-                visibility: extra.visibility === undefined ? 'confidentiel' : extra.visibility,
+                visibility: extra.visibility === undefined ? 'CONFIDENTIAL' : extra.visibility,
             };
             result.push({
                 tenantId: tenantId,

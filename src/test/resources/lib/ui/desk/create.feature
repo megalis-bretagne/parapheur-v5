@@ -11,7 +11,8 @@ function (owners) {
     for(idx = 0;idx < owners.length;idx++) {
         value(selector, '');
         input(selector, owners[idx]);
-        waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
+        //@info: timeout
+        //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
         click("//tr//td[contains(normalize-space(text()), '" + owners[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
     }
 }

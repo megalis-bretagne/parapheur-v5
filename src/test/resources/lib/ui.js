@@ -28,7 +28,13 @@ function fn(config) {
         executable: config.CHROME_BIN,
         headless: config.headless,
         showDriverLog: false,
-        type: 'chrome'
+        type: 'chrome',
+        //addOptions: ['--windows-size=1024,768'],
+        /*webDriverSession: {
+            capabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
+            desiredCapabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
+            prefs: { 'credentials_enable_service': false, 'profile.password_manager_enabled': false },
+        }*/
     };
 
     /**

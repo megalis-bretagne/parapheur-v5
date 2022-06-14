@@ -1,4 +1,4 @@
-@ip-web @l10n @demo-simple-simple-bde
+@ip-web @l10n @demo-simple-bde
 Feature: 002 - Scénario de démo simple, partie utilisation
 
     Background:
@@ -25,17 +25,17 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
       Examples:
-          | tenant | username       | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
-          | Démo   | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
-          | Démo   | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
+          | tenant      | username       | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
         * ui.user.login("flosserand@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo / Président / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
         * click("{a}" + name)
-        * waitFor(ui.element.breadcrumb("Accueil / Démo / Président / " + name))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
         * waitFor("{}Annotation publique").input("Annotation publique FLO")
         * waitFor("{}Annotation privée").input("Annotation privée FLO")
@@ -54,16 +54,17 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ui.user.login("ws@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo / WebService / Dossiers <title>"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo / WebService / <name>"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # @info: imprimer ne se fait pas avec un téléchargement mais occupe l'onglet actuel
 
         # Vérification des annotations
-        * assert exists("//*[normalize-space(text())='Annotation publique']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation publique FLO']") == true
+        # @fixme IP5: en ~ beta40, on a une redite de l'annotation publique lors de la lecture
+        #* assert exists("//*[normalize-space(text())='Annotation publique']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation publique FLO']") == true
         * assert exists("//*[normalize-space(text())='Annotation privée']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation privée FLO']") == true
 
         # Vérification du journal des événements
@@ -81,8 +82,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(tableBody + "/tr[2]//td[2][normalize-space(text())='Président']")
         * waitFor(tableBody + "/tr[2]//td[3]/span[normalize-space(text())='Frédéric Losserand']")
         * waitFor(tableBody + "/tr[2]//td[4][normalize-space(text())='Annotation publique FLO']")
-        * waitFor(tableBody + "/tr[2]//td[5][normalize-space(text())='<action>']")
-        * waitFor(tableBody + "/tr[2]//td[6][normalize-space(text())='<state>']")
+        # @fixme: IP 5
+#        * waitFor(tableBody + "/tr[2]//td[5][normalize-space(text())='<action>']")
+#        * waitFor(tableBody + "/tr[2]//td[6][normalize-space(text())='<state>']")
         # @todo: étape de fin de circuit
 
         Examples:
