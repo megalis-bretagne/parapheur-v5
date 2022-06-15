@@ -31,4 +31,5 @@ Feature: UI type lib
         When waitForEnabled(ui.locator.button("Enregistrer")).click()
         Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
             And waitFor(ui.toast.success("Le type " + name + " a été créé avec succès"))
+            And input("//input[contains(@placeholder, 'Rechercher des types')]", name)
             And waitFor("//tbody//td[contains(text(),'" + name + "')]")

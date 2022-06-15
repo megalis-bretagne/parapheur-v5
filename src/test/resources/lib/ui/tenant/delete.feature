@@ -9,7 +9,8 @@ Feature: UI tenant lib
         When click("{^}Entités")
         Then waitFor(ui.element.breadcrumb("Administration / Entités"))
 
-        When click("//td//*[contains(text(),'" + tenant + "')]//ancestor::tr//button[@title='Supprimer']")
+        When input("//input[@placeholder='Rechercher une entité']", tenant)
+            And click("//td//*[contains(text(),'" + tenant + "')]//ancestor::tr//button[@title='Supprimer']")
             And waitFor("//input[@id='confirmTenantNameInput']")
             And input("//input[@id='confirmTenantNameInput']", tenant)
             And click("//button[contains(@title, 'Supprimer définitivement')]")

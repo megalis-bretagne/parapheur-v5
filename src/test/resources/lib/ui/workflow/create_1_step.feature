@@ -23,4 +23,5 @@ Feature: UI workflow lib
         #Then waitFor(ui.toast.success("Le circuit " + name + " a été créé avec succès"))
         # @fixme IP: Le circuit undefined a été créé avec succès
         #* karate.log(script("//div[contains(@class, 'toast-')]", "_.outerHTML"))
+            And input("//input[contains(@placeholder, 'Rechercher des circuits')]", name)
             And waitFor("//tbody//td[normalize-space(.)='" + type + "']")

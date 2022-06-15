@@ -22,4 +22,5 @@ Feature: UI user lib
             And waitForEnabled(ui.locator.button("Enregistrer")).click()
         Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Utilisateurs"))
             And waitFor(ui.toast.success("utilisateur " + firstName + " " + lastName + " a été créé avec succès"))
+            And input("//input[contains(@placeholder, 'Rechercher un utilisateur')]", username)
             And waitFor("//tbody//td//*[contains(text(),'" + username + "')]")

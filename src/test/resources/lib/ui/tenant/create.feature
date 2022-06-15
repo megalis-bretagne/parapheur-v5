@@ -14,4 +14,5 @@ Feature: UI tenant lib
             And waitForEnabled(ui.locator.button("Enregistrer")).click()
         Then waitFor(ui.element.breadcrumb("Administration / Entités"))
             And waitFor(ui.toast.success("entité " + tenant + " a été créée avec succès"))
+            And input("//input[@placeholder='Rechercher une entité']", tenant)
             And waitFor("//tbody//td//*[contains(text(),'" + tenant + "')]")
