@@ -63,29 +63,28 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @info: imprimer ne se fait pas avec un téléchargement mais occupe l'onglet actuel
 
         # Vérification des annotations
-        # @fixme IP5: en ~ beta40, on a une redite de l'annotation publique lors de la lecture
-        #* assert exists("//*[normalize-space(text())='Annotation publique']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation publique FLO']") == true
+        # Annotation(s) publique(s)
+        * table expected
+            | Utilisateur          | Annotation publique       |
+            | 'Frédéric Losserand' | 'Annotation publique FLO' |
+        * def actual = ui.folder.getPublicAnnotations()
+        * match actual == expected
+
         * assert exists("//*[normalize-space(text())='Annotation privée']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation privée FLO']") == true
 
         # Vérification du journal des événements
         * mouse().move("{^button}Actions").go();
         * click("{^button}Actions")
         * waitFor("{^}Journal des évènements").click()
-        * def tableBody = "//ngb-modal-window//table//tbody"
-        * waitFor(tableBody)
-        # Étape de démarrage
-        * waitFor(tableBody + "/tr[1]//td[2][normalize-space(text())='WebService']")
-        * waitFor(tableBody + "/tr[1]//td[3]/span[normalize-space(text())='Web Service']")
-        * waitFor(tableBody + "/tr[1]//td[4][normalize-space(text())='']")
-        * waitFor(tableBody + "/tr[1]//td[5][normalize-space(text())='Démarrage']")
-        # Étape de visa
-        * waitFor(tableBody + "/tr[2]//td[2][normalize-space(text())='Président']")
-        * waitFor(tableBody + "/tr[2]//td[3]/span[normalize-space(text())='Frédéric Losserand']")
-        * waitFor(tableBody + "/tr[2]//td[4][normalize-space(text())='Annotation publique FLO']")
-        # @fixme: IP 5
-#        * waitFor(tableBody + "/tr[2]//td[5][normalize-space(text())='<action>']")
-#        * waitFor(tableBody + "/tr[2]//td[6][normalize-space(text())='<state>']")
-        # @todo: étape de fin de circuit
+
+        * table expected
+            | Bureau       | Utilisateur          | Annotation publique       | Action      | État      |
+            | 'WebService' | 'Web Service'        | ''                        | 'Démarrage' | ''        |
+            | 'Président'  | 'Frédéric Losserand' | ''                        | 'Lecture'   | ''        |
+            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO' | '<action>'  | '<state>' |
+
+        * def actual = ui.folder.getEventLog()
+        * match actual == expected
 
         Examples:
             | badge           | title             | name               | action | state  |

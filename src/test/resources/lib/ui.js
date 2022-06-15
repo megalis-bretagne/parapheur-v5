@@ -38,6 +38,64 @@ function fn(config) {
     };
 
     /**
+     * Folder
+     **/
+    config.ui['folder'] = {};
+    /**
+     * Journal des événements
+     **/
+    config.ui.folder['getPublicAnnotations'] = function() {
+        var actual = [],
+            idx,
+            linePrefix,
+            lines,
+            row,
+            annotationXpath = '//*[normalize-space(text())=\'Annotation publique\' or normalize-space(text())=\'Annotations publiques\']/ancestor::app-annotation-display',
+            xpath;
+
+        waitFor(annotationXpath);
+
+        linePrefix = annotationXpath + '/div/div[2]/div';
+        lines = karate.sizeOf(locateAll(linePrefix));
+        for (idx = 1;idx <= lines;idx++) {
+            row = {
+                'Annotation publique': text(linePrefix + "[" + idx + "]/text()").trim(),
+                'Utilisateur': text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ +à [0-9]+:[0-9]+:[0-9]+$/i, '$1')
+            };
+            actual.push(row);
+        }
+        return actual;
+    };
+
+    /**
+     * Journal des événements
+     **/
+    config.ui.folder['getEventLog'] = function() {
+        var actual = [],
+            idx,
+            lines,
+            row,
+            tableBodyXpath = '//ngb-modal-window//app-history-popup//table//tbody',
+            xpath;
+
+        waitFor(tableBodyXpath + '//tr');
+        lines = karate.sizeOf(locateAll(tableBodyXpath + '//tr'));
+
+        // 1. Extract actual table content
+        for (idx = 1;idx <= lines;idx++) {
+            row = {
+                'Bureau': text(tableBodyXpath + "/tr[" + idx + "]//td[2]"),
+                'Utilisateur': text(tableBodyXpath + "/tr[" + idx + "]//td[3]"),
+                'Annotation publique': text(tableBodyXpath + "/tr[" + idx + "]//td[4]"),
+                'Action': text(tableBodyXpath + "/tr[" + idx + "]//td[5]"),
+                'État': text(tableBodyXpath + "/tr[" + idx + "]//td[6]"),
+            };
+            actual.push(row);
+        }
+        return actual;
+    };
+
+    /**
      * Locator
      * @todo: find lib or port custom from behat's
      **/
@@ -97,6 +155,39 @@ function fn(config) {
             }
         }
         return result;
+    };
+
+    // @fixme: @deprecated
+    config.ui['eventLog'] = function(expected) {//@todo: getEventLog, puis comparaison "normales" karate
+        var actual = [],
+            idx,
+            lines,
+            comparison,
+            row,
+            tableBodyXpath = '//ngb-modal-window//app-history-popup//table//tbody',
+            xpath;
+        // @todo: check table
+        waitFor(tableBodyXpath + '//tr');
+        lines = karate.sizeOf(locateAll(tableBodyXpath + '//tr'));
+
+        // 1. Extract actual table content
+        for (idx = 1;idx <= lines;idx++) {
+            row = {
+                'Bureau': text(tableBodyXpath + "/tr[" + idx + "]//td[2]"),
+                'Utilisateur': text(tableBodyXpath + "/tr[" + idx + "]//td[3]"),
+                'Annotation publique': text(tableBodyXpath + "/tr[" + idx + "]//td[4]"),
+                'Action': text(tableBodyXpath + "/tr[" + idx + "]//td[5]"),
+                'État': text(tableBodyXpath + "/tr[" + idx + "]//td[6]"),
+            };
+            actual.push(row);
+        }
+        // comparison = karate.match(actual, expected);
+        karate.set('_actual', actual);
+        karate.set('_expected', expected);
+        comparison = karate.match('_actual == _expected');
+        if (comparison.pass !== true) {
+            karate.fail(comparison.message);
+        }
     };
 
     /**
