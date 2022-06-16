@@ -109,6 +109,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 #        * waitFor("{^}Annuler").click()
 #        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0);
 
+        # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
+        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+
         Examples:
             | badge           | title             | name               | action | state  |
             | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
