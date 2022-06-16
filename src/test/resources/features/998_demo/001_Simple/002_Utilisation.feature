@@ -62,17 +62,21 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         # @info: imprimer ne se fait pas avec un téléchargement mais occupe l'onglet actuel
 
-        # Vérification des annotations
+        # Vérifications des annotations
         # Annotation(s) publique(s)
         * table expected
             | Utilisateur          | Annotation publique       |
             | 'Frédéric Losserand' | 'Annotation publique FLO' |
         * def actual = ui.folder.getPublicAnnotations()
         * match actual == expected
+        # Annotation privée
+        * table expected
+            | Utilisateur          | Annotation privée       |
+            | 'Frédéric Losserand' | 'Annotation privée FLO' |
+        * def actual = ui.folder.getPrivateAnnotations()
+        * match actual == expected
 
-        * assert exists("//*[normalize-space(text())='Annotation privée']/ancestor::app-annotation-display//div[normalize-space(text())='Annotation privée FLO']") == true
-
-        # Vérification du journal des événements
+        # Vérifications du journal des événements
         * mouse().move("{^button}Actions").go();
         * click("{^button}Actions")
         * waitFor("{^}Journal des évènements").click()

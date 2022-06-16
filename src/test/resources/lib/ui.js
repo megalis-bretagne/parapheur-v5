@@ -42,15 +42,15 @@ function fn(config) {
      **/
     config.ui['folder'] = {};
     /**
-     * Journal des événements
+     * Annotations
      **/
-    config.ui.folder['getPublicAnnotations'] = function() {
+    config.ui.folder['getAnnotations'] = function(singular, plural) {
         var actual = [],
             idx,
             linePrefix,
             lines,
             row,
-            annotationXpath = '//*[normalize-space(text())=\'Annotation publique\' or normalize-space(text())=\'Annotations publiques\']/ancestor::app-annotation-display',
+            annotationXpath = '//*[normalize-space(text())=\'' + singular + '\' or normalize-space(text())=\'' + plural + '\']/ancestor::app-annotation-display',
             xpath;
 
         waitFor(annotationXpath);
@@ -58,13 +58,18 @@ function fn(config) {
         linePrefix = annotationXpath + '/div/div[2]/div';
         lines = karate.sizeOf(locateAll(linePrefix));
         for (idx = 1;idx <= lines;idx++) {
-            row = {
-                'Annotation publique': text(linePrefix + "[" + idx + "]/text()").trim(),
-                'Utilisateur': text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ +à [0-9]+:[0-9]+:[0-9]+$/i, '$1')
-            };
+            row = {};
+            row[singular] = text(linePrefix + "[" + idx + "]/text()").trim();
+            row['Utilisateur'] = text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ +à [0-9]+:[0-9]+:[0-9]+$/i, '$1');
             actual.push(row);
         }
         return actual;
+    };
+    config.ui.folder['getPrivateAnnotations'] = function() {
+        return ui.folder.getAnnotations('Annotation privée', 'Annotations privées');
+    };
+    config.ui.folder['getPublicAnnotations'] = function() {
+        return ui.folder.getAnnotations('Annotation publique', 'Annotations publiques');
     };
 
     /**
