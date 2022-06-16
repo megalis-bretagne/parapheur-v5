@@ -50,7 +50,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Délibération ODT 1 | Visa   |
             | Délibération ODT 2 | Rejet  |
 
-    Scenario Outline: Vérifications (annotations, journal des événements) du dossier ${title} "${name}" (ACTES/Visa)
+    Scenario Outline: Vérifications (annotations, journal des événements, impressions) du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * click("{a}WebService")
@@ -60,16 +60,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * click("{a}<name>")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
-        # @info: imprimer ne se fait pas avec un téléchargement mais occupe l'onglet actuel
-
         # Vérifications des annotations
-        # Annotation(s) publique(s)
+        # 1. Annotation(s) publique(s)
         * table expected
             | Utilisateur          | Annotation publique       |
             | 'Frédéric Losserand' | 'Annotation publique FLO' |
         * def actual = ui.folder.getPublicAnnotations()
         * match actual == expected
-        # Annotation privée
+
+        # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée       |
             | 'Frédéric Losserand' | 'Annotation privée FLO' |
@@ -89,6 +88,26 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * def actual = ui.folder.getEventLog()
         * match actual == expected
+        * click("{^button}Fermer")
+
+        # Vérifications des impressions
+        # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
+        # 1. Avec le borderau de signature (cochée par défaut)
+        * mouse().move("{^button}Actions").go();
+        * click("{^button}Actions")
+        * waitFor("{^}Imprimer").click()
+        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("{^}Annuler").click()
+        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0);
+        # 2. Sans le borderau de signature (cochée par défaut)
+        # @fixme: on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
+#        * mouse().move("{^button}Actions").go();
+#        * click("{^button}Actions")
+#        * waitFor("{^}Imprimer").click()
+#        * waitFor("{^}Imprimer le bordereau de signature").click()
+#        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+#        * waitFor("{^}Annuler").click()
+#        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0);
 
         Examples:
             | badge           | title             | name               | action | state  |
