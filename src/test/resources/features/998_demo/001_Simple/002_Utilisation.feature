@@ -5,7 +5,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * configure driver = ui.driver.configure
         * driver baseUrl + ui.url.logout
 
-    Scenario Outline: Envoi d'un dossier dans le circuit pour le sous-type ${type}/${subtype}
+    Scenario Outline: Envoi de ${count} dossier(s) "${nameTemplate}" dans le circuit pour le sous-type ${type}/${subtype}
         * def params =
 """
 {
@@ -25,17 +25,26 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
       Examples:
-          | tenant      | username       | password | desk       | document                                                | type  | subtype | nameTemplate               | count! |
-          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | ACTES | Visa    | Délibération PDF %counter% | 2      |
-          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
+          | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate               | count! |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter% | 2      |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter% | 2      |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter% | 2      |
+          | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter% | 2      |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
+        # @todo: vérifier le "contenu" du PDF ?
+        # $x("//div[@id='viewerContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
         * ui.user.login("flosserand@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * match ui.desk.getTileBadges('Président') == {pending: #(pending)}
+
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
         * click("{a}" + name)
+
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
+        #* waitFor("//div[@id='viewe#rContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
+
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
         * waitFor("{}Annotation publique").input("Annotation publique FLO")
         * waitFor("{}Annotation privée").input("Annotation privée FLO")
@@ -44,15 +53,22 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
-            | name               | action |
-            | Délibération PDF 1 | Visa   |
-            | Délibération PDF 2 | Rejet  |
-            | Délibération ODT 1 | Visa   |
-            | Délibération ODT 2 | Rejet  |
+            | name               | action | pending! |
+            | Délibération DOC 1 | Visa   | 8        |
+            | Délibération DOC 2 | Rejet  | 7        |
+            | Délibération ODT 1 | Visa   | 6        |
+            | Délibération ODT 2 | Rejet  | 5        |
+            | Délibération PDF 1 | Visa   | 4        |
+            | Délibération PDF 2 | Rejet  | 3        |
+            | Délibération RTF 1 | Visa   | 2        |
+            | Délibération RTF 2 | Rejet  | 1        |
 
     Scenario Outline: Vérifications (annotations, journal des événements, impressions) du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
+
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * match ui.desk.getTileBadges('WebService') == {finished: 4, pending: 0, rejected: 4}
+
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
         * waitFor("<badge>").click()
@@ -114,7 +130,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         Examples:
             | badge           | title             | name               | action | state  |
-            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération DOC 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération DOC 2 | Visa   | Rejeté |
             | .badge-finished | en fin de circuit | Délibération ODT 1 | Visa   |        |
             | .badge-rejected | rejetés           | Délibération ODT 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |

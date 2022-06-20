@@ -20,6 +20,31 @@ function fn(config) {
     config['ui'] = {};
 
     /**
+     * Desk
+     **/
+    config.ui['desk'] = {};
+    config.ui.desk['getTileBadges'] = function(desk) {
+        var actual = {},
+            clasName,
+            classes,
+            count,
+            idx,
+            badges,
+            row,
+            badgesXpath = "//a[text()='" + desk + "']/parent::div/div[contains(concat(' ', @class, ' '), ' folder-count-badges ')]//*[contains(concat(' ', @class, ' '), ' badge ')]";
+
+        waitFor(badgesXpath);
+
+        badges = karate.sizeOf(locateAll(badgesXpath));
+        for (idx = 1;idx <= badges;idx++) {
+            classes = " " + text(badgesXpath + "[" + idx + "]/@class").trim() + " ";
+            clasName = classes.replace(/^.* (badge\-[^ ]+) .*$/, '$1');
+            actual[clasName.replace(/^badge-/, '')] = parseInt(text(badgesXpath + "[" + idx + "]/text()").trim(), 10);
+        }
+        return actual;
+    };
+
+    /**
      * Driver
      **/
     config.ui['driver'] = {};

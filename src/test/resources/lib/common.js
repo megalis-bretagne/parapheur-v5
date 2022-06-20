@@ -121,6 +121,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 'p7s': 'application/pkcs7-signature',
                 'pdf': 'application/pdf',
                 'png': 'image/png',
+                'rtf': 'application/rtf',
                 'xml': 'text/xml'
             };
         if (extension in associations) {

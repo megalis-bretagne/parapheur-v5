@@ -3,8 +3,8 @@ Feature:
     Scenario:
         * def mainFileContentType = utils.file.mime(mainFilePath)
         # @todo: à mettre ailleurs + dans les autres create-...
-        * karate.log(draftFolderParams)
-        * karate.log(mainFileContentType)
+#        * karate.log(draftFolderParams)
+#        * karate.log(mainFileContentType)
 
         Given url baseUrl
             And path path
