@@ -56,5 +56,5 @@ Feature: Paramétrage métier "Factures"
         * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant   | type | name         | description  | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Factures | VISA | VISA_MONODOC | Visa monodoc | Visa                 |                    |                   | ''                       | []                          |
+            | tenant   | type | name         | description  | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataList! |
+            | Factures | VISA | VISA_MONODOC | Visa monodoc | Visa                 |                    |                   | ''                       | []                   |

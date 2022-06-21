@@ -1,4 +1,18 @@
-# Karate 
+# Karate
+
+## WIP
+
+### Exécution
+
+```bash
+./gradlew test --info -Dkarate.options="--tags @business,@demo-simple-bde" -Dkarate.headless=true
+```
+
+- 540 tests
+- 18 failures
+- 0 ignored
+- 22m51.23s duration
+- 96% successful
 
 ## Paramètres
 

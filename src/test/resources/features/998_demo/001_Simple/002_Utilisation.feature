@@ -62,7 +62,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Délibération PDF 2 | Rejet  | 3        |
             | Délibération RTF 1 | Visa   | 2        |
             | Délibération RTF 2 | Rejet  | 1        |
-
+    @fixme-ip-core @issue-ip @issue-ip-compose-491 @todo-karate
     Scenario Outline: Vérifications (annotations, journal des événements, impressions) du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
 

@@ -1,4 +1,4 @@
-@actes-helios-grandes-collectivites @business @proposal @setup
+@actes-helios-grandes-collectivites @business @proposal @setup @hhh
 Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
     Background:
         * api_v1.auth.login('user', 'password')
@@ -61,7 +61,7 @@ Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
 
         # @todo: (modifier le script de sélection)
         Examples:
-            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                                       | subtypeMetadataRequestList!                                                                |
+            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                                       | subtypeMetadataList!                                                                       |
             | ACTES HELIOS - grandes collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature            |                    |                   | ''                                                             | []                                                                                         |
             | ACTES HELIOS - grandes collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature            |                    |                   | ''                                                             | []                                                                                         |
             | ACTES HELIOS - grandes collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        |                      |                    |                   | 'classpath:files/workflowSelectionScript/ahgc - HELIOS.groovy' | [{"metadataKey": "GdaBjType", "defaultValue": null, "mandatory": true, "editable": false}] |

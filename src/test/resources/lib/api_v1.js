@@ -86,6 +86,13 @@ function fn(config) {
 
         return api_v1.desk.getIdByName(tenantId, unique);
     };
+    config.api_v1.desk['getVariableDeskIds'] = function (tenantId, variableDeskIds, containing = false) {
+        result = {};
+        for (const key in variableDeskIds) {
+            result[key] = api_v1.desk.getIdByName(tenantId, variableDeskIds[key], containing)
+        }
+        return result;
+    };
     config.api_v1.desk['draft'] = {};
     config.api_v1.desk.draft['getPayloadMonodoc'] = function (params, count, extra, start) {
         start = start === undefined ? 1 : start;
@@ -114,7 +121,7 @@ function fn(config) {
                 paperSignable: extra.paperSignable === undefined ? false : extra.paperSignable,
                 subtypeId: subtypeId,
                 typeId: typeId,
-                variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
+                variableDesksIds: extra.variableDesksIds === undefined ? {} : api_v1.desk.getVariableDeskIds(tenantId, extra.variableDesksIds),
                 visibility: extra.visibility === undefined ? 'CONFIDENTIAL' : extra.visibility,
             };
             result.push({
@@ -157,8 +164,8 @@ function fn(config) {
                 paperSignable: extra.paperSignable === undefined ? false : extra.paperSignable,
                 subtypeId: subtypeId,
                 typeId: typeId,
-                variableDesksIds: extra.variableDesksIds === undefined ? {} : extra.variableDesksIds,
-                visibility: extra.visibility === undefined ? 'confidentiel' : extra.visibility,
+                variableDesksIds: extra.variableDesksIds === undefined ? {} : api_v1.desk.getVariableDeskIds(tenantId, extra.variableDesksIds),
+                visibility: extra.visibility === undefined ? 'CONFIDENTIAL' : extra.visibility,
             };
             result.push({
                 draftFolderParams: draftFolderParams,

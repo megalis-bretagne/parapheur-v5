@@ -21,7 +21,6 @@ function() {
         "sealCertificateId": null,
         "subtypeLayerRequestList": [],
         "subtypeMetadataList": [],
-        "subtypeMetadataRequestList": [],
         "validationWorkflowId": null
     };
 }

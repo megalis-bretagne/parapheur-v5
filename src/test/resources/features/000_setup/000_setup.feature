@@ -81,13 +81,13 @@ Feature: Basic setup
 		* call read('classpath:lib/api/setup/subtype.create.feature') __row
 
 		Examples:
-			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataRequestList! |
-			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                          |
-			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                          |
-			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                          |
-			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                          |
-			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                          |
-			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                          |
+			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataList! |
+			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                   |
+			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
 
 	Scenario Outline: Set the signature image for user "${email}"
 		* call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row

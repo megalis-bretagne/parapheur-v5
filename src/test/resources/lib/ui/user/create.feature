@@ -14,7 +14,7 @@ Feature: UI user lib
             And input("#editInfoUserNameInput", username)
             And input("#editInfoLastNameInput", lastName)
             And input(ui.locator.input("Prénom"), firstName)
-            And input(ui.locator.input("Mail"), email)
+            And input(ui.locator.input("E-mail"), email)
             And input(ui.locator.input("Nouveau mot de passe"), password)
             And input(ui.locator.input("Confirmer le mot de passe"), password)
             And click("//a[text()='Droits']")

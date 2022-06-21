@@ -61,7 +61,7 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant           | type            | name                | description         | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                             | subtypeMetadataRequestList!                                                              |
+            | tenant           | type            | name                | description         | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                             | subtypeMetadataList!                                                                     |
             | Bons de commande | Bon de commande | Bureau variable     | Bureau variable     | Signature            |                    |                   | ''                                                   | []                                                                                       |
             | Bons de commande | Bon de commande | Script de sélection | Script de sélection |                      |                    |                   | 'classpath:files/workflowSelectionScript/bdc.groovy' | [{"metadataKey": "service", "defaultValue": null, "mandatory": true, "editable": false}] |
 

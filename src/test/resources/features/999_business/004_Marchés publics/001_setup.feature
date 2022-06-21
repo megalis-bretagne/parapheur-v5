@@ -68,8 +68,8 @@ Feature: Paramétrage métier "Marchés publics"
         * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant          | type          | name         | description  | multiDocuments! | validationWorkflowId    | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | Marchés publics | Marché public | Service fait | Service fait | true            | Validation et signature |                    |                   | ''                       | []                          |
+            | tenant          | type          | name         | description  | multiDocuments! | validationWorkflowId    | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataList! |
+            | Marchés publics | Marché public | Service fait | Service fait | true            | Validation et signature |                    |                   | ''                       | []                   |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row

@@ -1,6 +1,8 @@
 @actes-helios-petites-collectivites @business @folder @proposal
 Feature: Création de dossiers brouillon pour le paramétrage métier "ACTES HELIOS - petites collectivités"
 
+    # @fixme: IP 5, HELIOS - Monodoc, La signature XAdES enveloppée ne peut être effectuée que sur un unique document XML (annexe)
+    @fixme-ip-core @issue-ip-core-todo
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex
         * def params =
 """

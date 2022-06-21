@@ -46,10 +46,10 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
         * call read('classpath:lib/api/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataRequestList! |
-            | ACTES HELIOS - petites collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                          |
-            | ACTES HELIOS - petites collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                          |
-            | ACTES HELIOS - petites collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | Signature            |                    |                   | ''                       | []                          |
+            | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataList! |
+            | ACTES HELIOS - petites collectivités | ACTES - CAdES | ACTES - CAdES - Monodoc | Signature CAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                   |
+            | ACTES HELIOS - petites collectivités | ACTES - PAdES | ACTES - PAdES - Monodoc | Signature PAdES monodoc (ACTES) | Signature            |                    |                   | ''                       | []                   |
+            | ACTES HELIOS - petites collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | Signature            |                    |                   | ''                       | []                   |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row

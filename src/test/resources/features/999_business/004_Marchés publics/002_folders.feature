@@ -1,6 +1,7 @@
 @business @marchés-publics @folder @proposal
 Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
 
+  @fixme-tests @fixme-ip @multidoc
   Scenario Outline: Create ${count} "${subtype}" folders ${withOrWithout} annex
     * def params =
 """
