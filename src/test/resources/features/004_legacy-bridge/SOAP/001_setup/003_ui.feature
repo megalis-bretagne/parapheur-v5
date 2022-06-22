@@ -1,12 +1,12 @@
 @legacy-bridge @folder
-Feature: ...
+Feature: Traitement des dossiers
 
     Background:
         * configure driver = ui.driver.configure
         * driver baseUrl + ui.url.logout
 
-    Scenario Outline: ...
-        * ui.user.login("lvermillon", "a123456")
+    Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge
+        * ui.user.login("lvermillon@legacy-bridge", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('Vermillon') == {pending: #(pending)}
 
@@ -17,8 +17,8 @@ Feature: ...
         * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
 
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
-        * waitFor("{}Annotation publique").input("Annotation publique lvermillon (" + name + ")")
-        * waitFor("{}Annotation privée").input("Annotation privée lvermillon (" + name + ")")
+        * waitFor("{}Annotation publique").input("Annotation publique lvermillon@legacy-bridge (" + name + ")")
+        * waitFor("{}Annotation privée").input("Annotation privée lvermillon@legacy-bridge (" + name + ")")
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))

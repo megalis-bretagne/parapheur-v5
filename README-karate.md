@@ -14,6 +14,66 @@
 - 22m51.23s duration
 - 96% successful
 
+## _Legacy bridge_
+
+@see  `<wsdl:portType name="InterfaceParapheur">`
+@see https://otrs.libriciel.fr/otrs/index.pl?Action=AgentFAQZoom;ItemID=583;Nav=
+  - voir 6.1. Statuts de dossiers possibles
+
+```bash
+./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests"  -Dkarate.headless=true
+```
+
+### Questions / @todo
+
+- [x] version de l'API SOAP ? -> Non
+- [ ] issue IP 4, `RechercherDossiers`
+  - la dernière annotation publique ne remonte pas
+  - probablement pas corrigée (c'est comme ça depuis un moment, au moins 3 ans) 
+  - `match foo count(/records//record) == 3`
+- @fixme: tests `CreerDossier`
+  - `DocumentsSupplementaires`/`DocAnnexe` -> multidoc en plus de DocumentPrincipal
+  - `DocumentsAnnexes`/`DocAnnexe` -> vraies annexes
+  - `DossierID`
+    - il est retourné par `CreerDossier` (à vérifier)
+    - pas spécifié -> UUID
+    - en spécifiant (par des vieux connecteurs probablement), à déprécier, probablement à ne pas tester
+      - par exemple un nom de fichier
+      - pas de doublon possible
+
+### _Endpoints_
+
+- [ ] `ArchiverDossier` **
+- [x] `CreerDossier` ***
+- [x] `echo` ***
+- [ ] `EffacerDossierRejete` **
+- [ ] `ExercerDroitRemordDossier` *
+- [ ] `ForcerEtape` *
+- [ ] `GetCircuit` **
+- [x] `GetDossier` ***
+- [ ] `GetHistoDossier` **
+- [ ] `GetListeMetaDonnees` **
+- [x] `GetListeSousTypes` **
+- [x] `GetListeTypes` **
+- [x] `GetMetaDonneesRequisesPourTypeSoustype` **
+- [x] `RechercherDossiers` ***
+
+#### "À déprécier" (tâches d'administration)
+
+- [x] `GetCircuitPourUtilisateur`
+- [x] `GetListeSousTypesPourUtilisateur`
+- [x] `GetListeTypesPourUtilisateur`
+- [x] `IsUtilisateurExiste`
+
+#### Dépréciés (S2LOW)
+
+- [x] `CreerDossierPES` 
+- [x] `EnvoyerDossierMailSecurise`
+- [x] `EnvoyerDossierPES`
+- [x] `EnvoyerDossierTdT`
+- [x] `GetClassificationActesTdt`
+- [x] `GetStatutTdT`
+
 ## Paramètres
 
 ## Démo

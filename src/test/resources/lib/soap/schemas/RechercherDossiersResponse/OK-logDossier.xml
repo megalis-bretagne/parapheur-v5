@@ -1,0 +1,7 @@
+<LogDossier>
+    <timestamp>#string</timestamp>
+    <nom>#uuid</nom>
+    <status>#string</status>
+    <annotation>##string</annotation>
+    <accessible>#string</accessible>
+</LogDossier>

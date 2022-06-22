@@ -112,8 +112,11 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     config.utils.file['basename'] = function (path) {
         return String(path).replace(/.*\/([^\/]+)$/, '$1');
     };
+    config.utils.file['extension'] = function (path) {
+        return path.split(".").pop().toLowerCase();
+    };
     config.utils.file['mime'] = function(filename) {
-        var extension = filename.split(".").pop().toLowerCase(),
+        var extension = utils.file.extension(filename),
             associations = {
                 'doc': 'application/msword',
                 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
