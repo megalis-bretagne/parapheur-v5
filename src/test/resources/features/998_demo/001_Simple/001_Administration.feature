@@ -32,6 +32,7 @@ Feature: 001 - Scénario de démo simple, partie administration
             | Démo simple | admin@demo-simple        | Demortain | Benoit    | admin@dom.local        | a123456  | Administrateur          |
             | Démo simple | admin-entite@demo-simple | Buffin    | Christian | admin-entite@dom.local | a123456  | Administrateur d'entité |
 
+    @fixme-ip-core @issue-ip @issue-ip-compose-537
     Scenario Outline: Créer un user sans droit avec notif unitaire
         * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/user/create.feature') __row
