@@ -36,8 +36,11 @@ Feature: GetDossier
 """
     When soap action 'GetDossier'
     Then print 'response:\n', response
-        And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetDossierResponse/OK.xml')
+#        And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetDossierResponse/OK.xml')
         And match /Envelope/Body/GetDossierResponse/DossierID == dossierId
+        And match /Envelope/Body/GetDossierResponse/MessageRetour/codeRetour == 'OK'
+        And match /Envelope/Body/GetDossierResponse/MessageRetour/message == ''
+        And match /Envelope/Body/GetDossierResponse/MessageRetour/severite == 'INFO'
 
     Examples:
         | type         | sousType       | status  |

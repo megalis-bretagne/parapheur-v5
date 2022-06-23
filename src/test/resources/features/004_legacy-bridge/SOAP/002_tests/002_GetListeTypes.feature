@@ -17,5 +17,6 @@ Feature: GetListeTypes
 """
         When soap action 'GetListeTypes'
         Then status 200
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetListeTypesResponse/OK.xml')
-            And match /Envelope/Body/GetListeTypesResponse/TypeTechnique == ['Auto monodoc', 'Auto multidoc']
+            And match karate.xmlPath(response, 'count(/Envelope/Body/GetListeTypesResponse/TypeTechnique)') == 2
+            And match /Envelope/Body/GetListeTypesResponse/TypeTechnique contains 'Auto monodoc'
+            And match /Envelope/Body/GetListeTypesResponse/TypeTechnique contains 'Auto multidoc'

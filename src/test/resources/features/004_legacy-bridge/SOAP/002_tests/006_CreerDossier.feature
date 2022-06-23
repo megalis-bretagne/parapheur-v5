@@ -35,11 +35,10 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
 
         Examples:
-            | type           | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite |
+            | type         | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP public avec date limite | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | PUBLIC       | 2020-05-12 |
             | Auto monodoc | visa sans meta | SOAP confidentiel            | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
 
@@ -80,7 +79,7 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
+#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
 
         Examples:
@@ -128,7 +127,7 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
+#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
 
         Examples:
@@ -211,7 +210,7 @@ Feature: CreerDossier
         When soap action 'CreerDossier'
         Then status 200
             # And print 'response: ', response
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
+#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
 
         Examples:

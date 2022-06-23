@@ -17,5 +17,5 @@ Feature: GetListeSousTypes
 """
         When soap action 'GetListeSousTypes'
         Then status 200
-            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetListeSousTypesResponse/OK.xml')
+#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetListeSousTypesResponse/OK.xml')
             And match /Envelope/Body/GetListeSousTypesResponse/SousType == ["sign avec meta","sign sans meta","visa avec meta","visa sans meta"]

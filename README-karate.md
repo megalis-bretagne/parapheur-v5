@@ -43,16 +43,19 @@
 
 ### _Endpoints_
 
-- [ ] `ArchiverDossier` **
+@todo: factoriser
+
+- [x] `ArchiverDossier` **
 - [x] `CreerDossier` ***
+  - @fixme IP5: s'assurer que le dossierId soit bien retourné
 - [x] `echo` ***
-- [ ] `EffacerDossierRejete` **
-- [ ] `ExercerDroitRemordDossier` *
-- [ ] `ForcerEtape` *
-- [ ] `GetCircuit` **
+- [x] `EffacerDossierRejete` **
+- [x] `ExercerDroitRemordDossier` *
+- [x] `ForcerEtape` *
+- [x] `GetCircuit` **
 - [x] `GetDossier` ***
-- [ ] `GetHistoDossier` **
-- [ ] `GetListeMetaDonnees` **
+- [x] `GetHistoDossier` **
+- [x] `GetListeMetaDonnees` **
 - [x] `GetListeSousTypes` **
 - [x] `GetListeTypes` **
 - [x] `GetMetaDonneesRequisesPourTypeSoustype` **
@@ -60,19 +63,19 @@
 
 #### "À déprécier" (tâches d'administration)
 
-- [x] `GetCircuitPourUtilisateur`
-- [x] `GetListeSousTypesPourUtilisateur`
-- [x] `GetListeTypesPourUtilisateur`
-- [x] `IsUtilisateurExiste`
+- `GetCircuitPourUtilisateur`
+- `GetListeSousTypesPourUtilisateur`
+- `GetListeTypesPourUtilisateur`
+- `IsUtilisateurExiste`
 
 #### Dépréciés (S2LOW)
 
-- [x] `CreerDossierPES` 
-- [x] `EnvoyerDossierMailSecurise`
-- [x] `EnvoyerDossierPES`
-- [x] `EnvoyerDossierTdT`
-- [x] `GetClassificationActesTdt`
-- [x] `GetStatutTdT`
+- `CreerDossierPES` 
+- `EnvoyerDossierMailSecurise`
+- `EnvoyerDossierPES`
+- `EnvoyerDossierTdT`
+- `GetClassificationActesTdt`
+- `GetStatutTdT`
 
 ## Paramètres
 
