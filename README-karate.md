@@ -43,11 +43,8 @@
 
 ### _Endpoints_
 
-@todo: factoriser
-
 - [x] `ArchiverDossier` **
 - [x] `CreerDossier` ***
-  - @fixme IP5: s'assurer que le dossierId soit bien retourné
 - [x] `echo` ***
 - [x] `EffacerDossierRejete` **
 - [x] `ExercerDroitRemordDossier` *

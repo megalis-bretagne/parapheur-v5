@@ -18,8 +18,7 @@ Feature: echo
 """
         When soap action 'echo'
         Then status 200
-#        And api.soap.schema.match(response, 'classpath:lib/soap/schemas/echoResponse/OK.xml')
-        And match response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + message + "\"!"
+            And match response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + message + "\"!"
 
         Examples:
             | message                                                                                                                  |

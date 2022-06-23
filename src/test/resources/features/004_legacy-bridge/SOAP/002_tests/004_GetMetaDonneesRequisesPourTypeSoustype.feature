@@ -20,9 +20,6 @@ Feature: GetMetaDonneesRequisesPourTypeSoustype
 """
         When soap action 'GetMetaDonneesRequisesPourTypeSoustype'
         Then status 200
-            And print 'response:\n', response
-            # @todo
-            # And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetMetaDonneesRequisesPourTypeSoustypeResponse/OK.xml')
             And xmlstring actual = karate.xmlPath(response, '/Envelope/Body/GetMetaDonneesRequisesPourTypeSoustypeResponse/MetaDonnee')
             And xmlstring expected = metaDonnees
             And match actual == expected
@@ -47,11 +44,7 @@ Feature: GetMetaDonneesRequisesPourTypeSoustype
 """
         When soap action 'GetMetaDonneesRequisesPourTypeSoustype'
         Then status 200
-            And print 'response:\n', response
-            # @todo
-            # And api.soap.schema.match(response, 'classpath:lib/soap/schemas/GetMetaDonneesRequisesPourTypeSoustypeResponse/OK.xml')
-            And def count = karate.xmlPath(response, 'count(/Envelope/Body/GetMetaDonneesRequisesPourTypeSoustypeResponse/MetaDonnee)')
-            And match count == 0
+            And match karate.xmlPath(response, 'count(/Envelope/Body/GetMetaDonneesRequisesPourTypeSoustypeResponse/MetaDonnee)') == 0
 
         Examples:
             | type         | sousType       |

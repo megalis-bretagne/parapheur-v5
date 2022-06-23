@@ -6,41 +6,30 @@ Feature: CreerDossier
         * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
-        * def documentPrincipal = api.soap.file.encode(documentPrincipal)
-        * def annotationPublique = "Annotation publique (" + nom + ")"
-        * def annotationPrivee = "Annotation privée (" + nom + ")"
-
-        Given request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:CreerDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
-            <ns0:TypeTechnique>#(type)</ns0:TypeTechnique>
-            <ns0:SousType>#(sousType)</ns0:SousType>
-            <ns0:DossierID></ns0:DossierID>
-            <ns0:DossierTitre>#(nom)</ns0:DossierTitre>
-            <ns0:DocumentPrincipal xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:contentType="application/pdf">#(documentPrincipal)</ns0:DocumentPrincipal>
-            <ns0:NomDocPrincipal>monDoc.pdf</ns0:NomDocPrincipal>
-            <ns0:VisuelPDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-            <ns0:XPathPourSignatureXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-            <ns0:MetaDataTdtACTES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-            <ns0:AnnotationPublique>#(annotationPublique)</ns0:AnnotationPublique>
-            <ns0:AnnotationPrivee>#(annotationPrivee)</ns0:AnnotationPrivee>
-            <ns0:Visibilite>#(visibilite)</ns0:Visibilite>
-            <ns0:DateLimite>#(dateLimite)</ns0:DateLimite>
-        </ns0:CreerDossierRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'CreerDossier'
-        Then status 200
-            And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
+        * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
 
         Examples:
             | type         | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP public avec date limite | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | PUBLIC       | 2020-05-12 |
             | Auto monodoc | visa sans meta | SOAP confidentiel            | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
+
+    Scenario: Création du dossier "SOAP public avec DossierID" pour le type "Auto monodoc / visa sans meta"
+        * def params =
+"""
+{
+    type: "Auto monodoc",
+    sousType: "visa sans meta",
+    nom: "SOAP public avec DossierID",
+    documentPrincipal: "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
+    dossierId: "J'aime développer",
+    visibilite: "PUBLIC",
+    dateLimite: "",
+    password: "a123456",
+    username: "ws@legacy-bridge"
+}
+"""
+        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
 
     @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
@@ -79,8 +68,8 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
+            And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
             | type           | sousType       | nom                                  | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
@@ -127,8 +116,8 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
+            And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
             | type           | sousType       | nom                                | documentPrincipal                                       | visibilite   | dateLimite |
@@ -209,9 +198,8 @@ Feature: CreerDossier
 """
         When soap action 'CreerDossier'
         Then status 200
-            # And print 'response: ', response
-#            And api.soap.schema.match(response, 'classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
+            And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
             | type            | sousType       | nom                                           | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |

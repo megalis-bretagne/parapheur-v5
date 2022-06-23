@@ -23,15 +23,21 @@ Feature: RechercherDossiers
 </soap-env:Envelope>
 """
         When soap action 'RechercherDossiers'
-            Then status 200
-#            And print 'response: ', response
-            # @todo
-            # And api.soap.schema.match(response, 'classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')
+        Then status 200
             And match karate.xmlPath(response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
 
         Examples:
-            | type           | sousType       | status    | expected! |
-            | Auto monodoc | visa avec meta | Archive   | 2         |
-            | Auto monodoc | visa avec meta | RejetVisa | 2         |
+            | type         | sousType       | status          | expected! |
+            | Auto monodoc | visa avec meta | Archive         | 2         |
+            | Auto monodoc | visa avec meta | CachetOK        | 0         |
+            | Auto monodoc | visa avec meta | EnCoursVisa     | 0         |
+            | Auto monodoc | visa avec meta | Lu              | 0         |
+            | Auto monodoc | visa avec meta | NonLu           | 0         |
+            | Auto monodoc | visa avec meta | PretCachet      | 0         |
+            | Auto monodoc | visa avec meta | RejetCachet     | 0         |
+            | Auto monodoc | visa avec meta | RejetSignataire | 0         |
+            | Auto monodoc | visa avec meta | RejetVisa       | 2         |
+            | Auto monodoc | visa avec meta | Signe           | 0         |
+            | Auto monodoc | visa avec meta | Vise            | 0         |
             # @fixme: en IP 4, "Auto" fonctionnait
-            | Auto monodoc | visa avec meta | Rejet*    | 2         |
+            | Auto monodoc | visa avec meta | Rejet*          | 2         |
