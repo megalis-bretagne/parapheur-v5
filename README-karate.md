@@ -24,12 +24,35 @@
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests"  -Dkarate.headless=true
 ```
 
+### Informations / @fixme
+
+#### `CreerDossier` / `DossierID`
+
+- [ ] le `DossierID` semble bien renvoyé en v.5 également, pourquoi est-ce que je ne le retrouve pas ? A cause du préfixe ??
+- [x] Pastell génère un UUID et l'envoie à la requête
+- [ ] web-delib, en direct, [récupère l'id du dossier généré par IP](https://gitlab.libriciel.fr/libriciel/pole-actes-administratifs/web-delib-6/web-delib/-/blob/08256d2d8da94a3bcc209ea4a58e5212bd55ff68/app/Controller/Component/IparapheurComponent.php#L449)
+- [ ] web-gfc, en direct ?
+
+#### Préfixe de namespace
+
+- [ ] web-delib [utilise de temps en temps le préfixe `S:`](https://gitlab.libriciel.fr/libriciel/pole-actes-administratifs/web-delib-6/web-delib/-/blob/08256d2d8da94a3bcc209ea4a58e5212bd55ff68/app/Controller/Component/IparapheurComponent.php#L429) (qui est `SOAP-ENV:` en IP 5.0.0-EA.beta40)
+
+#### `echo`
+
+- [x] web-delib vérifie que [le message de retour contient bien la chaîne qu'il a envoyé](https://gitlab.libriciel.fr/libriciel/pole-actes-administratifs/web-delib-6/web-delib/-/blob/08256d2d8da94a3bcc209ea4a58e5212bd55ff68/app_check/Lib/VerificationLib.php#L480)
+
 ### Questions / @todo
 
 - [x] version de l'API SOAP ? -> Non
+- [ ] vérification des messages d'erreur
+  - [ ] lors d'une mauvaise création de dossiers
+    - [ ] en spécifiant 2 fois un même `DossierID`
 - [ ] issue IP 4, `RechercherDossiers`
-  - la dernière annotation publique ne remonte pas
-  - probablement pas corrigée (c'est comme ça depuis un moment, au moins 3 ans) 
+  - [ ] la création d'un dossier multidoc est possible en monodoc (il ne bronche pas) 
+  - [ ] la création dun dossier "cossu" (multidoc, dont un avec primo-signature XML et annexes) fonctionne mais le dossier est ensuite bloqué à l'étape de visa ()
+  - [ ] la recherche de dossier `Rejet*` ne fonctionne plus depuis que j'ai modifié le nom du type (`Auto` -> `Auto monodoc`)
+  - [ ] la dernière annotation publique ne remonte pas
+    - probablement pas corrigée (c'est comme ça depuis un moment, au moins 3 ans) 
   - `match foo count(/records//record) == 3`
 - @fixme: tests `CreerDossier`
   - `DocumentsSupplementaires`/`DocAnnexe` -> multidoc en plus de DocumentPrincipal

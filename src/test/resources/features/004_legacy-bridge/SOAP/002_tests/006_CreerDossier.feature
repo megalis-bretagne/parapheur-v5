@@ -31,6 +31,33 @@ Feature: CreerDossier
 """
         * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
 
+    Scenario: Création du dossier "SOAP avec DossierID en doublon" pour le type "Auto monodoc / visa sans meta"
+        * def uuid = utils.getUUID()
+        * def params =
+"""
+{
+    type: "Auto monodoc",
+    sousType: "visa sans meta",
+    nom: "SOAP avec DossierID en doublon",
+    documentPrincipal: "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
+    dossierId: "",
+    visibilite: "PUBLIC",
+    dateLimite: "",
+    password: "a123456",
+    username: "ws@legacy-bridge"
+}
+"""
+        * params['dossierId'] = uuid;
+
+        # 1. Création du premier dossier avec ce DossierID
+        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
+
+        # 2. Tentative de création du second dossier avec le même DossierID
+        * call read('classpath:lib/soap/CreerDossier/simple.feature') params
+            And match /Envelope/Body/CreerDossierResponse/MessageRetour/codeRetour == "KO"
+            And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
+            And match /Envelope/Body/CreerDossierResponse/MessageRetour/severite == "ERROR"
+
     @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
         * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
