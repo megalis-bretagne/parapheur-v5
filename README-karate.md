@@ -27,18 +27,28 @@
 ```bash
 ./gradlew test \
   --info \
-  -Dkarate.baseUrl=https://iparapheur-5-0.recette.libriciel.net/ \
-  -Dkarate.options="--tags @legacy-bridge --tags @tests"
+  -Dkarate.options="--tags @legacy-bridge --tags @tests --tags ~@fixme-tests"
+```
+
+##### Lancement des tests sur IP 4
+
+Attention, il faudra faire le ménage après et supprimer tous les dossiers nommés `SOAP` ("Rechercher par titre", dans la recherche de dossiers partie administrateur).
+
+```bash
+./gradlew test \
+  --info \
+  -Dkarate.options="--tags @legacy-bridge --tags @tests --tags ~@fixme-tests" \
+  -Dkarate.baseUrl=https://secure-iparapheur47.test.libriciel.fr
 ```
 
 ##### Arguments de la ligne de commande
 
-| Argument           | Obligatoire | Valeur par défaut              |
-| ---                | ---         | ---                            |
-| `-Dkarate.baseUrl` | -           | `http://iparapheur.dom.local/` |
-| `karate.chromeBin` | -           | `/usr/bin/chromium-browser`    |
-| `karate.headless`  | -           | `true`                         |
-| `-Dkarate.options` | Oui         | -                              |
+| Argument             | Obligatoire | Valeur par défaut              |
+| ---                  | ---         | ---                            |
+| `-Dkarate.baseUrl`   | -           | `http://iparapheur.dom.local/` |
+| `-Dkarate.chromeBin` | -           | `/usr/bin/chromium-browser`    |
+| `-Dkarate.headless`  | -           | `true`                         |
+| `-Dkarate.options`   | Oui         | -                              |
 
 ##### _Tags_
 
@@ -49,6 +59,7 @@
 | Création de dossiers             | `--tags @legacy-bridge --tags @folder`               | `src/test/resources/features/004_legacy-bridge/SOAP/001_setup/002_folders.feature ` |
 | Traitement des dossiers via l'UI | `--tags @legacy-bridge --tags @folder-ui-processing` | `src/test/resources/features/004_legacy-bridge/SOAP/001_setup/003_ui.feature`       |
 | Lancement des tests              | `--tags @legacy-bridge --tags @tests`                | `src/test/resources/features/004_legacy-bridge/SOAP/002_tests`                      |
+| Tout sauf les tests              | `--tags @legacy-bridge --tags ~@tests`               | `src/test/resources/features/004_legacy-bridge/SOAP/002_tests`                      |
 
 ### Informations / @fixme
 

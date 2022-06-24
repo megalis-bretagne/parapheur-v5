@@ -100,6 +100,20 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
      * utils
      */
     config['utils'] = {};
+
+    config.utils['array'] = {};
+    // @see https://stackoverflow.com/a/43046408
+    config.utils.array['getUnique'] = function (arr) {
+        var a = [];
+        for (var i=0, l=arr.length; i<l; i++)
+            if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
+                a.push(arr[i]);
+        return a;
+    };
+    config.utils.array['getSortedUnique'] = function (array) {
+        return utils.array.getUnique(array).sort();
+    };
+
     config.utils['eval'] = function (value) {
         var matches = (''+value).match(/^eval\((.*)\)$/),
             result = value;
@@ -221,6 +235,14 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
             result.push(characters.charAt(Math.floor(Math.random()*charactersLength)));
         }
         return String(String(prefix) + result.join('')).substr(0, length);
+    };
+
+    config.utils['xmlPathSortedUnique'] = function(xml, expression) {
+        var extracted = karate.xmlPath(xml, expression)
+        if (typeof extracted !== 'object') {
+            extracted = [extracted];
+        }
+        return (extracted == '#notpresent') ? [] : utils.array.getSortedUnique(extracted);
     };
 
     return config;

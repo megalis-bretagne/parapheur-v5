@@ -5,7 +5,7 @@ Feature: echo
         * url api.soap.url()
         * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-    @fixme-ip-5
+    @fixme-ip-5 @legacy-bridge-issue-21
     Scenario Outline: echo "${message}"
         Given request
 """

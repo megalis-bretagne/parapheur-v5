@@ -21,4 +21,7 @@ Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
 
       Examples:
           | tenant        | username         | password | desktop    | type         | subtype        | mainFile!                                                 | nameTemplate                  | start! | count! | withOrWithout | extra!                               |
+          | Legacy Bridge | ws@legacy-bridge | a123456  | WebService | Auto monodoc | sign avec meta | 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf' | Auto_sign_avec_meta_%counter% | 1      | 2      | without       | { "metadata":{"mameta_bool":false} } |
           | Legacy Bridge | ws@legacy-bridge | a123456  | WebService | Auto monodoc | visa avec meta | 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf' | Auto_visa_avec_meta_%counter% | 1      | 4      | without       | { "metadata":{"mameta_bool":false} } |
+          | Legacy Bridge | ws@legacy-bridge | a123456  | WebService | PAdES        | cachet         | 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf' | PAdES_cachet_%counter%        | 1      | 2      | without       | {}                                   |
+          | Legacy Bridge | ws@legacy-bridge | a123456  | WebService | PAdES        | mailsec        | 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf' | PAdES_mailsec_%counter%       | 1      | 2      | without       | {}                                   |
