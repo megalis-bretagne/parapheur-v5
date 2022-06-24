@@ -1,4 +1,4 @@
-@legacy-bridge @folder
+@legacy-bridge @folder-ui-processing
 Feature: Traitement des dossiers
 
     Background:

@@ -20,9 +20,35 @@
 @see https://otrs.libriciel.fr/otrs/index.pl?Action=AgentFAQZoom;ItemID=583;Nav=
   - voir 6.1. Statuts de dossiers possibles
 
+### Lancement des tests
+
+#### Forme générale
+
 ```bash
-./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests"  -Dkarate.headless=true
+./gradlew test \
+  --info \
+  -Dkarate.baseUrl=https://iparapheur-5-0.recette.libriciel.net/ \
+  -Dkarate.options="--tags @legacy-bridge --tags @tests"
 ```
+
+##### Arguments de la ligne de commande
+
+| Argument           | Obligatoire | Valeur par défaut              |
+| ---                | ---         | ---                            |
+| `-Dkarate.baseUrl` | -           | `http://iparapheur.dom.local/` |
+| `karate.chromeBin` | -           | `/usr/bin/chromium-browser`    |
+| `karate.headless`  | -           | `true`                         |
+| `-Dkarate.options` | Oui         | -                              |
+
+##### _Tags_
+
+| Usage                            | `-Dkarate.options`                                   | Dossier ou fichier                                                                  |
+| ---                              | ---                                                  | ---                                                                                 |
+| Intégration continue             | `--tags @legacy-bridge`                              | `src/test/resources/features/004_legacy-bridge/SOAP`                                |
+| Paramétrage                      | `--tags @legacy-bridge --tags @setup`                | `src/test/resources/features/004_legacy-bridge/SOAP/001_setup/001_setup.feature`    |
+| Création de dossiers             | `--tags @legacy-bridge --tags @folder`               | `src/test/resources/features/004_legacy-bridge/SOAP/001_setup/002_folders.feature ` |
+| Traitement des dossiers via l'UI | `--tags @legacy-bridge --tags @folder-ui-processing` | `src/test/resources/features/004_legacy-bridge/SOAP/001_setup/003_ui.feature`       |
+| Lancement des tests              | `--tags @legacy-bridge --tags @tests`                | `src/test/resources/features/004_legacy-bridge/SOAP/002_tests`                      |
 
 ### Informations / @fixme
 
