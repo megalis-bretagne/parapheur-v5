@@ -49,6 +49,9 @@ MATOMO_TOKEN_NAME="${MATOMO_TOKEN_NAME:-ipcore}"
 MATOMO_TMP_HTML="${MATOMO_TMP_HTML:-/tmp/matomo-setup-tmp.html}"
 MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
+OVERRIDE_COMPOSE_FILE="dev"
+START_APP="1"
+DOCKER_CONTAINER_PREFIX_NAME="iparapheur"
 
 # ======================================================================================================================
 
@@ -160,6 +163,8 @@ __usage__()
     printf "  -f|--force\t\t\tYou have to use this option for the setup command to work\n"
     printf "  -h|--help\t\t\tDisplay this help\n"
     printf "  --ignore-matomo-version\tDon't fail for unexpected Matomo version during check or setup (expected ${MATOMO_EXPECTED_VERSION})\n"
+    printf "  --ignore-override-compose\tDon't use docker-compose override file\n"
+    printf "  --dont-start-app\t\tDon't start app after initialization\n"
     printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container or the matomo containers to properly start up during setup (default: 30s)\n"
     printf "  -x|--xtrace\t\t\tDebug mode, prints every command before executing it (set -o xtrace)\n"
     printf "\nEXEMPLES\n"
@@ -257,7 +262,7 @@ __check_versions__() {
     expected['bash']="4.4"
     expected['curl']="7.58"
     expected['docker']="20.10"
-    expected['docker-compose']="1.27"
+    expected['docker-compose']="1.25"
     expected['grep']="3.1"
     expected['python3']="3.6"
     expected['sed']="4.4"
@@ -325,18 +330,27 @@ __reset__()
       log_hr
       echo "Resetting..."
       log_hr
-
+      if [ "${OVERRIDE_COMPOSE_FILE}" != 0 ] ; then
       docker-compose \
+          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
           -f docker-compose.yml \
-          -f docker-compose.override.dev-`accepted_arch`.yml \
+          -f docker-compose.override.${OVERRIDE_COMPOSE_FILE}-`accepted_arch`.yml \
           down \
           --remove-orphans \
           --volumes
-      sudo rm -rf ./data
-      mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
+      else
+      docker-compose \
+          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
+          -f docker-compose.yml \
+          down \
+          --remove-orphans \
+          --volumes
+      fi
+      rm -rf ./data
+      mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
       touch ./data/.gitkeep
-      sudo chmod -R 0777 ./data
-      sudo chown -R 6789:6789 data/feeder/data
+      chmod -R 0777 ./data
+      chown -R 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
 }
@@ -348,18 +362,19 @@ __setup_vault__()
       log_hr
 
       docker-compose \
+          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
           -f docker-compose.yml \
-          -f docker-compose.override.dev-`accepted_arch`.yml \
+          -f docker-compose.override.init.yml \
           up -d vault
       sleep ${SLEEP_VALUE}
-      VAULT_OUTPUT="`docker exec -it compose_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
+      VAULT_OUTPUT="`docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       export VAULT_TOKEN="`echo "${VAULT_OUTPUT}" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env
       sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env
-      docker exec -it compose_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
-      docker exec -it compose_vault_1 vault login token=${VAULT_TOKEN}
-      docker exec -it compose_vault_1 vault secrets enable -version=2 -path=secret kv
+      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
+      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault login token=${VAULT_TOKEN}
+      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
 
       log_success "... Vault - setup completed\n" "OK"
 }
@@ -399,8 +414,9 @@ __setup_matomo__()
     log_hr
 
     docker-compose \
+        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
         -f docker-compose.yml \
-        -f docker-compose.override.dev-`accepted_arch`.yml \
+        -f docker-compose.override.init.yml \
         up -d matomo nginx
     sleep ${SLEEP_VALUE}
     rm -f $MATOMO_COOKIES
@@ -454,7 +470,7 @@ __karate_tags__() {
 __main__()
 {
       cd ${__ROOT__}
-      opts=`getopt --longoptions force,ignore-matomo-version,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
+      opts=`getopt --longoptions force,ignore-matomo-version,ignore-override-compose,dont-start-app,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
       eval set -- "$opts"
       while true ; do
           case "${1}" in
@@ -464,6 +480,14 @@ __main__()
               ;;
               --ignore-matomo-version)
                   IGNORE_MATOMO_VERSION="1"
+                  shift
+              ;;
+              --ignore-override-compose)
+                  OVERRIDE_COMPOSE_FILE="0"
+                  shift
+              ;;
+              --dont-start-app)
+                  START_APP="0"
                   shift
               ;;
               -h|--help)
@@ -508,12 +532,24 @@ __main__()
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
-                  docker-compose down
-                  sudo chmod -R 0777 ./data
-                  docker-compose \
-                      -f docker-compose.yml \
-                      -f docker-compose.override.dev-`accepted_arch`.yml \
-                      up
+                  docker-compose down -v
+                  chmod -R 0777 ./data
+                  if [ "${START_APP}" == "1" ] ; then
+                    if [ "${OVERRIDE_COMPOSE_FILE}" != 0 ] ; then
+                    docker-compose \
+                        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
+                        -f docker-compose.yml \
+                        -f docker-compose.override.tests-`accepted_arch`.yml \
+                        -f docker-compose.override.${OVERRIDE_COMPOSE_FILE}-`accepted_arch`.yml \
+                        up
+                    else
+                    docker-compose \
+                        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
+                        -f docker-compose.override.tests-`accepted_arch`.yml \
+                        -f docker-compose.yml \
+                        up
+                    fi
+                  fi
                   exit 0
               ;;
               karate-tags)
