@@ -24,3 +24,9 @@ services:
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
 
+  smtp:
+    image: tophfr/mailcatcher:0.7.1
+    ports:
+      - "1025:25"
+      - "1080:80"
+
