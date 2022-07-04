@@ -39,7 +39,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('Président') == {pending: #(pending)}
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
@@ -70,7 +70,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('WebService') == {finished: 4, pending: 0, rejected: 4}
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
