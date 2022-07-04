@@ -16,8 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-version: '2.4'
-
 services:
 
 
@@ -28,7 +26,7 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
@@ -36,7 +34,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
       - VERSION=5.0.0-develop
     ports:
@@ -50,13 +48,13 @@ services:
 
 
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pes-viewer:dev
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer:develop
     ports:
       - "8888:8080"
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
@@ -64,25 +62,25 @@ services:
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
     ports:
       - "8002:8080"
 
 
   external-signature-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector:develop
     ports:
       - "2757:8080"
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
     ports:
       - "2758:8080"
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
     ports:
       - "8085:8080"
 
