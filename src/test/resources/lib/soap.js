@@ -39,8 +39,6 @@ function fn(config) {
     };
 
     config.api.soap['url'] = function() {
-        // @fixme
-        // return "https://secure-iparapheur47.test.libriciel.fr/ws-iparapheur-no-mtom";
         return baseUrl + "/ws-iparapheur-no-mtom";
     };
 

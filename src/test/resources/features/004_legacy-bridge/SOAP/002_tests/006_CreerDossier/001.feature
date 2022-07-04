@@ -99,7 +99,7 @@ Feature: CreerDossier
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
-            | type           | sousType       | nom                                  | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
+            | type         | sousType       | nom                                  | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
             | Auto monodoc | visa avec meta | SOAP confidentiel, mameta_bool false | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | false       |
             | Auto monodoc | visa avec meta | SOAP confidentiel, mameta_bool true  | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | true        |
 
@@ -147,12 +147,13 @@ Feature: CreerDossier
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
-            | type           | sousType       | nom                                | documentPrincipal                                       | visibilite   | dateLimite |
+            | type         | sousType       | nom                                | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP confidentiel, avec annexe PDF | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
 
     @fixme-ip4 @fixme-ip5
     # @info: IP 5 -> createDraftFolder - A mandatory metadata was not filled, abort -> créer un sous-type sans et avec métadonnée
     # @info: IP 4 -> Pas de circuit défini pour ce dossier (avec l'utilisateur lvermillon@legacy-bridge)
+    #               https://iparapheur47.test.libriciel.fr/iparapheur/proxy/alfresco/parapheur/dossiers/e8c6abfb-6fb0-4801-8def-996b0a7890ba/circuit -> 500
     Scenario Outline: Création d'un dossier multidoc "${nom}" pour le type "${type} / ${sousType}", dont un avec une signature détachée XAdES et des annexes
         * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
         * def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
@@ -229,6 +230,6 @@ Feature: CreerDossier
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
 
         Examples:
-            | type            | sousType       | nom                                           | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
+            | type          | sousType       | nom                                           | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
             | Auto multidoc | visa avec meta | SOAP confidentiel multidoc, mameta_bool false | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | false       |
             | Auto multidoc | visa avec meta | SOAP confidentiel multidoc, mameta_bool true  | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | true        |
