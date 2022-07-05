@@ -114,11 +114,11 @@ function fn(config) {
         // 1. Extract actual table content
         for (idx = 1;idx <= lines;idx++) {
             row = {
-                'Bureau': text(tableBodyXpath + "/tr[" + idx + "]//td[2]"),
-                'Utilisateur': text(tableBodyXpath + "/tr[" + idx + "]//td[3]"),
-                'Annotation publique': text(tableBodyXpath + "/tr[" + idx + "]//td[4]"),
-                'Action': text(tableBodyXpath + "/tr[" + idx + "]//td[5]"),
-                'État': text(tableBodyXpath + "/tr[" + idx + "]//td[6]"),
+                'Bureau': text(tableBodyXpath + "/tr[" + idx + "]//td[2]").trim(),
+                'Utilisateur': text(tableBodyXpath + "/tr[" + idx + "]//td[3]").trim(),
+                'Annotation publique': text(tableBodyXpath + "/tr[" + idx + "]//td[4]").trim(),
+                'Action': text(tableBodyXpath + "/tr[" + idx + "]//td[5]").trim(),
+                'État': text(tableBodyXpath + "/tr[" + idx + "]//td[6]").trim()
             };
             actual.push(row);
         }
@@ -185,39 +185,6 @@ function fn(config) {
             }
         }
         return result;
-    };
-
-    // @fixme: @deprecated
-    config.ui['eventLog'] = function(expected) {//@todo: getEventLog, puis comparaison "normales" karate
-        var actual = [],
-            idx,
-            lines,
-            comparison,
-            row,
-            tableBodyXpath = '//ngb-modal-window//app-history-popup//table//tbody',
-            xpath;
-        // @todo: check table
-        waitFor(tableBodyXpath + '//tr');
-        lines = karate.sizeOf(locateAll(tableBodyXpath + '//tr'));
-
-        // 1. Extract actual table content
-        for (idx = 1;idx <= lines;idx++) {
-            row = {
-                'Bureau': text(tableBodyXpath + "/tr[" + idx + "]//td[2]"),
-                'Utilisateur': text(tableBodyXpath + "/tr[" + idx + "]//td[3]"),
-                'Annotation publique': text(tableBodyXpath + "/tr[" + idx + "]//td[4]"),
-                'Action': text(tableBodyXpath + "/tr[" + idx + "]//td[5]"),
-                'État': text(tableBodyXpath + "/tr[" + idx + "]//td[6]"),
-            };
-            actual.push(row);
-        }
-        // comparison = karate.match(actual, expected);
-        karate.set('_actual', actual);
-        karate.set('_expected', expected);
-        comparison = karate.match('_actual == _expected');
-        if (comparison.pass !== true) {
-            karate.fail(comparison.message);
-        }
     };
 
     /**

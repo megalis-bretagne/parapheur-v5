@@ -1,4 +1,4 @@
-@ip-web @l10n @demo-simple-bde
+@ip-web @l10n @demo-simple-bde @tests
 Feature: 002 - Scénario de démo simple, partie utilisation
 
     Background:
@@ -36,7 +36,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # $x("//div[@id='viewerContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
         * ui.user.login("flosserand@demo-simple", "a123456")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * match ui.desk.getTileBadges('Président') == {pending: #(pending)}
+        * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -62,12 +62,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Délibération PDF 2 | Rejet  | 3        |
             | Délibération RTF 1 | Visa   | 2        |
             | Délibération RTF 2 | Rejet  | 1        |
-    @fixme-ip-core @issue-ip @issue-ip-compose-491 @todo-karate
-    Scenario Outline: Vérifications (annotations, journal des événements, impressions) du dossier ${title} "${name}" (ACTES/Visa)
+
+    Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
 
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * match ui.desk.getTileBadges('WebService') == {finished: 4, pending: 0, rejected: 4}
+        * match ui.desk.getTileBadges('WebService') == { finished: 4, pending: 0, rejected: 4 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -81,52 +81,138 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * table expected
             | Utilisateur          | Annotation publique       |
             | 'Frédéric Losserand' | 'Annotation publique FLO' |
-        * def actual = ui.folder.getPublicAnnotations()
-        * match actual == expected
+        * match ui.folder.getPublicAnnotations() == expected
 
         # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée       |
             | 'Frédéric Losserand' | 'Annotation privée FLO' |
-        * def actual = ui.folder.getPrivateAnnotations()
-        * match actual == expected
+        * match ui.folder.getPrivateAnnotations() == expected
+
+        # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
+        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+
+        Examples:
+            | badge           | title             | name               | action | state  |
+            | .badge-finished | en fin de circuit | Délibération DOC 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération DOC 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération ODT 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération ODT 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |
+
+    @fixme-ip-core @issue-ip @todo-karate
+    Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
+        * ui.user.login("ws@demo-simple", "a123456")
+
+        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * match ui.desk.getTileBadges('WebService') == { finished: 4, pending: 0, rejected: 4 }
+
+        * click("{a}WebService")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor("<badge>").click()
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * click("{a}<name>")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # Vérifications du journal des événements
-        * mouse().move("{^button}Actions").go();
+        * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
         * waitFor("{^}Journal des évènements").click()
+        * def upcomingAction = "<state>" === "Rejeté" ? "Supprimer" : "Envoyer dans la corbeille"
 
         * table expected
-            | Bureau       | Utilisateur          | Annotation publique       | Action      | État      |
-            | 'WebService' | 'Web Service'        | ''                        | 'Démarrage' | ''        |
-            | 'Président'  | 'Frédéric Losserand' | ''                        | 'Lecture'   | ''        |
-            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO' | '<action>'  | '<state>' |
+            | Bureau       | Utilisateur          | Annotation publique       | Action                      | État       |
+            | 'WebService' | 'Web Service'        | ''                        | 'Envoyer dans le circuit'   | ''         |
+            | 'Président'  | 'Frédéric Losserand' | ''                        | 'Lecture'                   | ''         |
+            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO' | '<action>'                  | '<state>'  |
+            | 'WebService' | 'Web Service'        | ''                        | 'Lecture'                   | ''         |
+            | 'WebService' | ''                   | ''                        | upcomingAction              | 'En cours' |
 
-        * def actual = ui.folder.getEventLog()
-        * match actual == expected
-        * click("{^button}Fermer")
+        * match ui.folder.getEventLog() == expected
+        * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
+
+        # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
+        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+
+        Examples:
+            | badge           | title             | name               | action | state  |
+            | .badge-finished | en fin de circuit | Délibération DOC 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération DOC 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération ODT 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération ODT 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |
+
+    Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
+        # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
+        * ui.user.login("ws@demo-simple", "a123456")
+
+        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * match ui.desk.getTileBadges('WebService') == { finished: 4, pending: 0, rejected: 4 }
+
+        * click("{a}WebService")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor("<badge>").click()
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * click("{a}<name>")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # Vérifications des impressions
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
-        # 1. Avec le borderau de signature (cochée par défaut)
-        * mouse().move("{^button}Actions").go();
+        # 1. Avec le borderau de signature (case cochée par défaut)
+        * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
         * waitFor("{^}Imprimer").click()
         * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0);
-        # 2. Sans le borderau de signature (cochée par défaut)
-        # @fixme: on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
-#        * mouse().move("{^button}Actions").go();
-#        * click("{^button}Actions")
-#        * waitFor("{^}Imprimer").click()
-#        * waitFor("{^}Imprimer le bordereau de signature").click()
-#        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
-#        * waitFor("{^}Annuler").click()
-#        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0);
+        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+
+        Examples:
+            | badge           | title             | name               | action | state  |
+            | .badge-finished | en fin de circuit | Délibération DOC 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération DOC 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération ODT 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération ODT 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération PDF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2 | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |
+
+    Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
+        # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
+        * ui.user.login("ws@demo-simple", "a123456")
+
+        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * match ui.desk.getTileBadges('WebService') == { finished: 4, pending: 0, rejected: 4 }
+
+        * click("{a}WebService")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor("<badge>").click()
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * click("{a}<name>")
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+
+        # 2. Sans le bordereau de signature (case cochée par défaut)
+        # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
+        * mouse().move("{^button}Actions").go()
+        * click("{^button}Actions")
+        * waitFor("{^}Imprimer").click()
+        * waitFor("{^}Imprimer le bordereau de signature").click()
+        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("{^}Annuler").click()
+        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
+
+        # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
+        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * pause(15)
 
         Examples:
             | badge           | title             | name               | action | state  |

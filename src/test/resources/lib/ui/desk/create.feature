@@ -36,6 +36,22 @@ function (permissions) {
 }
 """
 
+      * def selectAssociated =
+"""
+function (associatedDesks) {
+    var idx, selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
+    // @todo: attendre un élément particulier ?
+    pause(5);
+    for(idx = 0;idx < associatedDesks.length;idx++) {
+        value(selector, '');
+        input(selector, associatedDesks[idx]);
+        //@info: timeout
+        //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
+        click("//tr//td[contains(normalize-space(text()), '" + associatedDesks[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
+    }
+}
+"""
+
         Given assert exists("//app-header") == true
             And click("//app-header//*[@routerLink='/admin']")
         Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
@@ -52,7 +68,9 @@ function (permissions) {
             And click("{^}Habilitations")
             And selectPermissions(permissions)
             # @todo: metadonnées
-            # @todo: bureaux associés
+            And click("{^}Bureaux associés")
+            And selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
+            * pause(15)
             And waitForEnabled(ui.locator.button("Enregistrer")).click()
         Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
             And waitFor(ui.toast.success("Le bureau " + title + " a été créé avec succès"))
