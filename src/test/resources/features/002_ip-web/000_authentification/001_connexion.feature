@@ -10,7 +10,7 @@ Feature: Connexion
         Scenario: Accéder à la page de connexion
         Given driver baseUrl
             And waitFor('form')
-        Then match html('body') contains 'Bienvenue sur la page de connexion iParapheur'
+        Then match html('body') contains 'Bienvenue sur la page de connexion iparapheur'
             And match html('body') contains 'Veuillez saisir vos identifiants de connexion'
             And match html('body') contains 'Identifiant ou courriel'
             And match html('body') contains 'Mot de passe'
