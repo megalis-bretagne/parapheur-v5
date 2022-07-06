@@ -7,7 +7,6 @@ Feature: Traitement des dossiers
 
     Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge
         * ui.user.login("lvermillon@legacy-bridge", "a123456")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
         * click("{a}Vermillon")
@@ -29,7 +28,7 @@ Feature: Traitement des dossiers
         * if (action != 'Mail sécurisé') click("{^}Valider")
 
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
+        * if (action != 'Mail sécurisé') waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
             | name                  | action        | pending! |
