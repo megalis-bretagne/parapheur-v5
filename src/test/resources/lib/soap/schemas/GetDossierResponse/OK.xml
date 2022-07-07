@@ -1,4 +1,5 @@
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Header>#ignore</S:Header>
     <S:Body>
         <GetDossierResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
             <TypeTechnique>#string</TypeTechnique>
@@ -6,9 +7,9 @@
             <DossierID>#uuid</DossierID>
             <AnnotationPublique>##string</AnnotationPublique>
             <AnnotationPrivee>##string</AnnotationPrivee>
-            <Visibilite>##string</Visibilite>
+            <Visibilite>#regex (CONFIDENTIEL|SERVICE|PUBLIC)</Visibilite>
             <DateLimite>##ignore</DateLimite>
-            <DocPrincipal>##ignore</DocPrincipal>
+            <DocPrincipal>#string</DocPrincipal>
             <NomDocPrincipal>#string</NomDocPrincipal>
             <DocumentsAnnexes>##ignore</DocumentsAnnexes>
             <MetaDonnees>##ignore</MetaDonnees>

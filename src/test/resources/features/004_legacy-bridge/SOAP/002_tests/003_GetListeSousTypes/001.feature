@@ -19,3 +19,4 @@ Feature: GetListeSousTypes
         Then status 200
             And match karate.xmlPath(response, 'count(/Envelope/Body/GetListeSousTypesResponse/SousType)') == 4
             And match utils.xmlPathSortedUnique(response, '/Envelope/Body/GetListeSousTypesResponse/SousType') == ["sign avec meta","sign sans meta","visa avec meta","visa sans meta"]
+            And match response == karate.read('classpath:lib/soap/schemas/GetListeSousTypesResponse/OK.xml')

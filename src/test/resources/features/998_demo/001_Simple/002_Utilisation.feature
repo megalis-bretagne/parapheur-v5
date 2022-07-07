@@ -36,7 +36,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: vérifier le "contenu" du PDF ?
         # $x("//div[@id='viewerContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
@@ -69,7 +68,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Demande d'avis complémentaire et ${action} sur le dossier "${name}" (ACTES/Visa)
         # 1. Demande d'avis complémentaire
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
@@ -94,7 +92,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # 2. Avis complémentaire
         # @todo: vérifier l'annotation privée
         * ui.user.login("mpiaumier@demo-simple", "a123456")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('DGS') == { pending: 1 }
 
         * click("{a}DGS")
@@ -116,7 +113,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # 3. Action sur le dossier
         # @todo: vérifier l'annotation privée
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
@@ -141,8 +137,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
@@ -181,8 +175,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
@@ -218,8 +210,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     @fixme-ip-core @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
@@ -263,8 +253,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     @fixme-ip-core @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
@@ -305,8 +293,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
@@ -345,8 +331,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ui.user.login("ws@demo-simple", "a123456")
-
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")

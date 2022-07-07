@@ -24,6 +24,13 @@ Feature: RechercherDossiers
         Then status 200
             And match utils.xmlPathSortedUnique(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
             And match karate.xmlPath(response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
+            # @fixme: pas dans le fichier IP-DOC-specifications_WS_SOAP.pdf -> EnCoursMailSecPastell, RejetMailSecPastell
+            # @fixme: <timestamp>#(matchers.timestamp)</timestamp>
+            # <timestamp>2022-06-24T14:13:08.395+02:00</timestamp>
+            # <timestamp>#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}\+[0-9]{2}:[0-9]{2}$</timestamp>
+            And if (expected == 0) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK-empty.xml')")
+            And if (expected == 1) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK-1-result.xml')")
+            And if (expected > 1) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')")
 
         Examples:
             | type!          | sousType!        | status!                 | expected! | statuses!                                                                                                     |
@@ -75,6 +82,7 @@ Feature: RechercherDossiers
         When soap action 'RechercherDossiers'
         Then status 200
             And def dossierIds = karate.xmlPath(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom')
+            And match response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')
 
         # 2. Récupération de la liste de dossiers par DossierID
         * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
@@ -95,3 +103,4 @@ Feature: RechercherDossiers
         When soap action 'RechercherDossiers'
         Then status 200
             And match karate.xmlPath(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom') == dossierIds
+            And match response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')

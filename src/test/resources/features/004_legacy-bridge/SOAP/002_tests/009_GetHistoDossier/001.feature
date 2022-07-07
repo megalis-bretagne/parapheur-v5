@@ -40,6 +40,7 @@ Feature: GetHistoDossier
         And match /Envelope/Body/GetHistoDossierResponse/LogDossier/status == statuses
         And match /Envelope/Body/GetHistoDossierResponse/LogDossier/annotation == annotations
         And match karate.xmlPath(response, 'count(/Envelope/Body/GetHistoDossierResponse/LogDossier)') == count
+        And match response == karate.read('classpath:lib/soap/schemas/GetHistoDossierResponse/OK.xml')
 
     Examples:
         | type         | sousType       | status          | count! | noms!                                                                               | statuses!                                            | annotations!                                                                                                                                                                                                        |

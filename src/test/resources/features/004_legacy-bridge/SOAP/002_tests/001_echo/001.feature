@@ -17,9 +17,11 @@ Feature: echo
 """
         When soap action 'echo'
         Then status 200
-            And match response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + message + "\"!"
+            And match response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + ( message == null ? '' : message ) + "\"!"
+            And match response == karate.read('classpath:lib/soap/schemas/echoResponse/OK.xml')
 
         Examples:
             | message                                                                                                                  |
+            |                                                                                                                          |
             | coucou ! ici karate !                                                                                                    |
             | Dès Noël, où un zéphyr haï me vêt de glaçons würmiens, je dîne d’exquis rôtis de bœuf au kir, à l’aÿ d’âge mûr, &cætera. |

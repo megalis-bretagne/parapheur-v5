@@ -30,6 +30,8 @@ Feature: ExercerDroitRemordDossier
             And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/codeRetour == 'OK'
             And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/message == 'Dossier ' + dossierId + ' récupéré.'
             And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/severite == 'INFO'
+            And match response == karate.read('classpath:lib/soap/schemas/ExercerDroitRemordDossierResponse/OK.xml')
+
         Examples:
             | type         | sousType       | nom                   | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP droit de remords | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |

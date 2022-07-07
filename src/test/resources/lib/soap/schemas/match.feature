@@ -1,4 +1,4 @@
-@karate-function @ignore
+@karate-function @ignore @deprecated
 Feature: soap schema helper lib
 
     Scenario: match XML converted to JSON

@@ -25,6 +25,7 @@ Feature: GetCircuit
             And match /Envelope/Body/GetCircuitResponse/EtapeCircuit/Nom == Noms
             And match /Envelope/Body/GetCircuitResponse/EtapeCircuit/Role == Roles
             And match karate.xmlPath(response, 'count(/Envelope/Body/GetCircuitResponse/EtapeCircuit)') == count
+            And match response == karate.read('classpath:lib/soap/schemas/GetCircuitResponse/OK.xml')
 
         Examples:
             | type         | sousType       | count! | Parapheurs!                 | Prenoms! | Noms!                              | Roles!                  |

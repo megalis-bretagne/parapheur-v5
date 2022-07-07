@@ -1,13 +1,11 @@
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-    <S:Header>#ignore</S:Header>
     <S:Body>
-        <CreerDossierResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+        <ExercerDroitRemordDossierResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
             <MessageRetour>
                 <codeRetour>OK</codeRetour>
                 <message>#string</message>
                 <severite>INFO</severite>
             </MessageRetour>
-            <DossierID>##uuid</DossierID>
-        </CreerDossierResponse>
+        </ExercerDroitRemordDossierResponse>
     </S:Body>
 </S:Envelope>

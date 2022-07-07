@@ -1,5 +1,6 @@
 @legacy-bridge @soap @tests
 Feature: CreerDossier
+    # @see https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/legacy-bridge/-/issues/16
     # @fixme: @fixme-ip4, je peux créer des dossiers multidoc dans une typologie monodoc
     Background:
         * url api.soap.url()
@@ -54,9 +55,8 @@ Feature: CreerDossier
 
         # 2. Tentative de création du second dossier avec le même DossierID
         * call read('classpath:lib/soap/CreerDossier/simple.feature') params
-            And match /Envelope/Body/CreerDossierResponse/MessageRetour/codeRetour == "KO"
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
-            And match /Envelope/Body/CreerDossierResponse/MessageRetour/severite == "ERROR"
+            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/KO.xml')
 
     @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
@@ -97,6 +97,7 @@ Feature: CreerDossier
         Then status 200
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
+            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                                  | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |
@@ -145,10 +146,52 @@ Feature: CreerDossier
         Then status 200
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
+            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                                | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP confidentiel, avec annexe PDF | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
+    @fixme-ip-5
+    # @todo: il est bien créé mais sans la signarture détachée
+    Scenario Outline: Création d'un dossier monodoc "${nom}" pour le type "${type} / ${sousType}", avec une signature détachée XAdES
+        * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+        * def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
+        * def annotationPublique = "Annotation publique (" + nom + ")"
+        * def annotationPrivee = "Annotation privée (" + nom + ")"
+
+        Given request
+"""
+<?xml version='1.0' encoding='utf-8'?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap-env:Body>
+        <ns0:CreerDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
+            <ns0:TypeTechnique>#(type)</ns0:TypeTechnique>
+            <ns0:SousType>#(sousType)</ns0:SousType>
+            <ns0:DossierID></ns0:DossierID>
+            <ns0:DossierTitre>#(nom)</ns0:DossierTitre>
+            <ns0:DocumentPrincipal xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:contentType="application/pdf">#(documentPrincipal)</ns0:DocumentPrincipal>
+            <ns0:NomDocPrincipal>monDoc.pdf</ns0:NomDocPrincipal>
+            <ns0:SignatureDocPrincipal xmlns:ns2="http://www.w3.org/2005/05/xmlmime" ns2:contentType="text/xml">#(signature)</ns0:SignatureDocPrincipal>
+            <ns0:VisuelPDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <ns0:XPathPourSignatureXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <ns0:MetaDataTdtACTES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <ns0:AnnotationPublique>#(annotationPublique)</ns0:AnnotationPublique>
+            <ns0:AnnotationPrivee>#(annotationPrivee)</ns0:AnnotationPrivee>
+            <ns0:Visibilite>#(visibilite)</ns0:Visibilite>
+            <ns0:DateLimite></ns0:DateLimite>
+        </ns0:CreerDossierRequest>
+    </soap-env:Body>
+</soap-env:Envelope>
+"""
+        When soap action 'CreerDossier'
+        Then status 200
+            And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
+            And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
+            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
+
+        Examples:
+            | type         | sousType       | nom                                               | documentPrincipal                                       | visibilite   |
+            | Auto monodoc | visa sans meta | SOAP confidentiel monodoc avec signature détachée | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |
 
     @fixme-ip4 @fixme-ip5
     # @info: IP 5 -> createDraftFolder - A mandatory metadata was not filled, abort -> créer un sous-type sans et avec métadonnée
@@ -228,6 +271,7 @@ Feature: CreerDossier
         Then status 200
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Dossier " + nom + " soumis dans le circuit"
             And match /Envelope/Body/CreerDossierResponse/DossierID == '#uuid'
+            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
         Examples:
             | type          | sousType       | nom                                           | documentPrincipal                                       | visibilite   | dateLimite | mameta_bool |

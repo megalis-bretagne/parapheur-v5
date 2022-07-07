@@ -1,0 +1,7 @@
+<LogDossier>
+    <timestamp>#string</timestamp>
+    <nom>#uuid</nom>
+    <status>#(api.soap.schema.folder.statuses)</status>
+    <annotation/>
+    <accessible>#regex (KO|OK|Recuperable)</accessible>
+</LogDossier>

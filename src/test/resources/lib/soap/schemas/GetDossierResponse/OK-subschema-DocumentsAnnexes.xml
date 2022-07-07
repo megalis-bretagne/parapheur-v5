@@ -1,0 +1,8 @@
+<DocumentsAnnexes>
+    <DocAnnexe>
+        <nom>#string</nom>
+        <fichier xmime:contentType="#string">#string</fichier>
+        <mimetype>#string</mimetype>
+        <encoding>#string</encoding>
+    </DocAnnexe>
+</DocumentsAnnexes>

@@ -44,10 +44,13 @@ Feature: ArchiverDossier
 </soap-env:Envelope>
 """
         When soap action 'ArchiverDossier'
+        * def cleanedResponse = response
+        * remove cleanedResponse /Envelope/Body/ArchiverDossierResponse/URL/@xsi
         Then status 200
             And match /Envelope/Body/ArchiverDossierResponse/MessageRetour/codeRetour == 'OK'
             And match /Envelope/Body/ArchiverDossierResponse/MessageRetour/message == (archivageAction == 'ARCHIVER' ? 'Dossier ' + dossierId + ' archivé.' : 'Dossier ' + dossierId + ' supprimé du Parapheur.')
             And match /Envelope/Body/ArchiverDossierResponse/MessageRetour/severite == 'INFO'
+            And match cleanedResponse == karate.read('classpath:lib/soap/schemas/ArchiverDossierResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                       | documentPrincipal                                       | visibilite   | dateLimite | archivageAction |

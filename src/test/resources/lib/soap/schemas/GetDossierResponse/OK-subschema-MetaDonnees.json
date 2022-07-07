@@ -1,0 +1,10 @@
+{
+  "root": [
+    {
+      "MetaDonnee": {
+        "nom": "#string",
+        "valeur": "#string"
+      }
+    }
+  ]
+}

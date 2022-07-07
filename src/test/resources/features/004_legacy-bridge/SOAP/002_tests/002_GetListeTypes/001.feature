@@ -19,3 +19,4 @@ Feature: GetListeTypes
         Then status 200
             And match karate.xmlPath(response, 'count(/Envelope/Body/GetListeTypesResponse/TypeTechnique)') == 3
             And match utils.xmlPathSortedUnique(response, '/Envelope/Body/GetListeTypesResponse/TypeTechnique') == ["Auto monodoc","Auto multidoc","PAdES"]
+            And match response == karate.read('classpath:lib/soap/schemas/GetListeTypesResponse/OK.xml')

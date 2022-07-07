@@ -34,9 +34,12 @@ function fn(config) {
     };
 
     config.api.soap['schema'] = {};
-    config.api.soap.schema['match'] = function(response, schema) {
+    config.api.soap.schema['folder'] = {};
+    config.api.soap.schema.folder['statuses'] = '#regex (Archive|CachetOK|EnCoursMailSecPastell|EnCoursVisa|Lu|NonLu|PretCachet|RejetCachet|RejetMailSecPastell|RejetSignataire|RejetVisa|Signe|Vise)';
+
+    /*config.api.soap.schema['match'] = function(response, schema) {
         return karate.call('classpath:lib/soap/schemas/match.feature', { response: response, schema: schema });
-    };
+    };*/
 
     config.api.soap['url'] = function() {
         return baseUrl + "/ws-iparapheur-no-mtom";

@@ -45,6 +45,7 @@ Feature: EffacerDossierRejete
             And match /Envelope/Body/EffacerDossierRejeteResponse/MessageRetour/codeRetour == 'OK'
             And match /Envelope/Body/EffacerDossierRejeteResponse/MessageRetour/message == 'Dossier ' + dossierId + ' supprimé du Parapheur.'
             And match /Envelope/Body/EffacerDossierRejeteResponse/MessageRetour/severite == 'INFO'
+            And match response == karate.read('classpath:lib/soap/schemas/EffacerDossierRejeteResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom          | documentPrincipal                                       | visibilite   | dateLimite |
