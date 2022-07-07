@@ -40,4 +40,4 @@ Feature: Traitement des dossiers
             | PAdES_cachet_1        | Cachet        | 5        |
             | PAdES_cachet_2        | Rejet         | 4        |
             | PAdES_mailsec_1       | Mail sécurisé | 3        |
-            | PAdES_mailsec_2       | Rejet         | 2        |
+            | PAdES_mailsec_2       | Rejet         | 3        |
