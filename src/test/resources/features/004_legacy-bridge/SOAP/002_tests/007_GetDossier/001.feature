@@ -1,52 +1,12 @@
 @legacy-bridge @soap @tests
 
 Feature: GetDossier
-#    @wip
-#    Scenario: xxx
-#        * def actual = karate.read('classpath:lib/soap/schemas/GetDossierResponse/OK-subschema-MetaDonnees.json')
-#        * karate.log(actual)
-#        * xml foo = actual
-#        * karate.log(foo)
-#        * def bar = karate.read('classpath:lib/soap/schemas/GetDossierResponse/OK-subschema-MetaDonnees.xml')
-#        * karate.log(bar['MetaDonnees'])
-
-#    @wip
-#    Scenario: xxx
-#        * def actual =
-#"""
-#<tbody>
-#    <tr>
-#        <th>A</th>
-#        <td>B</td>
-#    </tr>
-#    <tr>
-#        <th>C</th>
-#        <td>D</td>
-#    </tr>
-#</tbody>
-#"""
-#
-#        * xmlstring sub = '<root><th>#string</th><td>#string</td></root>'
-##        * def sub2 = '<th>#string</th><td>#string</td>'
-#        * def sub2 = { th: '#string', td: '#string' }
-#        * karate.log(sub2)
-#        * xml sub2xml = sub2
-#        * karate.log(sub2xml)
-#        # <tr>#[] #(sub['root'])</tr>
-#        * def expected =
-#"""
-#<tbody>
-#    <tr>#[] #(sub2)</tr>
-#</tbody>
-#"""
-#        * match actual == expected
-#
 
     Background:
         * url api.soap.url()
         * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-    Scenario Outline: ...
+    Scenario Outline: Récupération du dossier en fin de circuit (type "${type}", sous-type "${sousType}", status "${status}")
         Given request
 """
 <?xml version='1.0' encoding='utf-8'?>
@@ -62,6 +22,7 @@ Feature: GetDossier
 """
         When soap action 'RechercherDossiers'
         Then status 200
+            # @fixme: dépendant de l'ordre des résultats
             And def dossierId = karate.xmlPath(response, '(/Envelope/Body/RechercherDossiersResponse/LogDossier/nom)[1]')
 
         Given header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")

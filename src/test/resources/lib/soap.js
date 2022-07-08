@@ -20,6 +20,24 @@ function fn(config) {
     config['api'] = config['api'] || {};
     config['api']['soap'] = {};
 
+    config.api.soap['dossier'] = {};
+    config.api.soap.dossier['filterDossiersIdsByName'] = function (dossierIds, expected, params) {
+        if(Array.isArray(dossierIds) === false) {
+            dossierIds = [dossierIds];
+        }
+
+        for(var idx = 0;idx < dossierIds.length;idx++) {
+            params['dossierId'] = dossierIds[idx];
+            var rv = karate.call('classpath:lib/soap/GetDossier/simple.feature', params),
+                name = karate.xmlPath(rv.response, '//MetaDonnee/nom[.="ph:dossierTitre"]/ancestor::MetaDonnee/valeur');
+            if (name === expected) {
+                return dossierIds[idx];
+            }
+        }
+
+        karate.fail('Folder with name "' + expected + '" not found amongst the following ids: ' + JSON.stringify(dossierIds));
+    };
+
     config.api.soap['file'] = {};
     config.api.soap.file['encode'] = function(path) {
         var Base64 = Java.type('java.util.Base64'),
@@ -36,10 +54,8 @@ function fn(config) {
     config.api.soap['schema'] = {};
     config.api.soap.schema['folder'] = {};
     config.api.soap.schema.folder['statuses'] = '#regex (Archive|CachetOK|EnCoursMailSecPastell|EnCoursVisa|Lu|NonLu|PretCachet|RejetCachet|RejetMailSecPastell|RejetSignataire|RejetVisa|Signe|Vise)';
-
-    /*config.api.soap.schema['match'] = function(response, schema) {
-        return karate.call('classpath:lib/soap/schemas/match.feature', { response: response, schema: schema });
-    };*/
+    config.api.soap.schema['logDossier'] = {};
+    config.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}\\+[0-9]{2}:[0-9]{2}$';
 
     config.api.soap['url'] = function() {
         return baseUrl + "/ws-iparapheur-no-mtom";

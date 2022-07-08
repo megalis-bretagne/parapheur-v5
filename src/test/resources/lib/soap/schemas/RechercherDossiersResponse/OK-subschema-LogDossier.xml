@@ -1,5 +1,5 @@
 <LogDossier>
-    <timestamp>#string</timestamp>
+    <timestamp>#(api.soap.schema.logDossier.timestamp)</timestamp>
     <nom>#uuid</nom>
     <status>#(api.soap.schema.folder.statuses)</status>
     <annotation/>
