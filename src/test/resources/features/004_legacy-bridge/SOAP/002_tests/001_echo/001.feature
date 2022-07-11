@@ -1,24 +1,10 @@
 @legacy-bridge @soap @tests
 Feature: echo
 
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-
     Scenario Outline: echo "${message}"
-        Given request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:echoRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(message)</ns0:echoRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'echo'
-        Then status 200
-            And match response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + ( message == null ? '' : message ) + "\"!"
-            And match response == karate.read('classpath:lib/soap/schemas/echoResponse/OK.xml')
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/echo/simple.feature') params
+        Then match rv.response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + ( message == null ? '' : message ) + "\"!"
 
         Examples:
             | message                                                                                                                  |

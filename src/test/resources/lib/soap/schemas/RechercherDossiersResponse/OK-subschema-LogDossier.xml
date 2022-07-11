@@ -1,7 +1,7 @@
 <LogDossier>
     <timestamp>#(api.soap.schema.logDossier.timestamp)</timestamp>
-    <nom>#uuid</nom>
+    <nom>#string</nom>
     <status>#(api.soap.schema.folder.statuses)</status>
-    <annotation/>
+    <annotation>##string</annotation>
     <accessible>#regex (KO|OK|Recuperable)</accessible>
 </LogDossier>

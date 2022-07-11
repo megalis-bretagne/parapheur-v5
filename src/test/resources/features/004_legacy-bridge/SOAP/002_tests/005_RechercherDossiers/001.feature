@@ -1,36 +1,16 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @soap @tests @wip
 Feature: RechercherDossiers
-
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
     @fixme-ip-5 @legacy-bridge-issue-18
     Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"
-        Given request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:RechercherDossiersRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
-            <ns0:TypeTechnique>#(type)</ns0:TypeTechnique>
-            <ns0:SousType>#(sousType)</ns0:SousType>
-            <ns0:Status>#(status)</ns0:Status>
-        </ns0:RechercherDossiersRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'RechercherDossiers'
-        Then status 200
-            And match utils.xmlPathSortedUnique(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
-            And match karate.xmlPath(response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
-            # @fixme: pas dans le fichier IP-DOC-specifications_WS_SOAP.pdf -> EnCoursMailSecPastell, RejetMailSecPastell
-            # @fixme: <timestamp>#(matchers.timestamp)</timestamp>
-            # <timestamp>2022-06-24T14:13:08.395+02:00</timestamp>
-            # <timestamp>#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}\+[0-9]{2}:[0-9]{2}$</timestamp>
-            And if (expected == 0) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK-empty.xml')")
-            And if (expected == 1) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK-1-result.xml')")
-            And if (expected > 1) utils.assert("response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')")
+        * if (expected == 0) karate.set("schema", "OK-empty.xml")
+        * if (expected == 1) karate.set("schema", "OK-1-result.xml")
+        * if (expected > 1) karate.set("schema", "OK.xml")
+
+        Given def params = karate.merge(__row, { schema: schema, username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/RechercherDossiers/simple.feature') params
+            And match utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
+            And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
 
         Examples:
             | type!          | sousType!        | status!                 | expected! | statuses!                                                                                                     |
@@ -66,27 +46,14 @@ Feature: RechercherDossiers
     @fixme-ip-5
     Scenario: Récupération des dossiers par DossierID
         # 1. Récupération de la liste de DossierID pour le status "Archive"
-        Given request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:RechercherDossiersRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
-            <ns0:TypeTechnique></ns0:TypeTechnique>
-            <ns0:SousType></ns0:SousType>
-            <ns0:Status>Archive</ns0:Status>
-        </ns0:RechercherDossiersRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'RechercherDossiers'
-        Then status 200
-            And def dossierIds = karate.xmlPath(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom')
-            And match response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/OK.xml')
+        Given def params = { status: "Archive", username: "ws@legacy-bridge", password: "a123456" }
+        When def rv = call read('classpath:lib/soap/requests/RechercherDossiers/simple.feature') params
+        Then def dossierIds = karate.xmlPath(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom')
 
         # 2. Récupération de la liste de dossiers par DossierID
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-        Given request
+        Given url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">

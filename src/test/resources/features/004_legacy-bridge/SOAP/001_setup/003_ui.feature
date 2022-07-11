@@ -7,11 +7,11 @@ Feature: Traitement des dossiers
 
     Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge
         * ui.user.login("lvermillon@legacy-bridge", "a123456")
-        * match ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
+        #* match ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
         * click("{a}Vermillon")
-        * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers en cours"))
-        * click("{a}" + name)
+        #* waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers en cours"))
+        * waitFor("{a}" + name).click()
 
         * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
 
