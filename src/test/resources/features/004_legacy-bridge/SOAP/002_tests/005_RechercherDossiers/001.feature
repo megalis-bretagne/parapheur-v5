@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests @wip
+@legacy-bridge @soap @tests
 Feature: RechercherDossiers
 
     @fixme-ip-5 @legacy-bridge-issue-18

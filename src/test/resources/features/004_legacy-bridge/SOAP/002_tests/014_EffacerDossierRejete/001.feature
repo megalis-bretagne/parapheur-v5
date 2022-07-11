@@ -9,7 +9,7 @@ Feature: EffacerDossierRejete
     Scenario Outline: Purge d'un dossier rejeté
         # 1. Création d'un dossier
         * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
-        * def rv = call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
+        * def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
         * def dossierId = rv.dossierId
 
         * pause(5)

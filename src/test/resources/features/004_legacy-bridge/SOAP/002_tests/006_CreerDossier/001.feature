@@ -8,7 +8,7 @@ Feature: CreerDossier
 
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
         * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
-        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
+        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
 
         Examples:
             | type         | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite |
@@ -30,7 +30,7 @@ Feature: CreerDossier
     username: "ws@legacy-bridge"
 }
 """
-        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
+        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
 
     Scenario: Création du dossier "SOAP avec DossierID en doublon" pour le type "Auto monodoc / visa sans meta"
         * def uuid = utils.getUUID()
@@ -51,10 +51,10 @@ Feature: CreerDossier
         * params['dossierId'] = uuid;
 
         # 1. Création du premier dossier avec ce DossierID
-        * call read('classpath:lib/soap/CreerDossier/simple_success.feature') params
+        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
 
         # 2. Tentative de création du second dossier avec le même DossierID
-        * call read('classpath:lib/soap/CreerDossier/simple.feature') params
+        * call read('classpath:lib/soap/requests/CreerDossier/simple.feature') params
             And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
             And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/KO.xml')
 

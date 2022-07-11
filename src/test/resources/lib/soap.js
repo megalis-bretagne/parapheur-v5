@@ -28,7 +28,7 @@ function fn(config) {
 
         for(var idx = 0;idx < dossierIds.length;idx++) {
             params['dossierId'] = dossierIds[idx];
-            var rv = karate.call('classpath:lib/soap/GetDossier/simple.feature', params),
+            var rv = karate.call('classpath:lib/soap/requests/GetDossier/simple.feature', params),
                 name = karate.xmlPath(rv.response, '//MetaDonnee/nom[.="ph:dossierTitre"]/ancestor::MetaDonnee/valeur');
             if (name === expected) {
                 return dossierIds[idx];

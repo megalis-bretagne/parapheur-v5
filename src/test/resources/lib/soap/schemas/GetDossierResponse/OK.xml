@@ -12,9 +12,7 @@
             <DocPrincipal>#string</DocPrincipal>
             <NomDocPrincipal>#string</NomDocPrincipal>
             <DocumentsAnnexes>##ignore</DocumentsAnnexes>
-            <MetaDonnees>
-                <MetaDonnee>##[] #(karate.read('classpath:lib/soap/schemas/GetDossierResponse/OK-subschema-MetaDonnee.xml')['MetaDonnee'])</MetaDonnee>
-            </MetaDonnees>
+            <MetaDonnees>##ignore</MetaDonnees>
             <MessageRetour>
                 <codeRetour>OK</codeRetour>
                 <message/>

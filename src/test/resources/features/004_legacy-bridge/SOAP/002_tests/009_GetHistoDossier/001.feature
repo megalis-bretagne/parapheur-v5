@@ -2,12 +2,10 @@
 
 Feature: GetHistoDossier
 
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-
     Scenario Outline: Récupération du journal des événements du dossier "${name}" (type "${type}", sous-type "${sousType}", status "${status}")
-        Given request
+        Given url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -26,24 +24,11 @@ Feature: GetHistoDossier
             And def dossiersIds = karate.xmlPath(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom');
             And def dossierId = api.soap.dossier.filterDossiersIdsByName(dossiersIds, '<name>', { username: "ws@legacy-bridge", password: "a123456" })
 
-        Given url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-            And request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:GetHistoDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(dossierId)</ns0:GetHistoDossierRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'GetHistoDossier'
-        Then status 200
-            And match /Envelope/Body/GetHistoDossierResponse/LogDossier/nom == noms
-            And match /Envelope/Body/GetHistoDossierResponse/LogDossier/status == statuses
-            And match /Envelope/Body/GetHistoDossierResponse/LogDossier/annotation == annotations
-            And match karate.xmlPath(response, 'count(/Envelope/Body/GetHistoDossierResponse/LogDossier)') == count
-            And match response == karate.read('classpath:lib/soap/schemas/GetHistoDossierResponse/OK.xml')
+        Given def params = { dossierId: "#(dossierId)", username: "ws@legacy-bridge", password: "a123456" }
+        When def rv = call read('classpath:lib/soap/requests/GetHistoDossier/simple.feature') params
+        Then match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/nom == noms
+            And match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/status == statuses
+            And match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/annotation == annotations
 
     Examples:
         | type         | sousType       | status          | name                  | count! | noms!                                                                               | statuses!                                            | annotations!                                                                                                                                                                                                        |
