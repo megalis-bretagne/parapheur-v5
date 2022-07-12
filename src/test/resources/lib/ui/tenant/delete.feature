@@ -3,8 +3,8 @@ Feature: UI tenant lib
 
     Scenario: Suppression d'une entité
         Given assert exists("//app-header") == true
-            And click("//app-header//*[@routerLink='/admin']")
-        Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
+            And click(ui.locator.header['Administration'])
+        #Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
 
         When click("{^}Entités")
         Then waitFor(ui.element.breadcrumb("Administration / Entités"))

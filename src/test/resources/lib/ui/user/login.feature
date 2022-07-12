@@ -10,8 +10,9 @@ Feature: UI user lib
             And input(ui.locator.input("Mot de passe"), password)
         When submit().click(ui.locator.button("Se connecter"))
         Then waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-            And waitFor("{^}Bienvenue sur le i-Parapheur")
+            And waitFor("{^}Bienvenue sur le iparapheur")
             And match html("body") contains "Sélectionnez un bureau pour parcourir ses dossiers"
 
-        * def firstConnection = exists("//*[text()='Première connexion sur le i-Parapheur']")
+        * def firstConnection = exists("//*[text()='Première connexion sur le iparapheur']")
         * eval if (firstConnection === true) click("//div[contains(concat(' ', @class, ' '), ' modal-content ')]" + ui.locator.button("Enregistrer"))
+        * eval if (firstConnection === true) waitFor(ui.toast.success("Vos préférences de notification ont été modifiées avec succès.")).click()

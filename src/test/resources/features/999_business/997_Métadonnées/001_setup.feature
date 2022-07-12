@@ -1,6 +1,6 @@
 @business @metadonnees @proposal @setup
 Feature: Paramétrage métier "Métadonnées"
-# @info: https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-web/-/issues/270
+# @info: https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/ip-web/-/issues/270
 # @todo: problème, je ne peux pas valider mon étape avec la valeur booléenne false
     Background:
         * api_v1.auth.login('user', 'password')

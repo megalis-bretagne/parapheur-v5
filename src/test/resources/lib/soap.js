@@ -1,5 +1,5 @@
 /*
- * i-Parapheur
+ * iparapheur
  * Copyright (C) 2019-2022 Libriciel SCOP
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,7 +55,7 @@ function fn(config) {
     config.api.soap.schema['folder'] = {};
     config.api.soap.schema.folder['statuses'] = '#regex (Archive|CachetOK|EnCoursMailSecPastell|EnCoursVisa|Lu|NonLu|PretCachet|RejetCachet|RejetMailSecPastell|RejetSignataire|RejetVisa|Signe|Vise)';
     config.api.soap.schema['logDossier'] = {};
-    config.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}\\+[0-9]{2}:[0-9]{2}$';
+    config.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}(Z|(\\+|-)[0-9]{2}:[0-9]{2})$';
 
     config.api.soap['url'] = function() {
         return baseUrl + "/ws-iparapheur-no-mtom";

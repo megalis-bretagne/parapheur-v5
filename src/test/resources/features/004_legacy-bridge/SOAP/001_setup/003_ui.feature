@@ -10,7 +10,7 @@ Feature: Traitement des dossiers
         #* match ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
         * click("{a}Vermillon")
-        #* waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers en cours"))
+        #* waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
         * waitFor("{a}" + name).click()
 
         * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))

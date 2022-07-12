@@ -39,7 +39,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
@@ -71,7 +71,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
@@ -86,7 +86,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
         * click("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * waitFor(ui.toast.success("avis complémentaire a été effectuée avec succès"))
+        #* waitFor(ui.toast.success("avis complémentaire a été effectuée avec succès"))
         * ui.user.logout()
 
         # 2. Avis complémentaire
@@ -95,7 +95,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('DGS') == { pending: 1 }
 
         * click("{a}DGS")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
@@ -116,7 +116,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
@@ -140,7 +140,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
@@ -173,12 +173,13 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
             | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |
 
+    @fixme-ip
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
@@ -207,13 +208,13 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
             | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
 
-    @fixme-ip-core @issue-ip @todo-karate
+    @fixme-ip @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
@@ -250,13 +251,13 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Délibération RTF 1 | Visa   |        |
             | .badge-rejected | rejetés           | Délibération RTF 2 | Visa   | Rejeté |
 
-    @fixme-ip-core @issue-ip @todo-karate
+    @fixme-ip @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
@@ -296,7 +297,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
@@ -334,7 +335,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers en cours"))
+        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")

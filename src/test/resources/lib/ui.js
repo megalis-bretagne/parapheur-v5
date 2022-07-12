@@ -1,5 +1,5 @@
 /*
- * i-Parapheur
+ * iparapheur
  * Copyright (C) 2019-2022 Libriciel SCOP
  *
  * This program is free software: you can redistribute it and/or modify
@@ -134,12 +134,11 @@ function fn(config) {
         return '//button[contains(., \'' + text + '\')]';
     };
     config.ui.locator['header'] = {};
-    // usage: ui.locator.header['i-Parapheur']
-    config.ui.locator.header['i-Parapheur'] = '//app-header//*[@routerlink=\'/\'][1]';
+    config.ui.locator.header['iparapheur'] = '//app-header//*[@routerlink=\'/\'][1]';
     config.ui.locator.header['Maison'] = '//app-header//*[@routerlink=\'/\'][last()]';
     config.ui.locator.header['Archives'] = '//app-header//*[@routerlink=\'/archive\']';
     config.ui.locator.header['Statistiques'] = '//app-header//*[@routerlink=\'/stats\']';
-    config.ui.locator.header['Administration'] = '//app-header//*[@routerlink=\'/admin\']';
+    config.ui.locator.header['Administration'] = "//app-header//*[contains(@class, 'fa-wrench')]//parent::fa-icon";
     config.ui.locator.header['Profil'] = '//app-header//*[@routerlink=\'/profile\']';
     config.ui.locator.header['Déconnexion'] = '//app-header//fa-icon[last()]';
     config.ui.locator['input'] = function (text) {

@@ -205,7 +205,7 @@ Feature: Paramétrage métier "Benoit XVI"
         When method POST
         Then status 201
 
-    # @info: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/-/issues/305
+    # @info: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/compose/-/issues/305
     # @info: ce circuit n'est pas autorisé
 #    Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
 #        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')

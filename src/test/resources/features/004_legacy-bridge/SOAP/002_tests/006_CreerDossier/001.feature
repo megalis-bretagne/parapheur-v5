@@ -1,6 +1,6 @@
 @legacy-bridge @soap @tests
 Feature: CreerDossier
-    # @see https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/legacy-bridge/-/issues/16
+    # @see https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/iparapheur/legacy-bridge/-/issues/16
     # @fixme: @fixme-ip4, je peux créer des dossiers multidoc dans une typologie monodoc
     Background:
         * url api.soap.url()

@@ -34,7 +34,7 @@ Feature: 001 - Scénario de démo simple, partie administration
             | Démo simple | mpiaumier@demo-simple    | Piaumier  | Matthieu  | mpiaumier-demo@dom.local | a123456  | Aucun privilège         |
             | Démo simple | ws@demo-simple           | Service   | Web       | ws-demo@dom.local        | a123456  | Aucun privilège         |
 
-    @fixme-ip-core @issue-ip-compose-537
+    @issue-ip-compose-537
     Scenario Outline: Créer un user sans droit avec notif unitaire et image de signature
         * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/user/create.feature') __row

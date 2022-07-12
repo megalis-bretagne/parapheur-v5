@@ -23,9 +23,9 @@ Feature: Connexion
             And input(ui.locator.input('Identifiant ou courriel'), 'cnoir')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
-            And waitFor('{^}Bienvenue sur le i-Parapheur')
+            And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
-            And assert exists(ui.locator.header['i-Parapheur']) == true
+            And assert exists(ui.locator.header['iparapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
             And assert exists(ui.locator.header['Archives']) == true
             And assert exists(ui.locator.header['Statistiques']) == true
@@ -40,9 +40,9 @@ Feature: Connexion
             And input(ui.locator.input('Identifiant ou courriel'), 'ablanc')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
-            And waitFor('{^}Bienvenue sur le i-Parapheur')
+            And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
-            And assert exists(ui.locator.header['i-Parapheur']) == true
+            And assert exists(ui.locator.header['iparapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
             And assert exists(ui.locator.header['Archives']) == true
             # @fixme-ip-core @fixme-ip-web
@@ -58,9 +58,9 @@ Feature: Connexion
             And input(ui.locator.input('Identifiant ou courriel'), 'ltransparent')
             And input(ui.locator.input('Mot de passe'), 'a123456')
         When submit().click(ui.locator.button('Se connecter'))
-            And waitFor('{^}Bienvenue sur le i-Parapheur')
+            And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
-            And assert exists(ui.locator.header['i-Parapheur']) == true
+            And assert exists(ui.locator.header['iparapheur']) == true
             And assert exists(ui.locator.header['Maison']) == true
             And assert exists(ui.locator.header['Archives']) == true
             # @fixme-ip-core @fixme-ip-web

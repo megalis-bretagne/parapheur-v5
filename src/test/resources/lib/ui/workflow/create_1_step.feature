@@ -3,8 +3,8 @@ Feature: UI workflow lib
 
     Scenario: Ajout d'un circuit à 1 étape
         Given assert exists("//app-header") == true
-            And click("//app-header//*[@routerLink='/admin']")
-        Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
+            And click(ui.locator.header['Administration'])
+        #Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
 
         When ui.admin.selectTenant(tenant)
             And click("{^}Circuits")
@@ -13,7 +13,7 @@ Feature: UI workflow lib
         When click("{^}Créer un circuit")
             And input(ui.locator.input("Nom du circuit"), name)
             And click("{^}Ajouter une étape")
-            And waitFor("{^}Nouvelle étape i-Parapheur")
+            And waitFor("{^}Nouvelle étape iparapheur")
             And click("{^}" + type)
             And click("{^}Simple")
             And input("//*[@id='validatorDeskList']//input[@type='text']", desk)
