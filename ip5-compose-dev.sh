@@ -262,7 +262,7 @@ __check_versions__() {
     expected['bash']="4.4"
     expected['curl']="7.58"
     expected['docker']="20.10"
-    expected['docker-compose']="1.25"
+    expected['docker-compose']="1.27"
     expected['grep']="3.1"
     expected['python3']="3.6"
     expected['sed']="4.4"
