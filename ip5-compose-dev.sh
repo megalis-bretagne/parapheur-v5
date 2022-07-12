@@ -49,7 +49,7 @@ MATOMO_TOKEN_NAME="${MATOMO_TOKEN_NAME:-ipcore}"
 MATOMO_TMP_HTML="${MATOMO_TMP_HTML:-/tmp/matomo-setup-tmp.html}"
 MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
-OVERRIDE_COMPOSE_FILE="dev"
+OVERRIDE_COMPOSE_FILE="1"
 START_APP="1"
 DOCKER_CONTAINER_PREFIX_NAME="iparapheur"
 
@@ -330,22 +330,12 @@ __reset__()
       log_hr
       echo "Resetting..."
       log_hr
-      if [ "${OVERRIDE_COMPOSE_FILE}" != 0 ] ; then
-      docker-compose \
-          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
-          -f docker-compose.yml \
-          -f docker-compose.override.${OVERRIDE_COMPOSE_FILE}-`accepted_arch`.yml \
-          down \
-          --remove-orphans \
-          --volumes
-      else
       docker-compose \
           -p ${DOCKER_CONTAINER_PREFIX_NAME} \
           -f docker-compose.yml \
           down \
           --remove-orphans \
           --volumes
-      fi
       rm -rf ./data
       mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
       touch ./data/.gitkeep
@@ -362,9 +352,8 @@ __setup_vault__()
       log_hr
 
       docker-compose \
-          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
-          -f docker-compose.yml \
-          -f docker-compose.override.init.yml \
+          --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
+          --file docker-compose.yml \
           up -d vault
       sleep ${SLEEP_VALUE}
       VAULT_OUTPUT="`docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
@@ -414,9 +403,9 @@ __setup_matomo__()
     log_hr
 
     docker-compose \
-        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
-        -f docker-compose.yml \
-        -f docker-compose.override.init.yml \
+        --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
+        --file docker-compose.yml \
+        --file docker-compose.override.init.yml \
         up -d matomo nginx
     sleep ${SLEEP_VALUE}
     rm -f $MATOMO_COOKIES
@@ -532,22 +521,20 @@ __main__()
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
-                  docker-compose down -v
+                  docker-compose down --volumes --remove-orphan
                   chmod -R 0777 ./data
                   if [ "${START_APP}" == "1" ] ; then
-                    if [ "${OVERRIDE_COMPOSE_FILE}" != 0 ] ; then
-                    docker-compose \
-                        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
-                        -f docker-compose.yml \
-                        -f docker-compose.override.tests-`accepted_arch`.yml \
-                        -f docker-compose.override.${OVERRIDE_COMPOSE_FILE}-`accepted_arch`.yml \
-                        up
+                    if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
+                      docker-compose \
+                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
+                      --file docker-compose.yml \
+                      --file docker-compose.override.dev-`accepted_arch`.yml \
+                      up
                     else
-                    docker-compose \
-                        -p ${DOCKER_CONTAINER_PREFIX_NAME} \
-                        -f docker-compose.override.tests-`accepted_arch`.yml \
-                        -f docker-compose.yml \
-                        up
+                      docker-compose \
+                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
+                      --file docker-compose.yml \
+                      up
                     fi
                   fi
                   exit 0
