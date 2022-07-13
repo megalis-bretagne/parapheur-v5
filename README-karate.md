@@ -215,7 +215,4 @@ Attention, il faudra faire le ménage après et supprimer tous les dossiers nomm
 ```
 
 ## @todo
-
-- [ ] pouvoir spécifier l'URL en ligne de commande
-- [ ] pouvoir spécifier `CHROME_BIN` en ligne de commande
 - [ ] il faudrait aussi tester la suppression à la fin du scénario (entité chargée)
