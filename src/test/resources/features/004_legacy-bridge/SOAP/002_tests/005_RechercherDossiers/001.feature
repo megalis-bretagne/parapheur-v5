@@ -1,16 +1,17 @@
 @legacy-bridge @soap @tests
-Feature: RechercherDossiers
+Feature: RechercherDossiers - Recherche de dossiers
 
-    @fixme-ip-5 @legacy-bridge-issue-18
+    @legacy-bridge-issue-18
     Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"
         * if (expected == 0) karate.set("schema", "OK-empty.xml")
         * if (expected == 1) karate.set("schema", "OK-1-result.xml")
         * if (expected > 1) karate.set("schema", "OK.xml")
 
-        Given def params = karate.merge(__row, { schema: schema, username: "ws@legacy-bridge", password: "a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
         When def rv = call read('classpath:lib/soap/requests/RechercherDossiers/simple.feature') params
             And match utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
             And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
+            And match rv.response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/' + schema)
 
         Examples:
             | type!          | sousType!        | status!                 | expected! | statuses!                                                                                                     |
@@ -38,12 +39,13 @@ Feature: RechercherDossiers
             | "Auto monodoc" | "visa avec meta" | "RejetVisa"             | 2         | ["RejetVisa"]                                                                                                 |
             | "Auto monodoc" | "visa avec meta" | "Signe"                 | 0         | []                                                                                                            |
             | "Auto monodoc" | "visa avec meta" | "Vise"                  | 0         | []                                                                                                            |
-            | "Auto monodoc" | "visa avec meta" | "Rejet*"                | 3         | ["RejetSignataire","RejetVisa"]                                                                               |
             | "efiezuezozt"  | ""               | ""                      | 0         | []                                                                                                            |
             | "Auto monodoc" | "efiezuezozt"    | ""                      | 0         | []                                                                                                            |
             | "Auto monodoc" | "visa avec meta" | "efiezuezozt"           | 0         | []                                                                                                            |
+        @fixme-ip
+        Examples:
+            | "Auto monodoc" | "visa avec meta" | "Rejet*"                | 3         | ["RejetSignataire","RejetVisa"]                                                                               |
 
-    @fixme-ip-5
     Scenario: Récupération des dossiers par DossierID
         # 1. Récupération de la liste de DossierID pour le status "Archive"
         Given def params = { status: "Archive", username: "ws@legacy-bridge", password: "a123456" }
@@ -51,7 +53,8 @@ Feature: RechercherDossiers
         Then def dossierIds = karate.xmlPath(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom')
 
         # 2. Récupération de la liste de dossiers par DossierID
-        Given url api.soap.url()
+        Given configure cookies = null
+            And url api.soap.url()
             And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
             And request
 """

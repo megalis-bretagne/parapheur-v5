@@ -12,7 +12,8 @@ Feature: SOAP GetDossier lib
 """
         * def args = karate.merge(defaults, __arg)
 
-        Given url api.soap.url()
+        Given configure cookies = null
+            And url api.soap.url()
             And header Authorization = api.soap.user.authorization(args.username, args.password)
             And request
 """
@@ -25,9 +26,3 @@ Feature: SOAP GetDossier lib
 """
         When soap action 'GetDossier'
         Then status 200
-        * def cleanedResponse = response
-        * remove cleanedResponse /Envelope/Body/GetDossierResponse/DateLimite/@nil
-        * remove cleanedResponse /Envelope/Body/GetDossierResponse/DateLimite/@xsi
-        * remove cleanedResponse /Envelope/Body/GetDossierResponse/DocumentsAnnexes/DocAnnexe/fichier/@contentType
-        * remove cleanedResponse //@contentType
-        And match cleanedResponse == karate.read('classpath:lib/soap/schemas/GetDossierResponse/OK.xml')

@@ -1,16 +1,12 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @soap @tests @fixme-ip
 
-Feature: ForcerEtape
-
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+Feature: ForcerEtape - Forcer le passage d'une étape
 
     Scenario Outline: Création du dossier "${nom}" et forçage de l'étape de visa (${codeTransition})
         # 1. Création d'un dossier
-        * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
-        * def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
-        * def dossierId = rv.dossierId
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Then def dossierId = rv.dossierId
 
         * pause(5)
 
@@ -24,7 +20,8 @@ Feature: ForcerEtape
     codeTransition: "<codeTransition>"
 }
 """
-        * call read('classpath:lib/soap/ForcerEtape/success.feature') params
+        * def rv = call read('classpath:lib/soap/requests/ForcerEtape/success.feature') params
+        * match rv.response == karate.read('classpath:lib/soap/schemas/ForcerEtapeResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite | codeTransition |

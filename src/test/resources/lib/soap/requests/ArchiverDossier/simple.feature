@@ -1,11 +1,11 @@
 @karate-function @ignore
-Feature: SOAP echo lib
+Feature: SOAP ArchiverDossier lib
 
-    Scenario: echo
+    Scenario: Récupération d'un dossier
         * def defaults =
 """
 {
-    message: null,
+    dossierId: null,
     username: null,
     password: null
 }
@@ -20,9 +20,12 @@ Feature: SOAP echo lib
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
     <soap-env:Body>
-        <ns0:echoRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(args.message)</ns0:echoRequest>
+        <ns0:ArchiverDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
+            <ns0:DossierID>#(args.dossierId)</ns0:DossierID>
+            <ns0:ArchivageAction>#(args.archivageAction)</ns0:ArchivageAction>
+        </ns0:ArchiverDossierRequest>
     </soap-env:Body>
 </soap-env:Envelope>
 """
-        When soap action 'echo'
+        When soap action 'ArchiverDossier'
         Then status 200

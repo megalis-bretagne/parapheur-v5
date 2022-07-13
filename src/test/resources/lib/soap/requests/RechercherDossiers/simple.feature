@@ -5,7 +5,6 @@ Feature: SOAP RechercherDossiers lib
         * def defaults =
 """
 {
-    schema: "OK.xml",
     sousType: null,
     status: null,
     type: null,
@@ -15,7 +14,8 @@ Feature: SOAP RechercherDossiers lib
 """
         * def args = karate.merge(defaults, __arg)
 
-        Given url api.soap.url()
+        Given configure cookies = null
+            And url api.soap.url()
             And header Authorization = api.soap.user.authorization(args.username, args.password)
             And request
 """
@@ -32,4 +32,3 @@ Feature: SOAP RechercherDossiers lib
 """
         When soap action 'RechercherDossiers'
         Then status 200
-            And match response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/' + args.schema)

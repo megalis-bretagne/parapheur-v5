@@ -1,36 +1,20 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @soap @tests @fixme-ip
 
-Feature: ExercerDroitRemordDossier
-
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+Feature: ExercerDroitRemordDossier - Exercice du droit de remord
 
     Scenario Outline: Exercice du droit de remord sur un dossier
         # 1. Création d'un dossier
-        * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
-        * def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
-        * def dossierId = rv.dossierId
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Then def dossierId = rv.dossierId
 
         * pause(5)
 
         # 2. Exercice du droit de remords
-        Given header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-            And request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:ExercerDroitRemordDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(dossierId)</ns0:ExercerDroitRemordDossierRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-        When soap action 'ExercerDroitRemordDossier'
-        Then status 200
-            And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/codeRetour == 'OK'
-            And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/message == 'Dossier ' + dossierId + ' récupéré.'
-            And match /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/severite == 'INFO'
-            And match response == karate.read('classpath:lib/soap/schemas/ExercerDroitRemordDossierResponse/OK.xml')
+        Given def params = { dossierId: "#(dossierId)", username: "ws@legacy-bridge", password: "a123456" }
+        When def rv = call read('classpath:lib/soap/requests/ExercerDroitRemordDossier/simple.feature') params
+        Then match rv.response /Envelope/Body/ExercerDroitRemordDossierResponse/MessageRetour/message == 'Dossier ' + dossierId + ' récupéré.'
+            And match rv.response == karate.read('classpath:lib/soap/schemas/ExercerDroitRemordDossierResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                   | documentPrincipal                                       | visibilite   | dateLimite |

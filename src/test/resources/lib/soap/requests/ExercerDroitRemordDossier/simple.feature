@@ -1,11 +1,11 @@
 @karate-function @ignore
-Feature: SOAP echo lib
+Feature: SOAP ExercerDroitRemordDossier lib
 
-    Scenario: echo
+    Scenario: ...
         * def defaults =
 """
 {
-    message: null,
+    dossierId: null,
     username: null,
     password: null
 }
@@ -20,9 +20,9 @@ Feature: SOAP echo lib
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
     <soap-env:Body>
-        <ns0:echoRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(args.message)</ns0:echoRequest>
+        <ns0:ExercerDroitRemordDossierRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">#(args.dossierId)</ns0:ExercerDroitRemordDossierRequest>
     </soap-env:Body>
 </soap-env:Envelope>
 """
-        When soap action 'echo'
+        When soap action 'ExercerDroitRemordDossier'
         Then status 200

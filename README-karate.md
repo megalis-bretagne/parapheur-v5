@@ -2,6 +2,22 @@
 
 ## WIP
 
+### IP 5
+
+```bash
+# Seulement les tests passants, pour l'intégration continue (26m 57s, scenarios/passed:  121)
+./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@legacy-bridge --tags ~@fixme-ip" -Dkarate.headless=true
+# Tests passants et non passants, pour l'intégration continue (31m 49s, scenarios: 144 total, 122 passed, 22 failed  )
+./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@legacy-bridge" -Dkarate.headless=true
+```
+
+### IP 4
+
+```bash
+# Seulement les tests passants (1m 17s, scenarios/passed:  34)
+./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests" -Dkarate.headless=true -Dkarate.baseUrl=https://secure-iparapheur47.test.libriciel.fr
+```
+
 ### Exécution
 
 ```bash

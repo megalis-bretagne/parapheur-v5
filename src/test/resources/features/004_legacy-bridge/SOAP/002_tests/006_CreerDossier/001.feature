@@ -1,14 +1,12 @@
 @legacy-bridge @soap @tests
-Feature: CreerDossier
+Feature: CreerDossier - Création de dossier
     # @see https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/iparapheur/legacy-bridge/-/issues/16
-    # @fixme: @fixme-ip4, je peux créer des dossiers multidoc dans une typologie monodoc
-    Background:
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+    # @fixme: ip4, je peux créer des dossiers multidoc dans une typologie monodoc
 
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
-        * def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
-        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Then match rv.response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
         Examples:
             | type         | sousType       | nom                          | documentPrincipal                                       | visibilite   | dateLimite |
@@ -16,7 +14,7 @@ Feature: CreerDossier
             | Auto monodoc | visa sans meta | SOAP confidentiel            | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
 
     Scenario: Création du dossier "SOAP public avec DossierID" pour le type "Auto monodoc / visa sans meta"
-        * def params =
+        Given def params =
 """
 {
     type: "Auto monodoc",
@@ -30,11 +28,12 @@ Feature: CreerDossier
     username: "ws@legacy-bridge"
 }
 """
-        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        When def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Then match rv.response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
     Scenario: Création du dossier "SOAP avec DossierID en doublon" pour le type "Auto monodoc / visa sans meta"
-        * def uuid = utils.getUUID()
-        * def params =
+        Given def uuid = utils.getUUID()
+            And def params =
 """
 {
     type: "Auto monodoc",
@@ -48,23 +47,27 @@ Feature: CreerDossier
     username: "ws@legacy-bridge"
 }
 """
-        * params['dossierId'] = uuid;
+            And params['dossierId'] = uuid;
 
         # 1. Création du premier dossier avec ce DossierID
-        * call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        When def rv = call read('classpath:lib/soap/requests/CreerDossier/simple_success.feature') params
+        Then match rv.response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/OK.xml')
 
         # 2. Tentative de création du second dossier avec le même DossierID
-        * call read('classpath:lib/soap/requests/CreerDossier/simple.feature') params
-            And match /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
-            And match response == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/KO.xml')
+        Given def rv = call read('classpath:lib/soap/requests/CreerDossier/simple.feature') params
+        Then match rv.response /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
+            And match rv.response  == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/KO.xml')
 
-    @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
-        * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-        * def annotationPublique = "Annotation publique (" + nom + ")"
-        * def annotationPrivee = "Annotation privée (" + nom + ")"
+        Given configure cookies = null
+            And url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-        Given request
+            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def annotationPublique = "Annotation publique (" + nom + ")"
+            And def annotationPrivee = "Annotation privée (" + nom + ")"
+
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -104,14 +107,17 @@ Feature: CreerDossier
             | Auto monodoc | visa avec meta | SOAP confidentiel, mameta_bool false | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | false       |
             | Auto monodoc | visa avec meta | SOAP confidentiel, mameta_bool true  | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            | true        |
 
-    @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}" avec une annexe PDF
-        * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-        * def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
-        * def annotationPublique = "Annotation publique (" + nom + ")"
-        * def annotationPrivee = "Annotation privée (" + nom + ")"
+        Given configure cookies = null
+            And url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-        Given request
+            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
+            And def annotationPublique = "Annotation publique (" + nom + ")"
+            And def annotationPrivee = "Annotation privée (" + nom + ")"
+
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -151,15 +157,19 @@ Feature: CreerDossier
         Examples:
             | type         | sousType       | nom                                | documentPrincipal                                       | visibilite   | dateLimite |
             | Auto monodoc | visa sans meta | SOAP confidentiel, avec annexe PDF | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |            |
-    @fixme-ip-5
-    # @todo: il est bien créé mais sans la signarture détachée
-    Scenario Outline: Création d'un dossier monodoc "${nom}" pour le type "${type} / ${sousType}", avec une signature détachée XAdES
-        * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-        * def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
-        * def annotationPublique = "Annotation publique (" + nom + ")"
-        * def annotationPrivee = "Annotation privée (" + nom + ")"
 
-        Given request
+    # @todo: il est bien créé mais sans la signature détachée
+    Scenario Outline: Création d'un dossier monodoc "${nom}" pour le type "${type} / ${sousType}", avec une signature détachée XAdES
+        Given configure cookies = null
+            And url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+
+            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
+            And def annotationPublique = "Annotation publique (" + nom + ")"
+            And def annotationPrivee = "Annotation privée (" + nom + ")"
+
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -193,18 +203,21 @@ Feature: CreerDossier
             | type         | sousType       | nom                                               | documentPrincipal                                       | visibilite   |
             | Auto monodoc | visa sans meta | SOAP confidentiel monodoc avec signature détachée | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf | CONFIDENTIEL |
 
-    @fixme-ip4 @fixme-ip5
     # @info: IP 5 -> createDraftFolder - A mandatory metadata was not filled, abort -> créer un sous-type sans et avec métadonnée
     # @info: IP 4 -> Pas de circuit défini pour ce dossier (avec l'utilisateur lvermillon@legacy-bridge)
     #               https://iparapheur47.test.libriciel.fr/iparapheur/proxy/alfresco/parapheur/dossiers/e8c6abfb-6fb0-4801-8def-996b0a7890ba/circuit -> 500
     Scenario Outline: Création d'un dossier multidoc "${nom}" pour le type "${type} / ${sousType}", dont un avec une signature détachée XAdES et des annexes
-        * def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-        * def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
-        * def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
-        * def annotationPublique = "Annotation publique (" + nom + ")"
-        * def annotationPrivee = "Annotation privée (" + nom + ")"
+        Given configure cookies = null
+            And url api.soap.url()
+            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-        Given request
+            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
+            And def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
+            And def annotationPublique = "Annotation publique (" + nom + ")"
+            And def annotationPrivee = "Annotation privée (" + nom + ")"
+
+            And request
 """
 <?xml version='1.0' encoding='utf-8'?>
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">

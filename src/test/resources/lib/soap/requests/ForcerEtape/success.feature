@@ -22,7 +22,3 @@ Feature: SOAP ForcerEtape lib
 """
         When soap action 'ForcerEtape'
         Then status 200
-            And match /Envelope/Body/ForcerEtapeResponse/MessageRetour/codeRetour == 'OK'
-            And match /Envelope/Body/ForcerEtapeResponse/MessageRetour/message == ''
-            And match /Envelope/Body/ForcerEtapeResponse/MessageRetour/severite == 'INFO'
-            And match response == karate.read('classpath:lib/soap/schemas/ForcerEtapeResponse/OK.xml')

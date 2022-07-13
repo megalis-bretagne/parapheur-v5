@@ -5,7 +5,6 @@ Feature: SOAP GetMetaDonneesRequisesPourTypeSoustype lib
         * def defaults =
 """
 {
-    schema: null,
     sousType: null,
     type: null,
     username: null,
@@ -14,7 +13,8 @@ Feature: SOAP GetMetaDonneesRequisesPourTypeSoustype lib
 """
         * def args = karate.merge(defaults, __arg)
 
-        Given url api.soap.url()
+        Given configure cookies = null
+            And url api.soap.url()
             And header Authorization = api.soap.user.authorization(args.username, args.password)
             And request
 """
@@ -30,4 +30,3 @@ Feature: SOAP GetMetaDonneesRequisesPourTypeSoustype lib
 """
         When soap action 'GetMetaDonneesRequisesPourTypeSoustype'
         Then status 200
-            And match response == karate.read('classpath:lib/soap/schemas/GetMetaDonneesRequisesPourTypeSoustypeResponse/' + schema)

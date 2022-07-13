@@ -11,7 +11,8 @@ Feature: SOAP GetListeTypes lib
 """
         * def args = karate.merge(defaults, __arg)
 
-        Given url api.soap.url()
+        Given configure cookies = null
+            And url api.soap.url()
             And header Authorization = api.soap.user.authorization(args.username, args.password)
             And request
 """
@@ -24,4 +25,3 @@ Feature: SOAP GetListeTypes lib
 """
         When soap action 'GetListeTypes'
         Then status 200
-            And match response == karate.read('classpath:lib/soap/schemas/GetListeTypesResponse/OK.xml')

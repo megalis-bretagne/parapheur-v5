@@ -100,7 +100,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
-        * click("//button[contains(normalize-space(text()), 'Avis complémentaire')]")
+        * click("//button[contains(normalize-space(text()), 'vis complémentaire')]")
         * waitFor("{}Annotation publique").input("Annotation publique MPI (Avis complémentaire)")
         * driver.screenshot()
         * waitFor("{}Annotation privée").input("Annotation privée MPI (Avis complémentaire)")

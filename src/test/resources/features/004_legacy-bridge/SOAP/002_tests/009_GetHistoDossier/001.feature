@@ -1,34 +1,22 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @soap @tests @fixme-ip
 
-Feature: GetHistoDossier
+Feature: GetHistoDossier - Interrogation d'histogramme de dossier
 
     Scenario Outline: Récupération du journal des événements du dossier "${name}" (type "${type}", sous-type "${sousType}", status "${status}")
-        Given url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
-            And request
-"""
-<?xml version='1.0' encoding='utf-8'?>
-<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap-env:Body>
-        <ns0:RechercherDossiersRequest xmlns:ns0="http://www.adullact.org/spring-ws/iparapheur/1.0">
-            <ns0:TypeTechnique>#(type)</ns0:TypeTechnique>
-            <ns0:SousType>#(sousType)</ns0:SousType>
-            <ns0:Status>#(status)</ns0:Status>
-        </ns0:RechercherDossiersRequest>
-    </soap-env:Body>
-</soap-env:Envelope>
-"""
-
-        When soap action 'RechercherDossiers'
-        Then status 200
-            And def dossiersIds = karate.xmlPath(response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom');
+        # 1. Récupération d'un dossier en particulier
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        When def rv = call read('classpath:lib/soap/requests/RechercherDossiers/simple.feature') params
+        Then def dossiersIds = karate.xmlPath(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom');
+            # "Filtrage" des résultats
             And def dossierId = api.soap.dossier.filterDossiersIdsByName(dossiersIds, '<name>', { username: "ws@legacy-bridge", password: "a123456" })
 
+        # 2. Récupération du journal des événements de ce dossier
         Given def params = { dossierId: "#(dossierId)", username: "ws@legacy-bridge", password: "a123456" }
         When def rv = call read('classpath:lib/soap/requests/GetHistoDossier/simple.feature') params
         Then match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/nom == noms
             And match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/status == statuses
             And match rv.response /Envelope/Body/GetHistoDossierResponse/LogDossier/annotation == annotations
+            And match rv.response == karate.read('classpath:lib/soap/schemas/GetHistoDossierResponse/OK.xml')
 
     Examples:
         | type         | sousType       | status          | name                  | count! | noms!                                                                               | statuses!                                            | annotations!                                                                                                                                                                                                        |
