@@ -51,7 +51,6 @@ MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
 OVERRIDE_COMPOSE_FILE="1"
 START_APP="1"
-DOCKER_CONTAINER_PREFIX_NAME="iparapheur"
 
 # ======================================================================================================================
 
