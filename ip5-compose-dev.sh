@@ -338,7 +338,7 @@ __reset__()
           --volumes
       rm -rf ./data
       mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
-      touch ./data/.gitkeep
+      touch ./data/.gitkeep ./data/{matomo/plugins,pes-viewer/pesPJ,transfer}/.gitkeep
       chmod -R 0777 ./data
       chown -R 6789:6789 data/feeder/data
 
@@ -518,6 +518,9 @@ __main__()
                   __check__
                   export_dot_env
                   __reset__
+                  ENV_BACKUP=".env.backup.`date +'%s'`"
+                  log_info "Copying .env to ${ENV_BACKUP}"
+                  cp .env "${ENV_BACKUP}"
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
