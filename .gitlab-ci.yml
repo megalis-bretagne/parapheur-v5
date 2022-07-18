@@ -134,7 +134,7 @@ publish:
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-    - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
+    - ${APPLY_COMMAND} "sudo tar -xvf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
     - scp ./${INIT_SCRIPT} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
     - scp ./docker-compose.override.init.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
     - scp ./docker-compose.override.tests-linux.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
