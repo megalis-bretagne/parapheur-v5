@@ -21,9 +21,6 @@ stages:
   - package
   - publish
   - e2e-tests
-#  - strict-e2e-tests
-#  - tolerant-e2e-tests
-
 
 variables:
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
@@ -42,7 +39,6 @@ variables:
 
 
 # </editor-fold desc="Test">
-
 
 # <editor-fold desc="Package">
 
@@ -161,6 +157,8 @@ tolerant-e2e-tests-deploy:
   extends:
     - .deploy-job
   stage: e2e-tests
-  needs: [ strict-e2e-tests-deploy ]
+  needs:
+   - package
+   - strict-e2e-tests-test
 
 # </editor-fold desc="Deploy">
