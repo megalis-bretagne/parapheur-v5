@@ -20,9 +20,8 @@ stages:
   - test
   - package
   - publish
-  - deploy-for-strict-e2e-tests
+  - e2e-tests
 #  - strict-e2e-tests
-  - deploy-for-tolerant-e2e-tests
 #  - tolerant-e2e-tests
 
 
@@ -152,16 +151,16 @@ publish:
     - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
     - echo "Application successfully deployed."
 
-deploy-job-strict:
+strict-e2e-tests-deploy:
   extends:
     - .deploy-job
-  stage: deploy-for-strict-e2e-tests
+  stage: e2e-tests
   when: manual
 
-deploy-job-tolerant:
+tolerant-e2e-tests-deploy:
   extends:
     - .deploy-job
-  stage: deploy-for-tolerant-e2e-tests
-  when: manual
+  stage: e2e-tests
+  needs: [ strict-e2e-tests-deploy ]
 
 # </editor-fold desc="Deploy">
