@@ -6,6 +6,7 @@ Feature: IP v.4 REST desktop lib
     Scenario: Get available desktop by name
         * url baseUrl
         * path "/iparapheur/proxy/alfresco/parapheur/bureaux"
+        * param asAdmin = __arg.asAdmin
         * method GET
         * status 200
         * def jsonPath = "$[?(@.name=='" + __arg.name + "')]"

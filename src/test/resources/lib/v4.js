@@ -23,9 +23,10 @@ function fn(config) {
 
     // REST API desktop lib
     config.v4.api.rest['desktop'] = {};
-    config.v4.api.rest.desktop['getByName'] = function(name) {
-        // @todo: get et vérificatios en javascript (@see cookies)
-        var rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": name });
+    config.v4.api.rest.desktop['getByName'] = function(name, asAdmin) {
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        // @todo: get et vérifications en javascript (@see cookies)
+        var rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
 

@@ -1,4 +1,4 @@
-@proposal @ignore
+@proposal @ignore @ip4
 Feature: ...
     # ./gradlew test --info -Dkarate.options="--tags @wip" -Dkarate.headless=true -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr
 
@@ -6,7 +6,7 @@ Feature: ...
     # Ajout d'un utilisateur
     # POST https://iparapheur47.test.libriciel.fr/iparapheur/proxy/alfresco/parapheur/utilisateurs
     # {"lastName":"Nom","firstName":"Prénom","username":"username","email":"foo@bar.com","password":"a123456"}
-@wip
+@x-wip
     Scenario: ... IP 4
         # 1. Création et envoi du dossier par ws@legacy-bridge
         * v4.api.rest.user.login("ws@legacy-bridge", "a123456")
