@@ -57,7 +57,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:0.11.8
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -96,13 +96,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.8
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.9
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta44
+      - VERSION=5.0.0-EA
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -111,7 +111,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.5.5
+    image: registry.libriciel.fr/public/signature/workflow:1.5.6
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -151,7 +151,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.5
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.6
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -169,7 +169,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.0
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -237,7 +237,7 @@ services:
         -DlocalTransform.core-aio.url=http://transform-core-aio:8090/
       "
     healthcheck:
-      test: ["CMD", "curl", "-X", "GET", "-f", "http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-"]
+      test: [ "CMD", "curl", "-X", "GET", "-f", "http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-" ]
       timeout: 2s
       interval: 5s
       retries: 60
