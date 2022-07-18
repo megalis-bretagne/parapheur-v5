@@ -159,7 +159,24 @@ tolerant-e2e-tests-deploy:
   stage: e2e-tests
   needs:
    - package
-   - strict-e2e-tests-deploy
+   - strict-e2e-tests-test
 
 # </editor-fold desc="Deploy">
 
+# <editor-fold desc="E2e tests">
+
+strict-e2e-tests-test:
+  image: markhobson/maven-chrome:jdk-11
+  stage: e2e-tests
+  needs: [ strict-e2e-tests-deploy ]
+  allow_failure: false
+  script:
+    - echo "Test ${CI_COMMIT_TAG} deployed on ${TARGET_E2E_TESTS_SERVER_URL} with Karate - These tests mustn't fail"
+    - ./gradlew test -Dkarate.options="--tags ${KARATE_TAGS} --tags ~@fixme-ip" -Dkarate.headless=true -Dkarate.baseUrl="https://${TARGET_E2E_TESTS_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
+  artifacts:
+    when: always
+    name: "Karate - tests strict"
+    paths:
+      - compose/build/karate-reports
+
+# </editor-fold desc="E2e tests">
