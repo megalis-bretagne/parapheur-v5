@@ -177,6 +177,6 @@ strict-e2e-tests-test:
     when: always
     name: "Karate - tests strict"
     paths:
-      - compose/build/karate-reports
+      - build/karate-reports
 
 # </editor-fold desc="E2e tests">
