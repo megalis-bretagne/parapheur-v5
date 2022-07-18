@@ -207,6 +207,14 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         }
         return false;
     };
+    config.utils['safeExec'] = function(command) {
+        var proc = karate.fork(command);
+        proc.waitSync();
+        if (proc.exitCode !== 0) {
+            karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
+        }
+        return proc.sysOut.replace(/\n$/, '');
+    };
     /**
      * utils.string
      */

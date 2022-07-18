@@ -67,6 +67,7 @@ function fn() {
     config = karate.call('classpath:lib/common.js', config);
     config = karate.call('classpath:lib/soap.js', config);
     config = karate.call('classpath:lib/ui.js', config);
+    config = karate.call('classpath:lib/v4.js', config);
 
     return config;
 }
