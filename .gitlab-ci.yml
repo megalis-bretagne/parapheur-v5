@@ -152,11 +152,13 @@ strict-e2e-tests-deploy:
     - .deploy-job
   stage: e2e-tests
   when: manual
+  allow_failure: false
 
 tolerant-e2e-tests-deploy:
   extends:
     - .deploy-job
   stage: e2e-tests
+  allow_failure: false
   needs:
    - package
    - strict-e2e-tests-test
