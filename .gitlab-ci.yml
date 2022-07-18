@@ -139,7 +139,7 @@ publish:
     - scp ./docker-compose.override.init.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
     - scp ./docker-compose.override.tests-linux.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
     - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core"
-    - scp ./application-dev.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
+    - scp ./src/main/resources/core/application-dev.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
     - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
     - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
     - echo "Deploying application..."
