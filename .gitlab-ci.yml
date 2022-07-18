@@ -159,6 +159,7 @@ tolerant-e2e-tests-deploy:
   stage: e2e-tests
   needs:
    - package
-   - strict-e2e-tests-test
+   - strict-e2e-tests-deploy
 
 # </editor-fold desc="Deploy">
+
