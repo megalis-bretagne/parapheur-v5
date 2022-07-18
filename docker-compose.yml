@@ -157,8 +157,8 @@ services:
     mem_limit: 512M
     environment:
       - POSTGRES_HOST=postgres
-      - REDIS_HOST:redis
-      - REDIS_PORT:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=379
 
 
   external-signature-connector:
