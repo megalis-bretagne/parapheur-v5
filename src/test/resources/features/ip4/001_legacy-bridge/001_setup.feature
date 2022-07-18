@@ -3,9 +3,7 @@ Feature: ...
     # ./gradlew test --info -Dkarate.options="--tags @wip" -Dkarate.headless=true -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr
 
     Background:
-        #* v4.api.rest.user.login("admin", "password")
-        # @fixme
-        * v4.api.rest.user.login("admin@legacy-bridge", "chei1ahmaesohRaelooGh5")
+        * v4.api.rest.user.login("admin", "password")
 
     Scenario Outline: Création de l'utilisateur "${username}@legacy-bridge"
         * call read('classpath:lib/v4/api/rest/user/create.feature') __row
@@ -32,4 +30,28 @@ Feature: ...
             | Mailsec   | MAILSECPASTELL | Vermillon |
             | Signature | SIGNATURE      | Vermillon |
             | Visa      | VISA           | Vermillon |
+
+    Scenario Outline: Création du type "${name}"
+        * call read('classpath:lib/v4/api/rest/type/create.feature') __row
+
+        Examples:
+            | name          | description | protocol | format      | location    | postalCode |
+            | Auto monodoc  | Description | aucun    | AUTO        | Montpellier | 34000      |
+            | Auto multidoc | Description | aucun    | AUTO        | Montpellier | 34000      |
+            | PAdES         | Description | ACTES    | PAdES/basic | Montpellier | 34000      |
+@x-wip
+    # @todo: ...avec meta, PAdES/cachet, PAdES/mailsec
+    # cachetCertificate:	"0dc73c67-e0e4-4548-879e-5d63e430715f"
+    # pastellMailsec: "9943c0ca-8f44-4a75-97ed-6b45ce0cf3b3"
+    Scenario Outline: Création du sous-type "${type}/${name}"
+        * call read('classpath:lib/v4/api/rest/subtype/create.feature') __row
+
+        Examples:
+            | type          | name           | description | workflow  | multidoc |
+            | Auto monodoc  | sign sans meta | Description | Signature | false    |
+            | Auto monodoc  | visa sans meta | Description | Visa2     | false    |
+            | Auto multidoc | sign sans meta | Description | Signature | true     |
+            | Auto multidoc | visa sans meta | Description | Visa2     | true     |
+            | PAdES         | signature      | Description | Signature | true     |
+            | PAdES 1       | cachet         | Description | Signature | true     |
 

@@ -25,7 +25,6 @@ function fn(config) {
     config.v4.api.rest['desktop'] = {};
     config.v4.api.rest.desktop['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        // @todo: get et vérifications en javascript (@see cookies)
         var rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
@@ -53,6 +52,14 @@ function fn(config) {
         params["folder"] = folder;
         rv = karate.call('classpath:lib/v4/api/rest/folder/signSimple.feature', params);
         return rv.response;
+    };
+
+    // REST API type lib
+    config.v4.api.rest['type'] = {};
+    config.v4.api.rest.type['getByName'] = function(name, asAdmin) {
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        var rv = karate.call('classpath:lib/v4/api/rest/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        return rv.type;
     };
 
     // REST API user lib
