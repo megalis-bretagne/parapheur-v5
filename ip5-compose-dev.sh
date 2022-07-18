@@ -51,7 +51,6 @@ MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
 OVERRIDE_COMPOSE_FILE="1"
 START_APP="1"
-DOCKER_CONTAINER_PREFIX_NAME="iparapheur"
 
 # ======================================================================================================================
 
@@ -331,14 +330,13 @@ __reset__()
       echo "Resetting..."
       log_hr
       docker-compose \
-          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
           -f docker-compose.yml \
           down \
           --remove-orphans \
           --volumes
       rm -rf ./data
       mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
-      touch ./data/.gitkeep
+      touch ./data/.gitkeep ./data/{matomo/plugins,pes-viewer/pesPJ,transfer}/.gitkeep
       chmod -R 0777 ./data
       chown -R 6789:6789 data/feeder/data
 
@@ -352,18 +350,17 @@ __setup_vault__()
       log_hr
 
       docker-compose \
-          --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
           --file docker-compose.yml \
           up -d vault
       sleep ${SLEEP_VALUE}
-      VAULT_OUTPUT="`docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
+      VAULT_OUTPUT="`docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       export VAULT_TOKEN="`echo "${VAULT_OUTPUT}" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env
       sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault login token=${VAULT_TOKEN}
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault login token=${VAULT_TOKEN}
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
 
       log_success "... Vault - setup completed\n" "OK"
 }
@@ -403,7 +400,6 @@ __setup_matomo__()
     log_hr
 
     docker-compose \
-        --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
         --file docker-compose.yml \
         --file docker-compose.override.init.yml \
         up -d matomo nginx
@@ -518,6 +514,9 @@ __main__()
                   __check__
                   export_dot_env
                   __reset__
+                  ENV_BACKUP=".env.backup.`date +'%s'`"
+                  log_info "Copying .env to ${ENV_BACKUP}"
+                  cp .env "${ENV_BACKUP}"
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
@@ -526,13 +525,11 @@ __main__()
                   if [ "${START_APP}" == "1" ] ; then
                     if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
                       docker-compose \
-                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
                       --file docker-compose.yml \
                       --file docker-compose.override.dev-`accepted_arch`.yml \
                       up
                     else
                       docker-compose \
-                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
                       --file docker-compose.yml \
                       up
                     fi
