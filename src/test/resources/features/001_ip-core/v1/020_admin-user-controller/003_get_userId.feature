@@ -1,131 +1,93 @@
-@ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/user/{userId} (Get a single user)
+@ip-core @api-v1 @admin-user-controller
+Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     Background:
         * api_v1.auth.login('user', 'password')
+        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * call read('classpath:lib/api/setup/tenant.delete.feature') list
+
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@example')
+        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario: Permissions - a user with an "ADMIN" role can get an existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from an existing tenant', status)}
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method GET
-        Then status 200
-            And match $ == schemas.user.element
-            And match $ contains { 'email': 'sample-user@example' }
+        Then status <status>
+            And if (<status> === 200) utils.assert("$ == schemas.user.element")
+            And if (<status> === 200) utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
+            And if (<status> !== 200) utils.assert("$ == schemas.error")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "ADMIN" role cannot get a non-existing user from an existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from an existing tenant', status)}
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
+            And path '/api/v1/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method GET
-        Then status 404
+        Then status <status>
+            And utils.assert("$ == schemas.error")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "ADMIN" role cannot get a user from an non-existing tenant
-        * api_v1.auth.login('cnoir', 'a123456')
+        @fixme-ip-core @issue-ip-core-78 @issue-ip-core-todo
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+        Examples:
+            | role             | username     | password | status |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+            | NONE             | ltransparent | a123456  | 403    |
+            |                  |              |          | 401    |
+
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from a non-existing tenant', status)}
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
             And header Accept = 'application/json'
         When method GET
-        Then status 404
+        Then status <status>
+            And utils.assert("$ == schemas.error")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get an existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |
+
+    @permissions
+    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from a non-existing tenant', status)}
+        * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
+            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId
             And header Accept = 'application/json'
         When method GET
-        Then status 403
+        Then status <status>
+            And utils.assert("$ == schemas.error")
 
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get a non-existing user from an existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "FUNCTIONAL_ADMIN" role cannot get a user from an non-existing tenant
-        * api_v1.auth.login('ablanc', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "NONE" role cannot get an existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "NONE" role cannot get a non-existing user from an existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - a user with an "NONE" role cannot get a user from an non-existing tenant
-        * api_v1.auth.login('ltransparent', 'a123456')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 403
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot get an existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot get a non-existing user from an existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 401
-
-    @permissions @fixme-ip-core
-    Scenario: Permissions - an unauthenticated user cannot get a user from an non-existing tenant
-        * api_v1.auth.login('', '')
-
-        Given url baseUrl
-            And path '/api/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
-            And header Accept = 'application/json'
-        When method GET
-        Then status 401
+        Examples:
+            | role             | username     | password | status |
+            | ADMIN            | cnoir        | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+            | NONE             | ltransparent | a123456  | 404    |
+            |                  |              |          | 404    |

@@ -1,0 +1,6 @@
+<EtapeCircuit>
+    <Parapheur>#string</Parapheur>
+    <Prenom></Prenom>
+    <Nom>#string</Nom>
+    <Role>#string</Role>
+</EtapeCircuit>

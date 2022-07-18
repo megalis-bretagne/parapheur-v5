@@ -1,95 +1,60 @@
-@ip-core @api-v1
-Feature: POST /api/admin/tenant (Create tenant)
+@ip-core @api-v1 @admin-tenant-controller
+Feature: POST /api/v1/admin/tenant (Create tenant)
+
+	Background:
+		* api_v1.auth.login('user', 'password')
+		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* call read('classpath:lib/api/setup/tenant.delete.feature') list
+
+		* def unique = 'tmp-' + utils.getUUID()
+		* def cleanRequestData = { name: '#(unique)' }
 
 	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role can create a tenant
+	Scenario Outline: ${scenario.title.permissions(role, 'create a tenant', status)}
+		* api_v1.auth.login('<username>', '<password>')
+
+		Given url baseUrl
+			And path '/api/v1/admin/tenant'
+			And header Accept = 'application/json'
+			And request cleanRequestData
+
+		When method POST
+		Then status <status>
+			And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+			And if (<status> !== 201) utils.assert("$ == schemas.error")
+
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 201    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
+
+	@data-validation
+	Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, data)}
 		* api_v1.auth.login('cnoir', 'a123456')
-		* def name = 'tmp-' + utils.getUUID()
+		* def requestData = cleanRequestData
+		* requestData[field] = utils.eval(value)
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant'
 			And header Accept = 'application/json'
-			And request { name: '#(name)'}
+			And request requestData
 		When method POST
-		Then status 201
-			And match $ == schemas.tenant.element
-			And match $.name == '#(name)'
+		Then status <status>
+			And if (<status> === 201) utils.assert("$ == schemas.tenant.element")
+			And if (<status> === 201) utils.assert("$ contains requestData")
+			And if (<status> !== 201) utils.assert("$ == schemas.error")
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot create a tenant
-		* api_v1.auth.login('ablanc', 'a123456')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot create a tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot create a tenant
-		* api_v1.auth.login('', '')
-		* def name = 'tmp-' + utils.getUUID()
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 401
-
-	@data-validation @proposal @todo-ip-core
-	Scenario: Data validation - a user with an "ADMIN" role cannot create a tenant with an empty name
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: ''}
-		When method POST
-		Then status 200
-		# proposal
-		# Then status 400
-
-	@data-validation @proposal @todo-ip-core
-	Scenario: Data validation - a user with an "ADMIN" role cannot create a tenant with a name that already exists
-		* api_v1.auth.login('user', 'password')
-		* def id = api_v1.entity.createTemporary()
-		* def name = api_v1.entity.getNameById(id)
-
-		# Try to create another tenant with the previously created name
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 200
-		# proposal
-		# Then status 400
-
-	@data-validation @fixme-ip-core
-	Scenario: Data validation - a user with an "ADMIN" role cannot create a tenant with a name that is too long
-		* api_v1.auth.login('cnoir', 'a123456')
-		* def name = 'tmp-' + '0123456789'.repeat(30)
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '#(name)'}
-		When method POST
-		Then status 400
+		Examples:
+			| status | field | value!                                   | data                                    |
+			| 201    | name  | eval(utils.string.getRandom(1))          | a name that is 1 character long         |
+			| 201    | name  | eval(utils.string.getRandom(64, 'tmp-')) | a name that is up to 64 characters long |
+		@fixme-ip-core @issue-ip-core-todo
+		Examples:
+			| status | field | value!                                   | data                                    |
+			| 400    | name  | ''                                       | an empty name                           |
+			| 400    | name  | ' '                                      | a space as a name                       |
+			| 400    | name  | eval(utils.string.getRandom(65, 'tmp-')) | a name that is above 64 characters long |
+			| 409    | name  | 'Montpellier Méditerranée Métropole'     | a name that already exists              |

@@ -1,0 +1,6 @@
+<LogDossier>
+    <timestamp>#(api.soap.schema.logDossier.timestamp)</timestamp>
+    <nom>#string</nom>
+    <status>#(api.soap.schema.folder.statuses)</status>
+    <annotation>#string</annotation>
+</LogDossier>

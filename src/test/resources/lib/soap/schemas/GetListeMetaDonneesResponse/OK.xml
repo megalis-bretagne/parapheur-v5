@@ -1,0 +1,12 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Header>#ignore</S:Header>
+    <S:Body>
+        <GetListeMetaDonneesResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+            <MetaDonnee>#[]
+                <nomCourt>#string</nomCourt>
+                <nomLong>#string</nomLong>
+                <nature>#regex (BOOLEAN|DATE|DOUBLE|INTEGER|STRING|URL)</nature>
+            </MetaDonnee>
+        </GetListeMetaDonneesResponse>
+    </S:Body>
+</S:Envelope>

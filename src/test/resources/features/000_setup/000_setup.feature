@@ -1,191 +1,98 @@
 @setup
 Feature: Basic setup
-
-	Scenario Outline: Create tenants "Libriciel SCOP" and "Montpellier Méditerranée Métropole"
+	Background:
 		* api_v1.auth.login('user', 'password')
 
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And request { name: '<name>'}
-		When method POST
-		Then status 201
-			And match $ == schemas.tenant.element
-			And match $.name == '<name>'
+	Scenario Outline: Create tenant "${name}"
+		* call read('classpath:lib/api/setup/tenant.create.feature') __row
 
 		Examples:
 			| name                               |
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
-	Scenario Outline: Create users with each role value in the "Default tenant"
-		* api_v1.auth.login('user', 'password')
-		* def tenantId = api_v1.entity.getIdByName('<tenant>')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/user'
-			And header Accept = 'application/json'
-			And request
-"""
-{
-	userName : '<userName>',
-	email: '<email>',
-	firstName: '<firstName>',
-	lastName: '<lastName>',
-	password: '<password>',
-	privilege: '<privilege>',
-	notificationsCronFrequency: 'NONE',
-	notificationsRedirectionMail: '<email>'
-}
-"""
-		When method POST
-		Then status 201
+	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
+		* call read('classpath:lib/api/setup/user.create.feature') __row
 
 		Examples:
-			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        |
-			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            |
-			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN |
-			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             |
-			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             |
+			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
+			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            | disabled                   |
+			| Default tenant | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |
+			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   |
+			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |
+			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |
 
-	# 404 when-parentDeskId is not null
-	@todo-karate
-	Scenario Outline: Create desks and associate them to users
-		* api_v1.auth.login('user', 'password')
-		* def tenantId = api_v1.entity.getIdByName('<tenant>')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/desk'
-			And header Accept = 'application/json'
-			And request
-"""
-{
-	"name": "<name>",
-	"description": "Bureau <name>",
-	"parentDeskId": null
-}
-"""
-		When method POST
-		Then status 201
-
-		* def deskId = $.id
-		* def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/desk/', deskId, '/users'
-			And header Accept = 'application/json'
-			And request { "userIdList": ["#(userId)"] }
-		When method PUT
-		Then status 200
+	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
+		* call read('classpath:lib/api/setup/tenant.user.associate.feature') __row
 
 		Examples:
-			| tenant         | name        | email                  |
-			| Default tenant | Translucide | stranslucide@dom.local |
-			| Default tenant | Transparent | ltransparent@dom.local |
+			| email           | tenant                             |
+			| cnoir@dom.local | Default tenant                     |
+			| cnoir@dom.local | Libriciel SCOP                     |
+			| cnoir@dom.local | Montpellier Méditerranée Métropole |
+
+	Scenario Outline: Create desk "${name}" in "${tenant}"
+		* call read('classpath:lib/api/setup/desk.create.feature') __row
+
+		Examples:
+			| tenant         | name        | owners!                    | parent! | associated! | permissions!                                       |
+			| Default tenant | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+			| Default tenant | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
+
+	Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
+		* call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
+
+		Examples:
+			| tenant         | path                                                  | password                        | image! |
+			| Default tenant | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
-	Scenario Outline: Create one step workflows and associate them to desks
-		* api_v1.auth.login('user', 'password')
-		* def tenantId = api_v1.entity.getIdByName('<tenant>')
-		* def deskId = api_v1.desk.getIdByName(tenantId, '<deskName>')
-		* def key = '<name>'.toLowerCase().replace(/[^a-z0-9]/g, '_')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', tenantId, '/workflowDefinition'
-			And header Accept = 'application/json'
-			And request
-"""
-{
-  "steps": [
-    {
-      "validators": [
-        "#(deskId)"
-      ],
-      "validationMode": "SIMPLE",
-      "name": "<type>",
-      "type": "<type>",
-      "parallelType": "OR"
-    }
-  ],
-  "name": "<name>",
-  "id": "#(key)",
-  "key": "#(key)",
-  "deploymentId": "#(key)"
-}
-"""
-		When method POST
-		Then status 201
+	Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
+		* call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
 
 		Examples:
-			| tenant         | name                            | deskName    | type               |
+			| tenant         | name                            | deskName    | type               | mandatoryValidationMetadata! |
 			# @fixme: API (+UI)
-			# | Default tenant | Transparent - Mail              | Transparent | MAIL               |
+#			| Default tenant | Transparent - Mail              | Transparent | MAIL               | []                 |
 			# @todo: setup first -> check via API, via Web = 400
-			| Default tenant | Transparent - Cachet Serveur    | Transparent | SEAL               |
-			| Default tenant | Transparent - Signature         | Transparent | SIGNATURE          |
-			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE |
-			| Default tenant | Transparent - Visa              | Transparent | VISA               |
+			| Default tenant | Transparent - Cachet Serveur    | Transparent | SEAL               | []                           |
+			| Default tenant | Transparent - Signature         | Transparent | SIGNATURE          | []                           |
+			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE | []                           |
+			| Default tenant | Transparent - Visa              | Transparent | VISA               | []                           |
 
 	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java
-	Scenario Outline: Create types
-		* api_v1.auth.login('user', 'password')
-		* def tenantId = api_v1.entity.getIdByName('<tenant>')
+	Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
+		* call read('classpath:lib/api/setup/type.create.feature') __row
 
-		Given url baseUrl
-		And path '/api/admin/tenant/', tenantId, '/typology/type'
-		And header Accept = 'application/json'
-		And request
-"""
-{
-	"name": "<name>",
-	"description": "<description>",
-	"signatureFormat": "<signatureFormat>",
-	"signatureVisible": true
-}
-"""
-		When method POST
-		Then status 201
-
+		# @fixme: remplir les colonnes signatureLocation | signatureZipCode | signaturePosition
 		Examples:
-			| tenant         | name        | description       | signatureFormat |
-			| Default tenant | CACHET      | Cachet serveur    | PADES           |
-			| Default tenant | SIGN_EXT    | Signature externe | PADES           |
-			| Default tenant | SIGN_PADES  | Signature PADES   | PADES           |
-			| Default tenant | SIGN_PES_V2 | Signature PES_V2  | PES_V2          |
-			| Default tenant | SIGN_PKCS7  | Signature PKCS7   | PKCS7           |
-			| Default tenant | VISA        | Visa              | PADES           |
+			| tenant         | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
+			| Default tenant | CACHET      | Cachet serveur    |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_EXT    | Signature externe |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  | false             |                          |
+			| Default tenant | SIGN_PES_V2 | Signature PES_V2  |          | PES_V2          |                   |                  | false             |                          |
+			| Default tenant | SIGN_PKCS7  | Signature PKCS7   |          | PKCS7           |                   |                  | false             |                          |
+			| Default tenant | VISA        | Visa              |          | PADES           |                   |                  | false             |                          |
 
 	@todo-karate @signature-format
-	Scenario Outline: Create subtypes
-		* api_v1.auth.login('user', 'password')
-		* def tenantId = api_v1.entity.getIdByName('<tenant>')
-		* def workflowKey = api_v1.workflow.getKeyByName(tenantId, '<workflow>')
-		* def typeId = api_v1.type.getIdByName(tenantId, '<type>')
-
-		Given url baseUrl
-		And path 'api/admin/tenant/', tenantId, 'typology/type/', typeId, '/subtype'
-		And header Accept = 'application/json'
-		And request
-"""
-{
-	"name" : "<name>",
-	"tenantId" : "#(tenantId)",
-	"creationWorkflowId" : null,
-	"validationWorkflowId" : "#(workflowKey)",
-	"description" : "<description>",
-	"isDigitalSignatureMandatory" : true
-}
-"""
-		When method POST
-		Then status 201
+	Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
+		* call read('classpath:lib/api/setup/subtype.create.feature') __row
 
 		Examples:
-			| tenant         | type        | name                  | description                   | workflow                        |
-			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |
-			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |
-			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |
-			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |
-			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |
-			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |
+			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataList! |
+			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                   |
+			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
+
+	Scenario Outline: Set the signature image for user "${email}"
+		* call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+
+		Examples:
+			| tenant         | email                  | path                                                |
+			| Default tenant | ltransparent@dom.local | classpath:files/images/signature - ltransparent.png |
+			| Default tenant | stranslucide@dom.local | classpath:files/images/signature - stranslucide.png |

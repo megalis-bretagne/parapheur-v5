@@ -17,4 +17,8 @@
 #
 
 
-# Use this file to change some properties of ip-core as needed 
+# Use this file to change some properties of ip-core as needed
+spring:
+  mail:
+    host: smtp
+    port: 25

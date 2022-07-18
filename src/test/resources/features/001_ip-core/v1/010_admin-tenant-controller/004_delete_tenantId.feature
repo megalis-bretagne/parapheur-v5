@@ -1,128 +1,50 @@
-@ip-core @api-v1
-Feature: DELETE /api/admin/tenant/{tenantId} (Delete tenant)
+@ip-core @api-v1 @admin-tenant-controller
+Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with an "ADMIN" role can delete an existing tenant
-        # Create a temporary tenant
+	Background:
 		* api_v1.auth.login('user', 'password')
-		* def id = api_v1.entity.createTemporary()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 204
+		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* call read('classpath:lib/api/setup/tenant.delete.feature') list
 
 	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role cannot delete a non-existing tenant
-		# Create a temporary tenant
-		* def id = api_v1.entity.getNonExistingId()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 404
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot delete an existing tenant
-        # Create a temporary tenant
+	Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
 		* api_v1.auth.login('user', 'password')
 		* def id = api_v1.entity.createTemporary()
-		* def name = 'tmp-' + utils.getUUID()
 
-		# Try to delete it
-		* api_v1.auth.login('ablanc', 'a123456')
+		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', id
+			And path '/api/v1/admin/tenant/', id
 			And header Accept = 'application/json'
 		When method DELETE
-		Then status 403
+		Then status <status>
+			And if (<status> === 204) utils.assert("response == ''")
+			And if (<status> !== 204) utils.assert("$ == schemas.error")
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot delete a non-existing tenant
-		# Create a temporary tenant
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 204    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
+
+	@permissions
+	Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tenant', status)}
 		* def id = api_v1.entity.getNonExistingId()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('ablanc', 'a123456')
+		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', id
+			And path '/api/v1/admin/tenant/', id
 			And header Accept = 'application/json'
 		When method DELETE
-		Then status 403
+		Then status <status>
+			And utils.assert("$ == schemas.error")
 
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with an "NONE" role cannot delete an existing tenant
-        # Create a temporary tenant
-		* api_v1.auth.login('user', 'password')
-		* def id = api_v1.entity.createTemporary()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with an "NONE" role cannot delete a non-existing tenant
-		# Create a temporary tenant
-		* def id = api_v1.entity.getNonExistingId()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 403
-
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot delete an existing tenant
-        # Create a temporary tenant
-		* api_v1.auth.login('user', 'password')
-		* def id = api_v1.entity.createTemporary()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 401
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot delete a non-existing tenant
-		# Create a temporary tenant
-		* def id = api_v1.entity.getNonExistingId()
-		* def name = 'tmp-' + utils.getUUID()
-
-		# Try to delete it
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', id
-			And header Accept = 'application/json'
-		When method DELETE
-		Then status 401
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 404    |
+			| TENANT_ADMIN     | vgris        | a123456  | 404    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
+			|                  |              |          | 404    |
