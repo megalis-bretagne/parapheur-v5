@@ -331,7 +331,6 @@ __reset__()
       echo "Resetting..."
       log_hr
       docker-compose \
-          -p ${DOCKER_CONTAINER_PREFIX_NAME} \
           -f docker-compose.yml \
           down \
           --remove-orphans \
@@ -352,18 +351,17 @@ __setup_vault__()
       log_hr
 
       docker-compose \
-          --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
           --file docker-compose.yml \
           up -d vault
       sleep ${SLEEP_VALUE}
-      VAULT_OUTPUT="`docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
+      VAULT_OUTPUT="`docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       export VAULT_TOKEN="`echo "${VAULT_OUTPUT}" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env
       sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault login token=${VAULT_TOKEN}
-      docker exec -it ${DOCKER_CONTAINER_PREFIX_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault login token=${VAULT_TOKEN}
+      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
 
       log_success "... Vault - setup completed\n" "OK"
 }
@@ -403,7 +401,6 @@ __setup_matomo__()
     log_hr
 
     docker-compose \
-        --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
         --file docker-compose.yml \
         --file docker-compose.override.init.yml \
         up -d matomo nginx
@@ -529,13 +526,11 @@ __main__()
                   if [ "${START_APP}" == "1" ] ; then
                     if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
                       docker-compose \
-                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
                       --file docker-compose.yml \
                       --file docker-compose.override.dev-`accepted_arch`.yml \
                       up
                     else
                       docker-compose \
-                      --project-name ${DOCKER_CONTAINER_PREFIX_NAME} \
                       --file docker-compose.yml \
                       up
                     fi
