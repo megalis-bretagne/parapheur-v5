@@ -110,6 +110,21 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 a.push(arr[i]);
         return a;
     };
+
+    config.utils['certificate'] = {};
+    config.utils.certificate['alias'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "alias", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['enddate'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "enddate", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['issuer'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "issuer", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['subject'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "subject", karate.toAbsolutePath(path), password]);
+    };
+
     config.utils.array['getSortedUnique'] = function (array) {
         return utils.array.getUnique(array).sort();
     };

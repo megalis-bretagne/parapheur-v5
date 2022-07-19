@@ -5,6 +5,13 @@ Feature: ...
     Background:
         * v4.api.rest.user.login("admin", "password")
 
+    Scenario Outline: Création du cachet serveur "${title}"
+        * call read('classpath:lib/v4/api/rest/seal/create.feature') __row
+
+        Examples:
+            | title  | certificate                                           | password                        | image                                          | text |
+            | Cachet | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | classpath:files/images/cachet - benoit xvi.png |      |
+
     Scenario Outline: Création de l'utilisateur "${username}@legacy-bridge"
         * call read('classpath:lib/v4/api/rest/user/create.feature') __row
 
@@ -49,9 +56,9 @@ Feature: ...
         Examples:
             | type          | name           | description | workflow  | multidoc |
             | Auto monodoc  | sign sans meta | Description | Signature | false    |
-            | Auto monodoc  | visa sans meta | Description | Visa2     | false    |
+            | Auto monodoc  | visa sans meta | Description | Visa      | false    |
             | Auto multidoc | sign sans meta | Description | Signature | true     |
-            | Auto multidoc | visa sans meta | Description | Visa2     | true     |
+            | Auto multidoc | visa sans meta | Description | Visa      | true     |
             | PAdES         | signature      | Description | Signature | true     |
             | PAdES 1       | cachet         | Description | Signature | true     |
 
