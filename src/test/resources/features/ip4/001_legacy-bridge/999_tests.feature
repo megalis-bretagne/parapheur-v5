@@ -15,7 +15,8 @@ Feature: Tests IP 4
     type: "Auto monodoc",
     sousType: "sign sans meta",
     annotPub: "Annotation publique ws@legacy-bridge (création et démarrage depuis karate)",
-    annotPriv: "Annotation privée ws@legacy-bridge (création et démarrage depuis karate)"
+    annotPriv: "Annotation privée ws@legacy-bridge (création et démarrage depuis karate)",
+    metadatas: {}
 }
 """
         * call read('classpath:lib/v4/api/rest/folder/createSimple.feature') params

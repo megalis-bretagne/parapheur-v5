@@ -63,6 +63,14 @@ function fn(config) {
         return rv.response;
     };
 
+    // REST API metadata lib
+    config.v4.api.rest['metadata'] = {};
+    config.v4.api.rest.metadata['getById'] = function(id, asAdmin) {
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        var rv = karate.call('classpath:lib/v4/api/rest/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
+        return rv.metadata;
+    };
+
     // REST API pastellConnector lib
     config.v4.api.rest['pastellConnector'] = {};
     config.v4.api.rest.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?

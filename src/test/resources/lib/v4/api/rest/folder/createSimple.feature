@@ -4,6 +4,25 @@ Feature: IP v.4 REST folder lib
     Scenario: Create simple folder
         * def desktop = v4.api.rest.desktop.getByName(__arg.desktop)
 
+        * def fillMetadatas =
+"""
+function (metadatas) {
+    var idx, keys = Object.keys(metadatas), result = {}, rv;
+    for (idx=0;idx<keys.length;idx++) {
+        metadata = v4.api.rest.metadata.getById(keys[idx]);
+        result["cu:"+keys[idx]] = {
+            realName: metadata.name,
+            //editable: "false",
+            isAlphaOrdered: metadata.isAlphaOrdered,
+            id: "cu:" + keys[idx],
+            type: metadata.type,
+            //mandatory:true,
+            value: metadatas[keys[idx]]
+        };
+    }
+    return result;
+}
+"""
         # 1. Récupération de l'id
         * url baseUrl
         * path "/iparapheur/proxy/alfresco/parapheur/dossiers"
@@ -84,6 +103,7 @@ Feature: IP v.4 REST folder lib
     "isSent": false
 }
 """
+        * payload["metadatas"] = fillMetadatas(__arg.metadatas)
         * request payload
         * method PUT
         * status 200
