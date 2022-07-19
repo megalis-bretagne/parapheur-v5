@@ -147,11 +147,24 @@ publish:
     - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
     - echo "Application successfully deployed."
 
-strict-e2e-tests-deploy:
+strict-e2e-tests-deploy-manual:
   extends:
     - .deploy-job
   stage: e2e-tests
   when: manual
+  except:
+    - develop
+    - tags
+  allow_failure: false
+
+strict-e2e-tests-deploy:
+  extends:
+    - .deploy-job
+  stage: e2e-tests
+  when: always
+  only:
+    - develop
+    - tags
   allow_failure: false
 
 tolerant-e2e-tests-deploy:
