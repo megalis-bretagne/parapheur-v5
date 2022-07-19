@@ -5,6 +5,13 @@ Feature: ...
     Background:
         * v4.api.rest.user.login("admin", "password")
 
+    Scenario Outline: Création du connecteur Pastell mail-sécurisé "${title}"
+        * call read('classpath:lib/v4/api/rest/pastellConnector/create.feature') __row
+
+        Examples:
+            | title           | url                                      | login                                 | password | entity |
+            | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
+
     Scenario Outline: Création du cachet serveur "${title}"
         * call read('classpath:lib/v4/api/rest/seal/create.feature') __row
 
