@@ -28,6 +28,15 @@ function fn(config) {
         var rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
+    config.v4.api.rest.desktop['getAllIdsByName'] = function(names, asAdmin) {
+        var idx, result = [], rv;
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        for (idx = 0;idx < names.length;idx++) {
+            rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": names[idx], "asAdmin": asAdmin });
+            result.push(rv.desktop.id);
+        }
+        return result;
+    };
 
     // REST API folder lib
     config.v4.api.rest['folder'] = {};

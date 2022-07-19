@@ -1,6 +1,5 @@
 @proposal @ignore @ip4 @setup
-Feature: ...
-    # ./gradlew test --info -Dkarate.options="--tags @wip" -Dkarate.headless=true -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr
+Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     Background:
         * v4.api.rest.user.login("admin", "password")
@@ -55,20 +54,18 @@ Feature: ...
             | Auto multidoc | Description | aucun    | AUTO        | Montpellier | 34000      |
             | PAdES         | Description | ACTES    | PAdES/basic | Montpellier | 34000      |
 
-    # @todo: permissions de création
     Scenario Outline: Création du sous-type "${type}/${name}"
         * call read('classpath:lib/v4/api/rest/subtype/create.feature') __row
 
         Examples:
-            | type          | name           | description | workflow  | multidoc | cachet | mailsec         | metadatas!                                                                                   |
-            | Auto monodoc  | sign avec meta | Description | Signature | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
-            | Auto monodoc  | sign sans meta | Description | Signature | false    |        |                 | []                                                                                           |
-            | Auto monodoc  | visa avec meta | Description | Visa      | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
-            | Auto monodoc  | visa sans meta | Description | Visa      | false    |        |                 | []                                                                                           |
-            | Auto multidoc | sign avec meta | Description | Signature | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
-            | Auto multidoc | sign sans meta | Description | Signature | true     |        |                 | []                                                                                           |
-            | Auto multidoc | visa avec meta | Description | Visa      | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
-            | Auto multidoc | visa sans meta | Description | Visa      | true     |        |                 | []                                                                                           |
-            | PAdES         | cachet         | Description | Cachet    | false    | Cachet |                 | []                                                                                           |
-            | PAdES         | mailsec        | Description | Mailsec   | false    |        | Recette mailSec | []                                                                                           |
-
+            | type          | name           | description | parapheurs!    | workflow  | multidoc | cachet | mailsec         | metadatas!                                                                                   |
+            | Auto monodoc  | sign avec meta | Description | ['WebService'] | Signature | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto monodoc  | sign sans meta | Description | ['WebService'] | Signature | false    |        |                 | []                                                                                           |
+            | Auto monodoc  | visa avec meta | Description | ['WebService'] | Visa      | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto monodoc  | visa sans meta | Description | ['WebService'] | Visa      | false    |        |                 | []                                                                                           |
+            | Auto multidoc | sign avec meta | Description | ['WebService'] | Signature | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto multidoc | sign sans meta | Description | ['WebService'] | Signature | true     |        |                 | []                                                                                           |
+            | Auto multidoc | visa avec meta | Description | ['WebService'] | Visa      | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto multidoc | visa sans meta | Description | ['WebService'] | Visa      | true     |        |                 | []                                                                                           |
+            | PAdES         | cachet         | Description | ['WebService'] | Cachet    | false    | Cachet |                 | []                                                                                           |
+            | PAdES         | mailsec        | Description | ['WebService'] | Mailsec   | false    |        | Recette mailSec | []                                                                                           |
