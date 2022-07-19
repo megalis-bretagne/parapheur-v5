@@ -54,6 +54,22 @@ function fn(config) {
         return rv.response;
     };
 
+    // REST API pastellConnector lib
+    config.v4.api.rest['pastellConnector'] = {};
+    config.v4.api.rest.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        var rv = karate.call('classpath:lib/v4/api/rest/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        return rv.pastellConnector;
+    };
+
+    // REST API seal lib
+    config.v4.api.rest['seal'] = {};
+    config.v4.api.rest.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+        asAdmin = typeof asAdmin === 'undefined' ? false : true;
+        var rv = karate.call('classpath:lib/v4/api/rest/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        return rv.seal;
+    };
+
     // REST API type lib
     config.v4.api.rest['type'] = {};
     config.v4.api.rest.type['getByName'] = function(name, asAdmin) {

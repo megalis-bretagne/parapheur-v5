@@ -13,7 +13,7 @@ Feature: IP v.4 REST subtype lib
   "groups": [],
   "calques": [],
   "calquesAnnexes": [],
-  "metadatas": [],
+  "metadatas": #(__arg.metadatas),
   "visibility": "public",
   "visibilityFilter": "public",
   "digitalSignatureMandatory": "true",
@@ -23,6 +23,9 @@ Feature: IP v.4 REST subtype lib
   "multiDocument": "#(__arg.multidoc)",
 }
 """
+      * if (__arg.cachet !== null) payload["cachetCertificate"] = (v4.api.rest.seal.getByName(__arg.cachet)).id
+      * if (__arg.mailsec !== null) payload["pastellMailsec"] = (v4.api.rest.pastellConnector.getByName(__arg.mailsec)).id
+
         Given url baseUrl
             And path "/iparapheur/proxy/alfresco/parapheur/types/" + encodeURI(__arg.type) + "/" + encodeURI(__arg.name)
             And header Accept = "application/json"

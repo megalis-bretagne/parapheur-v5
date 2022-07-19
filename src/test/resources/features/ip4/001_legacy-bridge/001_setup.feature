@@ -19,6 +19,7 @@ Feature: ...
             | title  | certificate                                           | password                        | image                                          | text |
             | Cachet | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | classpath:files/images/cachet - benoit xvi.png |      |
 
+    # @todo: image de signature
     Scenario Outline: Création de l'utilisateur "${username}@legacy-bridge"
         * call read('classpath:lib/v4/api/rest/user/create.feature') __row
 
@@ -53,19 +54,21 @@ Feature: ...
             | Auto monodoc  | Description | aucun    | AUTO        | Montpellier | 34000      |
             | Auto multidoc | Description | aucun    | AUTO        | Montpellier | 34000      |
             | PAdES         | Description | ACTES    | PAdES/basic | Montpellier | 34000      |
-@x-wip
-    # @todo: ...avec meta, PAdES/cachet, PAdES/mailsec
-    # cachetCertificate:	"0dc73c67-e0e4-4548-879e-5d63e430715f"
-    # pastellMailsec: "9943c0ca-8f44-4a75-97ed-6b45ce0cf3b3"
+
+    # @todo: permissions de création
     Scenario Outline: Création du sous-type "${type}/${name}"
         * call read('classpath:lib/v4/api/rest/subtype/create.feature') __row
 
         Examples:
-            | type          | name           | description | workflow  | multidoc |
-            | Auto monodoc  | sign sans meta | Description | Signature | false    |
-            | Auto monodoc  | visa sans meta | Description | Visa      | false    |
-            | Auto multidoc | sign sans meta | Description | Signature | true     |
-            | Auto multidoc | visa sans meta | Description | Visa      | true     |
-            | PAdES         | signature      | Description | Signature | true     |
-            | PAdES 1       | cachet         | Description | Signature | true     |
+            | type          | name           | description | workflow  | multidoc | cachet | mailsec         | metadatas!                                                                                   |
+            | Auto monodoc  | sign avec meta | Description | Signature | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto monodoc  | sign sans meta | Description | Signature | false    |        |                 | []                                                                                           |
+            | Auto monodoc  | visa avec meta | Description | Visa      | false    |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto monodoc  | visa sans meta | Description | Visa      | false    |        |                 | []                                                                                           |
+            | Auto multidoc | sign avec meta | Description | Signature | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto multidoc | sign sans meta | Description | Signature | true     |        |                 | []                                                                                           |
+            | Auto multidoc | visa avec meta | Description | Visa      | true     |        |                 | [{id: "mameta_bool", mandatory: "true",editable: "false", default: "", fromCircuit: false }] |
+            | Auto multidoc | visa sans meta | Description | Visa      | true     |        |                 | []                                                                                           |
+            | PAdES         | cachet         | Description | Cachet    | false    | Cachet |                 | []                                                                                           |
+            | PAdES         | mailsec        | Description | Mailsec   | false    |        | Recette mailSec | []                                                                                           |
 
