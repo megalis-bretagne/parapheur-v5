@@ -48,20 +48,6 @@ function fn(config) {
         var rv = karate.call('classpath:lib/v4/api/rest/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
         return rv.folder;
     };
-    /*config.v4.api.rest.folder['sign'] = function(desktop, folder, params) {
-        var defaults = {
-                annotPub: null,
-                annotPriv: null,
-                publicCert: null,
-                privateCert: null,
-            },
-            rv;
-        params = karate.merge(defaults, params);
-        params["desktop"] = desktop;
-        params["folder"] = folder;
-        rv = karate.call('classpath:lib/v4/api/rest/folder/signSimple.feature', params);
-        return rv.response;
-    };*/
 
     // REST API metadata lib
     config.v4.api.rest['metadata'] = {};

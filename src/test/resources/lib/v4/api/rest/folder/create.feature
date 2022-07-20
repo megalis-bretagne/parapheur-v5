@@ -1,8 +1,13 @@
 @karate-function @ignore
 Feature: IP v.4 REST folder lib
 
-    Scenario: Create simple folder
-        * def desktop = v4.api.rest.desktop.getByName(__arg.desktop)
+    # @todo: annexes, visuel PDF
+    Scenario: Create folder
+        * def defaults = { metadatas: {}, visibility: "confidentiel" }
+        * __arg["annotations"] = templates.annotations.default(__arg.username, __arg.annotation)
+        * def row = karate.merge(defaults, __arg)
+
+        * def desktop = v4.api.rest.desktop.getByName(row.desktop)
 
         * def fillMetadatas =
 """
@@ -38,19 +43,29 @@ function (metadatas) {
         * status 200
         * copy dossierId = response.id
 
-        # 2. Ajout du document principal
-        * url baseUrl
-        * path "/iparapheur/addDocument"
-        * header Accept = 'application/json'
-        * multipart file file = { read: "#(__arg.file)", contentType: "#(utils.file.mime(__arg.file))", filename: "#(utils.file.basename(__arg.file))" }
-        * multipart field browser = "notIe"
-        * multipart field dossier = dossierId
-        * multipart field isMainDocument = "true"
-        * multipart field reloadMainDocument = "false"
-        * method POST
-        * status 200
-        # @info: retour sous forme de chaîne de caractères
-        * def document = (typeof response === "string") ? JSON.parse(response) : response
+        # 2. Ajout des documents principaux
+        * def addDocuments =
+"""
+function(dossierId, files) {
+    var idx, result = [], rv;
+    for (idx=0;idx<files.length;idx++) {
+        rv = karate.call('classpath:lib/v4/api/rest/folder/create-addDocument.feature', { dossierId: dossierId, file: files[idx] });
+        result.push({
+            "name": utils.file.basename(files[idx]),
+            "isMainDocument": true,
+            "state": "",
+            "canDelete": true,
+            "downloadUrl": rv.document.downloadUrl,
+            "id": rv.document.success,
+            "isLocked": rv.document.isLocked,
+            "isProtected": rv.document.isProtected,
+            "visuelPdfUrl": null
+        });
+    }
+    return result;
+}
+"""
+        * def documents = addDocuments(dossierId, files)
 
         # 3. Ajout des données du dossier
         * url baseUrl
@@ -59,30 +74,18 @@ function (metadatas) {
         * def payload =
 """
 {
-    "title": "#(__arg.title)",
+    "title": "#(row.title)",
     "nomTdT": null,
     "includeAnnexes": null,
     "locked": null,
     "readingMandatory": null,
     "acteursVariables": [],
-    "dateEmission": #(Date.now()),
-    "visibility": "#(__arg.visibility)",
+    "dateEmission": "#(Date.now())",
+    "visibility": "#(row.visibility)",
     "isRead": false,
     "actionDemandee": "VISA",
     "status": null,
-    "documents": [
-        {
-            "name": "#(utils.file.basename(__arg.file))",
-            "isMainDocument": true,
-            "state": "",
-            "canDelete": true,
-            "downloadUrl": "#(document.downloadUrl)",
-            "id": "#(document.success)",
-            "isLocked": #(document.isLocked),
-            "isProtected": #(document.isProtected),
-            "visuelPdfUrl": null
-        }
-    ],
+    "documents": #(documents),
     "id": "#(dossierId)",
     "isSignPapier": false,
     "dateLimite": null,
@@ -93,17 +96,17 @@ function (metadatas) {
         "EDITION"
     ],
     "banetteName": "Dossiers à transmettre",
-    "type": "#(__arg.type)",
+    "type": "#(row.type)",
     "canAdd": true,
     "protocole": null,
     "metadatas": {},
     "xPathSignature": null,
-    "sousType": "#(__arg.sousType)",
-    "bureauName": "#(__arg.desktop)",
+    "sousType": "#(row.subtype)",
+    "bureauName": "#(row.desktop)",
     "isSent": false
 }
 """
-        * payload["metadatas"] = fillMetadatas(__arg.metadatas)
+        * payload["metadatas"] = fillMetadatas(row.metadatas)
         * request payload
         * method PUT
         * status 200
@@ -116,8 +119,8 @@ function (metadatas) {
 """
 {
     bureauCourant: "#(desktop.id)",
-    annotPub: "#(__arg.annotPub)",
-    annotPriv: "#(__arg.annotPriv)"
+    annotPub: "#(row.annotations.public)",
+    annotPriv: "#(row.annotations.private)"
 }
 """
         * request payload
