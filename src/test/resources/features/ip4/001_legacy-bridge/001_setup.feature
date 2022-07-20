@@ -54,7 +54,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | Auto multidoc | Description | aucun    | AUTO        | Montpellier | 34000      |
             | PAdES         | Description | ACTES    | PAdES/basic | Montpellier | 34000      |
 
-    Scenario Outline: Création du sous-type "${type}/${name}"
+    Scenario Outline: Création du sous-type "${type} / ${name}"
         * call read('classpath:lib/v4/api/rest/subtype/create.feature') __row
 
         Examples:

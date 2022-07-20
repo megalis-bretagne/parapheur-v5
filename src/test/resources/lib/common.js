@@ -115,6 +115,47 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     config.utils.certificate['alias'] = function(path, password) {
         return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "alias", karate.toAbsolutePath(path), password]);
     };
+    config.utils.certificate['base64Public'] = function(path) {
+        var collect = false,
+            content = karate.readAsString(path),
+            idx,
+            lines = content.split(/\r?\n/),
+            result = '';
+
+        for(idx = 0;idx < lines.length;idx++) {
+            if (lines[idx].match(/^\-+ *BEGIN/) !== null) {
+                collect = true;
+            } else if (lines[idx].match(/^\-+ *END/) !== null) {
+                collect = false;
+            } else if(collect === true) {
+                result += lines[idx];
+            }
+        }
+
+        return result;
+    };
+    config.utils.certificate['signHash'] = function(path, hash) {
+        var Base64 = Java.type('java.util.Base64'),
+            cmd,
+            content,
+            decoded = Base64.getDecoder().decode(hash.getBytes()),
+            files,
+            signature,
+            workDir = utils.safeExec("mktemp -d /tmp/karate.iparaheur.signature." + karate.properties['org.gradle.test.worker'] + ".XXXXXXXXXX");
+        files = {
+            bin: karate.properties['org.gradle.test.worker'] + ".bin",
+            sig: workDir + "/" + karate.properties['org.gradle.test.worker'] + ".sig",
+        };
+        karate.log(files);
+        karate.write(decoded, files.bin);
+
+        cmd = "openssl dgst -sha256 -sign " + karate.toAbsolutePath(path) + " -out " + files.sig + " " + karate.toAbsolutePath("file://" + karate.properties['user.dir'] + "/build/" + files.bin);
+        utils.safeExec(cmd);
+        content = karate.readAsString("file://" + files.sig);
+        signature = Base64.getEncoder().encodeToString(content.getBytes());
+        karate.exec("rm -rf " + workDir);
+        return signature;
+    };
     config.utils.certificate['enddate'] = function(path, password) {
         return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "enddate", karate.toAbsolutePath(path), password]);
     };

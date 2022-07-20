@@ -48,7 +48,7 @@ function fn(config) {
         var rv = karate.call('classpath:lib/v4/api/rest/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
         return rv.folder;
     };
-    config.v4.api.rest.folder['sign'] = function(desktop, folder, params) {
+    /*config.v4.api.rest.folder['sign'] = function(desktop, folder, params) {
         var defaults = {
                 annotPub: null,
                 annotPriv: null,
@@ -61,7 +61,7 @@ function fn(config) {
         params["folder"] = folder;
         rv = karate.call('classpath:lib/v4/api/rest/folder/signSimple.feature', params);
         return rv.response;
-    };
+    };*/
 
     // REST API metadata lib
     config.v4.api.rest['metadata'] = {};
@@ -100,6 +100,17 @@ function fn(config) {
     config.v4.api.rest.user['login'] = function(username, password) {
         // @see https://github.com/karatelabs/karate#call-vs-read
         return karate.call(true, 'classpath:lib/v4/api/rest/user/login.feature', { "username": username, "password": password });
+    };
+
+    config.v4['utils'] = {};
+    config.v4.utils['folder'] = {};
+    config.v4.utils.folder['signatures'] = function(path, list) {
+        var idx, result = { signature: [], signatureDateTime: [] };
+        for (idx = 0;idx<list.length;idx++) {
+            result.signature.push(utils.certificate.signHash(path, list[idx].dataToSignBase64List));
+            result.signatureDateTime.push(list[idx].signatureDateTime);
+        }
+        return result;
     };
 
     return config;

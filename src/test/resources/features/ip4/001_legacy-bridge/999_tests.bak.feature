@@ -61,6 +61,8 @@ function (subPath) {
         * karate.log(row)
         # ------------------------------------------------------------------------------------------------------------------------------------------------------
         * v4.api.rest.user.login(row.username, row.password)
+        # * v4.api.rest.folder.sign(row)
+        # ------------------------------------------------------------------------------------------------------------------------------------------------------
         * def desktop = v4.api.rest.desktop.getByName(row.desktop)
         * def target = v4.api.rest.folder.getByName(desktop.id, row.tray, row.folder)
         * def folder = v4.api.rest.folder.getById(desktop.id, target.id)

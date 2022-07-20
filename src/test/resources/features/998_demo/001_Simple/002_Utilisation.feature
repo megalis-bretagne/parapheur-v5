@@ -5,7 +5,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * configure driver = ui.driver.configure
         * driver baseUrl + ui.url.logout
 
-    Scenario Outline: Envoi de ${count} dossier(s) "${nameTemplate}" dans le circuit pour le sous-type ${type}/${subtype}
+    Scenario Outline: Envoi de ${count} dossier(s) "${nameTemplate}" dans le circuit pour le sous-type ${type} / ${subtype}
         * def params =
 """
 {
