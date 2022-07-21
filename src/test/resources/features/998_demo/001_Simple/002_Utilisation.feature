@@ -14,7 +14,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     type: '<type>',
     subtype: '<subtype>',
     mainFile: '<document>',
-    nameTemplate: '<nameTemplate>'
+    nameTemplate: '<nameTemplate>',
+    annotation: '<annotation>',
+    username: '<username>',
 }
 """
         * api_v1.auth.login('user', 'password')
@@ -25,18 +27,18 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
         Examples:
-            | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      |
+            | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! | annotation            |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      | création et démarrage |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      | création et démarrage |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      | création et démarrage |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      | création et démarrage |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | création et démarrage |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
         # @todo: vérifier le "contenu" du PDF ?
         # $x("//div[@id='viewerContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -46,9 +48,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         #* waitFor("//div[@id='viewe#rContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
 
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
-        * waitFor("{}Annotation publique").input("Annotation publique FLO (" + action + ")")
+        * waitFor("{label}Annotation publique").input("Annotation publique FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
         * driver.screenshot()
-        * waitFor("{}Annotation privée").input("Annotation privée FLO (" + action + ")")
+        * waitFor("{label}Annotation privée").input("Annotation privée FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
         * driver.screenshot()
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
@@ -68,7 +70,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Demande d'avis complémentaire et ${action} sur le dossier "${name}" (ACTES/Visa)
         # 1. Demande d'avis complémentaire
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -79,9 +81,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::a[contains(@class, 'dropdown')]").click()
-        * waitFor("{}Annotation publique").input("Annotation publique FLO (Demande d'avis complémentaire)")
+        * waitFor("{label}Annotation publique").input("Annotation publique FLO (demande d'avis complémentaire pour le dossier " + name + ")")
         * driver.screenshot()
-        * waitFor("{}Annotation privée").input("Annotation privée FLO (Demande d'avis complémentaire)")
+        * waitFor("{label}Annotation privée").input("Annotation privée FLO (demande d'avis complémentaire pour le dossier " + name + ")")
         * driver.screenshot()
         # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
         * click("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button")
@@ -92,7 +94,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # 2. Avis complémentaire
         # @todo: vérifier l'annotation privée
         * ui.user.login("mpiaumier@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('DGS') == { pending: 1 }
+        #* match ui.desk.getTileBadges('DGS') == { pending: 1 }
 
         * click("{a}DGS")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
@@ -101,9 +103,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
         * click("//button[contains(normalize-space(text()), 'vis complémentaire')]")
-        * waitFor("{}Annotation publique").input("Annotation publique MPI (Avis complémentaire)")
+        * waitFor("{label}Annotation publique").input("Annotation publique MPI (avis complémentaire pour le dossier " + name + ")")
         * driver.screenshot()
-        * waitFor("{}Annotation privée").input("Annotation privée MPI (Avis complémentaire)")
+        * waitFor("{label}Annotation privée").input("Annotation privée MPI (avis complémentaire pour le dossier " + name + ")")
         * driver.screenshot()
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
@@ -113,7 +115,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # 3. Action sur le dossier
         # @todo: vérifier l'annotation privée
         * ui.user.login("flosserand@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -122,9 +124,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
-        * waitFor("#publicAnnotation").input("Annotation publique FLO (" + action + ")")
+        * waitFor("#publicAnnotation").input("Annotation publique FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
         * driver.screenshot()
-        * waitFor("#privateAnnotation").input("Annotation privée FLO (" + action + ")")
+        * waitFor("#privateAnnotation").input("Annotation privée FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
         * driver.screenshot()
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
@@ -137,7 +139,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -149,14 +151,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
         * table expected
-            | Utilisateur          | Annotation publique                                                          |
-            | 'Frédéric Losserand' | 'Annotation publique FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' |
+            | Utilisateur          | Annotation publique                                                                                            |
+            | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 |
+            | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
         * match ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
-            | Utilisateur          | Annotation privée                                                          |
-            | 'Frédéric Losserand' | 'Annotation privée FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' |
+            | Utilisateur          | Annotation privée                                                                                            |
+            | "Frédéric Losserand" | "Annotation privée FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
         * match ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -176,7 +179,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     @fixme-ip
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -188,16 +191,17 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
         * table expected
-            | Utilisateur          | Annotation publique                                                          |
-            | 'Frédéric Losserand' | 'Annotation publique FLO (Demande d\'avis complémentaire)'                   |
-            | 'Frédéric Losserand' | 'Annotation publique MPI (Avis complémentaire)'                              |
-            | 'Frédéric Losserand' | 'Annotation publique FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' |
+            | Utilisateur          | Annotation publique                                                                                            |
+            | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 |
+            | "Frédéric Losserand" | "Annotation publique FLO (demande d'avis complémentaire pour le dossier <name>)"                               |
+            | "Frédéric Losserand" | "Annotation publique MPI (avis complémentaire pour le dossier  <name>)"                                        |
+            | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
         * match ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
-            | Utilisateur          | Annotation privée                                                          |
-            | 'Frédéric Losserand' | 'Annotation privée FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' |
+            | Utilisateur          | Annotation privée                                                                                            |
+            | "Frédéric Losserand" | "Annotation privée FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
         * match ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -211,7 +215,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     @fixme-ip @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -227,12 +231,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * def upcomingAction = "<state>" === "Rejeté" ? "Supprimer" : "Envoyer dans la corbeille"
 
         * table expected
-            | Bureau       | Utilisateur          | Annotation publique                                                          | Action                    | État       |
-            | 'WebService' | 'Web Service'        | ''                                                                           | 'Envoyer dans le circuit' | ''         |
-            | 'Président'  | 'Frédéric Losserand' | ''                                                                           | 'Lecture'                 | ''         |
-            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' | '<action>'                | '<state>'  |
-            | 'WebService' | 'Web Service'        | ''                                                                           | 'Lecture'                 | ''         |
-            | 'WebService' | ''                   | ''                                                                           | upcomingAction            | 'En cours' |
+            | Bureau       | Utilisateur          | Annotation publique                                                                                            | Action                    | État       |
+            | "WebService" | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 | "Envoyer dans le circuit" | ""         |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                             | "Lecture"                 | ""         |
+            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" | "<action>"                | "<state>"  |
+            | "WebService" | "Web Service"        | ""                                                                                                             | "Lecture"                 | ""         |
+            | "WebService" | ""                   | ""                                                                                                             | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
@@ -254,7 +258,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     @fixme-ip @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -270,15 +274,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * def upcomingAction = "<state>" === "Rejeté" ? "Supprimer" : "Envoyer dans la corbeille"
 
         * table expected
-            | Bureau       | Utilisateur          | Annotation publique                                                          | Action                    | État       |
-            | 'WebService' | 'Web Service'        | ''                                                                           | 'Envoyer dans le circuit' | ''         |
-            | 'Président'  | 'Frédéric Losserand' | ''                                                                           | 'Lecture'                 | ''         |
-            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO (Demande d\'avis complémentaire)'                   | 'Visa'                    | ''         |
-            | 'DGS'        | 'Matthieu Piaumier'  | ''                                                                           | 'Lecture'                 | ''         |
-            | 'DGS'        | 'Matthieu Piaumier'  | 'Annotation publique MPI (Avis complémentaire)'                              | 'Avis complémentaire'     | ''         |
-            | 'Président'  | 'Frédéric Losserand' | 'Annotation publique FLO (' + (state === 'Rejeté' ? 'Rejet' : action ) + ')' | '<action>'                | '<state>'  |
-            | 'WebService' | 'Web Service'        | ''                                                                           | 'Lecture'                 | ''         |
-            | 'WebService' | ''                   | ''                                                                           | upcomingAction            | 'En cours' |
+            | Bureau       | Utilisateur          | Annotation publique                                                                                            | Action                    | État       |
+            | "WebService" | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 | "Envoyer dans le circuit" | ""         |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                             | "Lecture"                 | ""         |
+            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (demande d'avis complémentaire pour le dossier <name>)"                               | "Visa"                    | ""         |
+            | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                             | "Lecture"                 | ""         |
+            | "DGS"        | "Matthieu Piaumier"  | "Annotation publique MPI (avis complémentaire pour le dossier <name>)"                                         | "Avis complémentaire"     | ""         |
+            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" | "<action>"                | "<state>"  |
+            | "WebService" | "Web Service"        | ""                                                                                                             | "Lecture"                 | ""         |
+            | "WebService" | ""                   | ""                                                                                                             | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
@@ -294,7 +298,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -332,7 +336,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ui.user.login("ws@demo-simple", "a123456")
-        * match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))

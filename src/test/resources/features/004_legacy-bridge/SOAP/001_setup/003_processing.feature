@@ -23,8 +23,8 @@ Feature: Traitement des dossiers
         * if (action == 'Mail sécurisé') script("(document.evaluate(\"//button[@title='Envoyer par mail']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false")
         * if (action == 'Mail sécurisé') waitFor("//*[contains(normalize-space(text()), 'Envoyer par mail')]/parent::button").click()
 
-        * if (action != 'Mail sécurisé') waitFor("{}Annotation publique").input("Annotation publique lvermillon@legacy-bridge (" + name + ")")
-        * if (action != 'Mail sécurisé') waitFor("{}Annotation privée").input("Annotation privée lvermillon@legacy-bridge (" + name + ")")
+        * if (action != 'Mail sécurisé') waitFor("{label}Annotation publique").input("Annotation publique lvermillon@legacy-bridge (" + name + ")")
+        * if (action != 'Mail sécurisé') waitFor("{label}Annotation privée").input("Annotation privée lvermillon@legacy-bridge (" + name + ")")
         * if (action != 'Mail sécurisé') click("{^}Valider")
 
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))

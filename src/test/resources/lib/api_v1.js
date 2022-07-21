@@ -104,6 +104,8 @@ function fn(config) {
             typeId = api_v1.type.getIdByName(tenantId, params.type),
             subtypeId = api_v1.subtype.getIdByName(tenantId, typeId, params.subtype),
             length = max.toString().length,
+            annotation = params.annotation === undefined ? '' : params.annotation,
+            username = params.username === undefined ? '' : params.username,
             nameTemplate = params.nameTemplate === undefined ? params.subtype + '_%counter%' : params.nameTemplate,
             annexFilePath = params.annexFilePath === undefined ? 'classpath:files/pdf/annex-1_1.pdf' : params.annexFilePath,
             mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile
@@ -132,6 +134,8 @@ function fn(config) {
                 mainFilePath: mainFilePath['file'],
                 mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                username: username,
             });
         }
 
@@ -147,6 +151,8 @@ function fn(config) {
             typeId = api_v1.type.getIdByName(tenantId, params.type),
             subtypeId = api_v1.subtype.getIdByName(tenantId, typeId, params.subtype),
             length = max.toString().length,
+            annotation = params.annotation === undefined ? '' : params.annotation,
+            username = params.username === undefined ? '' : params.username,
             nameTemplate = params.nameTemplate === undefined ? params.subtype + '_%counter%' : params.nameTemplate,
             annexFilePath = params.annexFilePath === undefined ? 'classpath:files/pdf/annex-1_1.pdf' : params.annexFilePath,
             // mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile,
@@ -173,6 +179,8 @@ function fn(config) {
                 // mainFilePath: mainFilePath,
                 mainFilesPaths: mainFilesPaths,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                username: username,
             });
         }
         return result;
