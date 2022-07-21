@@ -123,7 +123,7 @@ publish:
     name: test-e2e
     url: https://${TARGETED_ENVIRONNEMENT_URL}
   script:
-    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL}"
+    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
     - echo "Preparing ssh agent"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
