@@ -20,10 +20,13 @@ stages:
   - test
   - package
   - publish
+  - e2e-tests
 
 variables:
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
+  IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
+
 # <editor-fold desc="Test">
 
 
@@ -37,7 +40,6 @@ variables:
 
 # </editor-fold desc="Test">
 
-
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
@@ -50,6 +52,7 @@ variables:
       "LICENSE.md"
       "README.md"
       "src/main/resources/nginx/iparapheur.conf.template"
+      "src/main/resources/nginx/iparapheur.init.conf.template"
       "src/main/resources/content"
       "src/main/resources/postgres/docker-entrypoint-initdb.d"
       "src/main/resources/keycloak"
@@ -108,3 +111,106 @@ publish:
     NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
 
 # </editor-fold desc="Publish">
+
+# <editor-fold desc="Deploy">
+
+.deploy-job:
+  variables:
+    INIT_SCRIPT: "ip5-compose-dev.sh"
+    APPLY_COMMAND: "ssh -tt ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}"
+  environment:
+    name: test-e2e
+    url: https://${TARGET_E2E_TESTS_SERVER_URL}
+  script:
+    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGET_E2E_TESTS_SERVER_URL}"
+    - echo "Preparing ssh agent"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+    - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
+    - scp ./${INIT_SCRIPT} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
+    - scp ./docker-compose.override.init.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
+    - scp ./docker-compose.override.tests-linux.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
+    - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core"
+    - scp ./src/main/resources/core/application-dev.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
+    - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
+    - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
+    - echo "Deploying application..."
+    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
+    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
+    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"
+    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f docker-compose.override.tests-linux.yml up -d"
+    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
+    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
+    - echo "Application successfully deployed."
+
+strict-e2e-tests-deploy-manual:
+  extends:
+    - .deploy-job
+  stage: e2e-tests
+  when: manual
+  except:
+    - develop
+    - tags
+  allow_failure: false
+
+strict-e2e-tests-deploy:
+  extends:
+    - .deploy-job
+  stage: e2e-tests
+  when: always
+  only:
+    - develop
+    - tags
+  allow_failure: false
+
+tolerant-e2e-tests-deploy:
+  extends:
+    - .deploy-job
+  stage: e2e-tests
+  allow_failure: false
+  needs:
+    - package
+    - strict-e2e-tests-test
+
+# </editor-fold desc="Deploy">
+
+# <editor-fold desc="E2e tests">
+
+strict-e2e-tests-test:
+  image: markhobson/maven-chrome:jdk-11
+  stage: e2e-tests
+  needs:
+    - job: strict-e2e-tests-deploy
+      optional: true
+    - job: strict-e2e-tests-deploy-manual
+      optional: true
+
+  allow_failure: false
+  script:
+    - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${TARGET_E2E_TESTS_SERVER_URL} with Karate - These tests mustn't fail"
+    - ./gradlew test -Dkarate.options="--tags ${KARATE_TAGS} --tags ~@fixme-ip" -Dkarate.headless=true -Dkarate.baseUrl="https://${TARGET_E2E_TESTS_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
+  artifacts:
+    when: always
+    name: "Karate - tests strict"
+    paths:
+      - build/karate-reports
+
+tolerant-e2e-tests-test:
+  image: markhobson/maven-chrome:jdk-11
+  stage: e2e-tests
+  needs: [ tolerant-e2e-tests-deploy ]
+  allow_failure: true
+  script:
+    - echo "Test IP ${CI_COMMIT_REF_NAME} deployed on ${TARGET_E2E_TESTS_SERVER_URL} with Karate - Some of these tests could fail. There are known problems and should be correspond to issues in gitlab."
+    - ./gradlew test -Dkarate.options="--tags ${KARATE_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${TARGET_E2E_TESTS_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
+  artifacts:
+    when: always
+    name: "Karate - tests tolerant"
+    paths:
+      - build/karate-reports
+
+# </editor-fold desc="E2e tests">
