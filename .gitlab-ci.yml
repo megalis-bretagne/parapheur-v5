@@ -117,25 +117,25 @@ publish:
 .deploy-job:
   variables:
     INIT_SCRIPT: "ip5-compose-dev.sh"
-    APPLY_COMMAND: "ssh -tt ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}"
+    APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   environment:
     name: test-e2e
-    url: https://${TARGET_E2E_TESTS_SERVER_URL}
+    url: https://${TARGETED_ENVIRONNEMENT_URL}
   script:
-    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGET_E2E_TESTS_SERVER_URL}"
+    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL}"
     - echo "Preparing ssh agent"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+    - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
     - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
-    - scp ./${INIT_SCRIPT} ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
-    - scp ./docker-compose.override.init.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
-    - scp ./docker-compose.override.tests-linux.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
+    - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
+    - scp ./docker-compose.override.init.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
+    - scp ./docker-compose.override.tests-linux.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
     - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core"
-    - scp ./src/main/resources/core/application-dev.yml ${TARGET_E2E_TESTS_SERVER_USER}@${TARGET_E2E_TESTS_SERVER_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
+    - scp ./src/main/resources/core/application-dev.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
     - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
     - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
     - echo "Deploying application..."
@@ -143,8 +143,8 @@ publish:
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f docker-compose.override.tests-linux.yml up -d"
-    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
-    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGET_E2E_TESTS_SERVER_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
+    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
+    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
     - echo "Application successfully deployed."
 
 strict-e2e-tests-deploy-manual:
@@ -156,6 +156,10 @@ strict-e2e-tests-deploy-manual:
     - develop
     - tags
   allow_failure: false
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: ${TARGET_E2E_TESTS_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${TARGET_E2E_TESTS_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${SSH_PRIVATE_KEY_B64_TESTS}
 
 strict-e2e-tests-deploy:
   extends:
@@ -166,6 +170,10 @@ strict-e2e-tests-deploy:
     - develop
     - tags
   allow_failure: false
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: ${TARGET_E2E_TESTS_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${TARGET_E2E_TESTS_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${SSH_PRIVATE_KEY_B64_TESTS}
 
 tolerant-e2e-tests-deploy:
   extends:
@@ -175,6 +183,10 @@ tolerant-e2e-tests-deploy:
   needs:
     - package
     - strict-e2e-tests-test
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: ${TARGET_E2E_TESTS_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${TARGET_E2E_TESTS_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${SSH_PRIVATE_KEY_B64_TESTS}
 
 # </editor-fold desc="Deploy">
 
