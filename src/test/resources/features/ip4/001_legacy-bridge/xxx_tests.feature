@@ -22,7 +22,9 @@ Feature: Tests IP 4
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @x-wip
+    # @todo: view
     # @info: liste complète et correcte src/test/resources/features/ip4/001_legacy-bridge/002_folders.feature
+    # @info: metadonnées lors des actions autres que la signature
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
         * v4.api.rest.user.login(username, password)
         * call read('classpath:lib/v4/api/rest/folder/create.feature') __row
@@ -41,6 +43,8 @@ Feature: Tests IP 4
             | ws@legacy-bridge | a123456  | WebService | PAdES        | mailsec        | XXXPAdES_mailsec_2       | ['classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf'] | {}                       | création et démarrage depuis karate |
 
     @x-wip
+    # @fixme: le mail sécurisé n'est pas envoyé sur https://iparapheur47.test.libriciel.fr
+    # Erreur sur le dossier XXXPAdES_mailsec_1 : Exception lors du traitement du dossier : JSONObject["id"] not found.
     Scenario Outline: Mail sécurisé sur le dossier "${folder}" par "${username}"
         * v4.api.rest.user.login(username, password)
         * call read('classpath:lib/v4/api/rest/folder/mailsecSend.feature') __row

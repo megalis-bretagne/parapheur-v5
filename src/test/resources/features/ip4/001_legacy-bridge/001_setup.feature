@@ -2,7 +2,7 @@
 Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     Background:
-        * v4.api.rest.user.login("admin", "password")
+        * v4.api.rest.user.login("admin@legacy-bridge", "a123456")
 
     Scenario Outline: Création du connecteur Pastell mail-sécurisé "${title}"
         * call read('classpath:lib/v4/api/rest/pastellConnector/create.feature') __row
