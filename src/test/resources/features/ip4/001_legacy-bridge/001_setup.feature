@@ -18,6 +18,13 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | title  | certificate                                           | password                        | image                                          | text |
             | Cachet | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | classpath:files/images/cachet - benoit xvi.png |      |
 
+    Scenario Outline: Création de la méta-donnée "${id}" de type "${type}"
+        * call read('classpath:lib/v4/api/rest/metadata/create.feature') __row
+
+        Examples:
+            | id          | name                    | type    | values! |
+            | mameta_bool | Ma métadonnée booléenne | BOOLEAN | []      |
+
     # @todo: image de signature
     Scenario Outline: Création de l'utilisateur "${username}@legacy-bridge"
         * call read('classpath:lib/v4/api/rest/user/create.feature') __row
