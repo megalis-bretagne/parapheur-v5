@@ -184,6 +184,8 @@ tolerant-e2e-tests-deploy:
   needs:
     - package
     - strict-e2e-tests-test
+  only:
+    - develop
   variables:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
