@@ -58,7 +58,7 @@ function fn(config) {
     config.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}(Z|(\\+|-)[0-9]{2}:[0-9]{2})$';
 
     config.api.soap['url'] = function() {
-        return baseUrl + "/ws-iparapheur-no-mtom";
+        return soapBaseUrl + "/ws-iparapheur-no-mtom";
     };
 
     config.api.soap['user'] = {};

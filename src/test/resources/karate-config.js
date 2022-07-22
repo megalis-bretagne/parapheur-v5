@@ -24,6 +24,7 @@ function fn() {
         env = 'dev';
     }
     const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
+    const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
 
     var config = {
@@ -31,6 +32,7 @@ function fn() {
         //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
         //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
         baseUrl: baseUrl,
+        soapBaseUrl: soapBaseUrl,
         // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),

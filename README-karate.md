@@ -2,6 +2,11 @@
 
 ## WIP
 
+```bash
+# IP 4
+./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
+```
+
 ### IP 5
 
 ```bash
@@ -15,7 +20,7 @@
 
 ```bash
 # Seulement les tests passants (1m 17s, scenarios/passed:  34)
-./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests" -Dkarate.headless=true -Dkarate.baseUrl=https://secure-iparapheur47.test.libriciel.fr
+./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @tests --tags ~@fixme-ip" -Dkarate.headless=true -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 ```
 
 ### Exécution
@@ -54,17 +59,18 @@ Attention, il faudra faire le ménage après et supprimer tous les dossiers nomm
 ./gradlew test \
   --info \
   -Dkarate.options="--tags @legacy-bridge --tags @tests --tags ~@fixme-tests" \
-  -Dkarate.baseUrl=https://secure-iparapheur47.test.libriciel.fr
+  -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 ```
 
 ##### Arguments de la ligne de commande
 
-| Argument             | Obligatoire | Valeur par défaut              |
-| ---                  | ---         | ---                            |
-| `-Dkarate.baseUrl`   | -           | `http://iparapheur.dom.local/` |
-| `-Dkarate.chromeBin` | -           | `/usr/bin/chromium-browser`    |
-| `-Dkarate.headless`  | -           | `true`                         |
-| `-Dkarate.options`   | Oui         | -                              |
+| Argument               | Obligatoire | Valeur par défaut                |
+| ---                    | ---         | ---                              |
+| `-Dkarate.baseUrl`     | -           | `http://iparapheur.dom.local/`   |
+| `-Dkarate.soapBaseUrl` | -           | Même valeur que `karate.baseUrl` |
+| `-Dkarate.chromeBin`   | -           | `/usr/bin/chromium-browser`      |
+| `-Dkarate.headless`    | -           | `true`                           |
+| `-Dkarate.options`     | Oui         | -                                |
 
 ##### _Tags_
 
