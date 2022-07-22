@@ -21,11 +21,11 @@ function fn(config) {
         var templates = {};
 
         templates['annotations'] = {};
-        templates.annotations['default'] = function (user, step) {
-            return {
-                public: "Annotation publique " + user +" (" + step + ")",
-                private:  "Annotation privée " + user +" (" + step + ")"
-            };
+        templates.annotations['getPrivate'] = function (username, action, folder) {
+            return "Annotation privée " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
+        };
+        templates.annotations['getPublic'] = function (username, action, folder) {
+            return "Annotation publique " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
         };
         templates['certificate'] = {};
         templates.certificate['default'] = function (subPath) {

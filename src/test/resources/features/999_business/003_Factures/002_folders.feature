@@ -21,5 +21,5 @@ Feature: Création de dossiers pour le paramétrage métier "Factures"
         * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 
       Examples:
-          | tenant   | username    | password | desktop    | type | subtype      | mainFile!                          | nameTemplate      | start! | count! | withOrWithout | extra! | annotation                          |
-          | Factures | ws-factures | a123456  | WebService | VISA | VISA_MONODOC | 'classpath:files/pdf/main-1_1.pdf' | Facture_%counter% | 1      | 10     | without       | {}     | création et démarrage depuis karate |
+          | tenant   | username    | password | desktop    | type | subtype      | mainFile!                          | nameTemplate      | start! | count! | withOrWithout | extra! | annotation |
+          | Factures | ws-factures | a123456  | WebService | VISA | VISA_MONODOC | 'classpath:files/pdf/main-1_1.pdf' | Facture_%counter% | 1      | 10     | without       | {}     | démarrage  |

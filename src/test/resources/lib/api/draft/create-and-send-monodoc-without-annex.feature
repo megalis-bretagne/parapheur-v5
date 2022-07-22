@@ -2,11 +2,13 @@
 Feature:
     Scenario:
         * def result = call read("classpath:lib/api/draft/create-monodoc-without-annex.feature") __arg
-        * __arg["annotations"] = templates.annotations.default(__arg.username, __arg.annotation)
+
+        * def publicAnnotation = templates.annotations.getPublic(username, "démarrage", __arg.draftFolderParams.name)
+        * def privateAnnotation = templates.annotations.getPrivate(username, "démarrage", __arg.draftFolderParams.name)
 
         Given url baseUrl
             And path path + "/" + result.response.id
             And header Accept = "application/json"
-            And request { "metadata": {}, "publicAnnotation": "#(__arg.annotations.public)", "privateAnnotation": "#(__arg.annotations.private)" }
+            And request { "metadata": {}, "publicAnnotation": "#(publicAnnotation)", "privateAnnotation": "#(privateAnnotation)" }
         When method PUT
         Then status 200

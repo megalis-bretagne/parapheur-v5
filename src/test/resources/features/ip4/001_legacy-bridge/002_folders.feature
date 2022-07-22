@@ -4,7 +4,7 @@ Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
         * v4.api.rest.user.login(username, password)
 
-        * __row["annotation"] = "création et démarrage du dossier <title>"
+        * __row["annotation"] = "démarrage du dossier <title>"
         * call read('classpath:lib/v4/api/rest/folder/create.feature') __row
 
     Examples:

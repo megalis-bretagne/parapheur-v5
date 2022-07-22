@@ -23,20 +23,18 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, {}, 1)
         * api_v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-without-annex.feature') folders
-        # @fixme: use UI
+        # @todo: use UI ?
         #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
 
         Examples:
-            | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! | annotation            |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      | création et démarrage |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      | création et démarrage |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      | création et démarrage |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      | création et démarrage |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | création et démarrage |
+            | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! | annotation |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | démarrage  |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
-        # @todo: vérifier le "contenu" du PDF ?
-        # $x("//div[@id='viewerContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
         * ui.user.login("flosserand@demo-simple", "a123456")
         #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
@@ -45,13 +43,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * click("{a}" + name)
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
-        #* waitFor("//div[@id='viewe#rContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
 
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
-        * waitFor("{label}Annotation publique").input("Annotation publique FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
-        * driver.screenshot()
-        * waitFor("{label}Annotation privée").input("Annotation privée FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
-        * driver.screenshot()
+        * ui.folder.annotate.both("flosserand@demo-simple", action, name)
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
@@ -81,10 +75,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::a[contains(@class, 'dropdown')]").click()
-        * waitFor("{label}Annotation publique").input("Annotation publique FLO (demande d'avis complémentaire pour le dossier " + name + ")")
-        * driver.screenshot()
-        * waitFor("{label}Annotation privée").input("Annotation privée FLO (demande d'avis complémentaire pour le dossier " + name + ")")
-        * driver.screenshot()
+        * ui.folder.annotate.both("flosserand@demo-simple", "demande d'avis complémentaire", name)
         # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
         * click("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
@@ -103,10 +94,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
         * click("//button[contains(normalize-space(text()), 'vis complémentaire')]")
-        * waitFor("{label}Annotation publique").input("Annotation publique MPI (avis complémentaire pour le dossier " + name + ")")
-        * driver.screenshot()
-        * waitFor("{label}Annotation privée").input("Annotation privée MPI (avis complémentaire pour le dossier " + name + ")")
-        * driver.screenshot()
+        * ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
@@ -124,10 +112,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
         * click("//button[contains(normalize-space(text()), '" + action + "')]")
-        * waitFor("#publicAnnotation").input("Annotation publique FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
-        * driver.screenshot()
-        * waitFor("#privateAnnotation").input("Annotation privée FLO (" + karate.lowerCase(action) + " du dossier " + name + ")")
-        * driver.screenshot()
+        * ui.folder.annotate.both("flosserand@demo-simple", action, name)
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
@@ -151,15 +136,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
         * table expected
-            | Utilisateur          | Annotation publique                                                                                            |
-            | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 |
-            | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
+            | Utilisateur          | Annotation publique                                                                                       |
+            | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
+            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
-            | Utilisateur          | Annotation privée                                                                                            |
-            | "Frédéric Losserand" | "Annotation privée FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
+            | Utilisateur          | Annotation privée                                                                                          |
+            | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -191,17 +176,17 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
         * table expected
-            | Utilisateur          | Annotation publique                                                                                            |
-            | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 |
-            | "Frédéric Losserand" | "Annotation publique FLO (demande d'avis complémentaire pour le dossier <name>)"                               |
-            | "Frédéric Losserand" | "Annotation publique MPI (avis complémentaire pour le dossier  <name>)"                                        |
-            | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
+            | Utilisateur          | Annotation publique                                                                                       |
+            | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
+            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          |
+            | "Frédéric Losserand" | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
+            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
-            | Utilisateur          | Annotation privée                                                                                            |
-            | "Frédéric Losserand" | "Annotation privée FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" |
+            | Utilisateur          | Annotation privée                                                                                          |
+            | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -231,12 +216,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * def upcomingAction = "<state>" === "Rejeté" ? "Supprimer" : "Envoyer dans la corbeille"
 
         * table expected
-            | Bureau       | Utilisateur          | Annotation publique                                                                                            | Action                    | État       |
-            | "WebService" | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 | "Envoyer dans le circuit" | ""         |
-            | "Président"  | "Frédéric Losserand" | ""                                                                                                             | "Lecture"                 | ""         |
-            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" | "<action>"                | "<state>"  |
-            | "WebService" | "Web Service"        | ""                                                                                                             | "Lecture"                 | ""         |
-            | "WebService" | ""                   | ""                                                                                                             | upcomingAction            | "En cours" |
+            | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
+            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | ""         |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | ""         |
+            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
+            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | ""         |
+            | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
@@ -274,15 +259,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * def upcomingAction = "<state>" === "Rejeté" ? "Supprimer" : "Envoyer dans la corbeille"
 
         * table expected
-            | Bureau       | Utilisateur          | Annotation publique                                                                                            | Action                    | État       |
-            | "WebService" | "Web Service"        | "Annotation publique ws@demo-simple (création et démarrage du dossier <name>)"                                 | "Envoyer dans le circuit" | ""         |
-            | "Président"  | "Frédéric Losserand" | ""                                                                                                             | "Lecture"                 | ""         |
-            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (demande d'avis complémentaire pour le dossier <name>)"                               | "Visa"                    | ""         |
-            | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                             | "Lecture"                 | ""         |
-            | "DGS"        | "Matthieu Piaumier"  | "Annotation publique MPI (avis complémentaire pour le dossier <name>)"                                         | "Avis complémentaire"     | ""         |
-            | "Président"  | "Frédéric Losserand" | "Annotation publique FLO (" + karate.lowerCase(state === "Rejeté" ? "Rejet" : action ) + " du dossier <name>)" | "<action>"                | "<state>"  |
-            | "WebService" | "Web Service"        | ""                                                                                                             | "Lecture"                 | ""         |
-            | "WebService" | ""                   | ""                                                                                                             | upcomingAction            | "En cours" |
+            | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
+            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | ""         |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | ""         |
+            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          | "Visa"                    | ""         |
+            | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                        | "Lecture"                 | ""         |
+            | "DGS"        | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     | "Avis complémentaire"     | ""         |
+            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
+            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | ""         |
+            | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")

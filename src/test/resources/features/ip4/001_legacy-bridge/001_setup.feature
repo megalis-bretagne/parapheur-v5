@@ -1,4 +1,4 @@
-@proposal @ignore @ip4 @setup
+@legacy-bridge @ip4 @setup
 Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     Background:

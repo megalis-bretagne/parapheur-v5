@@ -3,7 +3,8 @@ Feature: IP v.4 REST folder lib
 
     Scenario: Visa on folder
         # 1. Préparation
-        * __arg["annotations"] = templates.annotations.default(__arg.username, __arg.annotation)
+        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "visa", __arg.folder)
+        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "visa", __arg.folder)
 
         # 2. Récupération et lecture du dossier
         * def desktop = v4.api.rest.desktop.getByName(__arg.desktop)
@@ -14,6 +15,6 @@ Feature: IP v.4 REST folder lib
         * url baseUrl
         * path "/iparapheur/proxy/alfresco/parapheur/dossiers/" + folder.id + "/visa"
         * header Accept = "application/json"
-        * request { bureauCourant: "#(desktop.id)", annotPub: "#(__arg.annotations.public)", annotPriv: "#(__arg.annotations.private)" }
+        * request { bureauCourant: "#(desktop.id)", annotPub: "#(publicAnnotation)", annotPriv: "#(privateAnnotation)" }
         * method POST
         * status 200

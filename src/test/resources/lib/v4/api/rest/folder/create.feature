@@ -4,8 +4,10 @@ Feature: IP v.4 REST folder lib
     # @todo: annexes, visuel PDF
     Scenario: Create folder
         * def defaults = { metadatas: {}, visibility: "confidentiel" }
-        * __arg["annotations"] = templates.annotations.default(__arg.username, __arg.annotation)
         * def row = karate.merge(defaults, __arg)
+
+        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "démarrage", row.title)
+        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "démarrage", row.title)
 
         * def desktop = v4.api.rest.desktop.getByName(row.desktop)
 
@@ -119,8 +121,8 @@ function(dossierId, files) {
 """
 {
     bureauCourant: "#(desktop.id)",
-    annotPub: "#(row.annotations.public)",
-    annotPriv: "#(row.annotations.private)"
+    annotPub: "#(publicAnnotation)",
+    annotPriv: "#(privateAnnotation)"
 }
 """
         * request payload

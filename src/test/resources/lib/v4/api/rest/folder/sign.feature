@@ -3,7 +3,9 @@ Feature: IP v.4 REST folder lib
 
     Scenario: Sign folder
         # 1. Préparation
-        * __arg["annotations"] = templates.annotations.default(__arg.username, __arg.annotation)
+        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "visa", __arg.folder)
+        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "visa", __arg.folder)
+
         * __arg["certificate"] = templates.certificate.default(__arg.certificate)
 
         # 2. Récupération et lecture du dossier
@@ -28,8 +30,8 @@ Feature: IP v.4 REST folder lib
         * def payload =
 """
 {
-  "annotPub": "#(__arg.annotations.public)",
-  "annotPriv": "#(__arg.annotations.private)",
+  "annotPub": "#(publicAnnotation)",
+  "annotPriv": "#(privateAnnotation)",
   "bureauCourant": "#(desktop.id)",
   "certificate": "#(certBase64)",
   "signature": "#(signatures)"

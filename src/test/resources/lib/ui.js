@@ -69,6 +69,11 @@ function fn(config) {
     /**
      * Annotations
      **/
+    config.ui.folder['annotate'] = {};
+    config.ui.folder.annotate['both'] = function(username, action, folder) {
+        waitFor("{label}Annotation publique").input(templates.annotations.getPublic(username, action, folder));
+        waitFor("{label}Annotation privée").input(templates.annotations.getPrivate(username, action, folder));
+    };
     config.ui.folder['getAnnotations'] = function(singular, plural) {
         var actual = [],
             idx,
