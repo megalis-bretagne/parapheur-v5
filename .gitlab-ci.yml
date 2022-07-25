@@ -115,8 +115,9 @@ publish:
   variables:
     INIT_SCRIPT: "ip5-compose-dev.sh"
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
+  needs: [ package ]
   environment:
-    name: test-e2e
+    name: ${TARGETED_ENVIRONNEMENT_URL}
     url: https://${TARGETED_ENVIRONNEMENT_URL}
   script:
     - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
@@ -174,9 +175,7 @@ tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
   stage: e2e-tests
   allow_failure: false
-  needs:
-    - package
-    - strict-e2e-tests-test
+  needs: [ strict-e2e-tests-test ]
   only: [ develop ]
   variables:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
@@ -214,7 +213,6 @@ strict-e2e-tests-test:
       optional: true
     - job: strict-e2e-tests-deploy-manual
       optional: true
-
   allow_failure: false
   script:
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
