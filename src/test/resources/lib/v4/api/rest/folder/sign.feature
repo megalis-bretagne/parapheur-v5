@@ -3,8 +3,8 @@ Feature: IP v.4 REST folder lib
 
     Scenario: Sign folder
         # 1. Préparation
-        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "visa", __arg.folder)
-        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "visa", __arg.folder)
+        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "signature", __arg.folder)
+        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "signature", __arg.folder)
 
         * __arg["certificate"] = templates.certificate.default(__arg.certificate)
 
