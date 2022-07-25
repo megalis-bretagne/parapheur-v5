@@ -139,7 +139,7 @@ publish:
     - echo "Deploying application..."
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"
+    - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f docker-compose.override.tests-linux.yml up -d"
     - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
     - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
@@ -157,6 +157,7 @@ strict-e2e-tests-deploy-manual:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 1
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -170,6 +171,7 @@ strict-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 1
 
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -181,6 +183,7 @@ tolerant-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 1
 
 acceptance-deploy-on-tag:
   extends: [ .deploy-job ]
@@ -190,6 +193,7 @@ acceptance-deploy-on-tag:
     TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 0
 
 acceptance-deploy-manual:
   extends: [ .deploy-job ]
@@ -200,6 +204,7 @@ acceptance-deploy-manual:
     TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 0
 
 # </editor-fold desc="Deploy">
 
