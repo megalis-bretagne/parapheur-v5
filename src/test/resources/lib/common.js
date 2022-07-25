@@ -141,19 +141,23 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
             decoded = Base64.getDecoder().decode(hash.getBytes()),
             files,
             signature,
-            workDir = utils.safeExec("mktemp -d /tmp/karate.iparaheur.signature." + karate.properties['org.gradle.test.worker'] + ".XXXXXXXXXX");
+            workDir = utils.safeExec("mktemp -d /tmp/karate.iparapheur.signature." + karate.properties['org.gradle.test.worker'] + ".XXXXXXXXXX");
         files = {
             bin: karate.properties['org.gradle.test.worker'] + ".bin",
+            // hash: karate.properties['org.gradle.test.worker'] + ".hash",
             sig: workDir + "/" + karate.properties['org.gradle.test.worker'] + ".sig",
         };
-        karate.log(files);
+        // karate.log(workDir);
+        // karate.write(hash, files.hash);
         karate.write(decoded, files.bin);
 
         cmd = "openssl dgst -sha256 -sign " + karate.toAbsolutePath(path) + " -out " + files.sig + " " + karate.toAbsolutePath("file://" + karate.properties['user.dir'] + "/build/" + files.bin);
         utils.safeExec(cmd);
-        content = karate.readAsString("file://" + files.sig);
-        signature = Base64.getEncoder().encodeToString(content.getBytes());
-        karate.exec("rm -rf " + workDir);
+        /*content = karate.readAsString("file://" + files.sig);
+        karate.log(content);
+        signature = Base64.getEncoder().encodeToString(content.getBytes());*/
+        signature = (utils.safeExec(["base64", files.sig])).replace(/\n/g, '');
+        //karate.exec("rm -rf " + workDir);
         return signature;
     };
     config.utils.certificate['enddate'] = function(path, password) {
