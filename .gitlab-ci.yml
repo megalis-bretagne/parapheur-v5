@@ -116,9 +116,6 @@ publish:
     INIT_SCRIPT: "ip5-compose-dev.sh"
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs: [ package ]
-  environment:
-    name: ${TARGETED_ENVIRONNEMENT_URL}
-    url: https://${TARGETED_ENVIRONNEMENT_URL}
   script:
     - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
     - echo "Preparing ssh agent"
@@ -158,6 +155,9 @@ strict-e2e-tests-deploy-manual:
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
+  environment:
+    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -172,6 +172,9 @@ strict-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
+  environment:
+    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -184,6 +187,9 @@ tolerant-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
+  environment:
+    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 acceptance-deploy-on-tag:
   extends: [ .deploy-job ]
@@ -194,6 +200,9 @@ acceptance-deploy-on-tag:
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
+  environment:
+    name: ${ACCEPTANCE_TARGET_SERVER_URL}
+    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 acceptance-deploy-manual:
   extends: [ .deploy-job ]
@@ -205,6 +214,9 @@ acceptance-deploy-manual:
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
+  environment:
+    name: ${ACCEPTANCE_TARGET_SERVER_URL}
+    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 # </editor-fold desc="Deploy">
 
