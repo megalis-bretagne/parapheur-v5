@@ -27,6 +27,8 @@ variables:
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
+  OVERRIDE_DOCKER_COMPOSE_FILE_DEV: "docker-compose.override.dev-linux.yml"
+  OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
 
 # <editor-fold desc="Package">
 
@@ -124,7 +126,7 @@ publish:
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
     - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
     - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f docker-compose.override.tests-linux.yml up -d"
+    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
     - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
     - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
     - echo "Application successfully deployed."
@@ -141,6 +143,7 @@ strict-e2e-tests-deploy-manual:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 1
   environment:
     name: Charge/Tests e2e
@@ -158,6 +161,7 @@ strict-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 1
   environment:
     name: Charge/Tests e2e
@@ -176,6 +180,7 @@ tolerant-e2e-tests-deploy:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 1
   environment:
     name: Charge/Tests e2e
@@ -190,6 +195,7 @@ acceptance-deploy-on-tag:
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
   environment:
     name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
@@ -203,6 +209,7 @@ acceptance-deploy-manual:
     TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 0
   environment:
     name: Recette
@@ -216,6 +223,7 @@ dev-deploy:
     TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 0
   environment:
     name: Dev
