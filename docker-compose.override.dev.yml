@@ -1,0 +1,164 @@
+#
+# i-Parapheur
+# Copyright (C) 2019-2022 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+
+#
+# Do not modify this file, it will be reset on every update.
+# Any modification will be lost
+#
+# To modify anything from here, you should create a separate `docker-compose.override-instance-xxx.yml` file,
+# That will contain every overridden parameter.
+#
+
+
+
+volumes:
+  matomo_internal_files: { }
+
+services:
+
+  nginx:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
+
+
+  core:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
+    ports:
+      - "8080:8080"
+
+
+  web:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    environment:
+      - VERSION=5.0.0-develop
+    ports:
+      - "4200:80"
+
+
+  workflow:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
+    ports:
+      - "10080:10080"
+
+
+  pes-viewer:
+    mem_limit: 256M
+    memswap_limit: 256M
+    ports:
+      - "8888:8888"
+
+
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    ports:
+      - "8079:80"
+
+
+  crypto:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
+    mem_limit: 256M
+    memswap_limit: 256M
+    ports:
+      - "8085:8080"
+
+
+  pdf-stamp:
+    mem_limit: 256M
+    memswap_limit: 256M
+    ports:
+      - "8889:8080"
+
+
+  pastell-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
+    ports:
+      - "8002:8080"
+
+
+  external-signature-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector:develop
+    ports:
+      - "2757:8080"
+
+
+  legacy-bridge:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    ports:
+      - "2758:8080"
+
+
+  feeder:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
+    ports:
+      - "8003:8003"
+
+
+  alfresco:
+    ports:
+      - "9009:8080"
+
+
+  transform-core-aio:
+    ports:
+      - "8090:8090"
+
+
+  postgres:
+    mem_limit: 512M
+    memswap_limit: 512M
+    ports:
+      - "5432:5432"
+
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  keycloak:
+    ports:
+      - "9090:8080"
+
+
+  matomo:
+    mem_limit: 512M
+    memswap_limit: 512M
+
+
+  vault:
+    ports:
+      - "8200:8200"
+
+
+  prometheus:
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
+      - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
+
+
+  filetransfer:
+    ports:
+      - "1807:8080"
