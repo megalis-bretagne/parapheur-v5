@@ -35,6 +35,10 @@ function fn(config) {
         var rv = karate.call('classpath:lib/v5/business/api/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
         return rv.folder;
     };
+    config.v5.business.api.folder['getDetails'] = function(tenantId, desktopId, folderId) {
+        var rv = karate.call('classpath:lib/v5/business/api/folder/getDetails.feature', { "tenantId": tenantId, "desktopId": desktopId, "folderId": folderId });
+        return rv.folder;
+    };
 
     // REST API tenant lib
     config.v5.business.api['tenant'] = {};
@@ -46,6 +50,44 @@ function fn(config) {
 
     config.v5['utils'] = {};
     config.v5.utils['folder'] = {};
+    // @todo: faire pour v4
+    // @todo: annexes (et on pourra vérifier qu'elles n'ont pas été modifiées)
+    config.v5.utils.folder['downloadFiles'] = function (tenant, folder) {
+        // @todo: { files: [ { xxx: { path: ..., detached: ... } } ], annexes: {} }
+        var basePath = "ip5-folders", content, detached, document, idxDet, idxDoc, path, result = [], row = {}, url;
+        for(idxDoc=0;idxDoc<folder.documentList.length;idxDoc++) {
+            row = {};
+
+            // Document
+            document = folder.documentList[idxDoc];
+            url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id;
+            content = karate.call('classpath:lib/common/get.feature', { url: url });
+            if (document.isMainDocument === true) {
+                path = basePath + "/" + folder.id + "/" + idxDoc + "/" + document.name;
+                karate.write(content.bytes, path);
+                row[document.name] = { path: path, detached: {} };
+            }/* else {
+                path = basePath + "/" + folder.id + "/annexes/" + document.name;
+                karate.write(content.bytes, path);
+                row["annexes"][document.name] = path;
+            }*/
+
+            // Detached signatures
+            for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
+                detached = document.detachedSignatures[idxDet];
+                url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
+                content = karate.call('classpath:lib/common/get.feature', { url: url });
+                path = basePath + "/" + folder.id + "/" + idxDoc + "/detached/" + detached.name;
+                karate.write(content.bytes, path);
+                row[document.name]["detached"][detached.name] = path;
+            }
+
+            if (karate.keysOf(row).length > 0) {
+                result.push(row);
+            }
+        }
+        return result;
+    };
     config.v5.utils.folder['signatures'] = function(path, list) {
         var Base64 = Java.type('java.util.Base64'),
             hash,

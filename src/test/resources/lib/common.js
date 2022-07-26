@@ -295,5 +295,58 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         return (extracted == '#notpresent') ? [] : utils.array.getSortedUnique(extracted);
     };
 
+    config.utils['signature'] = {};
+    config.utils.signature['checkPkcs7'] = function(document, pkcs7, certificate) {
+        var cmd = [
+            "/bin/sh",
+            "-c",
+            "openssl smime -verify -binary -inform PEM -in \"" + pkcs7 + "\" -content \"" + document + "\" -certfile \"" + certificate + "\" -nointern -noverify > /dev/null"
+        ];
+        utils.safeExec(cmd)
+    };
+    config.utils.signature['getPdfSignatures'] = function (path) {
+        var cmd = [ "pdfsig", "-nocert", path ],
+            idx,
+            lines,
+            matches,
+            proc,
+            result = [],
+            signature = {};
+        proc = karate.fork(cmd);
+        proc.waitSync();
+        /*if (proc.exitCode !== 0) {
+            karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
+        }*/
+        tmp = proc.sysOut.replace(/\n$/, '');
+        lines = tmp.split(/\r?\n/).filter(element => element);
+
+        for (idx=0;idx<lines.length;idx++) {
+            if (matches = lines[idx].match(/^Signature #([0-9]+):$/)) {
+                if (karate.keysOf(signature).length > 0) {
+                    result.push(signature);
+                }
+                signature = {};
+            } else if(matches = lines[idx].match(/^\s+- Signer Certificate Common Name: (.*)$/)) {
+                signature["commonName"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signer full Distinguished Name: (.*)$/)) {
+                signature["distinguishedName"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signing Hash Algorithm: (.*)$/)) {
+                signature["algorithm"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signature Type: (.*)$/)) {
+                signature["type"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signature Validation: (.*)$/)) {
+                signature["valid"] = matches[1] === "Signature is Valid.";
+            } else if(matches = lines[idx].match(/^\s+- (Not total document signed|Total document signed)$/)) {
+                signature["wholeDocumentSigned"] = matches[1] === "Total document signed";
+            }
+        }
+
+        if (karate.keysOf(signature).length > 0) {
+            result.push(signature);
+        }
+
+        return result;
+    };
+
     return config;
 }
