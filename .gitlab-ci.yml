@@ -28,19 +28,6 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
 
-# <editor-fold desc="Test">
-
-
-# FIXME : That would be nice to perform the pull, to check the images existences, at least
-# pull:
-#  stage: test
-#  script:
-#    - cp .env.dist .env
-#    - docker-compose build .
-
-
-# </editor-fold desc="Test">
-
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
