@@ -143,7 +143,7 @@ strict-e2e-tests-deploy-manual:
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
   environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 strict-e2e-tests-deploy:
@@ -160,7 +160,7 @@ strict-e2e-tests-deploy:
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
   environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 tolerant-e2e-tests-deploy:
@@ -178,7 +178,7 @@ tolerant-e2e-tests-deploy:
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
   environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
+    name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 acceptance-deploy-on-tag:
@@ -191,7 +191,7 @@ acceptance-deploy-on-tag:
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
   environment:
-    name: ${ACCEPTANCE_TARGET_SERVER_URL}
+    name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 acceptance-deploy-manual:
@@ -205,7 +205,7 @@ acceptance-deploy-manual:
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
   environment:
-    name: ${ACCEPTANCE_TARGET_SERVER_URL}
+    name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 dev-deploy:
@@ -218,7 +218,7 @@ dev-deploy:
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 1
   environment:
-    name: ${DEV_TARGET_SERVER_URL}
+    name: Dev
     url: https://${DEV_TARGET_SERVER_USER}
 
 # </editor-fold desc="Deploy">
