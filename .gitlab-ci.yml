@@ -227,7 +227,7 @@ dev-deploy:
     RESET_DATA: 0
   environment:
     name: Dev
-    url: https://${DEV_TARGET_SERVER_USER}
+    url: https://${DEV_TARGET_SERVER_URL}
 
 # </editor-fold desc="Deploy">
 
