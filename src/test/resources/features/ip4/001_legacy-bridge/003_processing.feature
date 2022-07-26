@@ -2,9 +2,9 @@
 Feature: Traitement des dossiers
 
     Scenario Outline: Traitement du dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
+        * v4.business.api.user.login(username, password)
 
-        * call read('classpath:lib/v4/api/rest/folder/<action>.feature') __row
+        * call read('classpath:lib/v4/business/api/folder/<action>.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder                | action      | annotation            | to! |

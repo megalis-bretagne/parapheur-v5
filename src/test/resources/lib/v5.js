@@ -19,28 +19,28 @@
 function fn(config) {
     // @todo: ip5.step.api.desktop.getByName (exemple + v4, pour distinguer des appels API "purs")
     config['v5'] = {};
-    config.v5['api'] = {};
-    config.v5.api['rest'] = {};
+    config.v5['business'] = {};
+    config.v5.business['api'] = {};
 
     // REST API desktop lib
-    config.v5.api.rest['desktop'] = {};
-    config.v5.api.rest.desktop['getByName'] = function(tenantId, name) {
-        var rv = karate.call('classpath:lib/v5/api/rest/desktop/getByName.feature', { "tenantId": tenantId, "name": name });
+    config.v5.business.api['desktop'] = {};
+    config.v5.business.api.desktop['getByName'] = function(tenantId, name) {
+        var rv = karate.call('classpath:lib/v5/business/api/desktop/getByName.feature', { "tenantId": tenantId, "name": name });
         return rv.desktop;
     };
 
     // REST API folder lib
-    config.v5.api.rest['folder'] = {};
-    config.v5.api.rest.folder['getByName'] = function(tenantId, deskId, state, name) {
-        var rv = karate.call('classpath:lib/v5/api/rest/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
+    config.v5.business.api['folder'] = {};
+    config.v5.business.api.folder['getByName'] = function(tenantId, deskId, state, name) {
+        var rv = karate.call('classpath:lib/v5/business/api/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
         return rv.folder;
     };
 
     // REST API tenant lib
-    config.v5.api.rest['tenant'] = {};
-    config.v5.api.rest.tenant['getByName'] = function(name, withAdminRights) {
+    config.v5.business.api['tenant'] = {};
+    config.v5.business.api.tenant['getByName'] = function(name, withAdminRights) {
         withAdminRights = (typeof withAdminRights === "undefined") ? false : withAdminRights;
-        var rv = karate.call('classpath:lib/v5/api/rest/tenant/getByName.feature', { "name": name, "withAdminRights": withAdminRights });
+        var rv = karate.call('classpath:lib/v5/business/api/tenant/getByName.feature', { "name": name, "withAdminRights": withAdminRights });
         return rv.tenant;
     };
 

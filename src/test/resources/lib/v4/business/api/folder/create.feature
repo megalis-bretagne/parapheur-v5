@@ -9,14 +9,14 @@ Feature: IP v.4 REST folder lib
         * def publicAnnotation = templates.annotations.getPublic(__arg.username, "démarrage", row.title)
         * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "démarrage", row.title)
 
-        * def desktop = v4.api.rest.desktop.getByName(row.desktop)
+        * def desktop = v4.business.api.desktop.getByName(row.desktop)
 
         * def fillMetadatas =
 """
 function (metadatas) {
     var idx, keys = Object.keys(metadatas), result = {}, rv;
     for (idx=0;idx<keys.length;idx++) {
-        metadata = v4.api.rest.metadata.getById(keys[idx]);
+        metadata = v4.business.api.metadata.getById(keys[idx]);
         result["cu:"+keys[idx]] = {
             realName: metadata.name,
             //editable: "false",
@@ -51,7 +51,7 @@ function (metadatas) {
 function(dossierId, files) {
     var idx, result = [], rv;
     for (idx=0;idx<files.length;idx++) {
-        rv = karate.call('classpath:lib/v4/api/rest/folder/create-addDocument.feature', { dossierId: dossierId, file: files[idx] });
+        rv = karate.call('classpath:lib/v4/business/api/folder/create-addDocument.feature', { dossierId: dossierId, file: files[idx] });
         result.push({
             "name": utils.file.basename(files[idx]),
             "isMainDocument": true,

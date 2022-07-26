@@ -9,9 +9,9 @@ Feature: IP v.4 REST folder lib
         * __arg["certificate"] = templates.certificate.default(__arg.certificate)
 
         # 2. Récupération et lecture du dossier
-        * def desktop = v4.api.rest.desktop.getByName(__arg.desktop)
-        * def target = v4.api.rest.folder.getByName(desktop.id, "a-traiter", __arg.folder)
-        * def folder = v4.api.rest.folder.getById(desktop.id, target.id)
+        * def desktop = v4.business.api.desktop.getByName(__arg.desktop)
+        * def target = v4.business.api.folder.getByName(desktop.id, "a-traiter", __arg.folder)
+        * def folder = v4.business.api.folder.getById(desktop.id, target.id)
 
         # 3.1. Signature du dossier - récupération des hashes des documents à signer du dossier
         * url baseUrl

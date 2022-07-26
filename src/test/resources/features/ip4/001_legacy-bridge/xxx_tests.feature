@@ -2,8 +2,8 @@
 Feature: Tests IP 4
 
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/create.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/create.feature') __row
 
         Examples:
             | username         | password | desktop    | type          | subtype        | title | files!                                                                                                                 | metadatas! | annotation |
@@ -11,8 +11,8 @@ Feature: Tests IP 4
             | ws@legacy-bridge | a123456  | WebService | Auto multidoc | sign sans meta | bbb   | ['classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf', 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf'] | {}         | démarrage  |
     # @todo: inclure des signatures dans IP 5 puis revoir les tests du legacy-bridge
     Scenario Outline: Signature du dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/sign.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/sign.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder | certificate | annotation |
@@ -26,8 +26,8 @@ Feature: Tests IP 4
     # @info: liste complète et correcte src/test/resources/features/ip4/001_legacy-bridge/002_folders.feature
     # @info: metadonnées lors des actions autres que la signature
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/create.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/create.feature') __row
 
         Examples:
             | username         | password | desktop    | type         | subtype        | title                    | files!                                                      | metadatas!               | annotation |
@@ -46,8 +46,8 @@ Feature: Tests IP 4
     # @fixme: le mail sécurisé n'est pas envoyé sur https://iparapheur47.test.libriciel.fr
     # Erreur sur le dossier XXXPAdES_mailsec_1 : Exception lors du traitement du dossier : JSONObject["id"] not found.
     Scenario Outline: Mail sécurisé sur le dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/mailsecSend.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/mailsecSend.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder             | to!                                 |
@@ -55,8 +55,8 @@ Feature: Tests IP 4
 
     @x-wip
     Scenario Outline: Cachet sur le dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/seal.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/seal.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder            | annotation |
@@ -64,8 +64,8 @@ Feature: Tests IP 4
 
     @x-wip
     Scenario Outline: Visa sur le dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/visa.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/visa.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder                   | annotation |
@@ -74,8 +74,8 @@ Feature: Tests IP 4
 
     @x-wip
     Scenario Outline: Rejet du dossier "${folder}" par "${username}"
-        * v4.api.rest.user.login(username, password)
-        * call read('classpath:lib/v4/api/rest/folder/reject.feature') __row
+        * v4.business.api.user.login(username, password)
+        * call read('classpath:lib/v4/business/api/folder/reject.feature') __row
 
         Examples:
             | username                 | password | desktop   | folder                   | annotation |

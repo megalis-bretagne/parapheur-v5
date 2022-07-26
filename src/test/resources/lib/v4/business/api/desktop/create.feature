@@ -7,7 +7,7 @@ Feature: IP v.4 REST desktop lib
 function (users) {
     var idx, rv, result = [];
     for (idx = 0 ; idx < users.length ; idx++) {
-        rv = karate.call('classpath:lib/v4/api/rest/user/getSingle.feature', { search: users[idx] });
+        rv = karate.call('classpath:lib/v4/business/api/user/getSingle.feature', { search: users[idx] });
         result.push(rv.user);
     }
     return result;

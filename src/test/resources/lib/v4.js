@@ -18,74 +18,74 @@
 
 function fn(config) {
     config['v4'] = {};
-    config.v4['api'] = {};
-    config.v4.api['rest'] = {};
+    config.v4['business'] = {};
+    config.v4.business['api'] = {};
 
     // REST API desktop lib
-    config.v4.api.rest['desktop'] = {};
-    config.v4.api.rest.desktop['getByName'] = function(name, asAdmin) {
+    config.v4.business.api['desktop'] = {};
+    config.v4.business.api.desktop['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/v4/business/api/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
-    config.v4.api.rest.desktop['getAllIdsByName'] = function(names, asAdmin) {
+    config.v4.business.api.desktop['getAllIdsByName'] = function(names, asAdmin) {
         var idx, result = [], rv;
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         for (idx = 0;idx < names.length;idx++) {
-            rv = karate.call('classpath:lib/v4/api/rest/desktop/getByName.feature', { "name": names[idx], "asAdmin": asAdmin });
+            rv = karate.call('classpath:lib/v4/business/api/desktop/getByName.feature', { "name": names[idx], "asAdmin": asAdmin });
             result.push(rv.desktop.id);
         }
         return result;
     };
 
     // REST API folder lib
-    config.v4.api.rest['folder'] = {};
-    config.v4.api.rest.folder['getById'] = function(deskId, folderId) {
-        var rv = karate.call('classpath:lib/v4/api/rest/folder/getById.feature', { "deskId": deskId, "folderId": folderId });
+    config.v4.business.api['folder'] = {};
+    config.v4.business.api.folder['getById'] = function(deskId, folderId) {
+        var rv = karate.call('classpath:lib/v4/business/api/folder/getById.feature', { "deskId": deskId, "folderId": folderId });
         return rv.response;
     };
-    config.v4.api.rest.folder['getByName'] = function(deskId, corbeilleName, name) {
-        var rv = karate.call('classpath:lib/v4/api/rest/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
+    config.v4.business.api.folder['getByName'] = function(deskId, corbeilleName, name) {
+        var rv = karate.call('classpath:lib/v4/business/api/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
         return rv.folder;
     };
 
     // REST API metadata lib
-    config.v4.api.rest['metadata'] = {};
-    config.v4.api.rest.metadata['getById'] = function(id, asAdmin) {
+    config.v4.business.api['metadata'] = {};
+    config.v4.business.api.metadata['getById'] = function(id, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/api/rest/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/v4/business/api/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
         return rv.metadata;
     };
 
     // REST API pastellConnector lib
-    config.v4.api.rest['pastellConnector'] = {};
-    config.v4.api.rest.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+    config.v4.business.api['pastellConnector'] = {};
+    config.v4.business.api.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/api/rest/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/v4/business/api/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.pastellConnector;
     };
 
     // REST API seal lib
-    config.v4.api.rest['seal'] = {};
-    config.v4.api.rest.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+    config.v4.business.api['seal'] = {};
+    config.v4.business.api.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/api/rest/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/v4/business/api/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.seal;
     };
 
     // REST API type lib
-    config.v4.api.rest['type'] = {};
-    config.v4.api.rest.type['getByName'] = function(name, asAdmin) {
+    config.v4.business.api['type'] = {};
+    config.v4.business.api.type['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/api/rest/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/v4/business/api/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.type;
     };
 
     // REST API user lib
-    config.v4.api.rest['user'] = {};
-    config.v4.api.rest.user['login'] = function(username, password) {
+    config.v4.business.api['user'] = {};
+    config.v4.business.api.user['login'] = function(username, password) {
         // @see https://github.com/karatelabs/karate#call-vs-read
-        return karate.call(true, 'classpath:lib/v4/api/rest/user/login.feature', { "username": username, "password": password });
+        return karate.call(true, 'classpath:lib/v4/business/api/user/login.feature', { "username": username, "password": password });
     };
 
     config.v4['utils'] = {};
