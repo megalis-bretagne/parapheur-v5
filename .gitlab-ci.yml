@@ -35,7 +35,7 @@ variables:
 
 .prepare-package: &prepare-package
   script:
-    - echo "Packaging ${PACKAGE_NAME}"
+    - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
 
 package_prod:
@@ -108,7 +108,7 @@ publish:
 # <editor-fold desc="Deploy">
 
 .preparing-ssh: &preparing-ssh
-  - echo "Preparing ssh agent"
+  - echo -e "🕵🏽 \e[46mPreparing ssh agent\e[0m 🕵🏽"
   - eval $(ssh-agent -s)
   - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
   - mkdir -p ~/.ssh
@@ -116,7 +116,7 @@ publish:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 .copying-deployment-files: &copying-deployment-files
-  - echo "Copying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/"
+  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/\e[0m 📤"
   - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
   - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
   - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
@@ -125,26 +125,27 @@ publish:
   - scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
 
 .deploying-app: &deploying-app
-  - echo "Deploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}"
+  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
   - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
-  - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
-  - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
+  - echo -e "⌛️️ \e[46mWaiting for the application to be up\e[0m ⏳"
+  - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
+  - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
 
 .deploy-job:
   variables:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs: [ package ]
   before_script:
-    - echo -e "\e[104mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
+    - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
     - *preparing-ssh
   script:
     - *copying-deployment-files
     - *deploying-app
-    - echo "Application successfully deployed."
+    - echo -e "🎉🎉🎉 \e[42m${CI_COMMIT_REF_NAME} successfully deployed on ${TARGETED_ENVIRONNEMENT_URL}\e[0m 🎉🎉🎉"
 
 strict-e2e-tests-deploy-manual:
   extends: [ .deploy-job ]
