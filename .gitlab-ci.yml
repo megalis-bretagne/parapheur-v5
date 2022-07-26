@@ -29,15 +29,23 @@ variables:
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
   OVERRIDE_DOCKER_COMPOSE_FILE_DEV: "docker-compose.override.dev-linux.yml"
   OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
+  INIT_SCRIPT: "ip5-compose-dev.sh"
 
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
   script:
     - echo "Packaging ${PACKAGE_NAME}"
-    - prodFiles=(
+    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
+
+package_prod:
+  stage: package
+  only: [ tags ]
+  before_script:
+    - packageFiles=(
       "docker-compose.yml"
       "docker-compose.ipng.yml"
+      "docker-compose.override.init.yml"
       ".env.dist"
       "LICENSE.md"
       "README.md"
@@ -51,11 +59,6 @@ variables:
       "src/main/resources/rgpd/rgpd-template.json"
       "src/main/resources/vault"
       )
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${prodFiles[@]}")
-
-package_prod:
-  stage: package
-  only: [ tags ]
   <<: *prepare-package
   artifacts:
     name: ${PACKAGE_NAME}
@@ -64,6 +67,10 @@ package_prod:
 
 package:
   stage: package
+  before_script:
+    - packageFiles=(
+      "src/main/resources"
+      )
   except: [ tags ]
   <<: *prepare-package
   artifacts:
@@ -100,38 +107,39 @@ publish:
 
 # <editor-fold desc="Deploy">
 
+.preparing-ssh: &preparing-ssh
+  - echo "Preparing ssh agent"
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+.deploying-app: &deploying-app
+  - echo "Deploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}"
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
+  - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
+  - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
+  - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
+  - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
+
 .deploy-job:
   variables:
-    INIT_SCRIPT: "ip5-compose-dev.sh"
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs: [ package ]
   script:
     - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
-    - echo "Preparing ssh agent"
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - echo "Copying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT}, docker-compose.override.init.yml and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/"
+    <<: *preparing-ssh
+    - echo "Copying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/"
     - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
     - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
     - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
     - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
     - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
-    - scp ./docker-compose.override.init.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
     - scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
-    - echo "Copying ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml"
-    - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core"
-    - scp ./src/main/resources/core/application-dev.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
-    - echo "Deploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}"
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
-    - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
-    - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
-    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
-    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
+    <<: *deploying-app
     - echo "Application successfully deployed."
 
 strict-e2e-tests-deploy-manual:
