@@ -208,6 +208,19 @@ acceptance-deploy-manual:
     name: ${ACCEPTANCE_TARGET_SERVER_URL}
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
+dev-deploy:
+  extends: [ .deploy-job ]
+  stage: deploy
+  when: manual
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 1
+  environment:
+    name: ${DEV_TARGET_SERVER_URL}
+    url: https://${DEV_TARGET_SERVER_USER}
+
 # </editor-fold desc="Deploy">
 
 # <editor-fold desc="E2e tests">
