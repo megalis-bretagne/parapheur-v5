@@ -98,7 +98,7 @@ publish:
 
 # <editor-fold desc="Deploy">
 
-.deploy-job: &deploy-job
+.deploy-job:
   variables:
     INIT_SCRIPT: "ip5-compose-dev.sh"
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
@@ -130,7 +130,7 @@ publish:
     - echo "Application successfully deployed."
 
 strict-e2e-tests-deploy-manual:
-  <<: *deploy-job
+  extends: [ .deploy-job ]
   stage: e2e-tests
   when: manual
   except:
@@ -147,7 +147,7 @@ strict-e2e-tests-deploy-manual:
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 strict-e2e-tests-deploy:
-  <<: *deploy-job
+  extends: [ .deploy-job ]
   stage: e2e-tests
   when: always
   only:
@@ -164,10 +164,13 @@ strict-e2e-tests-deploy:
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 tolerant-e2e-tests-deploy:
-  <<: *deploy-job
+  extends: [ .deploy-job ]
   stage: e2e-tests
   allow_failure: false
-  needs: [ strict-e2e-tests-test ]
+  needs:
+    - strict-e2e-tests-test
+    #    must repeat package here because extends overwrites instead of merge properties
+    - package
   only: [ develop ]
   variables:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
@@ -179,7 +182,7 @@ tolerant-e2e-tests-deploy:
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 acceptance-deploy-on-tag:
-  <<: *deploy-job
+  extends: [ .deploy-job ]
   stage: deploy
   only: [ tags ]
   variables:
@@ -192,7 +195,7 @@ acceptance-deploy-on-tag:
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 acceptance-deploy-manual:
-  <<: *deploy-job
+  extends: [ .deploy-job ]
   stage: deploy
   except: [ tags ]
   when: manual
