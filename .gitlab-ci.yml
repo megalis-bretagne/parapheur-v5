@@ -17,6 +17,7 @@
 #
 
 stages:
+  - essai
   - test
   - package
   - publish
@@ -30,6 +31,7 @@ variables:
   OVERRIDE_DOCKER_COMPOSE_FILE_DEV: "docker-compose.override.dev.yml"
   OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
   INIT_SCRIPT: "ip5-compose-dev.sh"
+  NIGHTLY: "FALSE"
 
 # <editor-fold desc="Package">
 
@@ -278,3 +280,11 @@ tolerant-e2e-tests-test:
       - build/karate-reports
 
 # </editor-fold desc="E2e tests">
+
+essai:
+  stage: essai
+  rules:
+    - if: $NIGHTLY == "NIGHTLY"
+      when: always
+  script:
+    - echo $NIGHTLY
