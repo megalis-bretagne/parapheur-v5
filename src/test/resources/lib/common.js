@@ -17,6 +17,33 @@
  */
 
 function fn(config) {
+    config['downloadpath'] = {};
+    config.downloadpath['annexe'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.annexes['" + basename +"']");
+    };
+    config.downloadpath['detached'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.documents[*][*].detached['" + basename +"']");
+    };
+    config.downloadpath['document'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.documents[*]['" + basename +"'].path");
+    };
+    // Classpath shortcuts for common files
+    config['classpath'] = function(basename) {
+        var paths = {
+            "document_libre_office.odt": "classpath:files/formats/document_libre_office/document_libre_office.odt",
+            "document_rtf.rtf": "classpath:files/formats/document_rtf/document_rtf.rtf",
+            "PDF_avec_tags.pdf": "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
+            "PDF_avec_tags/signature_cades.p7s": "classpath:files/formats/PDF_avec_tags/signature_cades.p7s",
+            "PDF_avec_tags/signature_xades.xml": "classpath:files/formats/PDF_avec_tags/signature_xades.xml",
+        };
+        if (paths.hasOwnProperty(basename) === true) {
+            return paths[basename];
+        }
+        // @todo: else: fail
+    };
 
     config['scenario'] = {'title': {}};
 

@@ -31,6 +31,19 @@ function fn(config) {
 
     // REST API folder lib
     config.v5.business.api['folder'] = {};
+    config.v5.business.api.folder['addDetachedSignature'] = function(folder, params, file, path) {
+        var document = { id: utils.getDraftDocumentId(response, file) };//@todo: whole document
+        return karate.call(
+            'classpath:lib/v5/business/api/draft/addDetachedSignature.feature',
+            {
+                tenant: params.tenant,
+                desktop: params.desktop,
+                folder: folder,
+                document: document,
+                file: path
+            }
+        );
+    };
     config.v5.business.api.folder['downloadFiles'] = function(tenant, desktop, state, name) {
         var params = { "tenant": tenant, "desktop": desktop, "state": state, "name": name },
             rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
