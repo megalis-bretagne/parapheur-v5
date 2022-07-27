@@ -31,6 +31,11 @@ function fn(config) {
 
     // REST API folder lib
     config.v5.business.api['folder'] = {};
+    config.v5.business.api.folder['downloadFiles'] = function(tenant, desktop, state, name) {
+        var params = { "tenant": tenant, "desktop": desktop, "state": state, "name": name },
+            rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
+        return rv.files;
+    };
     config.v5.business.api.folder['getByName'] = function(tenantId, deskId, state, name) {
         var rv = karate.call('classpath:lib/v5/business/api/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
         return rv.folder;
@@ -54,7 +59,8 @@ function fn(config) {
     // @todo: annexes (et on pourra vérifier qu'elles n'ont pas été modifiées)
     config.v5.utils.folder['downloadFiles'] = function (tenant, folder) {
         // @todo: { files: [ { xxx: { path: ..., detached: ... } } ], annexes: {} }
-        var basePath = "ip5-folders", content, detached, document, idxDet, idxDoc, path, result = [], row = {}, url;
+        // @todo: nom du dossier = Nom du document (remplacer caractères / etc) - id (plus facile pour des humains)
+        var basePath = "ip5-folders", content, detached, document, idxDet, idxDoc, path, result = { documents: [], annexes: {} }, row = {}, url;
         for(idxDoc=0;idxDoc<folder.documentList.length;idxDoc++) {
             row = {};
 
@@ -66,11 +72,11 @@ function fn(config) {
                 path = basePath + "/" + folder.id + "/" + idxDoc + "/" + document.name;
                 karate.write(content.bytes, path);
                 row[document.name] = { path: path, detached: {} };
-            }/* else {
+            } else {
                 path = basePath + "/" + folder.id + "/annexes/" + document.name;
                 karate.write(content.bytes, path);
-                row["annexes"][document.name] = path;
-            }*/
+                result["annexes"][document.name] = path;
+            }
 
             // Detached signatures
             for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
@@ -83,7 +89,7 @@ function fn(config) {
             }
 
             if (karate.keysOf(row).length > 0) {
-                result.push(row);
+                result.documents.push(row);
             }
         }
         return result;
