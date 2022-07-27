@@ -36,7 +36,8 @@ services:
       - VERSION=5.0.0-develop
 
 
-
+  workflow:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
 
 
   libersign:
