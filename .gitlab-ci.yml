@@ -167,7 +167,10 @@ tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
   stage: e2e-tests
   allow_failure: false
-  needs: [ strict-e2e-tests-test ]
+  needs:
+    #    must repeat package here because extends overwrites instead of merge properties
+    - package
+    - strict-e2e-tests-test
   only: [ develop ]
   variables:
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
