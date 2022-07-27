@@ -36,12 +36,6 @@ variables:
 .prepare-package: &prepare-package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
-
-package_prod:
-  stage: package
-  only: [ tags ]
-  before_script:
     - packageFiles=(
       "docker-compose.yml"
       "docker-compose.ipng.yml"
@@ -59,6 +53,11 @@ package_prod:
       "src/main/resources/rgpd/rgpd-template.json"
       "src/main/resources/vault"
       )
+    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
+
+package_prod:
+  stage: package
+  only: [ tags ]
   <<: *prepare-package
   artifacts:
     name: ${PACKAGE_NAME}
@@ -67,10 +66,6 @@ package_prod:
 
 package:
   stage: package
-  before_script:
-    - packageFiles=(
-      "src/main/resources"
-      )
   except: [ tags ]
   <<: *prepare-package
   artifacts:
@@ -240,7 +235,7 @@ dev-deploy:
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
-    RESET_DATA: 1
+    RESET_DATA: 0
   environment:
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
