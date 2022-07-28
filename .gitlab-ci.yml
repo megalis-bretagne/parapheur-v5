@@ -235,9 +235,10 @@ dev-deploy:
   rules:
     - if: $NIGHTLY == "NIGHTLY"
       when: always
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: manual
   variables: *dev-config
-  when: manual
   environment:
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
