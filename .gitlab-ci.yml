@@ -232,6 +232,9 @@ acceptance-deploy-manual:
 dev-deploy:
   extends: [ .deploy-job ]
   stage: deploy
+  rules:
+    - if: $NIGHTLY == "NIGHTLY"
+      when: always
   variables: *dev-config
   when: manual
   environment:
