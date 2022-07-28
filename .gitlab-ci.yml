@@ -24,18 +24,59 @@ stages:
   - e2e-tests
 
 variables:
+  NIGHTLY:
+    value: "FALSE"
+    description: "If set to TRUE, will start the nightly jobs"
+  FORCE_RESET_DATA:
+    value: "FALSE"
+    description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
+  INIT_SCRIPT: "ip5-compose-dev.sh"
+
+.e2e-test-config:
+  variables: &e2e-test-config
+    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
+    RESET_DATA: "TRUE"
+  environment: &e2e-test-environment
+    name: Charge/Tests e2e
+    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+
+.acceptance-config:
+  variables: &acceptance-config
+    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
+  environment: &acceptance-environment
+    name: Recette
+    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
+
+.dev-config:
+  variables: &dev-config
+    TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
+    RESET_DATA: "FALSE"
+  environment: &dev-environment
+    name: Dev
+    url: https://${DEV_TARGET_SERVER_URL}
 
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
   script:
-    - echo "Packaging ${PACKAGE_NAME}"
-    - prodFiles=(
+    - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
+    - packageFiles=(
       "docker-compose.yml"
       "docker-compose.ipng.yml"
+      "docker-compose.override.init.yml"
       ".env.dist"
       "LICENSE.md"
       "README.md"
@@ -49,7 +90,7 @@ variables:
       "src/main/resources/rgpd/rgpd-template.json"
       "src/main/resources/vault"
       )
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${prodFiles[@]}")
+    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
 
 package_prod:
   stage: package
@@ -98,36 +139,46 @@ publish:
 
 # <editor-fold desc="Deploy">
 
+.preparing-ssh: &preparing-ssh
+  - echo -e "🕵🏽 \e[46mPreparing ssh agent\e[0m 🕵🏽"
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+.copying-deployment-files: &copying-deployment-files
+  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/\e[0m 📤"
+  - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+  - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
+  - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
+  - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
+  - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
+  - scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
+
+.deploying-app: &deploying-app
+  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
+  - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
+  - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} pull"
+  - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
+  - echo -e "⌛️️ \e[46mWaiting for the application to be up\e[0m ⏳"
+  - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
+  - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
+
 .deploy-job:
   variables:
-    INIT_SCRIPT: "ip5-compose-dev.sh"
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs: [ package ]
+  before_script:
+    - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
+    - *preparing-ssh
   script:
-    - echo "Deploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}"
-    - echo "Preparing ssh agent"
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-    - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
-    - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
-    - scp ./docker-compose.override.init.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.init.yml
-    - scp ./docker-compose.override.tests-linux.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/docker-compose.override.tests-linux.yml
-    - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core"
-    - scp ./src/main/resources/core/application-dev.yml ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/src/main/resources/core/application-dev.yml
-    - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
-    - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
-    - echo "Deploying application..."
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose pull"
-    - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-    - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f docker-compose.override.tests-linux.yml up -d"
-    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo $(( x++ )); done || false
-    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo "Application not started"; exit 1; fi
-    - echo "Application successfully deployed."
+    - *copying-deployment-files
+    - *deploying-app
+    - echo -e "🎉🎉🎉 \e[42m${CI_COMMIT_REF_NAME} successfully deployed on ${TARGETED_ENVIRONNEMENT_URL}\e[0m 🎉🎉🎉"
 
 strict-e2e-tests-deploy-manual:
   extends: [ .deploy-job ]
@@ -137,14 +188,8 @@ strict-e2e-tests-deploy-manual:
     - develop
     - tags
   allow_failure: false
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 1
-  environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  variables: *e2e-test-config
+  environment: *e2e-test-environment
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -154,14 +199,8 @@ strict-e2e-tests-deploy:
     - develop
     - tags
   allow_failure: false
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 1
-  environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  variables: *e2e-test-config
+  environment: *e2e-test-environment
 
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -172,41 +211,35 @@ tolerant-e2e-tests-deploy:
     - package
     - strict-e2e-tests-test
   only: [ develop ]
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 1
-  environment:
-    name: ${E2E_TESTS_TARGET_SERVER_URL}
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  variables: *e2e-test-config
+  environment: *e2e-test-environment
 
 acceptance-deploy-on-tag:
   extends: [ .deploy-job ]
   stage: deploy
   only: [ tags ]
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 0
-  environment:
-    name: ${ACCEPTANCE_TARGET_SERVER_URL}
-    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
+  variables: *acceptance-config
+  environment: *acceptance-environment
 
 acceptance-deploy-manual:
   extends: [ .deploy-job ]
   stage: deploy
   except: [ tags ]
   when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 0
-  environment:
-    name: ${ACCEPTANCE_TARGET_SERVER_URL}
-    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
+  variables: *acceptance-config
+  environment: *acceptance-environment
+
+dev-deploy:
+  extends: [ .deploy-job ]
+  stage: deploy
+  rules:
+    - if: $NIGHTLY == "TRUE"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: manual
+  variables: *dev-config
+  environment: *dev-environment
 
 # </editor-fold desc="Deploy">
 

@@ -1,0 +1,64 @@
+#
+# i-Parapheur
+# Copyright (C) 2019-2022 Libriciel-SCOP
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+# Do not modify this file, it will be reset on every update.
+# Any modification will be lost
+#
+# To modify anything from here, you should create a separate `docker-compose.override-instance-xxx.yml` file,
+# That will contain every overridden parameter.
+#
+
+
+services:
+
+  core:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+
+
+  web:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    environment:
+      - VERSION=5.0.0-develop
+
+
+  workflow:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+
+
+  libersign:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+
+
+  crypto:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
+
+
+  pastell-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
+
+
+  external-signature-connector:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector:develop
+
+
+  legacy-bridge:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+
+
+  feeder:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
