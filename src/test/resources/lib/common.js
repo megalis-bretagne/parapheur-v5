@@ -18,6 +18,7 @@
 
 function fn(config) {
     config['downloadpath'] = {};
+    // @todo: fail si le jsonPath ne retourne rien
     config.downloadpath['annexe'] = function(files, basename, prefix) {
         prefix = typeof prefix === "undefined" ? "file://" : prefix;
         return prefix + buildDir + karate.jsonPath(files, "$.annexes['" + basename +"']");
@@ -30,19 +31,42 @@ function fn(config) {
         prefix = typeof prefix === "undefined" ? "file://" : prefix;
         return prefix + buildDir + karate.jsonPath(files, "$.documents[*]['" + basename +"'].path");
     };
+    config.downloadpath['readAnnexe'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.annexe(files, basename, prefix));
+    };
+    config.downloadpath['readDetached'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.detached(files, basename, prefix));
+    };
+    config.downloadpath['readDocument'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.document(files, basename, prefix));
+    };
     // Classpath shortcuts for common files
-    config['classpath'] = function(basename) {
+    config['commonpath'] = {};
+    config.commonpath['absolute'] = function(basename) {
+        return karate.toAbsolutePath(commonpath.get(basename));
+    };
+    config.commonpath['get'] = function(basename) {
         var paths = {
             "document_libre_office.odt": "classpath:files/formats/document_libre_office/document_libre_office.odt",
             "document_rtf.rtf": "classpath:files/formats/document_rtf/document_rtf.rtf",
+            "document_rtf/signature_cades.p7s": "classpath:files/formats/document_rtf/signature_cades.p7s",
+            "document_rtf/signature_xades.xml": "classpath:files/formats/document_rtf/signature_xades.xml",
             "PDF_avec_tags.pdf": "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
             "PDF_avec_tags/signature_cades.p7s": "classpath:files/formats/PDF_avec_tags/signature_cades.p7s",
             "PDF_avec_tags/signature_xades.xml": "classpath:files/formats/PDF_avec_tags/signature_xades.xml",
+            "PDF_sans_tags.pdf": "classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf",
+            "PDF_sans_tags/signature_cades.p7s": "classpath:files/formats/PDF_sans_tags/signature_cades.p7s",
+            "PDF_sans_tags/signature_xades.xml": "classpath:files/formats/PDF_sans_tags/signature_xades.xml",
         };
         if (paths.hasOwnProperty(basename) === true) {
             return paths[basename];
         }
-        // @todo: else: fail
+
+        karate.log("File \"" + basename + "\" is missing from commonpath");
+        karate.fail("File \"" + basename + "\" is missing from commonpath");
+    };
+    config.commonpath['read'] = function(basename) {
+        return karate.read(commonpath.get(basename));
     };
 
     config['scenario'] = {'title': {}};
@@ -323,6 +347,16 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     };
 
     config.utils['signature'] = {};
+    config.utils.signature['pkcs7'] = {};
+    config.utils.signature.pkcs7['check'] = function(document, pkcs7, certificate) {
+        var cmd = [
+            "/bin/sh",
+            "-c",
+            "openssl smime -verify -binary -inform PEM -in \"" + pkcs7 + "\" -content \"" + document + "\" -certfile \"" + certificate + "\" -nointern -noverify > /dev/null"
+        ];
+        utils.safeExec(cmd)
+    };
+    // @deprecated
     config.utils.signature['checkPkcs7'] = function(document, pkcs7, certificate) {
         var cmd = [
             "/bin/sh",
@@ -331,6 +365,51 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         ];
         utils.safeExec(cmd)
     };
+    config.utils.signature['pdf'] = {};
+    config.utils.signature.pdf['get'] = function (path) {
+        var cmd = [ "pdfsig", "-nocert", path ],
+            idx,
+            lines,
+            matches,
+            proc,
+            result = [],
+            signature = {};
+        proc = karate.fork(cmd);
+        proc.waitSync();
+        /*if (proc.exitCode !== 0) {
+            karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
+        }*/
+        tmp = proc.sysOut.replace(/\n$/, '');
+        lines = tmp.split(/\r?\n/).filter(element => element);
+
+        for (idx=0;idx<lines.length;idx++) {
+            if (matches = lines[idx].match(/^Signature #([0-9]+):$/)) {
+                if (karate.keysOf(signature).length > 0) {
+                    result.push(signature);
+                }
+                signature = {};
+            } else if(matches = lines[idx].match(/^\s+- Signer Certificate Common Name: (.*)$/)) {
+                signature["commonName"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signer full Distinguished Name: (.*)$/)) {
+                signature["distinguishedName"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signing Hash Algorithm: (.*)$/)) {
+                signature["algorithm"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signature Type: (.*)$/)) {
+                signature["type"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signature Validation: (.*)$/)) {
+                signature["valid"] = matches[1] === "Signature is Valid.";
+            } else if(matches = lines[idx].match(/^\s+- (Not total document signed|Total document signed)$/)) {
+                signature["wholeDocumentSigned"] = matches[1] === "Total document signed";
+            }
+        }
+
+        if (karate.keysOf(signature).length > 0) {
+            result.push(signature);
+        }
+
+        return result;
+    };
+    // @deprecated
     config.utils.signature['getPdfSignatures'] = function (path) {
         var cmd = [ "pdfsig", "-nocert", path ],
             idx,

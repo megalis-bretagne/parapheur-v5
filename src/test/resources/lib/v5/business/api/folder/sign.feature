@@ -8,14 +8,16 @@ Feature: IP v.5 REST folder lib
 
         * __arg["certificate"] = templates.certificate.default(__arg.certificate)
         # @todo: __arg["metadata"]
-        # @todo: __arg["position"]
 
         # 2. Récupération et lecture du dossier
         * def tenant = v5.business.api.tenant.getByName(__arg.tenant)
         * def desktop = v5.business.api.desktop.getByName(tenant.id, __arg.desktop)
         * def folder = v5.business.api.folder.getByName(tenant.id, desktop.id, "pending", __arg.folder)
 
-        # 3.1. Signature du dossier - récupération des hashes des documents à signer du dossier
+        # 3. Repositionnement signature (le cas échéant)
+        * if (typeof __arg.positions !== "undefined") karate.call('classpath:lib/v5/business/api/folder/signaturePlacements.feature', { tenant: tenant, desktop: desktop, folder: folder, positions: __arg.positions })
+
+        # 4.1. Signature du dossier - récupération des hashes des documents à signer du dossier
         * url baseUrl
         * def certBase64 = utils.certificate.base64Public("file://" + karate.toAbsolutePath(__arg.certificate.public))
         * path "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/dataToSign"
@@ -25,10 +27,10 @@ Feature: IP v.5 REST folder lib
         * method GET
         * status 200
 
-        # 3.2. Signature du dossier - signature des hashes
+        # 4.2. Signature du dossier - signature des hashes
         * def signatures = v5.utils.folder.signatures(__arg.certificate.private, response)
 
-        # 3.2. Signature du dossier - envoi des hashes signés
+        # 4.2. Signature du dossier - envoi des hashes signés
         * def taskId = karate.jsonPath(folder, "$.stepList[?(@.state=='PENDING')].id")
         * path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/folder/" + folder.id + "/task/" + taskId + "/sign"
         * header Accept = "application/json"

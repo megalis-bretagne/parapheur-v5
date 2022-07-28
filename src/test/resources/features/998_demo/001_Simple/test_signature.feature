@@ -1,7 +1,7 @@
 @x-wip
 # @todo: utiliser l'entité "Formats de signature"
 # @todo: 1 fichier de feature par dossier testé
-# @todo: ajouter les paquets nécessaire pour l'intégration continue + dans le README-karatte
+# @todo: mettre à jour (simplifier, nouvelles méthodes) ou supprimer
 Feature: Test signatures IP 5
 
     # @info: il manque un type dans ce tenant...
@@ -29,10 +29,10 @@ Feature: Test signatures IP 5
 
         Examples:
             | tenant      | username       | password | desktop    | mainFile!                                                                                            | type        | subtype      | nameTemplate | annotation |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath("PDF_avec_tags.pdf")                                                                       | ACTES       | Délibération | xxx          | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | commonpath.get("PDF_avec_tags.pdf")                                                                       | ACTES       | Délibération | xxx          | démarrage  |
             | Démo simple | ws@demo-simple | a123456  | WebService | 'classpath:files/formats/PDF_avec_tags/PDF_avec_tags-signature_pades.pdf'                            | ACTES       | Délibération | yyy          | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | {'file': classpath("PDF_avec_tags.pdf"), 'detached': classpath("PDF_avec_tags/signature_cades.p7s")} | Automatique | Signature    | aaa          | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | {'file': classpath("PDF_avec_tags.pdf"), 'detached': classpath("PDF_avec_tags/signature_xades.xml")} | Automatique | Signature    | bbb          | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | {'file': commonpath.get("PDF_avec_tags.pdf"), 'detached': commonpath.get("PDF_avec_tags/signature_cades.p7s")} | Automatique | Signature    | aaa          | démarrage  |
+            | Démo simple | ws@demo-simple | a123456  | WebService | {'file': commonpath.get("PDF_avec_tags.pdf"), 'detached': commonpath.get("PDF_avec_tags/signature_xades.xml")} | Automatique | Signature    | bbb          | démarrage  |
 
     Scenario Outline: Création du dossier "${name}" de type "${type} / ${subtype}" avec 2 annexes par ${username}
         * api_v1.auth.login("<username>", "<password>")
@@ -50,13 +50,13 @@ Feature: Test signatures IP 5
         Then status 201
 
         # @info: si besoin de signatures détachées
-        #* v5.business.api.folder.addDetachedSignature(response, params, mainFiles[0], classpath("PDF_avec_tags/signature_cades.p7s"))
+        #* v5.business.api.draft.addDetachedSignature(response, params, mainFiles[0], commonpath.get("PDF_avec_tags/signature_cades.p7s"))
 
         * karate.call('classpath:lib/v5/business/api/draft/send.feature', karate.merge(__row, { path: params.path }))
 
         Examples:
             | tenant      | username       | password | desktop    | mainFiles!                       | type  | subtype      | name | annotation | annexes!                                                                |
-            | Démo simple | ws@demo-simple | a123456  | WebService | [classpath("PDF_avec_tags.pdf")] | ACTES | Délibération | ccc  | démarrage  | [classpath("document_libre_office.odt"), classpath("document_rtf.rtf")] |
+            | Démo simple | ws@demo-simple | a123456  | WebService | [commonpath.get("PDF_avec_tags.pdf")] | ACTES | Délibération | ccc  | démarrage  | [commonpath.get("document_libre_office.odt"), commonpath.get("document_rtf.rtf")] |
 
     Scenario Outline: Signature du dossier "${folder}" par ${username}
         * api_v1.auth.login("<username>", "<password>")
@@ -92,11 +92,11 @@ Feature: Test signatures IP 5
     "annexes": {}
 }
 """
-        * match karate.read(downloadpath.document(files, "PDF_avec_tags.pdf")) == karate.read(classpath("PDF_avec_tags.pdf"))
+        * match karate.read(downloadpath.document(files, "PDF_avec_tags.pdf")) == karate.read(commonpath.get("PDF_avec_tags.pdf"))
 
-        * match karate.read(downloadpath.detached(files, "PDF_avec_tags-0-signature_externe.p7s")) == karate.read(classpath("PDF_avec_tags/signature_cades.p7s"))
+        * match karate.read(downloadpath.detached(files, "PDF_avec_tags-0-signature_externe.p7s")) == karate.read(commonpath.get("PDF_avec_tags/signature_cades.p7s"))
 
-        * utils.signature.checkPkcs7(karate.toAbsolutePath(classpath("PDF_avec_tags.pdf")), downloadpath.detached(files, "PDF_avec_tags-1-Frédéric Losserand.p7s", ""), karate.toAbsolutePath(templates.certificate.default("signature")["public"]))
+        * utils.signature.checkPkcs7(karate.toAbsolutePath(commonpath.get("PDF_avec_tags.pdf")), downloadpath.detached(files, "PDF_avec_tags-1-Frédéric Losserand.p7s", ""), karate.toAbsolutePath(templates.certificate.default("signature")["public"]))
 
     Scenario: Vérifications des documents du dossier "xxx"
         * api_v1.auth.login("ws@demo-simple", "a123456")
@@ -210,5 +210,5 @@ Feature: Test signatures IP 5
         * match utils.signature.getPdfSignatures(downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
 
         # Vérification des fichiers non signés (annexes)
-        * match karate.read(downloadpath.annexe(files, "document_libre_office.odt")) == karate.read(classpath("document_libre_office.odt"))
-        * match karate.read(downloadpath.annexe(files, "document_rtf.rtf")) == karate.read(classpath("document_rtf.rtf"))
+        * match karate.read(downloadpath.annexe(files, "document_libre_office.odt")) == karate.read(commonpath.get("document_libre_office.odt"))
+        * match karate.read(downloadpath.annexe(files, "document_rtf.rtf")) == karate.read(commonpath.get("document_rtf.rtf"))

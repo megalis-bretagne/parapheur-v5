@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @proposal
+@business @formats-de-signature @folder @proposal @ignore
 Feature: Création de dossiers pour le paramétrage métier "Formats de signature"
 
     Scenario Outline: Create ${count} "${subtype}" draft folders ${withOrWithout} annex

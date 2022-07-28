@@ -6,7 +6,7 @@ Feature: IP v.5 REST draft lib
         * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "démarrage", __arg.name)
 
         Given url baseUrl
-            And path __arg.path + "/" + response.id
+            And path __arg.path + "/" + __arg.draft.id
             And header Accept = "application/json"
             And request { "publicAnnotation": "#(publicAnnotation)", "privateAnnotation": "#(privateAnnotation)" }
         When method PUT

@@ -7,6 +7,31 @@
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 ```
 
+### Vérification des signatures XAdES détachées
+
+```
+# @todo; pige pas DigestValue: sha256sum ../document_rtf.rtf | sed "s/ .*$//g" | python -m base64 -e
+# @info: 20220727 ->
+# @todo: vérifier le jeton xml....
+# @see https://github.com/esig/dss
+# @see https://github.com/thorgate/pyasice/tree/main/pyasice
+# @see https://github.com/Good-Samaritan/signature-demo
+# @see https://github.com/m32/endesive/blob/master/examples/xml-xmlsigner-verify.py
+# @see https://www.w3.org/Signature/2001/04/05-xmldsig-interop.html
+# @see https://githubhelp.com/PeculiarVentures/xmldsigjs
+# @see https://cknotes.com/online-xml-digital-signature-validators/
+# @see ++ http://tools.chilkat.io/xmlDsigVerify.cshtml#generatedCode
+# https://www.chilkatsoft.com/chilkat2-python.asp#linuxDownloads
+# @see ++ https://support.kemptechnologies.com/hc/en-us/articles/217970743-Verifying-XML-Signatures
+# Non
+# sudo apt install libdigidoc-tools
+
+# Non
+# sudo apt install xmlsec1
+# xmlsec1 --verify --trusted-pem root_ca.pem --untrusted-pem intermediate_ca_1.pem --untrusted-pem intermediate_ca_2.pem sample-signed.xml
+# xmlsec1 --verify  sample-signed.xml
+```
+
 ### IP 5
 
 ```bash
