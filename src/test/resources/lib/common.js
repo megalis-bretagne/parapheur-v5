@@ -51,6 +51,8 @@ function fn(config) {
             "document_rtf.rtf": "classpath:files/formats/document_rtf/document_rtf.rtf",
             "document_rtf/signature_cades.p7s": "classpath:files/formats/document_rtf/signature_cades.p7s",
             "document_rtf/signature_xades.xml": "classpath:files/formats/document_rtf/signature_xades.xml",
+            "PESALR1_unsigned.xml": "classpath:files/formats/PESALR1_unsigned.xml",
+            "pesWithASAP_unsigned.xml": "classpath:files/formats/pesWithASAP_unsigned.xml",
             "PDF_avec_tags.pdf": "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
             "PDF_avec_tags/signature_cades.p7s": "classpath:files/formats/PDF_avec_tags/signature_cades.p7s",
             "PDF_avec_tags/signature_xades.xml": "classpath:files/formats/PDF_avec_tags/signature_xades.xml",
