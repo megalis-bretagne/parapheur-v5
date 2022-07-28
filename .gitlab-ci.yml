@@ -30,7 +30,9 @@ variables: &global-variables
   OVERRIDE_DOCKER_COMPOSE_FILE_DEV: "docker-compose.override.dev.yml"
   OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  NIGHTLY: "FALSE"
+  NIGHTLY:
+    value: "FALSE"
+    description: "If set to NIGHTLY, will start the nightly jobs"
 
 .e2e-test-config:
   variables: &e2e-test-config
