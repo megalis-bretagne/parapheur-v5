@@ -8,5 +8,5 @@ Feature: Tenant setup lib
             And request { name: '#(name)'}
         When method POST
         Then status 201
-            And match $ == schemas.tenant.element
+            And match $ contains { "id": "#uuid", "name": "#string" }
             And match $.name == '#(name)'
