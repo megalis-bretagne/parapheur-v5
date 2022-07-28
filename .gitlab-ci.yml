@@ -63,7 +63,7 @@ variables: &global-variables
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
-    RESET_DATA: 1
+    RESET_DATA: 0
   environment: &dev-environment
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
