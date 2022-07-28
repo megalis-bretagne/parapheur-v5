@@ -27,6 +27,9 @@ variables:
   NIGHTLY:
     value: "FALSE"
     description: "If set to NIGHTLY, will start the nightly jobs"
+  FORCE_RESET_DATA:
+    value: "FALSE"
+    description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
@@ -38,7 +41,7 @@ variables:
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
-    RESET_DATA: 1
+    RESET_DATA: "TRUE"
   environment: &e2e-test-environment
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -48,7 +51,7 @@ variables:
     TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 0
+    RESET_DATA: "FALSE"
     OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
   environment: &acceptance-environment
     name: Recette
@@ -60,7 +63,7 @@ variables:
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
-    RESET_DATA: 0
+    RESET_DATA: "FALSE"
   environment: &dev-environment
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
@@ -155,10 +158,11 @@ publish:
 
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
+  - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} pull"
-  - if [[ ${RESET_DATA} == 1 ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
+  - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
   - echo -e "⌛️️ \e[46mWaiting for the application to be up\e[0m ⏳"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
