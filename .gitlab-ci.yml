@@ -23,7 +23,7 @@ stages:
   - deploy
   - e2e-tests
 
-variables:
+variables: &global-variables
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
@@ -31,6 +31,33 @@ variables:
   OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
   INIT_SCRIPT: "ip5-compose-dev.sh"
   NIGHTLY: "FALSE"
+
+.e2e-test-config:
+  variables: &e2e-test-config
+    <<: *global-variables
+    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
+    RESET_DATA: 1
+
+.acceptance-config:
+  variables: &acceptance-config
+    <<: *global-variables
+    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: 0
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
+
+.dev-config:
+  variables: &dev-config
+    <<: *global-variables
+    TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
+    RESET_DATA: 1
 
 # <editor-fold desc="Package">
 
@@ -151,12 +178,7 @@ strict-e2e-tests-deploy-manual:
     - develop
     - tags
   allow_failure: false
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
-    RESET_DATA: 1
+  variables: *e2e-test-config
   environment:
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -169,12 +191,7 @@ strict-e2e-tests-deploy:
     - develop
     - tags
   allow_failure: false
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
-    RESET_DATA: 1
+  variables: *e2e-test-config
   environment:
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -188,12 +205,7 @@ tolerant-e2e-tests-deploy:
     - package
     - strict-e2e-tests-test
   only: [ develop ]
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
-    RESET_DATA: 1
+  variables: *e2e-test-config
   environment:
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -202,12 +214,7 @@ acceptance-deploy-on-tag:
   extends: [ .deploy-job ]
   stage: deploy
   only: [ tags ]
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: 0
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
+  variables: *acceptance-config
   environment:
     name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
@@ -217,12 +224,7 @@ acceptance-deploy-manual:
   stage: deploy
   except: [ tags ]
   when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
-    RESET_DATA: 0
+  variables: *acceptance-config
   environment:
     name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
@@ -234,12 +236,7 @@ dev-deploy:
     - if: $NIGHTLY == "NIGHTLY"
       when: always
   when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
-    RESET_DATA: 1
+  variables: *dev-config
   environment:
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
