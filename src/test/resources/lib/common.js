@@ -17,7 +17,7 @@
  */
 
 function fn(config) {
-    config['downloadpath'] = {};
+        config['downloadpath'] = {};
     // @todo: fail si le jsonPath ne retourne rien
     config.downloadpath['annexe'] = function(files, basename, prefix) {
         prefix = typeof prefix === "undefined" ? "file://" : prefix;
@@ -57,6 +57,7 @@ function fn(config) {
             "PDF_sans_tags.pdf": "classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf",
             "PDF_sans_tags/signature_cades.p7s": "classpath:files/formats/PDF_sans_tags/signature_cades.p7s",
             "PDF_sans_tags/signature_xades.xml": "classpath:files/formats/PDF_sans_tags/signature_xades.xml",
+            "PDF_sans_tags-signature_pades.pdf": "classpath:files/formats/PDF_sans_tags/PDF_sans_tags-signature_pades.pdf",
         };
         if (paths.hasOwnProperty(basename) === true) {
             return paths[basename];
@@ -392,6 +393,8 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 signature["commonName"] = matches[1];
             } else if(matches = lines[idx].match(/^\s+- Signer full Distinguished Name: (.*)$/)) {
                 signature["distinguishedName"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Signing Time: (.*)$/)) {
+                signature["timestamp"] = new Date(matches[1]).getTime();
             } else if(matches = lines[idx].match(/^\s+- Signing Hash Algorithm: (.*)$/)) {
                 signature["algorithm"] = matches[1];
             } else if(matches = lines[idx].match(/^\s+- Signature Type: (.*)$/)) {
@@ -405,6 +408,11 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
 
         if (karate.keysOf(signature).length > 0) {
             result.push(signature);
+        }
+
+        result.sort(function compare(a, b) { if (a.timestamp < b.timestamp) return -1; if (a.timestamp > b.timestamp) return 1; return 0; } );
+        for (idx=0;idx<result.length;idx++) {
+            delete result[idx].timestamp;
         }
 
         return result;

@@ -33,5 +33,5 @@ Feature: Automatique - Signature - RTF - signe_cades
         # Documents originaux
         * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
         * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf-0-signature_externe.p7s") == commonpath.read("document_rtf/signature_cades.p7s")
-        #  Fichier de signature
+        # Fichier de signature
         * utils.signature.pkcs7.check(commonpath.absolute("document_rtf.rtf"), download.base + "/documents/document_rtf.rtf/document_rtf-1-Gilles Nacarat.p7s", karate.toAbsolutePath(templates.certificate.default("signature")["public"]))

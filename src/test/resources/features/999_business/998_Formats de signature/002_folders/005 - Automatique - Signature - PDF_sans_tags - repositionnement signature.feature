@@ -24,7 +24,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
         * def download = v5.business.api.folder.download("Formats de signature", "WebService", "finished", "Automatique - Signature - PDF_sans_tags - repositionnement signature")
         * match download.files == ["documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf"]
 
-        # Signature
+        # Document signé
         * def expectedSignatures =
 """
 [

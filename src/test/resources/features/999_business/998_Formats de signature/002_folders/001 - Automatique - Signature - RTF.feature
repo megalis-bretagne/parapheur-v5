@@ -31,5 +31,5 @@ Feature: Automatique - Signature - RTF
 """
         # Document original
         * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
-        #  Fichier de signature
+        # Fichier de signature
         * utils.signature.pkcs7.check(commonpath.absolute("document_rtf.rtf"), download.base + "/documents/document_rtf.rtf/document_rtf-1-Gilles Nacarat.p7s", karate.toAbsolutePath(templates.certificate.default("signature")["public"]))

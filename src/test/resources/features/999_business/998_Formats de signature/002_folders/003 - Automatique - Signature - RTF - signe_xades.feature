@@ -32,5 +32,5 @@ Feature: Automatique - Signature - RTF - signe_xades
         # Documents originaux
         * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
         * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf-0-signature_externe.xml") == commonpath.read("document_rtf/signature_xades.xml")
-        #  Fichier de signature
+        # Fichier de signature
         # @todo: vérifier le jeton xades détaché
