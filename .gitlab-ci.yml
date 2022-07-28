@@ -40,6 +40,9 @@ variables: &global-variables
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
     RESET_DATA: 1
+  environment: &e2e-test-environment
+    name: Charge/Tests e2e
+    url: https://${E2E_TESTS_TARGET_SERVER_URL}
 
 .acceptance-config:
   variables: &acceptance-config
@@ -49,6 +52,9 @@ variables: &global-variables
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: 0
     OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE}
+  environment: &acceptance-environment
+    name: Recette
+    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
 
 .dev-config:
   variables: &dev-config
@@ -58,6 +64,9 @@ variables: &global-variables
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     OVERRIDE_DOCKER_COMPOSE_FILE: ${OVERRIDE_DOCKER_COMPOSE_FILE_DEV}
     RESET_DATA: 1
+  environment: &dev-environment
+    name: Dev
+    url: https://${DEV_TARGET_SERVER_URL}
 
 # <editor-fold desc="Package">
 
@@ -179,9 +188,7 @@ strict-e2e-tests-deploy-manual:
     - tags
   allow_failure: false
   variables: *e2e-test-config
-  environment:
-    name: Charge/Tests e2e
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  environment: *e2e-test-environment
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -192,9 +199,7 @@ strict-e2e-tests-deploy:
     - tags
   allow_failure: false
   variables: *e2e-test-config
-  environment:
-    name: Charge/Tests e2e
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  environment: *e2e-test-environment
 
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
@@ -206,18 +211,14 @@ tolerant-e2e-tests-deploy:
     - strict-e2e-tests-test
   only: [ develop ]
   variables: *e2e-test-config
-  environment:
-    name: Charge/Tests e2e
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
+  environment: *e2e-test-environment
 
 acceptance-deploy-on-tag:
   extends: [ .deploy-job ]
   stage: deploy
   only: [ tags ]
   variables: *acceptance-config
-  environment:
-    name: Recette
-    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
+  environment: *acceptance-environment
 
 acceptance-deploy-manual:
   extends: [ .deploy-job ]
@@ -225,9 +226,7 @@ acceptance-deploy-manual:
   except: [ tags ]
   when: manual
   variables: *acceptance-config
-  environment:
-    name: Recette
-    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
+  environment: *acceptance-environment
 
 dev-deploy:
   extends: [ .deploy-job ]
@@ -239,9 +238,7 @@ dev-deploy:
       when: never
     - when: manual
   variables: *dev-config
-  environment:
-    name: Dev
-    url: https://${DEV_TARGET_SERVER_URL}
+  environment: *dev-environment
 
 # </editor-fold desc="Deploy">
 
