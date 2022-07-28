@@ -10,6 +10,6 @@ Feature: IP v.5 REST tenant lib
         * param withAdminRights = __arg.withAdminRights
         * method GET
         * status 200
-        * def jsonPath = "$.data[?(@.name=='" + __arg.name + "')]"
+        * def jsonPath = "$.content[?(@.name=='" + __arg.name + "')]"
         * match karate.jsonPath(response, jsonPath).length != 0
         * def tenant = karate.jsonPath(response, jsonPath)[0]
