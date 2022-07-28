@@ -23,20 +23,19 @@ stages:
   - deploy
   - e2e-tests
 
-variables: &global-variables
+variables:
+  NIGHTLY:
+    value: "FALSE"
+    description: "If set to NIGHTLY, will start the nightly jobs"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
   OVERRIDE_DOCKER_COMPOSE_FILE_DEV: "docker-compose.override.dev.yml"
   OVERRIDE_DOCKER_COMPOSE_FILE_ACCEPTANCE: "docker-compose.override.tests-linux.yml"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  NIGHTLY:
-    value: "FALSE"
-    description: "If set to NIGHTLY, will start the nightly jobs"
 
 .e2e-test-config:
   variables: &e2e-test-config
-    <<: *global-variables
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
@@ -48,7 +47,6 @@ variables: &global-variables
 
 .acceptance-config:
   variables: &acceptance-config
-    <<: *global-variables
     TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
@@ -60,7 +58,6 @@ variables: &global-variables
 
 .dev-config:
   variables: &dev-config
-    <<: *global-variables
     TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
