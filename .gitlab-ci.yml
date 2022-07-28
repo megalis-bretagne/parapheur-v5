@@ -235,7 +235,6 @@ dev-deploy:
   rules:
     - if: $NIGHTLY == "NIGHTLY"
       when: always
-    - if: $NIGHTLY != "NIGHTLY"
   variables: *dev-config
   when: manual
   environment:
