@@ -26,7 +26,7 @@ stages:
 variables:
   NIGHTLY:
     value: "FALSE"
-    description: "If set to NIGHTLY, will start the nightly jobs"
+    description: "If set to TRUE, will start the nightly jobs"
   FORCE_RESET_DATA:
     value: "FALSE"
     description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
@@ -233,7 +233,7 @@ dev-deploy:
   extends: [ .deploy-job ]
   stage: deploy
   rules:
-    - if: $NIGHTLY == "NIGHTLY"
+    - if: $NIGHTLY == "TRUE"
       when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
