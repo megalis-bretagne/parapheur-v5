@@ -235,8 +235,8 @@ dev-deploy:
   rules:
     - if: $NIGHTLY == "NIGHTLY"
       when: always
-  when: manual
   variables: *dev-config
+  when: manual
   environment:
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
