@@ -18,8 +18,8 @@ Feature: IP v.5 REST folder lib
         * if (typeof __arg.positions !== "undefined") karate.call('classpath:lib/v5/business/api/folder/signaturePlacements.feature', { tenant: tenant, desktop: desktop, folder: folder, positions: __arg.positions })
 
         # 4.1. Signature du dossier - récupération des hashes des documents à signer du dossier
-        * url baseUrl
         * def certBase64 = utils.certificate.base64Public("file://" + karate.toAbsolutePath(__arg.certificate.public))
+        * url baseUrl
         * path "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/dataToSign"
         * param deskId = desktop.id
         * param certBase64 = certBase64
@@ -32,6 +32,7 @@ Feature: IP v.5 REST folder lib
 
         # 4.2. Signature du dossier - envoi des hashes signés
         * def taskId = karate.jsonPath(folder, "$.stepList[?(@.state=='PENDING')].id")
+        * url baseUrl
         * path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/folder/" + folder.id + "/task/" + taskId + "/sign"
         * header Accept = "application/json"
         * def payload =
