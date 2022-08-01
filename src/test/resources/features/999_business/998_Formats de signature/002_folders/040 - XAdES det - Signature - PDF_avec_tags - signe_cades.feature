@@ -1,37 +1,40 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: XAdES det - Signature - PDF_avec_tags - signe_cades
 
-    Scenario Outline: Création et démarrage du dossier par ${username}
-        * api_v1.auth.login("<username>", "<password>")
-        * v5.business.api.draft.createAndSendSimple(__row)
+    Background:
+        * def type = "XAdES det"
+        * def subtype = "Signature"
+        * def name = "XAdES det - Signature - PDF_avec_tags - signe_cades"
+        * def files = [ { file: "PDF_avec_tags.pdf", detached: "PDF_avec_tags/signature_cades.p7s" } ]
+
+    Scenario: Création des dossiers
+        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+
+    Scenario Outline: Vérifications de la liste des fichiers (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match download.files == [ "PDF_avec_tags.pdf", "PDF_avec_tags-0-signature_externe.p7s", "PDF_avec_tags-1-<user>.xml" ]
 
         Examples:
-            | tenant               | username | password | desktop    | mainFiles!                                                                       | type      | subtype   | name                                                | annotation |
-            | Formats de signature | ws-fds   | a123456  | WebService | [ { file: "PDF_avec_tags.pdf", detached: "PDF_avec_tags/signature_cades.p7s" } ] | XAdES det | Signature | XAdES det - Signature - PDF_avec_tags - signe_cades | démarrage  |
+            | details        | key       | user             |
+            | sans surcharge | normal    | Florence Garance |
+            | avec surcharge | surcharge | Gilles Nacarat   |
 
-    Scenario Outline: Signature du dossier par "${username}" sur le bureau "${desktop}"
-        * api_v1.auth.login("<username>", "<password>")
-
-        * call read("classpath:lib/v5/business/api/folder/sign.feature") __row
+    Scenario Outline: Vérifications des fichiers non signés (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match karate.read("file://" + download.base + "/PDF_avec_tags.pdf") == commonpath.read("PDF_avec_tags.pdf")
+        * match karate.read("file://" + download.base + "/PDF_avec_tags-0-signature_externe.p7s") == commonpath.read("PDF_avec_tags/signature_cades.p7s")
 
         Examples:
-            | tenant               | username | password | desktop | folder                                              | certificate | annotation |
-            | Formats de signature | gnacarat | a123456  | Nacarat | XAdES det - Signature - PDF_avec_tags - signe_cades | signature   | signature  |
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
 
-    Scenario: Vérifications des documents du dossier par "ws-fds" en fin de circuit sur le bureau "WebService"
-        * api_v1.auth.login("ws-fds", "a123456")
-
-        * def download = v5.business.api.folder.download("Formats de signature", "WebService", "finished", "XAdES det - Signature - PDF_avec_tags - signe_cades")
-        * match download.files ==
-"""
-[
-    "documents/PDF_avec_tags.pdf/PDF_avec_tags.pdf",
-    "documents/PDF_avec_tags.pdf/PDF_avec_tags-0-signature_externe.p7s"
-    "documents/PDF_avec_tags.pdf/PDF_avec_tags-1-Gilles Nacarat.xml"
-]
-"""
-        # Documents originaux
-        * match karate.read("file://" + download.base + "/documents/PDF_avec_tags.pdf/PDF_avec_tags.pdf") == commonpath.read("PDF_avec_tags.pdf")
-        * match karate.read("file://" + download.base + "/documents/PDF_avec_tags.pdf/PDF_avec_tags-0-signature_externe.p7s") == commonpath.read("PDF_avec_tags/signature_cades.p7s")
-        # Fichier de signature
+    @todo-karate
+    Scenario Outline: Vérifications des signatures détachées (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
         # @todo: vérifier le jeton xades détaché
+
+        Examples:
+            | details        | key       | user             |
+            | sans surcharge | normal    | Florence Garance |
+            | avec surcharge | surcharge | Gilles Nacarat   |
