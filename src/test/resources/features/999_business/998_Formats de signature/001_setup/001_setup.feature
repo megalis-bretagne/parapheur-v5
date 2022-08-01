@@ -16,6 +16,7 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               |
+            | Formats de signature | fgarance | fgarance@dom.local | Florence  | Garance  | a123456  | NONE      | disabled                   |                                                                  |
             | Formats de signature | gnacarat | gnacarat@dom.local | Gilles    | Nacarat  | a123456  | NONE      | disabled                   | TITRE="Responsable des méthodes",VILLE="Agde",CODEPOSTAL="34300" |
             | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |
 
@@ -23,9 +24,9 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/api/setup/desk.create.feature') __row
 
         Examples:
-            | tenant               | name       | owners!                | parent! | associated! | permissions!                                                         |
-            | Formats de signature | Nacarat    | ['gnacarat@dom.local'] | ''      | []          | {'action': true}                                                     |
-            | Formats de signature | WebService | ['ws-fds@dom.local']   | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
+            | tenant               | name       | owners!                                      | parent! | associated! | permissions!                                                         |
+            | Formats de signature | Nacarat    | ['fgarance@dom.local', 'gnacarat@dom.local'] | ''      | []          | {'action': true}                                                     |
+            | Formats de signature | WebService | ['ws-fds@dom.local']                         | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
         * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
@@ -83,4 +84,5 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | email              | path                                            |
+            | Formats de signature | fgarance@dom.local | classpath:files/images/signature - fgarance.png |
             | Formats de signature | gnacarat@dom.local | classpath:files/images/signature - gnacarat.png |

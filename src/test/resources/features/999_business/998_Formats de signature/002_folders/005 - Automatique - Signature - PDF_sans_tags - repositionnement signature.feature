@@ -39,3 +39,16 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
 ]
 """
         * match utils.signature.pdf.get(download.base + "/documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf") == expectedSignatures
+
+        # Propriétés de la signature
+        * def expectedFields =
+"""
+[
+    {
+      "signedBy": "Prenom Nom - Usages 0255a1b4395ffb247515869e69fcf51a89ba478b",
+      "reason": "Nacarat",
+      "location": "Montpellier"
+    }
+]
+"""
+        * match utils.signature.pdf.getFields(download.base + "/documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf") == expectedFields

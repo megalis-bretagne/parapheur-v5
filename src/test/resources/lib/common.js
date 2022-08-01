@@ -420,6 +420,43 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
 
         return result;
     };
+    config.utils.signature.pdf['getFields'] = function (path) {
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), path],
+            idx,
+            lines,
+            matches,
+            proc,
+            result = [],
+            fields = {};
+        proc = karate.fork(cmd);
+        proc.waitSync();
+        /*if (proc.exitCode !== 0) {
+            karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
+        }*/
+        tmp = proc.sysOut.replace(/\n$/, '');
+        lines = tmp.split(/\r?\n/).filter(element => element);
+
+        for (idx=0;idx<lines.length;idx++) {
+            if (matches = lines[idx].match(/^- ([0-9]+):$/)) {
+                if (karate.keysOf(fields).length > 0) {
+                    result.push(fields);
+                }
+                fields = {};
+            } else if(matches = lines[idx].match(/^\s+- Signed By: (.*)$/)) {
+                fields["signedBy"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Reason: (.*)$/)) {
+                fields["reason"] = matches[1];
+            } else if(matches = lines[idx].match(/^\s+- Location: (.*)$/)) {
+                fields["location"] = matches[1];
+            }
+        }
+
+        if (karate.keysOf(fields).length > 0) {
+            result.push(fields);
+        }
+
+        return result;
+    };
     // @deprecated
     config.utils.signature['getPdfSignatures'] = function (path) {
         var cmd = [ "pdfsig", "-nocert", path ],

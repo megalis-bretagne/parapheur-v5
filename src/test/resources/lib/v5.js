@@ -86,6 +86,20 @@ function fn(config) {
         return rv.tenant;
     };
 
+    // REST API "Formats de signature" lib
+    config.v5.business['formatsDeSignature'] = {};
+    config.v5.business.formatsDeSignature['sign'] = function(type, subtype, name, files) {
+        var params = {
+                mainFiles: files,
+                type: type,
+                subtype: subtype,
+                name: name
+            };
+        karate.callSingle("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
+        karate.callSingle("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
+        return (karate.call("classpath:lib/v5/business/Formats de signature/downloadFolder.feature", { name: name }))["download"];
+    };
+
     config.v5['utils'] = {};
     config.v5.utils['folder'] = {};
     // @todo: faire pour v4
@@ -106,12 +120,13 @@ function fn(config) {
             url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id;
             content = karate.call('classpath:lib/common/get.feature', { url: url });
             if (document.isMainDocument === true) {
-                path = "documents/" + document.name + "/" + document.name;
-                karate.write(content.bytes, basePath + "/" + path);
+                path = document.name;
+                //karate.write(content.bytes, basePath + "/" + path);
                 result.push(path);
             } else {
+                // @fixme: téléchargement des annexes dans le bon sous-dossier
                 path = "annexes/" + document.name;
-                karate.write(content.bytes, basePath + "/" + path);
+                //karate.write(content.bytes, basePath + "/" + path);
                 result.push(path);
             }
 
@@ -120,8 +135,8 @@ function fn(config) {
                 detached = document.detachedSignatures[idxDet];
                 url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
                 content = karate.call('classpath:lib/common/get.feature', { url: url });
-                path = "documents/" + document.name + "/" + detached.name;
-                karate.write(content.bytes, basePath + "/" + path);
+                path = detached.name;
+                //karate.write(content.bytes, basePath + "/" + path);
                 result.push(path);
             }
         }
