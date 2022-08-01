@@ -6,10 +6,13 @@ Feature: Automatique - Signature - PDF_sans_tags - signe_pades
         * def subtype = "Signature"
         * def name = "Automatique - Signature - PDF_sans_tags - signe_pades"
         * def files = [ { file: "PDF_sans_tags-signature_pades.pdf" } ]
-        * def download = v5.business.formatsDeSignature.sign(type, subtype, name, files)
+
+    Scenario: Création des dossiers
+        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${details})
-        * match download["<key>"].files == [ "PDF_sans_tags-signature_pades.pdf" ]
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match download.files == [ "PDF_sans_tags-signature_pades.pdf" ]
 
         Examples:
             | details        | key       |
@@ -17,6 +20,7 @@ Feature: Automatique - Signature - PDF_sans_tags - signe_pades
             | avec surcharge | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
         * def expected =
 """
 [
@@ -38,7 +42,7 @@ Feature: Automatique - Signature - PDF_sans_tags - signe_pades
     }
 ]
 """
-        * match utils.signature.pdf.get(download["<key>"].base + "/PDF_sans_tags-signature_pades.pdf") == expected
+        * match utils.signature.pdf.get(download.base + "/PDF_sans_tags-signature_pades.pdf") == expected
 
         Examples:
             | details        | key       |
@@ -47,6 +51,7 @@ Feature: Automatique - Signature - PDF_sans_tags - signe_pades
 
     @fixme-ip
     Scenario Outline: Vérifications des propriétés des signatures (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
         * def expected =
 """
 [
@@ -62,7 +67,7 @@ Feature: Automatique - Signature - PDF_sans_tags - signe_pades
     }
 ]
 """
-        * match utils.signature.pdf.getFields(download["<key>"].base + "/PDF_sans_tags-signature_pades.pdf") == expected
+        * match utils.signature.pdf.getFields(download.base + "/PDF_sans_tags-signature_pades.pdf") == expected
 
         Examples:
             | details        | key       | signedBy            | reason                    | location    |

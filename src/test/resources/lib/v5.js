@@ -88,16 +88,22 @@ function fn(config) {
 
     // REST API "Formats de signature" lib
     config.v5.business['formatsDeSignature'] = {};
-    config.v5.business.formatsDeSignature['sign'] = function(type, subtype, name, files) {
+    config.v5.business.formatsDeSignature['downloadFinished'] = function(name) {
+        api_v1.auth.login("ws-fds", "a123456");
+        return v5.business.api.folder.download("Formats de signature", "WebService", "finished", name);
+    };
+    config.v5.business.formatsDeSignature['sign'] = function(type, subtype, name, files, positions) {
         var params = {
                 mainFiles: files,
                 type: type,
                 subtype: subtype,
                 name: name
             };
-        karate.callSingle("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
-        karate.callSingle("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
-        return (karate.call("classpath:lib/v5/business/Formats de signature/downloadFolder.feature", { name: name }))["download"];
+        if (typeof positions !== "undefined") {
+            params["positions"] = positions;
+        }
+        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
+        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
     };
 
     config.v5['utils'] = {};

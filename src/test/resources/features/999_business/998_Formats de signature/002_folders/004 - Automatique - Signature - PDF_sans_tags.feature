@@ -1,54 +1,62 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: Automatique - Signature - PDF_sans_tags
 
-    Scenario Outline: Création et démarrage du dossier par ${username}
-        * api_v1.auth.login("<username>", "<password>")
-        * v5.business.api.draft.createAndSendSimple(__row)
+    Background:
+        * def type = "Automatique"
+        * def subtype = "Signature"
+        * def name = "Automatique - Signature - PDF_sans_tags"
+        * def files = [ { file: "PDF_sans_tags.pdf" } ]
+
+    Scenario: Création des dossiers
+        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+
+    Scenario Outline: Vérifications de la liste des documents (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match download.files == [ "PDF_sans_tags.pdf" ]
 
         Examples:
-            | tenant               | username | password | desktop    | mainFiles!                        | type        | subtype   | name                                    | annotation |
-            | Formats de signature | ws-fds   | a123456  | WebService | [ { file: "PDF_sans_tags.pdf" } ] | Automatique | Signature | Automatique - Signature - PDF_sans_tags | démarrage  |
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
 
-    Scenario Outline: Signature du dossier par "${username}" sur le bureau "${desktop}"
-        * api_v1.auth.login("<username>", "<password>")
-
-        * call read("classpath:lib/v5/business/api/folder/sign.feature") __row
-
-        Examples:
-            | tenant               | username | password | desktop | folder                                  | certificate | annotation |
-            | Formats de signature | gnacarat | a123456  | Nacarat | Automatique - Signature - PDF_sans_tags | signature   | signature  |
-
-    Scenario: Vérifications des documents du dossier par "ws-fds" en fin de circuit sur le bureau "WebService"
-        * api_v1.auth.login("ws-fds", "a123456")
-
-        * def download = v5.business.api.folder.download("Formats de signature", "WebService", "finished", "Automatique - Signature - PDF_sans_tags")
-        * match download.files == ["documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf"]
-
-        # Document signé
-        * def expectedSignatures =
-"""
-[
-  {
-    "commonName": "Prenom Nom - Usages",
-    "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
-    "algorithm": "SHA-256",
-    "type": "ETSI.CAdES.detached",
-    "wholeDocumentSigned": true,
-    "valid": true
-  }
-]
-"""
-        * match utils.signature.pdf.get(download.base + "/documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf") == expectedSignatures
-
-        # Propriétés de la signature
-        * def expectedFields =
+    Scenario Outline: Vérifications des signatures électroniques (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
 """
 [
     {
-      "signedBy": "Prenom Nom - Usages 0255a1b4395ffb247515869e69fcf51a89ba478b",
-      "reason": "Nacarat",
-      "location": "Montpellier"
+        "commonName": "Prenom Nom - Usages",
+        "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
+        "algorithm": "SHA-256",
+        "type": "ETSI.CAdES.detached",
+        "wholeDocumentSigned": true,
+        "valid": true
     }
 ]
 """
-        * match utils.signature.pdf.getFields(download.base + "/documents/PDF_sans_tags.pdf/PDF_sans_tags.pdf") == expectedFields
+        * match utils.signature.pdf.get(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
+
+    @fixme-ip
+    Scenario Outline: Vérifications des propriétés des signatures (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
+"""
+[
+    {
+        "signedBy": "<signedBy>",
+        "reason": "<reason>",
+        "location": "<location>"
+    }
+]
+"""
+        * match utils.signature.pdf.getFields(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | details        | key       | signedBy            | reason                    | location    |
+            | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
+            | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |

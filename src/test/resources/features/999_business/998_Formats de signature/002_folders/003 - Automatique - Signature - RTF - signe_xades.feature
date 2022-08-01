@@ -1,36 +1,40 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: Automatique - Signature - RTF - signe_xades
 
-    Scenario Outline: Création et démarrage du dossier par ${username}
-        * api_v1.auth.login("<username>", "<password>")
-        * v5.business.api.draft.createAndSendSimple(__row)
+    Background:
+        * def type = "Automatique"
+        * def subtype = "Signature"
+        * def name = "Automatique - Signature - RTF - signe_xades"
+        * def files = [ { file: "document_rtf.rtf", detached: "document_rtf/signature_xades.xml" } ]
+
+    Scenario: Création des dossiers
+        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+
+    Scenario Outline: Vérifications de la liste des fichiers (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match download.files == [ "document_rtf.rtf", "document_rtf-0-signature_externe.xml", "document_rtf-1-<user>.xml" ]
 
         Examples:
-            | tenant               | username | password | desktop    | mainFiles!                                                                      | type        | subtype   | name                                        | annotation |
-            | Formats de signature | ws-fds   | a123456  | WebService | [ { file: "document_rtf.rtf", detached: "document_rtf/signature_xades.xml" } ]  | Automatique | Signature | Automatique - Signature - RTF - signe_xades | démarrage  |
+            | details        | key       | user             |
+            | sans surcharge | normal    | Florence Garance |
+            | avec surcharge | surcharge | Gilles Nacarat   |
 
-    Scenario Outline: Signature du dossier par "${username}" sur le bureau "${desktop}"
-        * api_v1.auth.login("<username>", "<password>")
-        * call read("classpath:lib/v5/business/api/folder/sign.feature") __row
+    Scenario Outline: Vérifications des fichiers non signés (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match karate.read("file://" + download.base + "/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
+        * match karate.read("file://" + download.base + "/document_rtf-0-signature_externe.xml") == commonpath.read("document_rtf/signature_xades.xml")
 
         Examples:
-            | tenant               | username | password | desktop | folder                                      | certificate | annotation |
-            | Formats de signature | gnacarat | a123456  | Nacarat | Automatique - Signature - RTF - signe_xades | signature   | signature  |
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
 
-    Scenario: Vérifications des documents du dossier par "ws-fds" en fin de circuit sur le bureau "WebService"
-        * api_v1.auth.login("ws-fds", "a123456")
-
-        * def download = v5.business.api.folder.download("Formats de signature", "WebService", "finished", "Automatique - Signature - RTF - signe_xades")
-        * match download.files ==
-"""
-[
-    "documents/document_rtf.rtf/document_rtf.rtf",
-    "documents/document_rtf.rtf/document_rtf-0-signature_externe.xml"
-    "documents/document_rtf.rtf/document_rtf-1-Gilles Nacarat.xml"
-]
-"""
-        # Documents originaux
-        * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
-        * match karate.read("file://" + download.base + "/documents/document_rtf.rtf/document_rtf-0-signature_externe.xml") == commonpath.read("document_rtf/signature_xades.xml")
-        # Fichier de signature
+    @todo-karate
+    Scenario Outline: Vérifications des signatures détachées (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
         # @todo: vérifier le jeton xades détaché
+
+        Examples:
+            | details        | key       | user             |
+            | sans surcharge | normal    | Florence Garance |
+            | avec surcharge | surcharge | Gilles Nacarat   |

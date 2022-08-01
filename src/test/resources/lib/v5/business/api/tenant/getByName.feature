@@ -3,10 +3,10 @@ Feature: IP v.5 REST tenant lib
 
     Scenario: Get available tenant by name
         * url baseUrl
-        * path "/api/v1/tenant/"
-        * param asc = true
+        * path "/api/v1/tenant"
         * param page = 0
-        * param pageSize = 10000
+        * param size = 1000
+        * param sort = "name,ASC"
         * param withAdminRights = __arg.withAdminRights
         * method GET
         * status 200
