@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: XAdES det - Signature - PDF_avec_tags - signe_xades
 
     Background:

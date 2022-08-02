@@ -92,6 +92,19 @@ function fn(config) {
         api_v1.auth.login("ws-fds", "a123456");
         return v5.business.api.folder.download("Formats de signature", "WebService", "finished", name);
     };
+    config.v5.business.formatsDeSignature['seal'] = function(type, subtype, name, files, positions) {
+        var params = {
+                mainFiles: files,
+                type: type,
+                subtype: subtype,
+                name: name
+            };
+        if (typeof positions !== "undefined") {
+            params["positions"] = positions;
+        }
+        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSealFolderNormal.feature", params);
+        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSealFolderSurcharge.feature", params);
+    };
     config.v5.business.formatsDeSignature['sign'] = function(type, subtype, name, files, positions) {
         var params = {
                 mainFiles: files,

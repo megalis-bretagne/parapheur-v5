@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: XAdES det - Signature - RTF - signe_xades
 
     Background:

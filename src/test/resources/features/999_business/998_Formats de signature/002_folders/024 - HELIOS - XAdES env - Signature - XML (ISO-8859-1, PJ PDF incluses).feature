@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @fixme-ip @new-ok
+@business @formats-de-signature @folder @fixme-ip
 Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
 
     Background:

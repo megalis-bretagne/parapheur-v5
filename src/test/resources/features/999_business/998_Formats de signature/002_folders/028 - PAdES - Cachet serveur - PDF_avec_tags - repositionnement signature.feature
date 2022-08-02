@@ -1,41 +1,62 @@
 @business @formats-de-signature @folder
 Feature: PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature
 
-    Scenario Outline: Création et démarrage du dossier par ${username}
-        * api_v1.auth.login("<username>", "<password>")
-        * v5.business.api.draft.createAndSendSimple(__row)
+    Background:
+        * def type = "PAdES"
+        * def subtype = "Cachet serveur"
+        * def name = "PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature"
+        * def files = [ { file: "PDF_avec_tags.pdf" } ]
+        * def positions = { "PDF_avec_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} }
+
+    Scenario: Création des dossiers
+        * v5.business.formatsDeSignature.seal(type, subtype, name, files, positions)
+
+    Scenario Outline: Vérifications de la liste des documents (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * match download.files == [ "PDF_avec_tags.pdf" ]
 
         Examples:
-            | tenant               | username | password | desktop    | mainFiles!                        | type  | subtype        | name                                                                | annotation |
-            | Formats de signature | ws-fds   | a123456  | WebService | [ { file: "PDF_avec_tags.pdf" } ] | PAdES | Cachet serveur | PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature | démarrage  |
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
 
-    Scenario Outline: Apposition du cacht serveur sur le dossier par "${username}" sur le bureau "${desktop}"
-        * api_v1.auth.login("<username>", "<password>")
-
-        * call read("classpath:lib/v5/business/api/folder/seal.feature") __row
-
-        Examples:
-            | tenant               | username | password | desktop | folder                                                              | certificate | annotation | positions!                                                                |
-            | Formats de signature | gnacarat | a123456  | Nacarat | PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature | signature   | signature  | { "PDF_avec_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} } |
-
-    Scenario: Vérifications des documents du dossier par "ws-fds" en fin de circuit sur le bureau "WebService"
-        * api_v1.auth.login("ws-fds", "a123456")
-
-        * def download = v5.business.api.folder.download("Formats de signature", "WebService", "finished", "PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature")
-        * match download.files == ["documents/PDF_avec_tags.pdf/PDF_avec_tags.pdf"]
-
-        # Document signé
-        * def expectedSignatures =
+    Scenario Outline: Vérifications des signatures électroniques (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
 """
 [
-  {
-    "commonName": "Christian Buffin - Default tenant - Cachet serveur",
-    "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Christian Buffin - Default tenant - Cachet serveur,OU=Default tenant - Cachet serveur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
-    "algorithm": "SHA-256",
-    "type": "ETSI.CAdES.detached",
-    "wholeDocumentSigned": true,
-    "valid": true
-  }
+      {
+            "commonName": "Christian Buffin - Default tenant - Cachet serveur",
+            "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Christian Buffin - Default tenant - Cachet serveur,OU=Default tenant - Cachet serveur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
+            "algorithm": "SHA-256",
+            "type": "ETSI.CAdES.detached",
+            "wholeDocumentSigned": true,
+            "valid": true
+      }
 ]
 """
-        * match utils.signature.pdf.get(download.base + "/documents/PDF_avec_tags.pdf/PDF_avec_tags.pdf") == expectedSignatures
+        * match utils.signature.pdf.get(download.base + "/PDF_avec_tags.pdf") == expected
+
+        Examples:
+            | details        | key       |
+            | sans surcharge | normal    |
+            | avec surcharge | surcharge |
+
+    Scenario Outline: Vérifications des propriétés des signatures (${details})
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
+"""
+[
+    {
+        "signedBy": "",
+        "reason": "",
+        "location": ""
+    }
+]
+"""
+        * match utils.signature.pdf.getFields(download.base + "/PDF_avec_tags.pdf") == expected
+
+        Examples:
+            | details        | key       | signedBy            | reason                    | location    |
+            | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
+            | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
