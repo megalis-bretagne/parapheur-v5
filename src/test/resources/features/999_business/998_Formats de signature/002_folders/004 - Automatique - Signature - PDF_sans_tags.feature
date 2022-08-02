@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: Automatique - Signature - PDF_sans_tags
 
     Background:
@@ -60,3 +60,52 @@ Feature: Automatique - Signature - PDF_sans_tags
             | details        | key       | signedBy            | reason                    | location    |
             | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+
+    Scenario Outline: Vérifications des annotations (${details})
+        # @todo: après correction dans IP, fusionner avec le suivanrt
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
+"""
+{
+    "1": {
+        "1":{
+            "position": "[0, 0, 200, 70]",
+            "text":[
+                "<line1>",
+                "<line2>",
+                "#(v5.business.regexp.annotation.date)"
+            ]
+        }
+    }
+}
+"""
+        * match utils.signature.pdf.getAnnotations(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | details        | key       | line1            | line2                     |
+            | sans surcharge | normal    | Florence Garance | Nacarat                   |
+
+    @fixme-ip
+    Scenario Outline: Vérifications des annotations (${details})
+        # @todo: après correction dans IP, fusionner avec le précédent
+        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+        * def expected =
+"""
+{
+    "1": {
+        "1":{
+            "position": "[0, 0, 200, 70]",
+            "text":[
+                "<line1>",
+                "<line2>",
+                "#(v5.business.regexp.annotation.date)"
+            ]
+        }
+    }
+}
+"""
+        * match utils.signature.pdf.getAnnotations(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | details        | key       | line1            | line2                     |
+            | avec surcharge | surcharge | Gilles Nacarat   | Responsable des méthodes  |

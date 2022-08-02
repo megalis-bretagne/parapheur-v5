@@ -118,6 +118,9 @@ function fn(config) {
         karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
         karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
     };
+    config.v5.business["regexp"] = {};
+    config.v5.business.regexp["annotation"] = {};
+    config.v5.business.regexp.annotation["date"] = "#regex [0-9]{1,2} (janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre) [0-9]{4}";
 
     config.v5['utils'] = {};
     config.v5.utils['folder'] = {};

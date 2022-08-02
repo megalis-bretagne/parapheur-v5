@@ -420,8 +420,20 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
 
         return result;
     };
+    config.utils.signature.pdf['getAnnotations'] = function (path) {
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), "annotations", path],
+            idx,
+            lines,
+            matches,
+            proc,
+            result = [],
+            fields = {};
+        proc = karate.fork(cmd);
+        proc.waitSync();
+        return karate.fromString(proc.sysOut);
+    };
     config.utils.signature.pdf['getFields'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), "signatures", path],
             idx,
             lines,
             matches,
