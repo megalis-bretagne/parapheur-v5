@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: CAdES - Signature - PDF_avec_tags
 
     Background:

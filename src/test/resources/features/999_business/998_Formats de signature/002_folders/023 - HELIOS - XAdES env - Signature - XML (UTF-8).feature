@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
 
     Background:

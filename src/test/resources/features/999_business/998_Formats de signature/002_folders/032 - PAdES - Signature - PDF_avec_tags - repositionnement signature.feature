@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
 
     Background:

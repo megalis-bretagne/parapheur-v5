@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @new-ok
+@business @formats-de-signature @folder
 Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
 
     Background:
