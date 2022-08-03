@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: CAdES - Signature - RTF - signe_xades
 
     Background:
