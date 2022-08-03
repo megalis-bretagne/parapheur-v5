@@ -73,6 +73,7 @@ function fn() {
     config = karate.call('classpath:lib/v4.js', config);
     config = karate.call('classpath:lib/v5.js', config);
     config = karate.call('classpath:lib/templates.js', config);
+    config = karate.call('classpath:lib/ip.js', config);
 
     return config;
 }

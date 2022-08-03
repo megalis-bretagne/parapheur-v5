@@ -10,30 +10,30 @@ Feature: XAdES det - Signature - RTF
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
-    Scenario Outline: Vérifications de la liste des fichiers (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des fichiers (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "document_rtf.rtf", "document_rtf-1-<user>.xml" ]
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |
 
-    Scenario Outline: Vérifications des fichiers non signés (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des fichiers non signés (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match karate.read("file://" + download.base + "/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
     @todo-karate
-    Scenario Outline: Vérifications des signatures détachées (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des signatures détachées (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         # @todo: vérifier le jeton xades détaché
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |

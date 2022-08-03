@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: Automatique - Signature - PDF_avec_tags - signe_pades
 
     Background:
@@ -10,66 +10,65 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
-    Scenario Outline: Vérifications de la liste des documents (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des documents (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags-signature_pades.pdf" ]
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
-    Scenario Outline: Vérifications des signatures électroniques (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des signatures électroniques (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
-    {
-        "commonName": "Christian Noir - Recette i-parapheur",
-        "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Christian Noir - Recette i-parapheur,OU=Recette i-parapheur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
-        "algorithm": "SHA-256",
-        "type": "ETSI.CAdES.detached",
-        "wholeDocumentSigned": false,
-        "valid": true
-    },
-    {
-        "commonName": "Prenom Nom - Usages",
-        "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
-        "algorithm": "SHA-256",
-        "type": "ETSI.CAdES.detached",
-        "wholeDocumentSigned": true,
-        "valid": true
-    }
+    "#(ip.signature.pades.certificates.default('signature-cnoir', false))",
+    "#(ip.signature.pades.certificates.default('signature-user'))"
 ]
 """
-        * match utils.signature.pdf.get(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
+        * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
     @fixme-ip
-    Scenario Outline: Vérifications des propriétés des signatures (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des propriétés des signatures (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
-    {
-        "signedBy": "Christian Noir - Recette i-parapheur",
-        "reason": "Responsable des méthodes",
-        "location": "Montpellier"
-    },
-    {
-        "signedBy": "<signedBy>",
-        "reason": "<reason>",
-        "location": "<location>"
-    }
+    "#(ip.signature.pades.fields.default('Christian Noir - Recette i-parapheur', 'Responsable des méthodes', 'Montpellier'))",
+    "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))"
 ]
 """
-        * match utils.signature.pdf.getFields(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
+        * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
 
         Examples:
-            | details        | key       | signedBy            | reason                    | location    |
-            | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | key       | signedBy            | reason                    | location    |
+            | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+
+    @fixme-ip
+    Scenario Outline: Vérifications des annotations (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected =
+"""
+{
+    "page 1": {
+        "1": "#(v4.signature.pades.annotations.default('[350, 6, 519, 59]', 'Christian Noir', 'Responsable des méthodes'))"
+    },
+    "page 3": {
+        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+    }
+}
+"""
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
+
+        Examples:
+            | key       | position            | line1            | line2                    |
+            | normal    | [70, 338, 270, 408] | Florence Garance | Nacarat                  |
+            | surcharge | [70, 338, 270, 408] | Gilles Nacarat   | Responsable des méthodes |

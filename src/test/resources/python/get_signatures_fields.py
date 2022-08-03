@@ -73,26 +73,21 @@ try:
         for idx in range(len(reader.pages)):
             page = reader.pages[idx]
             if "/Annots" in page:
-#                 print("- " + str(idx+1))
-                result[str(idx+1)] = {}
+                keyPage = "page " + str(idx+1)
+                result[keyPage] = {}
                 for idxa in range(len(page["/Annots"])):
                     annot = page["/Annots"][idxa]
-#                     print("  - " + str(idxa + 1))
-                    result[str(idx+1)][str(idxa + 1)] = {}
+                    result[keyPage][str(idxa + 1)] = {}
                     obj = annot.get_object()
-                    result[str(idx+1)][str(idxa + 1)]["position"] = repr(obj["/Rect"])
-#                     print("    - position: " + repr(obj["/Rect"]))
-#                     print("    - text: ")
-                    result[str(idx+1)][str(idxa + 1)]["text"] = []
+                    result[keyPage][str(idxa + 1)]["position"] = repr(obj["/Rect"])
+                    result[keyPage][str(idxa + 1)]["text"] = []
                     for line in obj["/AP"]["/N"].getData().splitlines():
                         match_normal = re.match(re_normal, line.decode("utf-8"))
                         match_hexa = re.match(re_hexa, line.decode("utf-8"))
                         if match_normal is not None:
-                            result[str(idx+1)][str(idxa + 1)]["text"].append(match_normal[1])
-#                             print("      - " + match_normal[1])
+                            result[keyPage][str(idxa + 1)]["text"].append(match_normal[1])
                         elif match_hexa is not None:
-                            result[str(idx+1)][str(idxa + 1)]["text"].append(decode_pdfdocencoding(codecs.decode(match_hexa[1], 'hex')))
-#                             print("      - " + decode_pdfdocencoding(codecs.decode(match_hexa[1], 'hex')))
+                            result[keyPage][str(idxa + 1)]["text"].append(decode_pdfdocencoding(codecs.decode(match_hexa[1], 'hex')))
         print(json.dumps(result))
     # Signatures
     elif sys.argv[1] == "signatures":

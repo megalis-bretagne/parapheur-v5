@@ -64,6 +64,7 @@ function fn(config) {
             rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
         return rv.download;
     };
+    // @deprecated
     config.v5.business.api.folder['downloadFiles'] = function(tenant, desktop, state, name) {
         var params = { "tenant": tenant, "desktop": desktop, "state": state, "name": name },
             rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
@@ -88,9 +89,15 @@ function fn(config) {
 
     // REST API "Formats de signature" lib
     config.v5.business['formatsDeSignature'] = {};
-    config.v5.business.formatsDeSignature['downloadFinished'] = function(name) {
-        api_v1.auth.login("ws-fds", "a123456");
-        return v5.business.api.folder.download("Formats de signature", "WebService", "finished", name);
+    config.v5.business.formatsDeSignature['download'] = function(state, name) {
+        var desktop;
+        if (state === "finished") {
+            api_v1.auth.login("ws-fds", "a123456");
+            desktop = "WebService";
+        } else {
+            // @todo
+        }
+        return v5.business.api.folder.download("Formats de signature", desktop, state, name);
     };
     config.v5.business.formatsDeSignature['seal'] = function(type, subtype, name, files, positions) {
         var params = {

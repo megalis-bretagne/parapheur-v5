@@ -10,20 +10,20 @@ Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
-    Scenario Outline: Vérifications de la liste des fichiers (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des fichiers (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "pesWithASAP_unsigned.xml" ]
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |
 
-    Scenario Outline: Vérifications des signatures électroniques (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des signatures électroniques (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         # @todo: vérifier le fichier PES/XAdES enveloppé
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |

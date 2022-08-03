@@ -10,17 +10,17 @@ Feature: PAdES - Cachet serveur - PDF_avec_tags
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.seal(type, subtype, name, files)
 
-    Scenario Outline: Vérifications de la liste des documents (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des documents (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags.pdf" ]
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
-    Scenario Outline: Vérifications des signatures électroniques (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des signatures électroniques (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -34,15 +34,15 @@ Feature: PAdES - Cachet serveur - PDF_avec_tags
       }
 ]
 """
-        * match utils.signature.pdf.get(download.base + "/PDF_avec_tags.pdf") == expected
+        * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
-    Scenario Outline: Vérifications des propriétés des signatures (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des propriétés des signatures (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -53,9 +53,9 @@ Feature: PAdES - Cachet serveur - PDF_avec_tags
     }
 ]
 """
-        * match utils.signature.pdf.getFields(download.base + "/PDF_avec_tags.pdf") == expected
+        * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | details        | key       | signedBy            | reason                    | location    |
-            | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | key       | signedBy            | reason                    | location    |
+            | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |

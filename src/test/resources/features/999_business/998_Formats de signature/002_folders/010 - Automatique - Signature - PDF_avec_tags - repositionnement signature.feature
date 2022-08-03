@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: Automatique - Signature - PDF_avec_tags - repositionnement signature
 
     Background:
@@ -6,57 +6,55 @@ Feature: Automatique - Signature - PDF_avec_tags - repositionnement signature
         * def subtype = "Signature"
         * def name = "Automatique - Signature - PDF_avec_tags - repositionnement signature"
         * def files = [ { file: "PDF_avec_tags.pdf" } ]
+        * def positions = { "PDF_avec_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} }
 
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files, positions)
 
-    Scenario Outline: Vérifications de la liste des documents (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des documents (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags.pdf" ]
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
-    Scenario Outline: Vérifications des signatures électroniques (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
-        * def expected =
-"""
-[
-    {
-        "commonName": "Prenom Nom - Usages",
-        "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
-        "algorithm": "SHA-256",
-        "type": "ETSI.CAdES.detached",
-        "wholeDocumentSigned": true,
-        "valid": true
-    }
-]
-"""
-        * match utils.signature.pdf.get(download.base + "/PDF_avec_tags.pdf") == expected
+    Scenario Outline: Vérifications des signatures électroniques (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
+        * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
     @fixme-ip
-    Scenario Outline: Vérifications des propriétés des signatures (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
-        * def expected =
-"""
-[
-    {
-        "signedBy": "<signedBy>",
-        "reason": "<reason>",
-        "location": "<location>"
-    }
-]
-"""
-        * match utils.signature.pdf.getFields(download.base + "/PDF_avec_tags.pdf") == expected
+    Scenario Outline: Vérifications des propriétés des signatures (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
+        * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | details        | key       | signedBy            | reason                    | location    |
-            | sans surcharge | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | avec surcharge | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | key       | signedBy            | reason                    | location    |
+            | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+
+    @fixme-ip
+    Scenario Outline: Vérifications des annotations (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected =
+"""
+{
+    "page 1": {
+        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+    }
+}
+"""
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
+
+        Examples:
+            | key       | position             | line1            | line2                    |
+            | normal    | [100, 665, 300, 735] | Florence Garance | Nacarat                  |
+            | surcharge | [100, 665, 300, 735] | Gilles Nacarat   | Responsable des méthodes |

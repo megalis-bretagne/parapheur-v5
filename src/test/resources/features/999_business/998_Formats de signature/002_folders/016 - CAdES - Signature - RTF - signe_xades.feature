@@ -10,30 +10,30 @@ Feature: CAdES - Signature - RTF - signe_xades
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
-    Scenario Outline: Vérifications de la liste des fichiers (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications de la liste des fichiers (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "document_rtf.rtf", "document_rtf-0-signature_externe.xml", "document_rtf-1-<user>.p7s" ]
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |
 
-    Scenario Outline: Vérifications des fichiers non signés (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
+    Scenario Outline: Vérifications des fichiers non signés (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match karate.read("file://" + download.base + "/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
         * match karate.read("file://" + download.base + "/document_rtf-0-signature_externe.xml") == commonpath.read("document_rtf/signature_xades.xml")
 
         Examples:
-            | details        | key       |
-            | sans surcharge | normal    |
-            | avec surcharge | surcharge |
+            | key       |
+            | normal    |
+            | surcharge |
 
-    Scenario Outline: Vérifications des signatures détachées (${details})
-        * def download = v5.business.formatsDeSignature.downloadFinished(name + " - <key>")
-        * utils.signature.pkcs7.check(download.base + "/document_rtf.rtf", download.base + "/document_rtf-1-<user>.p7s", karate.toAbsolutePath(templates.certificate.default("signature")["public"]))
+    Scenario Outline: Vérifications des signatures détachées (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * ip.signature.cades.check(download.base + "/document_rtf.rtf", download.base + "/document_rtf-1-<user>.p7s")
 
         Examples:
-            | details        | key       | user             |
-            | sans surcharge | normal    | Florence Garance |
-            | avec surcharge | surcharge | Gilles Nacarat   |
+            | key       | user             |
+            | normal    | Florence Garance |
+            | surcharge | Gilles Nacarat   |

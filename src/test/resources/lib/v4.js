@@ -88,6 +88,20 @@ function fn(config) {
         return karate.call(true, 'classpath:lib/v4/business/api/user/login.feature', { "username": username, "password": password });
     };
 
+    config.v4['signature'] = config.v4['signature'] ? config.v4['signature'] : {};
+    config.v4.signature['pades'] = config.v4.signature['pades'] ? config.v4.signature['pades'] : {};
+    config.v4.signature.pades['annotations'] = config.v4.signature.pades['annotations'] ? config.v4.signature.pades['annotations'] : {};
+    config.v4.signature.pades.annotations['default'] = function(position, line1, line2) {
+        return {
+            "position": position,
+            "text":[
+                "Signé électroniquement par : " + line1,
+                "#regex Date de signature : [0-9]{1,2}/[0-9]{2}/[0-9]{4}",
+                "Qualité : " + line2
+            ]
+        };
+    };
+
     config.v4['utils'] = {};
     config.v4.utils['folder'] = {};
     config.v4.utils.folder['signatures'] = function(path, list) {

@@ -96,7 +96,7 @@ Feature: Test signatures IP 5
 
         * match karate.read(downloadpath.detached(files, "PDF_avec_tags-0-signature_externe.p7s")) == karate.read(commonpath.get("PDF_avec_tags/signature_cades.p7s"))
 
-        * utils.signature.checkPkcs7(karate.toAbsolutePath(commonpath.get("PDF_avec_tags.pdf")), downloadpath.detached(files, "PDF_avec_tags-1-Frédéric Losserand.p7s", ""), karate.toAbsolutePath(templates.certificate.default("signature")["public"]))
+        * ip.signature.cades.check(karate.toAbsolutePath(commonpath.get("PDF_avec_tags.pdf")), downloadpath.detached(files, "PDF_avec_tags-1-Frédéric Losserand.p7s", ""))
 
     Scenario: Vérifications des documents du dossier "xxx"
         * api_v1.auth.login("ws@demo-simple", "a123456")
@@ -128,7 +128,7 @@ Feature: Test signatures IP 5
     }
 ]
 """
-        * match utils.signature.getPdfSignatures(downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
+        * match ip.signature.pades.certificates.read(downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
 
     Scenario: Vérifications des documents du dossier "yyy"
         * api_v1.auth.login("ws@demo-simple", "a123456")
@@ -168,7 +168,7 @@ Feature: Test signatures IP 5
   }
 ]
 """
-        * match utils.signature.getPdfSignatures(downloadpath.document(files, "PDF_avec_tags-signature_pades.pdf")) == expectedSignatures
+        * match ip.signature.pades.certificates.read(downloadpath.document(files, "PDF_avec_tags-signature_pades.pdf")) == expectedSignatures
 
     Scenario: Vérifications des fichiers du dossier "ccc"
         * api_v1.auth.login("ws@demo-simple", "a123456")
@@ -207,7 +207,7 @@ Feature: Test signatures IP 5
   }
 ]
 """
-        * match utils.signature.getPdfSignatures(downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
+        * match ip.signature.pades.certificates.read(downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
 
         # Vérification des fichiers non signés (annexes)
         * match karate.read(downloadpath.annexe(files, "document_libre_office.odt")) == karate.read(commonpath.get("document_libre_office.odt"))
