@@ -80,13 +80,14 @@ function fn(config) {
         proc.waitSync();
         return karate.fromString(proc.sysOut);
     };
-    config.ip.signature.pades.annotations['default'] = function(position, line1, line2) {
+    config.ip.signature.pades.annotations['default'] = function(position, line1, line2, line3) {
+        line3 = (typeof line3 === "undefined") ? v5.business.regexp.annotation.date : line3;
         return {
             "position": position,
             "text":[
                 line1,
                 line2,
-                v5.business.regexp.annotation.date
+                line3
             ]
         };
     };
@@ -145,7 +146,16 @@ function fn(config) {
         valid = typeof valid === "undefined" ? true : valid;
         wholeDocumentSigned = typeof wholeDocumentSigned === "undefined" ? true : wholeDocumentSigned;
 
-        if (alias === "signature-user") {
+        if (alias === "seal") {
+            return {
+                "commonName": "Christian Buffin - Default tenant - Cachet serveur",
+                "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Christian Buffin - Default tenant - Cachet serveur,OU=Default tenant - Cachet serveur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
+                "algorithm": "SHA-256",
+                "type": "ETSI.CAdES.detached",
+                "wholeDocumentSigned": wholeDocumentSigned,
+                "valid": true
+            };
+        } else if (alias === "signature-user") {
             return {
                 "commonName": "Prenom Nom - Usages",
                 "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
@@ -164,7 +174,7 @@ function fn(config) {
                 "valid": true
             };
         } else {
-            var msg = "No ip.signature.pades.certificates.default for the \"" + alias + "\" alias. Use one of: signature-user, signature-cnoir";
+            var msg = "No ip.signature.pades.certificates.default for the \"" + alias + "\" alias. Use one of: seal, signature-user, signature-cnoir";
             karate.log(msg);
             karate.fail(msg);
         }

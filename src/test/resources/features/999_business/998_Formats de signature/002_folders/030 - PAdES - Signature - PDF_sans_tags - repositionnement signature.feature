@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
 
     Background:
@@ -22,19 +22,7 @@ Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-[
-    {
-        "commonName": "Prenom Nom - Usages",
-        "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Prenom Nom - Usages,OU=Usages,O=Collectivite ou organisation,L=Ville,ST=34 - Herault,C=FR",
-        "algorithm": "SHA-256",
-        "type": "ETSI.CAdES.detached",
-        "wholeDocumentSigned": true,
-        "valid": true
-    }
-]
-"""
+        * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
@@ -45,19 +33,44 @@ Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
     @fixme-ip
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-[
-    {
-        "signedBy": "<signedBy>",
-        "reason": "<reason>",
-        "location": "<location>"
-    }
-]
-"""
+        * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
             | key       | signedBy            | reason                    | location    |
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+
+    @see-next-scenario
+    Scenario Outline: Vérifications des annotations (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected =
+"""
+{
+    "page 1": {
+        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+    }
+}
+"""
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | key    | position             | line1            | line2   |
+            | normal | [100, 665, 300, 735] | Florence Garance | Nacarat |
+
+    @fixme-ip @see-previous-scenario
+    Scenario Outline: Vérifications des annotations (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected =
+"""
+{
+    "page 1": {
+        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+    }
+}
+"""
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | key       | position             | line1          | line2                    |
+            | surcharge | [100, 665, 300, 735] | Gilles Nacarat | Responsable des méthodes |
