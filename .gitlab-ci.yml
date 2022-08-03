@@ -17,7 +17,6 @@
 #
 
 stages:
-  - test
   - package
   - publish
   - deploy
@@ -34,14 +33,16 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
   INIT_SCRIPT: "ip5-compose-dev.sh"
+  DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml docker-compose.override.tests-linux.yml"
+  DOCKER_COMPOSE_OVERRIDES_TAG: "docker-compose.override.tests-linux.yml"
 
 .e2e-test-config:
   variables: &e2e-test-config
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
     RESET_DATA: "TRUE"
+    OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_TAG}
   environment: &e2e-test-environment
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -52,7 +53,7 @@ variables:
     TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "FALSE"
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.tests-linux.yml"
+    OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_TAG}
   environment: &acceptance-environment
     name: Recette
     url: https://${ACCEPTANCE_TARGET_SERVER_URL}
@@ -62,8 +63,8 @@ variables:
     TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
     RESET_DATA: "FALSE"
+    OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
   environment: &dev-environment
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
@@ -115,25 +116,21 @@ package:
 
 # <editor-fold desc="Publish">
 
-.publish-package: &publish-package
+publish:
+  stage: publish
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: always
+      variables:
+        NEXUS_FINAL_PATH: ${NEXUS_PUBLIC_PATH}
+    - when: manual
+      variables:
+        NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
   script:
     - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
     - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-
-publish_prod:
-  stage: publish
-  only: [ tags ]
-  <<: *publish-package
-  variables:
-    NEXUS_FINAL_PATH: ${NEXUS_PUBLIC_PATH}
-
-publish:
-  stage: publish
-  except: [ tags ]
-  <<: *publish-package
-  when: manual
-  variables:
-    NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
 
 # </editor-fold desc="Publish">
 
@@ -148,23 +145,28 @@ publish:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 .copying-deployment-files: &copying-deployment-files
-  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/\e[0m 📤"
+  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILES} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/\e[0m 📤"
   - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
   - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}"
   - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}
   - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT}"
-  - scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
+  - |
+    for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do
+      scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
+    done 
 
 .deploying-app: &deploying-app
-  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
+  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} pull"
+  - DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
+  - for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do DOCKER_COMPOSE_FILES+=(" -f ${OVERRIDE_DOCKER_COMPOSE_FILE}"); done
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose ${DOCKER_COMPOSE_FILES[@]} pull"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && sudo ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose -f docker-compose.yml -f ${OVERRIDE_DOCKER_COMPOSE_FILE} up -d"
-  - echo -e "⌛️️ \e[46mWaiting for the application to be up\e[0m ⏳"
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose ${DOCKER_COMPOSE_FILES[@]} up -d"
+  - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
   - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
 
@@ -180,24 +182,19 @@ publish:
     - *deploying-app
     - echo -e "🎉🎉🎉 \e[42m${CI_COMMIT_REF_NAME} successfully deployed on ${TARGETED_ENVIRONNEMENT_URL}\e[0m 🎉🎉🎉"
 
-strict-e2e-tests-deploy-manual:
-  extends: [ .deploy-job ]
-  stage: e2e-tests
-  when: manual
-  except:
-    - develop
-    - tags
-  allow_failure: false
-  variables: *e2e-test-config
-  environment: *e2e-test-environment
-
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
   stage: e2e-tests
-  when: always
-  only:
-    - develop
-    - tags
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_TAG != null
+      when: always
+    - if: $NIGHTLY == "TRUE"
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
+    - when: manual
   allow_failure: false
   variables: *e2e-test-config
   environment: *e2e-test-environment
@@ -205,27 +202,24 @@ strict-e2e-tests-deploy:
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
   stage: e2e-tests
-  allow_failure: false
   needs:
     #    must repeat package here because extends overwrites instead of merge properties
     - package
     - strict-e2e-tests-test
   only: [ develop ]
+  allow_failure: false
   variables: *e2e-test-config
   environment: *e2e-test-environment
 
-acceptance-deploy-on-tag:
+acceptance-deploy:
   extends: [ .deploy-job ]
   stage: deploy
-  only: [ tags ]
-  variables: *acceptance-config
-  environment: *acceptance-environment
-
-acceptance-deploy-manual:
-  extends: [ .deploy-job ]
-  stage: deploy
-  except: [ tags ]
-  when: manual
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: always
+    - when: manual
   variables: *acceptance-config
   environment: *acceptance-environment
 
@@ -233,10 +227,10 @@ dev-deploy:
   extends: [ .deploy-job ]
   stage: deploy
   rules:
-    - if: $NIGHTLY == "TRUE"
-      when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
+    - if: $NIGHTLY == "TRUE"
+      when: always
     - when: manual
   variables: *dev-config
   environment: *dev-environment
@@ -245,37 +239,35 @@ dev-deploy:
 
 # <editor-fold desc="E2e tests">
 
-strict-e2e-tests-test:
+.e2e-tests:
   image: markhobson/maven-chrome:jdk-11
   stage: e2e-tests
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-    - job: strict-e2e-tests-deploy-manual
-      optional: true
-  allow_failure: false
   script:
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
-    - ./gradlew test -Dkarate.options="--tags ${KARATE_TAGS} --tags ~@fixme-ip" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
+    - ./gradlew test -Dkarate.options="${KARATE_ADDITIONAL_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
   artifacts:
     when: always
-    name: "Karate - tests strict"
+    name: ${REPORT_NAME}
     paths:
       - build/karate-reports
 
+strict-e2e-tests-test:
+  extends: [ .e2e-tests ]
+  variables:
+    REPORT_NAME: "Karate - tests strict"
+    KARATE_ADDITIONAL_TAGS: "--tags @@demo-simple-bde --tags ~@fixme-ip "
+  needs:
+    - job: strict-e2e-tests-deploy
+      optional: true
+  allow_failure: false
+
 tolerant-e2e-tests-test:
-  image: markhobson/maven-chrome:jdk-11
-  stage: e2e-tests
+  extends: [ .e2e-tests ]
+  variables:
+    REPORT_NAME: "Karate - tests tolerant"
+    KARATE_ADDITIONAL_TAGS: "--tags @@demo-simple-bde "
   needs: [ tolerant-e2e-tests-deploy ]
   only: [ develop ]
   allow_failure: true
-  script:
-    - echo "Test IP ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - Some of these tests could fail. There are known problems and should be correspond to issues in gitlab."
-    - ./gradlew test -Dkarate.options="--tags ${KARATE_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
-  artifacts:
-    when: always
-    name: "Karate - tests tolerant"
-    paths:
-      - build/karate-reports
 
 # </editor-fold desc="E2e tests">
