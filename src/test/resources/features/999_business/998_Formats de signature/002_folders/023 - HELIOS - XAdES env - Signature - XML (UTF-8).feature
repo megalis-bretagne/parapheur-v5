@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @new-ok
 Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
 
     Background:
@@ -21,9 +21,11 @@ Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        # @todo: vérifier le fichier PES/XAdES enveloppé
+        * ip.signature.helios.validate(download.base + "/PESALR1_unsigned.xml")
+        * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }
+        * match ip.signature.helios.extract(download.base + "/PESALR1_unsigned.xml") == expected
 
         Examples:
-            | key       | user             |
-            | normal    | Florence Garance |
-            | surcharge | Gilles Nacarat   |
+            | key       | City        | PostalCode | ClaimedRole              |
+            | normal    | Montpellier | 34000      | Nacarat                  |
+            | surcharge | Agde        | 34300      | Responsable des méthodes |

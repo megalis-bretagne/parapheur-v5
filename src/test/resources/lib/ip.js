@@ -40,6 +40,32 @@ function fn(config) {
         utils.safeExec(cmd);
     };
 
+    config.ip.signature['helios'] = config.ip.signature['helios'] || {};
+    config.ip.signature.helios['validate'] = function(document) {
+        var classpath = "classpath:xsd/schemas_pes_v5.11/PES_V2/Rev0/PES_Aller.xsd",
+            output,
+            schema = karate.toAbsolutePath(classpath);
+        var cmd = [
+            "/bin/sh",
+            "-c",
+            "xmllint --schema \"" + schema + "\" \"" + document + "\" --noout"
+        ];
+        output = utils.safeExec(cmd);
+        if (output.match(/.xml validates$/) === null) {
+            karate.fail('XML document does not validate with schema at ' + classpath + ': ' + document);
+        }
+    };
+    config.ip.signature.helios['extract'] = function(path) {
+        var prefix = "/PES_Aller/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
+            content = karate.read("file://" + path);
+        return {
+            City: karate.xmlPath(content, prefix + "/SignatureProductionPlace/City/text()"),
+            PostalCode: karate.xmlPath(content, prefix + "/SignatureProductionPlace/PostalCode/text()"),
+            CountryName: karate.xmlPath(content, prefix + "/SignatureProductionPlace/CountryName/text()"),
+            ClaimedRole: karate.xmlPath(content, prefix + "/SignerRole/ClaimedRoles/ClaimedRole/text()")
+        };
+    };
+
     config.ip.signature['pades'] = config.ip.signature['pades'] || {};
     config.ip.signature.pades['annotations'] = config.ip.signature.pades['annotations'] || {};
     config.ip.signature.pades.annotations['read'] = function (path) {
