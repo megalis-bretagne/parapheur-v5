@@ -192,12 +192,12 @@ strict-e2e-tests-deploy:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_TAG != null
-      when: always
     - if: $NIGHTLY == "TRUE"
       when: always
       variables:
         OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_TAG != null
+      when: always
     - when: manual
   allow_failure: false
   variables: *e2e-test-config
