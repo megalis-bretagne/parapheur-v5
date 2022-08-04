@@ -16,51 +16,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-server:
-  error:
-    includeException: true
-    includeBindingErrors: always
-    includeStacktrace: always
 
 services:
-  stats.provider: none
   ipng:
     provider: ipng
-    bindings-provider: db
     host: ipng-business
-    # Force reference url to iparapheur.dom.local for downloads
-    local-mode: true
-    
-  # Local services that are not mapped to an environment variable
-  pesviewer.host: iparapheur.dom.local
-  monitoring.host: iparapheur.dom.local
-  transformation.host: iparapheur.dom.local
-  crypto:
-    host: iparapheur.dom.local
-    port: 8085
-  workflow:
-    host: iparapheur.dom.local
-    port: 10080
-  pdfstamp:
-    host: iparapheur.dom.local
-    port: 8889
-  externalsignature:
-    host: iparapheur.dom.local
-    port: 2757
-  securemail:
-    host: iparapheur.dom.local
-    port: 8002
 
-
-logging.level.coop.libriciel: debug
-
-spring:
-  liquibase.enabled: false
-  jpa.hibernate.ddl-auto: update
-
-springdoc:
-  api-docs.enabled: true
-  swagger-ui.oauth.clientId: ipcore-web
 
 ipng:
 #  lastRedisMessage: 1638444072643-0

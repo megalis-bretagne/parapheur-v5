@@ -16,7 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-version: '2.4'
 
 services:
 
@@ -26,7 +25,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     mem_limit: 64M
-    memswap_limit: 64m
+    memswap_limit: 64M
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ./src/main/resources/nginx/stream-confs:/etc/nginx/streams.d
@@ -41,21 +40,23 @@ services:
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
-    mem_limit: 1G
-    memswap_limit: 1G
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev-container
+    mem_limit: 2G
+    memswap_limit: 2G
     ports:
       - "8080:8080"
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-web:ipng-basic-usage
-    mem_limit: 64m
-    memswap_limit: 64m
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    mem_limit: 64M
+    memswap_limit: 64M
     environment:
       - VERSION=5.0.0-develop
     ports:
@@ -63,7 +64,7 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
     mem_limit: 1G
     memswap_limit: 1G
     volumes:
@@ -73,27 +74,27 @@ services:
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/pastell-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
     ports:
       - "8002:8080"
 
 
   external-signature-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/external-signature-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector:develop
     ports:
       - "2757:8080"
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
     ports:
       - "2758:8080"
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8085:8080"
 
@@ -106,14 +107,14 @@ services:
 
   pes-viewer:
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8888:8888"
 
 
   pdf-stamp:
     mem_limit: 256M
-    memswap_limit: 256m
+    memswap_limit: 256M
     ports:
       - "8889:8080"
 
@@ -129,7 +130,7 @@ services:
 
   alfresco:
     mem_limit: 1024M
-    memswap_limit: 1024m
+    memswap_limit: 1024M
     ports:
       - "9009:8080"
 
@@ -141,14 +142,14 @@ services:
 
   #solr6:
   #  mem_limit: 1536M
-  #  memswap_limit: 1536m
+  #  memswap_limit: 1536M
   #  ports:
   #    - 8983:8983
 
 
   postgres:
     mem_limit: 512M
-    memswap_limit: 512m
+    memswap_limit: 512M
     ports:
       - "5432:5432"
 
@@ -162,13 +163,13 @@ services:
 
   matomo:
     mem_limit: 512M
-    memswap_limit: 512m
+    memswap_limit: 512M
 
 
   redis:
     image: redis:6.0-alpine
     mem_limit: 64M
-    memswap_limit: 64m
+    memswap_limit: 64M
     ports:
       - "6379:6379"
 

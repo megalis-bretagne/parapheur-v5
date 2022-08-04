@@ -1,107 +1,93 @@
-@ip-core @api-v1
-Feature: GET /api/admin/tenant/{tenantId}/user (List users)
+@ip-core @api-v1 @admin-user-controller
+Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 	Background:
 		* api_v1.auth.login('user', 'password')
-		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-		* def nonExistingTenantId = api_v1.entity.getNonExistingId()
+		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* call read('classpath:lib/api/setup/tenant.delete.feature') list
 
 	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role can get the list from an existing tenant
-		* api_v1.auth.login('cnoir', 'a123456')
+	Scenario Outline: ${scenario.title.permissions(role, 'get the user list from an existing tenant', status)}
+		* api_v1.auth.login('user', 'password')
+		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+
+		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', existingTenantId, '/user'
 			And header Accept = 'application/json'
 		When method GET
-		Then status 200
-			And match $ == schemas.user.index
-			And match $.total == 5
-			And match $.data[*].userName == [ 'ablanc', 'cnoir', 'stranslucide', 'ltransparent', 'user' ]
+		Then status <status>
+			And if (<status> === 200) utils.assert("$ == schemas.user.index")
+			And if (<status> !== 200) utils.assert("$ == schemas.error")
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with an "ADMIN" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('cnoir', 'a123456')
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 200    |
+			| TENANT_ADMIN     | vgris        | a123456  | 200    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
+
+	@permissions
+	Scenario Outline: ${scenario.title.permissions(role, 'get the user list from a non-existing tenant', status)}
+		* api_v1.auth.login('user', 'password')
+		* def nonExistingTenantId = api_v1.entity.getNonExistingId()
+
+		* api_v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user'
 			And header Accept = 'application/json'
 		When method GET
-		Then status 404
+		Then status <status>
+			And utils.assert("$ == schemas.error")
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot get the list from an existing tenant
-		* api_v1.auth.login('ablanc', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('ablanc', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot get the list from an existing tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot get the list from a non-existing tenant
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot get the list from an existing tenant
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 401
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot get the list from a non-existing tenant
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant/', nonExistingTenantId, '/user'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 401
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 404    |
+			| TENANT_ADMIN     | vgris        | a123456  | 404    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
+			| NONE             | ltransparent | a123456  | 404    |
+			|                  |              |          | 404    |
 
 	@searching
-	Scenario: Searching - a user with an "ADMIN" role can filter and sort the list based on the username
+	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sortBy, asc)}
+		* api_v1.auth.login('user', 'password')
+		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
-			And path '/api/admin/tenant/', existingTenantId, '/user'
+			And path '/api/v1/admin/tenant/', existingTenantId, '/user'
 			And header Accept = 'application/json'
-			And param asc = false
-			And param sortBy = 'USERNAME'
-			And param searchTerm = 'la'
+			And param asc = <asc>
+			And param sortBy = '<sortBy>'
+			And param searchTerm = '<searchTerm>'
 		When method GET
 		Then status 200
 			And match $ == schemas.user.index
-			And match $.total == 2
-			And match $.data[*].userName == [ 'ltransparent', 'ablanc' ]
+			And match $.total == <total>
+			And match $.data[*]['<field>'] == <value>
 
+		Examples:
+			| searchTerm | sortBy     | asc!  | total | field     | value!                                                                 |
+			|            | USERNAME   | true  | 6     | userName  | [ 'ablanc', 'cnoir', 'ltransparent', 'stranslucide', 'user', 'vgris' ] |
+			|            | USERNAME   | false | 6     | userName  | [ 'vgris', 'user', 'stranslucide', 'ltransparent', 'cnoir', 'ablanc' ] |
+			| foo        | USERNAME   | false | 0     | userName  | []                                                                     |
+			| la         | EMAIL      | true  | 2     | email     | [ 'ablanc@dom.local', 'ltransparent@dom.local' ]                       |
+			| la         | EMAIL      | false | 2     | email     | [ 'ltransparent@dom.local', 'ablanc@dom.local' ]                       |
+			| la         | FIRST_NAME | true  | 2     | firstName | [ 'Aurélie', 'Laetitia' ]                                              |
+			| la         | FIRST_NAME | false | 2     | firstName | [ 'Laetitia', 'Aurélie' ]                                              |
+			| la         | LAST_NAME  | true  | 2     | lastName  | [ 'Blanc', 'Transparent' ]                                             |
+			| la         | LAST_NAME  | false | 2     | lastName  | [ 'Transparent', 'Blanc' ]                                             |
+			| la         | USERNAME   | true  | 2     | userName  | [ 'ablanc', 'ltransparent' ]                                           |
+			| la         | USERNAME   | false | 2     | userName  | [ 'ltransparent', 'ablanc' ]                                           |
+			| aurélie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+			| AURÉLIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#		@fixme-ip-core @issue-ip-core-todo
+#		Examples:
+#			| searchTerm | sortBy     | asc!  | total | field     | value!                                                                 |
+#			| aurelie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| AURELIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| aurélié    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| AURÉLIÉ    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |

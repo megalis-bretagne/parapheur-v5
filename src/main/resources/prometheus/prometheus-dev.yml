@@ -15,11 +15,29 @@ scrape_configs:
     static_configs:
       - targets: [ 'host.docker.internal:8085' ]
 
+  - job_name: 'external-signature-connector'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:2757' ]
+
+  - job_name: 'workflow'
+    scrape_interval: 5s
+    metrics_path: '/workflow/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:10080' ]
+
+  - job_name: 'pastell-connector'
+    scrape_interval: 5s
+    metrics_path: '/pastell-connector/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8002' ]
+
   - job_name: 'pdf-stamp'
     scrape_interval: 5s
     metrics_path: '/pdf-stamp/actuator/prometheus'
     static_configs:
-      - targets: [ 'pdf-stamp:8080' ]
+      - targets: [ 'host.docker.internal:8889' ]
 
   - job_name: 'local'
     scrape_interval: 5s
