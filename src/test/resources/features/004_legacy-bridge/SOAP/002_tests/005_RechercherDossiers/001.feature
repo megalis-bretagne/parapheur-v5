@@ -1,7 +1,6 @@
 @legacy-bridge @soap @tests
 Feature: RechercherDossiers - Recherche de dossiers
 
-    @legacy-bridge-issue-18
     Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"
         * if (expected == 0) karate.set("schema", "OK-empty.xml")
         * if (expected == 1) karate.set("schema", "OK-1-result.xml")
@@ -42,9 +41,23 @@ Feature: RechercherDossiers - Recherche de dossiers
             | "efiezuezozt"  | ""               | ""                      | 0         | []                                                                                                            |
             | "Auto monodoc" | "efiezuezozt"    | ""                      | 0         | []                                                                                                            |
             | "Auto monodoc" | "visa avec meta" | "efiezuezozt"           | 0         | []                                                                                                            |
+
         @fixme-ip
-        Examples:
-            | "Auto monodoc" | "visa avec meta" | "Rejet*"                | 3         | ["RejetSignataire","RejetVisa"]                                                                               |
+        # @info: bug karate, on doit pour l'instant dédoubler le test, si on met un tag dans des examples, aucun des autres exemples ne sera joué
+        Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"
+            * if (expected == 0) karate.set("schema", "OK-empty.xml")
+            * if (expected == 1) karate.set("schema", "OK-1-result.xml")
+            * if (expected > 1) karate.set("schema", "OK.xml")
+
+            Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+            When def rv = call read('classpath:lib/soap/requests/RechercherDossiers/simple.feature') params
+            And match utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
+            And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
+            And match rv.response == karate.read('classpath:lib/soap/schemas/RechercherDossiersResponse/' + schema)
+
+            Examples:
+                | type!          | sousType!        | status!  | expected! | statuses!                       |
+                | "Auto monodoc" | "visa avec meta" | "Rejet*" | 3         | ["RejetSignataire","RejetVisa"] |
 
     Scenario: Récupération des dossiers par DossierID
         # 1. Récupération de la liste de DossierID pour le status "Archive"
