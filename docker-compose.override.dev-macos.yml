@@ -119,6 +119,8 @@ services:
 
   feeder:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
+    ports:
+      - "8003:8003"
 
 
   smtp:
