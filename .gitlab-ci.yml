@@ -173,7 +173,11 @@ publish:
 .deploy-job:
   variables:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
-  needs: [ package ]
+  needs:
+    - job: package
+      optional: true
+    - job: package_prod
+      optional: true
   before_script:
     - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
     - *preparing-ssh
