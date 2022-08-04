@@ -1,0 +1,12 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Header>#ignore</S:Header>
+    <S:Body>
+        <CreerDossierResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+            <MessageRetour>
+                <codeRetour>KO</codeRetour>
+                <message>#string</message>
+                <severite>ERROR</severite>
+            </MessageRetour>
+        </CreerDossierResponse>
+    </S:Body>
+</S:Envelope>

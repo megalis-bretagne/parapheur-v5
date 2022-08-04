@@ -1,61 +1,53 @@
-@ip-core @api-v1
-Feature: GET /api/admin/tenant (List tenants)
+@ip-core @api-v1 @admin-tenant-controller
+Feature: GET /api/v1/admin/tenant (List tenants)
+
+	Background:
+		* api_v1.auth.login('user', 'password')
+		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* call read('classpath:lib/api/setup/tenant.delete.feature') list
 
 	@permissions
-	Scenario: Permissions - a user with an "ADMIN" role can get the list
+	Scenario Outline: ${scenario.title.permissions(role, 'get the tenant list', status)}
+		* api_v1.auth.login('<username>', '<password>')
+
+		Given url baseUrl
+			And path '/api/v1/admin/tenant'
+			And header Accept = 'application/json'
+		When method GET
+		Then status <status>
+			And if (<status> === 200) utils.assert("$ == schemas.tenant.index")
+			And if (<status> !== 200) utils.assert("$ == schemas.error")
+
+		Examples:
+			| role             | username     | password | status |
+			| ADMIN            | cnoir        | a123456  | 200    |
+			| TENANT_ADMIN     | vgris        | a123456  | 403    |
+			| FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
+			| NONE             | ltransparent | a123456  | 403    |
+			|                  |              |          | 401    |
+
+	@searching
+	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
 		* api_v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
-			And path '/api/admin/tenant'
+			And path '/api/v1/admin/tenant/'
 			And header Accept = 'application/json'
+			And param asc = <asc>
+			And param sortBy = '<sortBy>'
+			And param searchTerm = '<searchTerm>'
 		When method GET
 		Then status 200
 			And match $ == schemas.tenant.index
-			And match $.total == 3
-			And match $.data[*].name == [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]
+			And match $.total == <total>
+			And match $.data[*]['<field>'] == <value>
 
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "FUNCTIONAL_ADMIN" role cannot get the list
-		* api_v1.auth.login('ablanc', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - a user with a "NONE" role cannot get the list
-		* api_v1.auth.login('ltransparent', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 403
-
-	@permissions @fixme-ip-core
-	Scenario: Permissions - an unauthenticated user cannot get the list
-		* api_v1.auth.login('', '')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-		When method GET
-		Then status 401
-
-	@searching @fixme-ip-core
-	Scenario: Searching - a user with an "ADMIN" role can filter and sort the list based on the tenant name
-		* api_v1.auth.login('cnoir', 'a123456')
-
-		Given url baseUrl
-			And path '/api/admin/tenant'
-			And header Accept = 'application/json'
-			And param asc = false
-			And param sortBy = 'NAME'
-			And param searchTerm = 'el'
-		When method GET
-		Then status 200
-			And match $ == schemas.tenant.index
-			And match $.total == 2
-			And match $.data[*].name == [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]
+		Examples:
+			| searchTerm   | sortBy | asc!  | total | field | value!                                                                       |
+			|              | NAME   | true  | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
+			|              | NAME   | false | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
+			| foo          |        | null  | 0     | name  | []                                                                           |
+			| el           |        | true  | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
+			| el           |        | false | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]                   |
+			| méditerranée |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |
+			| MÉDITERRANÉE |        | null  | 1     | name  | [ 'Montpellier Méditerranée Métropole' ]                                     |

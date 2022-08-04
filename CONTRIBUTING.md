@@ -9,6 +9,17 @@ This project contains a main `docker-compose.yml` file, that should start an i-P
 * `src/test` files for the integration tests (Karate)
 * `src/gatling` files for the performance tests (Gatling)
 
+## URLs
+
+| URL                                                   | Description |
+| ---                                                   | ---         |
+| http://iparapheur.dom.local/                          | IP web UI   |
+| http://iparapheur.dom.local:9009/                     | Alfresco    |
+| http://iparapheur.dom.local:9090/                     | Keycloak    |
+| http://iparapheur.dom.local/matomo/                   | Matomo      |
+| http://iparapheur.dom.local/api/swagger-ui/index.html | Swagger UI  |
+| http://iparapheur.dom.local:8200/                     | Vault       |
+
 ## Windows 10 VirtualBox redirect
 
 Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.  
@@ -65,14 +76,59 @@ $ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
 
 ## Integration tests
 
+### Quick and dirty
+
+#### Resetting the development data
+
+```bash
+# ~ 2 min
+$ ./dev-reset-and-setup.sh --force
+# INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
+```
+
+##### Required software
+
+Developed and tested with the below softwares and versions.
+
+| Software        | Version                |
+| ---             | ---                    |
+| bash            | 4.4.20                 |
+| curl            | 7.58.0                 |
+| docker          | 20.10.5, build 55c4c88 |
+| docker-compose  | 1.27.4, build 40524192 |
+| gradle          | 4.4.1                  |
+| grep (GNU grep) | 3.1                    |
+| openjdk         | 11.0.11 2021-04-20     |
+| python          | 3.6.9                  |
+| sed (GNU sed)   | 4.4                    |
+| ubuntu          | 18.04.5 LTS            |
+
+#### Launching Karate tests
+
+Some issues are yet to be created or closed before some tests can succeed.
+
+- [ip-core - issue #78](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-core/-/issues/78)
+- data validation and some other issues (search for `@issue-ip-core...`, `@issue-ip-web...`, ...) are yet to be created
+- some karate issues (search for `@fixme-karate...`, `@proposal`) should still be fixed
+
+| Command                                                                                                    | Description                                                                                                  | Completed | Failed |
+| ---                                                                                                        | ---                                                                                                          | ---       | ---    |
+| `gradle test -Dkarate.options="--tags @setup"`                                                             | Setup only (currently using ip-core API v. 1)                                                                | 32        | 0      |
+| `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate" --info`     | Run setup and all passing tests (ip-core and ip-web)                                                         | 149       | 0      |
+| `gradle test --info`                                                                                       | Run setup and all tests                                                                                      | 665       | 254    |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info`                          | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 | 300       | 75     |
+| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info` | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes | 156       | 13     |
+
+
 ### Prerequisites
 
 * Gradle 7.0+ for direct commands. Alternatively, the local gradle-wrapper can be used on CLI.
-* Make sure the following environment variables are set and correct (see `./.env.dist`)
-    * `APPLICATION_PROTOCOL`
-    * `APPLICATION_HOST`
-* UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set.
-* Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
+* For the time being, values below are hard-coded in `src/test/resources/karate-config.js`
+    * Make sure the following environment variables are set and correct (see `./.env.dist`)
+        * `APPLICATION_PROTOCOL`
+        * `APPLICATION_HOST`
+    * UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set: `export CHROME_BIN=/usr/bin/chromium-browser`.
+    * Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
 
 ### Files
 
@@ -120,7 +176,20 @@ $ gradle test
 | `-Dkarate.options="--tags @permissions,@searching"`                                                          | Run tests tagged with `@permissions` __or__ `@searching`                                                                  |
 | `-Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"` | Run currently passing tests (not tagged with either `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
 
+##### Getting the tags list
+
+```bash
+./dev-reset-and-setup.sh karate-tags
+```
+
 #### Examples
+
+| `-Dkarate.options="..."` |||
+? | `--tags '@setup or (ip-core and api-v1)'` |||
+| `--tags @ip-core --tags ~@issue-ip-core-78` |||
+
+- `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@ip-web" --info`
+- corrections swagger dans mes issues
 
 ```bash
 # Run all currently passing tests
@@ -133,6 +202,8 @@ $ gradle test -Dkarate.options="--tags @ip-core --tags @api-v1"
 $ gradle test -Dkarate.options="--tags @ip-web"
 # Run the test(s) tagged with the @wip tag with a visible Chrome or Chromium web browser and show some informations in the console
 $ gradle test --info -Dkarate.options="--tags @wip" -Dkarate.headless=false
+# Run all tests, except the ones covered by known issues (98 passed, 68 failed, 166 scenarios, 59 % passing)
+$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78" --info
 ```
 
 #### Available tags

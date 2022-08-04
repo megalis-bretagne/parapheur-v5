@@ -1,0 +1,10 @@
+{
+  "isSuspended": "#boolean",
+  "deploymentId": "#uuid",
+  "name": "#string",
+  "id": "#string",
+  "version": "#number",
+  "steps": null,
+  "key": "#string",
+  "usageCount": "#number"
+}

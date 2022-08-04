@@ -1,5 +1,5 @@
 /*
- * i-Parapheur
+ * iparapheur
  * Copyright (C) 2019-2022 Libriciel SCOP
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,32 @@ function fn() {
     if (!env) {
         env = 'dev';
     }
+    const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
+    const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
 
     var config = {
         env: env,
-        baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
-        CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
-        headless: String(karate.properties['karate.headless']).toLowerCase() !== 'false'
+        //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
+        //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
+        baseUrl: baseUrl,
+        // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
+        // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
+        // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
+        CHROME_BIN: chromeBin,
+        headless: (function () {
+            var headless = String(karate.properties['karate.headless']).toLowerCase();
+            if (headless === '' || headless === 'true') {
+                return true;
+            } else if (headless === 'false') {
+                return false;
+            } else {
+                karate.fail(
+                    'Invalid value for karate.headless ('
+                    + String(karate.properties['karate.headless'])
+                    + '), please use one of: false, true'
+                );
+            }
+        })()
     };
 
     if (env === 'dev') {
@@ -36,11 +56,16 @@ function fn() {
         // e.g. config.foo = 'bar';
     } else if (env === 'e2e') {
         // customize
+    } else if (env === 'ci') {
+        karate.configure('driverTarget', {docker: 'ptrthomas/karate-chrome'});
     }
+
+    karate.configure('headers', {Accept: 'application/json'});
 
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     config = karate.call('classpath:lib/api_v1.js', config);
     config = karate.call('classpath:lib/common.js', config);
+    config = karate.call('classpath:lib/soap.js', config);
     config = karate.call('classpath:lib/ui.js', config);
 
     return config;

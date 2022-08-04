@@ -19,4 +19,4 @@ Feature: Mot de passe oublié
             And match html('body') contains 'Un e-mail va vous être envoyé'
             # @fixme
             And click('a:first-of-type')
-        Then match html('body') contains 'Bienvenue sur la page de connexion iParapheur'
+        Then match html('body') contains 'Bienvenue sur la page de connexion iparapheur'

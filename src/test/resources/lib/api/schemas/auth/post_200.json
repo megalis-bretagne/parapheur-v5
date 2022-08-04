@@ -1,0 +1,10 @@
+{
+  "access_token": "#string",
+  "refresh_token": "#string",
+  "refresh_expires_in": "#number",
+  "not-before-policy": 0,
+  "scope": "#regex (|email profile|fixme-ip-core|profile email|roles)",
+  "token_type": "#regex (bearer|Bearer)",
+  "session_state": "#uuid",
+  "expires_in": "#number"
+}
