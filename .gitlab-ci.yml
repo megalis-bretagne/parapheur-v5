@@ -154,7 +154,7 @@ publish:
   - |
     for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do
       scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
-    done 
+    done
 
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
@@ -250,6 +250,7 @@ dev-deploy:
   image: markhobson/maven-chrome:jdk-11
   stage: e2e-tests
   script:
+    - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libxml2-utils pip poppler-utils && pip3 install Pillow PyPDF2
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
     - ./gradlew test -Dkarate.options="${KARATE_ADDITIONAL_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
   artifacts:
@@ -262,7 +263,7 @@ strict-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict"
-    KARATE_ADDITIONAL_TAGS: "--tags @@demo-simple-bde --tags ~@fixme-ip "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature --tags ~@fixme-ip --tags ~@ip4 "
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
@@ -272,7 +273,7 @@ tolerant-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests tolerant"
-    KARATE_ADDITIONAL_TAGS: "--tags @@demo-simple-bde "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature --tags ~@ip4 "
   needs: [ tolerant-e2e-tests-deploy ]
   only: [ develop ]
   allow_failure: true
