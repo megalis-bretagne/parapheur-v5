@@ -212,6 +212,16 @@ strict-e2e-tests-deploy:
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
   stage: e2e-tests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
+      when: never
+    - if: $NIGHTLY == "TRUE"
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      when: always
+    - when: manual
   needs:
     #    must repeat package here because extends overwrites instead of merge properties
     - job: package
