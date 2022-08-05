@@ -110,6 +110,7 @@ package:
     name: ${PACKAGE_NAME}
     paths:
       - ${PACKAGE_NAME_WITH_EXTENSION}
+    # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
 
 # </editor-fold desc="Package">
