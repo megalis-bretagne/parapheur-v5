@@ -5,9 +5,86 @@
 ```bash
 # IP 4
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
+# IP 5@20220803 - 40m 5s - 610 tests completed, 106 failed
+./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
 ```
 
-### Vérification des signatures XAdES détachées
+---
+
+@see src/test/resources/features/999_business/998_Formats de signature/002_folders/XAdES det/001 - Signature - RTF.feature
+
+// sudo snap install xmlstarlet
+// @todo
+//  /SignedInfo
+// @see https://opensource.com/article/21/4/encryption-decryption-openssl
+// openssl rsa -in "${privateKey}" -pubout > /home/cbuffin/test.pem
+// @see https://stackoverflow.com/questions/32757454/how-to-compute-the-digest-for-the-signedproperties-of-a-xades-signature
+// xml c14n --exc-with-comments /home/cbuffin/_20220804/foo.xml
+
+```bash
+openssl dgst -binary -sha256 bar.xml | openssl enc -base64
+openssl dgst -binary -sha512 /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/src/test/resources/files/certificates/signature/public.pem | openssl enc -base64
+```
+
+- https://pypi.org/project/pyasice/
+- https://pypi.org/project/signxml/
+
+```bash
+# https://serverfault.com/a/1106205
+```
+
+```bash
+#https://serverfault.com/a/515842 (non)
+p12="certificate.p12"
+p12_new="certificate-nopass.p12"
+public="public.crt"
+combined="combined.pem"
+private="private.key"
+ca="ca-cert.ca"
+private_new="private-nopass.key"
+PASSWORD="christian.buffin@libriciel.coop"
+openssl pkcs12 -clcerts -nokeys -in "${p12}" -out "${public}" -password pass:$PASSWORD -passin pass:$PASSWORD
+openssl pkcs12 -cacerts -nokeys -in "${p12}" -out "${ca}" -password pass:$PASSWORD -passin pass:$PASSWORD
+openssl pkcs12 -nocerts -in "${p12}" -out "${private}" -password pass:$PASSWORD -passin pass:$PASSWORD -passout pass:$PASSWORD
+openssl rsa -in "${private}" -out "${private_new}" -passin pass:$PASSWORD
+cat "${private_new}" "${public}" "${ca}" > "${combined}"
+openssl pkcs12 -export -nodes -CAfile "${ca}" -in "${combined}" -out "${p12_new}"
+
+openssl pkcs12 -in "certificate.p12" -nodes -out temp.pem
+openssl pkcs12 -export -in temp.pem  -out "certificate-unprotected.p12"
+```
+
+### Vérification des dossiers en fin de circuit
+
+- [ ] Généralités
+  - [x] liste des documents et signatures détachées contenus dans le dossier
+  - [ ] liste des annexes éventuelles
+  - [x] monodoc
+  - [ ] multidoc
+- [ ] Par format
+  - [ ] Automatique (voir ci-dessous)
+  - [x] CAdES
+    - [x] document original
+    - [x] primo-signature
+    - [x] jeton de signature
+  - [ ] HELIOS - XAdES env
+    - [x] validation xsd
+    - [x] informations du signataire
+    - [ ] validation des signatures intégrées
+    - [ ] validation du certificat intégré
+  - [ ] PAdES
+    - [x] signatures électroniques  
+    - [x] propriétés des signatures électroniques  
+    - [x] position du grigri
+    - [x] texte du grigri (annotations)
+    - [ ] image du grigri
+  - [ ] XAdES det
+    - [ ] validation xsd
+    - [ ] informations du signataire
+    - [ ] validation des signatures intégrées
+    - [ ] validation du certificat intégré
+
+#### Vérification des signatures XAdES détachées
 
 ```
 # @todo; pige pas DigestValue: sha256sum ../document_rtf.rtf | sed "s/ .*$//g" | python -m base64 -e
@@ -30,6 +107,11 @@
 # sudo apt install xmlsec1
 # xmlsec1 --verify --trusted-pem root_ca.pem --untrusted-pem intermediate_ca_1.pem --untrusted-pem intermediate_ca_2.pem sample-signed.xml
 # xmlsec1 --verify  sample-signed.xml
+
+https://github.com/XML-Security/signxml
+  sudo pip3 install setuptools-rust
+  sudo pip3 install --upgrade pip
+https://stackoverflow.com/questions/71293125/xades-xml-sign-policy
 ```
 
 ### IP 5

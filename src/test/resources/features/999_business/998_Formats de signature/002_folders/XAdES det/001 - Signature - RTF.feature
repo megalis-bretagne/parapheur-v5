@@ -30,8 +30,14 @@ Feature: XAdES det - Signature - RTF
 
     @todo-karate
     Scenario Outline: Vérifications des signatures détachées (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         # @todo: vérifier le jeton xades détaché
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def file = commonpath.absolute("document_rtf.rtf")
+        * def token = download.base + "/document_rtf-1-<user>.xml"
+        * def public = karate.toAbsolutePath(templates.certificate.default("signature")["public"])
+        * def actual = ip.signature.xades.actual(file, token, public)
+        * def expected = ip.signature.xades.expected(file, token, public)
+        * match actual == expected
 
         Examples:
             | key       | user             |

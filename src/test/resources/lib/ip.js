@@ -41,7 +41,7 @@ function fn(config) {
     };
 
     config.ip.signature['helios'] = config.ip.signature['helios'] || {};
-    config.ip.signature.helios['validate'] = function(document) {
+    config.ip.signature.helios['validateSchema'] = function(document) {
         var classpath = "classpath:xsd/schemas_pes_v5.11/PES_V2/Rev0/PES_Aller.xsd",
             output,
             schema = karate.toAbsolutePath(classpath);
@@ -223,8 +223,40 @@ function fn(config) {
             "reason": reason,
             "location": location
         };
+    };
 
-        return config;
+    config.ip.signature['xades'] = config.ip.signature['xades'] || {};
+    config.ip.signature.xades['actual'] = function(document, xades) {
+        var actual = {},
+            content = karate.read("file://" + xades);
+
+        // 1. Partie publique dans ds:X509Certificate
+        actual["X509Certificate"] = karate.xmlPath(content, "/Signature/KeyInfo/X509Data/X509Certificate/text()");
+
+        // 2. DigestValue du document signé
+        actual["DigestValue"] = karate.xmlPath(content, "/Signature/SignedInfo/Reference/DigestValue/text()")[0];
+
+        return actual;
+    };
+    config.ip.signature.xades['expected'] = function(document, xades, certificate) {
+        var algorithm,
+            cmd,
+            content = karate.read("file://" + xades),
+            expected = {};
+
+        // 1. Partie publique dans ds:X509Certificate
+        expected["X509Certificate"] = utils.certificate.base64Public("file://" + certificate);
+
+        // 2. DigestValue du document signé
+        algorithm = String(karate.xmlPath(content, "/Signature/SignedInfo/Reference/DigestMethod/@Algorithm")).replace(/^.*#/, "");
+
+        cmd = [
+            "/bin/sh",
+            "-c",
+            "openssl dgst -binary -" + algorithm + " \"" + document + "\" | openssl enc -base64"
+        ];
+        expected["DigestValue"] = utils.safeExec(cmd);
+        return expected;
     };
 
     return config;

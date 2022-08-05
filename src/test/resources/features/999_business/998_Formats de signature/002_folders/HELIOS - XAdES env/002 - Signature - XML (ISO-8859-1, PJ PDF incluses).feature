@@ -21,7 +21,7 @@ Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * ip.signature.helios.validate(download.base + "/pesWithASAP_unsigned.xml")
+        * ip.signature.helios.validateSchema(download.base + "/pesWithASAP_unsigned.xml")
         * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }
         * match ip.signature.helios.extract(download.base + "/pesWithASAP_unsigned.xml") == expected
 
