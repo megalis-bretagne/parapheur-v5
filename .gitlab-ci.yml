@@ -257,6 +257,7 @@ dev-deploy:
     when: always
     name: ${REPORT_NAME}
     paths:
+      - build/ip5-folders
       - build/karate-reports
 
 strict-e2e-tests-test:
