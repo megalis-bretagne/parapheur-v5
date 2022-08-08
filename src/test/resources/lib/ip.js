@@ -69,7 +69,7 @@ function fn(config) {
     config.ip.signature['pades'] = config.ip.signature['pades'] || {};
     config.ip.signature.pades['annotations'] = config.ip.signature.pades['annotations'] || {};
     config.ip.signature.pades.annotations['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), "annotations", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "annotations", path],
             idx,
             lines,
             matches,
@@ -181,7 +181,7 @@ function fn(config) {
     };
     config.ip.signature.pades['fields'] = config.ip.signature.pades['fields'] || {};
     config.ip.signature.pades.fields['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/get_signatures_fields.py"), "signatures", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "signatures", path],
             idx,
             lines,
             matches,
@@ -190,32 +190,10 @@ function fn(config) {
             fields = {};
         proc = karate.fork(cmd);
         proc.waitSync();
-        /*if (proc.exitCode !== 0) {
+        if (proc.exitCode !== 0) {
             karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
-        }*/
-        tmp = proc.sysOut.replace(/\n$/, '');
-        lines = tmp.split(/\r?\n/).filter(element => element);
-
-        for (idx=0;idx<lines.length;idx++) {
-            if (matches = lines[idx].match(/^- ([0-9]+):$/)) {
-                if (karate.keysOf(fields).length > 0) {
-                    result.push(fields);
-                }
-                fields = {};
-            } else if(matches = lines[idx].match(/^\s+- Signed By: (.*)$/)) {
-                fields["signedBy"] = matches[1];
-            } else if(matches = lines[idx].match(/^\s+- Reason: (.*)$/)) {
-                fields["reason"] = matches[1];
-            } else if(matches = lines[idx].match(/^\s+- Location: (.*)$/)) {
-                fields["location"] = matches[1];
-            }
         }
-
-        if (karate.keysOf(fields).length > 0) {
-            result.push(fields);
-        }
-
-        return result;
+        return karate.fromString(proc.sysOut);
     };
     config.ip.signature.pades.fields['default'] = function(signedBy, reason, location) {
         return {
@@ -223,6 +201,76 @@ function fn(config) {
             "reason": reason,
             "location": location
         };
+    };
+    config.ip.signature.pades['images'] = config.ip.signature.pades['images'] || {};
+    config.ip.signature.pades.images['compare'] = function(actual, expected) {
+        var cmd, diff, diffPath, dirname, img, keyImage, keyPage, keyPosition,
+            proc, result = {}, script = karate.toAbsolutePath("classpath:python/karate-ip.py");
+        for (keyPage in expected) {
+            for (keyPosition in expected[keyPage]) {
+                for (keyImage in expected[keyPage][keyPosition]) {
+                    if (keyPage in actual && keyPosition in actual[keyPage] && keyImage in actual[keyPage][keyPosition]) {
+                        dirname = utils.file.dirname(utils.file.dirname(utils.file.dirname(expected[keyPage][keyPosition][keyImage]))) + "/diffs";
+                        diffPath = dirname + "/" + keyPage + "/" + keyPosition + "/" + utils.file.basename(expected[keyPage][keyPosition][keyImage]);
+                        cmd = [
+                            "python3",
+                            script,
+                            "compare",
+                            expected[keyPage][keyPosition][keyImage],
+                            actual[keyPage][keyPosition][keyImage],
+                            diffPath
+                        ];
+
+                        proc = karate.fork(cmd);
+                        proc.waitSync();
+                        diff = karate.fromString(proc.sysOut);
+                        if (diff["diff"] === true) {
+                            result[keyPage] = result[keyPage] || {};
+                            result[keyPage][keyPosition] = result[keyPage][keyPosition] || {};
+                            result[keyPage][keyPosition][keyImage] = diff;
+                        }
+                    }
+                }
+            }
+        }
+        if (karate.keysOf(result).length > 0) {
+            karate.fail('Image differences detected: ' + JSON.stringify(result));
+        }
+    };
+    config.ip.signature.pades.images['expected'] = function(username, count) {//666
+        count = (typeof count === "undefined") ? 3 : count;
+        if (count === 1) {
+            return {
+                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im1.png")
+            };
+        } else {
+            return {
+                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im1.png"),
+                "/Im2": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im2.png"),
+                "/Im3": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im3.png")
+            };
+        }
+    };
+    config.ip.signature.pades.images['export'] = function(path) {
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "images", path, utils.file.dirname(path) + "/images"],
+            proc;
+        proc = karate.fork(cmd);
+        proc.waitSync();
+        return karate.fromString(proc.sysOut);
+
+    };
+    config.ip.signature.pades.images['schema'] = function(expected) {
+        var keyImage, keyPage, keyPosition, result = {};
+        for (keyPage in expected) {
+            result[keyPage] = {};
+            for (keyPosition in expected[keyPage]) {
+                result[keyPage][keyPosition] = {};
+                for (keyImage in expected[keyPage][keyPosition]) {
+                    result[keyPage][keyPosition][keyImage] = "#string";
+                }
+            }
+        }
+        return result;
     };
 
     config.ip.signature['xades'] = config.ip.signature['xades'] || {};
@@ -257,6 +305,38 @@ function fn(config) {
         ];
         expected["DigestValue"] = utils.safeExec(cmd);
         return expected;
+    };
+    config.ip.signature.xades['extract'] = function(path) {
+        var prefix = "/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
+            content = karate.read("file://" + path);
+        return {
+            City: karate.xmlPath(content, prefix + "/SignatureProductionPlaceV2/City/text()"),
+            PostalCode: karate.xmlPath(content, prefix + "/SignatureProductionPlaceV2/PostalCode/text()"),
+            CountryName: karate.xmlPath(content, prefix + "/SignatureProductionPlaceV2/CountryName/text()"),
+            ClaimedRole: karate.xmlPath(content, prefix + "/SignerRoleV2/ClaimedRoles/ClaimedRole/text()")
+        };
+    };
+    // @todo-karate: meilleurs vérifications
+    config.ip.signature.xades['validate'] = function(document, xades, certificate) {
+        certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
+        var actualData = ip.signature.xades.actual(document, xades, certificate),
+            actualXml = karate.read("file://" + xades),
+            expectedSchema = karate.read("classpath:lib/v5/schemas/xades.xml"),
+            expectedData = ip.signature.xades.expected(document, xades, certificate),
+            result;
+
+        // 1. Vérification du schéma
+        karate.set({actualXml: actualXml, expectedSchema: expectedSchema});
+        result = karate.match("actualXml == expectedSchema");
+        if (result.pass !== true) {
+            karate.fail(result.message);
+        }
+        // 2. Vérification de certaines données
+        karate.set({actualData: actualData, expectedData: expectedData});
+        result = karate.match("actualData == expectedData");
+        if (result.pass !== true) {
+            karate.fail(result.message);
+        }
     };
 
     return config;

@@ -29,7 +29,7 @@ Feature: PAdES - Signature - PDF_avec_tags
             | normal    |
             | surcharge |
 
-    @fixme-ip
+    @fixme-ip @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
@@ -40,36 +40,39 @@ Feature: PAdES - Signature - PDF_avec_tags
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
-    @see-next-scenario
+    @fixme-ip @issue-compose-579 @issue-compose-todo
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+    "page 3": {
+        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     }
 }
 """
         * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | key    | position            | line1            | line2   |
-            | normal | [70, 303, 270, 443] | Florence Garance | Nacarat |
+            | key       | position!            | line1            | line2                    |
+            | normal    | [120, 323, 220, 423] | Florence Garance | Nacarat                  |
+            | surcharge | [120, 323, 220, 423] | Gilles Nacarat   | Responsable des méthodes |
 
-    @fixme-ip @see-previous-scenario
-    Scenario Outline: Vérifications des annotations (${key})
+    Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
         * def expected =
 """
 {
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
-    }
+  "page 3": {
+    "1": "#(ip.signature.pades.images.expected('<username>'))"
+  }
 }
 """
-        * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
+        * ip.signature.pades.images.compare(actual, expected)
+        * match actual == ip.signature.pades.images.schema(expected)
 
         Examples:
-            | key       | position            | line1          | line2                    |
-            | surcharge | [70, 303, 270, 443] | Gilles Nacarat | Responsable des méthodes |
+            | key       | username |
+            | normal    | fgarance |
+            | surcharge | gnacarat |

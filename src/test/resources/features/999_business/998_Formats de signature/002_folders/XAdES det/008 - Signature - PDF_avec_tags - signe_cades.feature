@@ -29,12 +29,15 @@ Feature: XAdES det - Signature - PDF_avec_tags - signe_cades
             | normal    |
             | surcharge |
 
-    @todo-karate
     Scenario Outline: Vérifications des signatures détachées (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        # @todo: vérifier le jeton xades détaché
+
+        * ip.signature.xades.validate(download.base + "/PDF_avec_tags.pdf", download.base + "/PDF_avec_tags-1-<user>.xml")
+
+        * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }
+        * match ip.signature.xades.extract(download.base + "/PDF_avec_tags-1-<user>.xml") == expected
 
         Examples:
-            | key       | user             |
-            | normal    | Florence Garance |
-            | surcharge | Gilles Nacarat   |
+            | key       | user             | City        | PostalCode | ClaimedRole              |
+            | normal    | Florence Garance | Montpellier | 34000      | Nacarat                  |
+            | surcharge | Gilles Nacarat   | Agde        | 34300      | Responsable des méthodes |

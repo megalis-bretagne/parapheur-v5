@@ -28,18 +28,15 @@ Feature: XAdES det - Signature - RTF
             | normal    |
             | surcharge |
 
-    @todo-karate
     Scenario Outline: Vérifications des signatures détachées (${key})
-        # @todo: vérifier le jeton xades détaché
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def file = commonpath.absolute("document_rtf.rtf")
-        * def token = download.base + "/document_rtf-1-<user>.xml"
-        * def public = karate.toAbsolutePath(templates.certificate.default("signature")["public"])
-        * def actual = ip.signature.xades.actual(file, token, public)
-        * def expected = ip.signature.xades.expected(file, token, public)
-        * match actual == expected
+
+        * ip.signature.xades.validate(download.base + "/document_rtf.rtf", download.base + "/document_rtf-1-<user>.xml")
+
+        * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }
+        * match ip.signature.xades.extract(download.base + "/document_rtf-1-<user>.xml") == expected
 
         Examples:
-            | key       | user             |
-            | normal    | Florence Garance |
-            | surcharge | Gilles Nacarat   |
+            | key       | user             | City        | PostalCode | ClaimedRole              |
+            | normal    | Florence Garance | Montpellier | 34000      | Nacarat                  |
+            | surcharge | Gilles Nacarat   | Agde        | 34300      | Responsable des méthodes |

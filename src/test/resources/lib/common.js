@@ -221,7 +221,10 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     };
     config.utils['file'] = {};
     config.utils.file['basename'] = function (path) {
-        return String(path).replace(/.*\/([^\/]+)$/, '$1');
+        return String(path).replace(/^(.*)\/([^\/]+)$/, '$2');
+    };
+    config.utils.file['dirname'] = function (path) {
+        return String(path).replace(/^(.*)\/([^\/]+)$/, '$1');
     };
     config.utils.file['extension'] = function (path) {
         return path.split(".").pop().toLowerCase();

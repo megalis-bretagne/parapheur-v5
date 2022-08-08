@@ -30,7 +30,7 @@ Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
             | normal    |
             | surcharge |
 
-    @fixme-ip
+    @fixme-ip @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
@@ -48,29 +48,48 @@ Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     }
 }
 """
         * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | key    | position             | line1            | line2   |
+            | key    | position!            | line1            | line2   |
             | normal | [100, 665, 300, 735] | Florence Garance | Nacarat |
 
-    @fixme-ip @see-previous-scenario
+    @fixme-ip @issue-compose-579 @see-previous-scenario
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.annotations.default('<position>', '<line1>', '<line2>'))"
+        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     }
 }
 """
         * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
-            | key       | position             | line1          | line2                    |
+            | key       | position!            | line1          | line2                    |
             | surcharge | [100, 665, 300, 735] | Gilles Nacarat | Responsable des méthodes |
+
+    Scenario Outline: Vérifications des grigris de signature (${key})
+        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
+        * def expected =
+"""
+{
+  "page 1": {
+    "1": "#(ip.signature.pades.images.expected('<username>'))"
+  }
+}
+"""
+        * ip.signature.pades.images.compare(actual, expected)
+        * match actual == ip.signature.pades.images.schema(expected)
+
+        Examples:
+            | key       | username |
+            | normal    | fgarance |
+            | surcharge | gnacarat |

@@ -7,6 +7,8 @@
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 # IP 5@20220803 - 40m 5s - 610 tests completed, 106 failed
 ./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
+# IP 5@20220808 - 10m 46s - 425 tests completed, 52 failed
+./gradlew test --info -Dkarate.options="--tags @formats-de-signature" -Dkarate.headless=true
 ```
 
 ---
