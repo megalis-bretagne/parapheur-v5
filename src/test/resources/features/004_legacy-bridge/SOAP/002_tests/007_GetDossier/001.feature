@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests @fixme-ip
+@legacy-bridge @soap @tests
 
 Feature: GetDossier - Récupération du dossier en fin de circuit
 
