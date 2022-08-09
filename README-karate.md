@@ -9,6 +9,8 @@
 ./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
 # IP 5@20220808 - 10m 46s - 425 tests completed, 52 failed
 ./gradlew test --info -Dkarate.options="--tags @formats-de-signature" -Dkarate.headless=true
+# IP 5@20220808 - 42 mins 6.185 secs - 611 tests completed, 72 failed
+./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
 ```
 
 ---

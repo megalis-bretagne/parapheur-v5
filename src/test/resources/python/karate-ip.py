@@ -21,7 +21,7 @@ class Dict():
             if len(list(path)) == 1:
                 return True
             else:
-                return Dict.exists(haystack[path[0]], path[1:])
+                return cls.exists(haystack[path[0]], path[1:])
         else:
             return False
     @classmethod
@@ -30,7 +30,7 @@ class Dict():
             if len(list(path)) == 1:
                 return haystack[path[0]]
             else:
-                return Dict.get(haystack[path[0]], path[1:], default)
+                return cls.get(haystack[path[0]], path[1:], default)
         else:
             return default
 
@@ -145,17 +145,24 @@ class Pdf():
 
     @classmethod
     def signatures(cls, path: str) -> dict:
-        # @todo: différence Signé par / Certifié par ?
         result = []
         reader = PyPDF2.PdfReader(path)
-        fields=reader.get_fields()
+        fields = reader.get_fields()
         for key in fields.keys():
             if Dict.get(fields, [key, "/V", "/Type"]) == "/Sig":
-                # @todo: s'assurer que ces entrées soient bien triées
-                key = re.sub('^Signature', '', key)
+                # Certifié ou signé ?
+                signKey = "signedBy"
+                references = Dict.get(fields, [key, "/V", "/Reference"])
+                if references is not None:
+                    for reference in references:
+                        reference = reference.get_object()
+                        if Dict.get(reference, ["/Type"]) == "/SigRef" \
+                            and Dict.get(reference, ["/TransformMethod"]) == "/DocMDP" \
+                            and Dict.get(reference, ["/TransformParams", "/P"]) == 1:
+                            signKey = "certifiedBy"
                 result.append(
                     {
-                        "signedBy": re.sub(' .{40}$', '', Dict.get(fields, [key, "/V", "/Name"], "")),
+                        signKey: re.sub(' .{40}$', '', Dict.get(fields, [key, "/V", "/Name"], "")),
                         "reason": Dict.get(fields, [key, "/V", "/Reason"], ""),
                         "location": Dict.get(fields, [key, "/V", "/Location"], "")
                     }
