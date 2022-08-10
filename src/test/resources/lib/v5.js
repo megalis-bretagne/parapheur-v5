@@ -45,11 +45,31 @@ function fn(config) {
         );
     };
     config.v5.business.api.draft['createAndSendSimple'] = function(args) {
-        // @fixme: mainFiles / IIF args.mainFiles[0].detached
-        var params = karate.call('classpath:lib/v5/business/api/draft/params.feature', args)
-            draft = v5.business.api.draft.createSimple(params, args.mainFiles);
+        // @todo: annexes
+        var idx,
+            params = karate.call('classpath:lib/v5/business/api/draft/params.feature', args)
+            draft = v5.business.api.draft.createSimple(params, args.mainFiles), rv;
         if (typeof args.mainFiles[0].detached !== "undefined") {
             v5.business.api.draft.addDetachedSignature(draft, params, commonpath.get(args.mainFiles[0].file), commonpath.get(args.mainFiles[0].detached));
+        }
+
+        if (args.mainFiles.length > 1) {
+            for(idx=1;idx<args.mainFiles.length;idx++) {
+                karate.call(
+                    'classpath:lib/v5/business/api/draft/addMainDocument.feature',
+                    { tenant: params.tenant, draft: draft, file: commonpath.get(args.mainFiles[idx].file) }
+                );
+            }
+            rv = karate.call(
+                'classpath:lib/v5/business/api/draft/getById.feature',
+                { tenant: params.tenant, draft: draft, desktop: params.desktop }
+            );
+            draft = rv.response;
+            for(idx=1;idx<args.mainFiles.length;idx++) {
+                if (typeof args.mainFiles[idx].detached !== "undefined") {
+                    v5.business.api.draft.addDetachedSignature(draft, params, commonpath.get(args.mainFiles[idx].file), commonpath.get(args.mainFiles[idx].detached));
+                }
+            }
         }
         karate.call('classpath:lib/v5/business/api/draft/send.feature', karate.merge(args, { draft: draft, path: params.path }));
     };

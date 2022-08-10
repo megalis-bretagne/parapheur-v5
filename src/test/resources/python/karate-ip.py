@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @todo: paquets + versions dans le gitlab.ci (Dockerfile à prévoir)
-# @todo: install PIL, ...
 
 import codecs
 import json
@@ -101,46 +99,57 @@ class Pdf():
 
         for idxPage in range(len(reader.pages)):
             page = reader.pages[idxPage]
+            keyAnnot = 0
 
             if "/Annots" in page:
                 keyPage = "page " + str(idxPage+1)
-                result[keyPage] = {}
                 for idxAnnot in range(len(page["/Annots"])):
                     annot = page["/Annots"][idxAnnot]
-                    result[keyPage][str(idxAnnot + 1)] = {}
                     obj = annot.get_object()
-                    result[keyPage][str(idxAnnot + 1)]["position"] = [int(obj["/Rect"][0]), int(obj["/Rect"][1]), int(obj["/Rect"][2]), int(obj["/Rect"][3])]
-                    result[keyPage][str(idxAnnot + 1)]["text"] = []
-                    if Dict.exists(obj, ["/AP", "/N"]):
-                        for line in obj["/AP"]["/N"].getData().splitlines():
-                            match_normal = re.match(re_normal, line.decode("utf-8"))
-                            match_hexa = re.match(re_hexa, line.decode("utf-8"))
-                            if match_normal is not None:
-                                result[keyPage][str(idxAnnot + 1)]["text"].append(match_normal[1])
-                            elif match_hexa is not None:
-                                result[keyPage][str(idxAnnot + 1)]["text"].append(decode_pdfdocencoding(codecs.decode(match_hexa[1], 'hex')))
+                    if obj["/Subtype"] == "/Widget":
+                        if keyPage not in result:
+                            result[keyPage] = {}
+                        keyAnnot = keyAnnot + 1
+                        result[keyPage][str(keyAnnot)] = {}
+                        result[keyPage][str(keyAnnot)]["position"] = [int(obj["/Rect"][0]), int(obj["/Rect"][1]), int(obj["/Rect"][2]), int(obj["/Rect"][3])]
+                        result[keyPage][str(keyAnnot)]["text"] = []
+                        if Dict.exists(obj, ["/AP", "/N"]):
+                            for line in obj["/AP"]["/N"].getData().splitlines():
+                                match_normal = re.match(re_normal, line.decode("utf-8"))
+                                match_hexa = re.match(re_hexa, line.decode("utf-8"))
+                                if match_normal is not None:
+                                    result[keyPage][str(keyAnnot)]["text"].append(match_normal[1])
+                                elif match_hexa is not None:
+                                    result[keyPage][str(keyAnnot)]["text"].append(decode_pdfdocencoding(codecs.decode(match_hexa[1], 'hex')))
         return result
 
     @classmethod
     def images(cls, path: str, base: str) -> dict:
         result = {}
         reader = PyPDF2.PdfReader(path)
+        indirect = []
 
         for idxPage in range(len(reader.pages)):
             page = reader.pages[idxPage]
+            keyAnnot = 0
 
             if "/Annots" in page:
                 keyPage = "page " + str(idxPage+1)
-                result[keyPage] = {}
                 for idxAnnot in range(len(page["/Annots"])):
                     annot = page["/Annots"][idxAnnot]
-                    result[keyPage][str(idxAnnot + 1)] = {}
                     obj = annot.get_object()
                     if Dict.exists(obj, ["/AP", "/N", "/Resources", "/XObject"]):
                         for imgKey in obj["/AP"]["/N"]["/Resources"]["/XObject"]:
                             if Dict.get(obj, ["/AP", "/N", "/Resources", "/XObject", imgKey, "/Subtype"]) == "/Image":
-                                imgPath = base + "/" + keyPage + "/" + str(idxAnnot + 1) + imgKey
-                                result[keyPage][str(idxAnnot + 1)][imgKey] = PdfImage.export(obj["/AP"]["/N"]["/Resources"]["/XObject"][imgKey], imgPath)
+                                if keyPage not in result:
+                                    result[keyPage] = {}
+                                if repr(annot) not in indirect:
+                                    indirect.append(repr(annot))
+                                keyAnnot = str(indirect.index(repr(annot)) + 1)
+                                if keyAnnot not in result[keyPage]:
+                                    result[keyPage][str(keyAnnot)] = {}
+                                imgPath = base + "/" + keyPage + "/" + keyAnnot + imgKey
+                                result[keyPage][keyAnnot][imgKey] = PdfImage.export(obj["/AP"]["/N"]["/Resources"]["/XObject"][imgKey], imgPath)
         return result
 
     @classmethod

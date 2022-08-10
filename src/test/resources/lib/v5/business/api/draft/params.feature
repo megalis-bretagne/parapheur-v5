@@ -6,8 +6,8 @@ Feature: IP v.5 REST draft lib
         * def desktop = v5.business.api.desktop.getByName(tenant.id, __arg.desktop)
 
         Given url baseUrl
-        And path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types"
-        And header Accept = "application/json"
+            And path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types"
+            And header Accept = "application/json"
         When method GET
         Then status 200
 

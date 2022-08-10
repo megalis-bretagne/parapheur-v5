@@ -48,6 +48,12 @@ function fn(config) {
     config.commonpath['get'] = function(basename) {
         var paths = {
             "document_libre_office.odt": "classpath:files/formats/document_libre_office/document_libre_office.odt",
+            "document_office.doc": "classpath:files/formats/document_office/document_office.doc",
+            "document_office/signature_cades.p7s": "classpath:files/formats/document_office/signature_cades.p7s",
+            "document_office/signature_xades.xml": "classpath:files/formats/document_office/signature_xades.xml",
+            "document_ooxml.docx": "classpath:files/formats/document_ooxml/document_ooxml.docx",
+            "document_ooxml/signature_cades.p7s": "classpath:files/formats/document_ooxml/signature_cades.p7s",
+            "document_ooxml/signature_xades.xml": "classpath:files/formats/document_ooxml/signature_xades.xml",
             "document_rtf.rtf": "classpath:files/formats/document_rtf/document_rtf.rtf",
             "document_rtf/signature_cades.p7s": "classpath:files/formats/document_rtf/signature_cades.p7s",
             "document_rtf/signature_xades.xml": "classpath:files/formats/document_rtf/signature_xades.xml",
