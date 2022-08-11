@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @wip
+@business @formats-de-signature @folder
 Feature: Automatique - Signature multidoc - 3
 
     Background:
@@ -17,7 +17,7 @@ Feature: Automatique - Signature multidoc - 3
 
     Scenario: Création des dossiers
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
-
+    @fixme-ip
     Scenario Outline: Vérifications de la liste des documents (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files ==
@@ -27,8 +27,8 @@ Feature: Automatique - Signature multidoc - 3
     "document_rtf-0-signature_externe.p7s",
     "document_rtf-1-<user>.p7s",
     "document_office.doc",
-    "document_office-0-signature_externe.p7s",
-    "document_office-1-<user>.p7s",
+    "document_office-0-signature_externe.xml",
+    "document_office-1-<user>.xml",
     "PDF_sans_tags.pdf",
     "PDF_sans_tags-1-<user>.p7s",
     "PDF_sans_tags-signature_pades.pdf"
@@ -45,7 +45,7 @@ Feature: Automatique - Signature multidoc - 3
         * match karate.read("file://" + download.base + "/document_rtf.rtf") == commonpath.read("document_rtf.rtf")
         * match karate.read("file://" + download.base + "/document_rtf-0-signature_externe.p7s") == commonpath.read("document_rtf/signature_cades.p7s")
         * match karate.read("file://" + download.base + "/document_office.doc") == commonpath.read("document_office.doc")
-        * match karate.read("file://" + download.base + "/document_office-0-signature_externe.p7s") == commonpath.read("document_office/signature_cades.p7s")
+        * match karate.read("file://" + download.base + "/document_office-0-signature_externe.xml") == commonpath.read("document_office/signature_xades.xml")
         * match karate.read("file://" + download.base + "/PDF_sans_tags.pdf") == commonpath.read("PDF_sans_tags.pdf")
 
         Examples:
@@ -53,18 +53,24 @@ Feature: Automatique - Signature multidoc - 3
             | normal    |
             | surcharge |
 
+    @fixme-ip
     Scenario Outline: Vérifications des signatures détachées (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        # CAdES
         * ip.signature.cades.check(download.base + "/document_rtf.rtf", download.base + "/document_rtf-1-<user>.p7s")
-        * ip.signature.cades.check(download.base + "/document_office.doc", download.base + "/document_office-1-<user>.p7s")
         * ip.signature.cades.check(download.base + "/PDF_sans_tags.pdf", download.base + "/PDF_sans_tags-1-<user>.p7s")
 
+        # XAdES
+        * ip.signature.xades.validate(download.base + "/document_office.doc", download.base + "/document_office-1-<user>.xml")
+        * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }
+        * match ip.signature.xades.extract(download.base + "/document_office-1-<user>.xml") == expected
+
         Examples:
-            | key       | user             |
-            | normal    | Florence Garance |
-            | surcharge | Gilles Nacarat   |
+            | key       | user             | City        | PostalCode | ClaimedRole              |
+            | normal    | Florence Garance | Montpellier | 34000      | Nacarat                  |
+            | surcharge | Gilles Nacarat   | Agde        | 34300      | Responsable des méthodes |
 
-
+    @fixme-ip
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -98,7 +104,7 @@ Feature: Automatique - Signature multidoc - 3
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
-    @see-next-scenario
+    @fixme-ip
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -115,29 +121,11 @@ Feature: Automatique - Signature multidoc - 3
         * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags-signature_pades.pdf") == expected
 
         Examples:
-            | key    | position!       | line1            | line2   |
-            | normal | [0, 0, 200, 70] | Florence Garance | Nacarat |
+            | key       | position!       | line1            | line2                    |
+            | normal    | [0, 0, 200, 70] | Florence Garance | Nacarat                  |
+            | surcharge | [0, 0, 200, 70] | Gilles Nacarat   | Responsable des méthodes |
 
-    @fixme-ip @issue-compose-579 @see-previous-scenario
-    Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
-    },
-    "page 2": {
-        "1": "#(v4.signature.pades.annotations.default([342, 61, 536, 128], 'Christian Noir', 'Responsable des méthodes'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags-signature_pades.pdf") == expected
-
-        Examples:
-            | key       | position!       | line1          | line2                    |
-            | surcharge | [0, 0, 200, 70] | Gilles Nacarat | Responsable des méthodes |
-
+    @fixme-ip
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags-signature_pades.pdf")

@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @wip
+@business @formats-de-signature @folder
 Feature: Automatique - Signature multidoc - 1
 
     Background:
@@ -71,6 +71,7 @@ Feature: Automatique - Signature multidoc - 1
             | normal    | Florence Garance | Nacarat                  |
             | surcharge | Gilles Nacarat   | Responsable des méthodes |
 
+    @fixme-ip
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actualAvec = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
