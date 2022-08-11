@@ -91,7 +91,7 @@ Feature: Signature - PDF_sans_tags-signature_pades - signe_pades
         Examples:
             | key       | position!       | line1          | line2                    |
             | surcharge | [0, 0, 200, 70] | Gilles Nacarat | Responsable des méthodes |
-
+    @fixme-ip
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags-signature_pades.pdf")
@@ -99,10 +99,8 @@ Feature: Signature - PDF_sans_tags-signature_pades - signe_pades
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.images.expected('<username>'))"
-    },
-    "page 2": {
-        "1": "#(ip.signature.pades.images.expected('cnoir', 1))"
+        "1": #(ip.signature.pades.images.expected('<username>')),
+        "2": #(ip.signature.pades.images.expected('cnoir', 1))
     }
 }
 """

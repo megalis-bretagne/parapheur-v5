@@ -73,6 +73,7 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
             | normal    | [70, 338, 270, 408] | Florence Garance | Nacarat                  |
             | surcharge | [70, 338, 270, 408] | Gilles Nacarat   | Responsable des méthodes |
 
+    @fixme-ip
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags-signature_pades.pdf")

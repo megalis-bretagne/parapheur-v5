@@ -127,10 +127,10 @@ class Pdf():
     def images(cls, path: str, base: str) -> dict:
         result = {}
         reader = PyPDF2.PdfReader(path)
-        indirect = []
 
         for idxPage in range(len(reader.pages)):
             page = reader.pages[idxPage]
+            indirect = []
             keyAnnot = 0
 
             if "/Annots" in page:
