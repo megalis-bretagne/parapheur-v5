@@ -55,6 +55,78 @@ function fn(config) {
             karate.fail('XML document does not validate with schema at ' + classpath + ': ' + document);
         }
     };
+    // @see https://gitlab.libriciel.fr/libriciel/pole-plate-formes/s2low/s2low/-/blob/57dcf6d35468c2287a5237304be7b9b620d3ab41/lib/XadesSignature.class.php
+    config.ip.signature.helios['validate'] = function(document, certs) {
+        certs = typeof certs === "undefined" ? [
+                "classpath:files/certificates/signature/ca-root.pem",
+                "classpath:files/certificates/signature/ca-intermediate.pem",
+                "classpath:files/certificates/signature/public.pem"
+            ] : certs;
+        var cmd,
+            content = karate.read("file://" + document),
+            element,
+            id,
+            idx,
+            idxCert,
+            matches,
+            name,
+            nodeId,
+            tokens,
+            // @todo: #notpresent ?
+            //xpath = "//*[namespace-uri()='http://www.w3.org/2000/09/xmldsig#'][local-name()='Signature']",
+            xpath = "/*/Signature",
+            signatureNodeList,
+            signingTime;
+
+        signatureNodeList = karate.xmlPath(content, xpath);
+        if(JSON.stringify(signatureNodeList) === "#notpresent") {
+            return karate.fail("Impossible d'extraire les signatures");
+        }
+
+        if (Array.isArray(signatureNodeList) === false) {
+            signatureNodeList = [signatureNodeList];
+        }
+
+        for (idx = 0; idx < signatureNodeList.length; idx++) {
+            id = karate.xmlPath(signatureNodeList[idx], "/Signature/@Id");
+            if(id == "#notpresent") {
+                return karate.fail("Impossible d'extraire la signature " + String(idx + 1));
+            }
+            //@todo: trouver un moyen propre de sélectionner le bon
+            nodeId = karate.xmlPath(signatureNodeList[idx], "/Signature/SignedInfo/Reference/@URI")[0].replace(/^#/, '');
+            if(nodeId == "#notpresent") {
+                return karate.fail("Impossible d'extraire la signature " + String(idx + 1));
+            }
+            xpath = "//*[@Id='" + nodeId + "']";
+            element = karate.xmlPath(content, xpath);
+            if(element == "#notpresent") {
+                return karate.fail("Impossible d'extraire la signature " + String(idx + 1));
+            }
+            matches = JSON.stringify(element).match(/^{"([^"]+)":/);
+            name = matches[1].replace(/^[^:]+:/, '');
+            signingTime = karate.xmlPath(content, "//QualifyingProperties[@Target='#" + id + "']//SigningTime/text()");
+            if(signingTime == "#notpresent") {
+                return karate.fail("SigningTime non trouvé pour la signature " + String(idx + 1));
+            }
+
+            cmd = "xmlsec1 " +
+                "--verify ";
+            for(idxCert=0;idxCert<certs.length;idxCert++) {
+                cmd += "--trusted-pem \"" + karate.toAbsolutePath(certs[idxCert]) + "\" ";
+            }
+            cmd += "--node-xpath \"//*[namespace-uri()='http://www.w3.org/2000/09/xmldsig#'][local-name()='Signature'][@Id='" + id + "']\" " +
+                "--verification-time \"" + JSON.stringify((new Date(signingTime)).toJSON()) + "\" " +
+                "--id-attr:Id " + name + " " +
+                "\"" + document + "\"";
+
+            output = utils.safeExec(["/bin/sh", "-c", cmd]);
+            tokens = output.split("\n");
+
+            if (tokens[0] !== "OK") {
+                return karate.fail('Failure for "' + document + '": '.output);
+            }
+        }
+    };
     config.ip.signature.helios['extract'] = function(path) {
         var prefix = "/PES_Aller/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
             content = karate.read("file://" + path);
