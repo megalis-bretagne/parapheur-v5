@@ -266,14 +266,13 @@ function fn(config) {
     config.api_v1.entity['getIdByName'] = function (name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant')
+            .path('/api/v1/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('searchTerm', name)
-            .param('sortBy', 'ID')
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -625,15 +624,17 @@ function fn(config) {
      */
     config.api_v1['utils'] = {};
     config.api_v1.utils['filterSingleElementFromGetResponse'] = function (response, entity, field, value, containing = false) {
-        var matching = containing === true ? 'containing' : 'matching', message;
+        var key, matching = containing === true ? 'containing' : 'matching', message;
         value = value.replace("'", "\\'");
+
+        key = (typeof response.body.content !== "undefined") ? "content" : "data";
 
         if (containing === true) {
             //@todo: still filter, but reduce results
-            filtered = [karate.jsonPath(response.body, "$.data[0]")];
+            filtered = [karate.jsonPath(response.body, "$." + key + "[0]")];
         } else {
-            filtered = karate.jsonPath(response.body, "$.data[?(@." + field + "=='" + value + "')]");
-            karate.log("$.data[?(@." + field + "=='" + value + "')]");
+            filtered = karate.jsonPath(response.body, "$." + key + "[?(@." + field + "=='" + value + "')]");
+            karate.log("$.content[?(@." + field + "=='" + value + "')]");
             karate.log(filtered);
         }
 
