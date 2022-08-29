@@ -16,8 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-version: '2.4'
-
 services:
 
   core:
@@ -29,4 +27,3 @@ services:
     ports:
       - "1025:25"
       - "1080:80"
-
