@@ -20,6 +20,96 @@
 
 ---
 
+## Nouveau contenu de l'_issue_
+
+- [x] signature des dossiers via karate (IP4, IP5)
+- [ ] circuit complet pour les dossiers monodoc (entité "Formats de signature")
+  - [x] création et envoi de dossiers
+  - [x] signature / cachet
+  - [x] récupération de l'ensemble des fichiers du dossier
+  - [x] vérifications sur ces fichiers
+    - [x] liste des fichiers attendus
+    - [x] verification que certains fichiers n'ont pas été modifiés (primo-signatures, fichiers signés CAdES/XAdES)
+    - [ ] vérification des signatures (et cachets serveur pour le format PAdES) des documents, avec un utilisateur "normal" et un utilisateur "surchargé"
+      - [x] Automatique (suivant la configuration par défaut, vérification des formats attendus)
+      - [x] CAdES - validité des signatures
+      - [x] HELIOS - XAdES enveloppé
+        - [x] validité vis-à-vis du schéma XML
+        - [x] validité des signatures (adaptation du code de S2LOW)
+        - [x] vérification du contenu des champs `City`, `PostalCode`, `CountryName`, `ClaimedRole` (avec un utilisateur "normal" et un utilisateur "surchargé")
+      - [x] PAdES
+        - [x] validité des signatures
+        - [x] détails des signatures ("Signé par"/"Certifié par", "Motif" et "Lieu")
+        - [x] grigris de signature (position, images et texte)
+      - [ ] XAdES détaché
+        - [x] validité vis-à-vis du schéma XML
+        - [ ] validité des signatures
+        - [x] vérification du contenu des champs `City`, `PostalCode`, `CountryName`, `ClaimedRole` (avec un utilisateur "normal" et un utilisateur "surchargé")
+    - [x] l'ensemble des fichiers contenus dans les dossiers (hors annexes) sont disponibles dans le répertoire `build/ip5-folders`
+
+## Liste des dossiers (monodoc)
+
+- Automatique
+  - Signature
+    - PDF_avec_tags - repositionnement signature
+    - PDF_avec_tags - signe_cades
+    - PDF_avec_tags - signe_pades
+    - PDF_avec_tags - signe_xades
+    - PDF_avec_tags
+    - PDF_sans_tags - repositionnement signature
+    - PDF_sans_tags - signe_cades
+    - PDF_sans_tags - signe_pades
+    - PDF_sans_tags - signe_xades
+    - PDF_sans_tags
+    - RTF - signe_cades
+    - RTF - signe_xades
+    - RTF
+- CAdES
+  - Signature
+    - PDF_avec_tags - signe_cades
+    - PDF_avec_tags - signe_xades
+    - PDF_avec_tags
+    - PDF_sans_tags - signe_cades
+    - PDF_sans_tags - signe_xades
+    - PDF_sans_tags
+    - RTF - signe_cades
+    - RTF - signe_xades
+    - RTF
+- HELIOS - XAdES env
+  - Signature
+    - XML (ISO-8859-1, PJ PDF incluses)
+    - XML (UTF-8)
+- PAdES
+  - Cachet serveur
+    - PDF_avec_tags - repositionnement signature
+    - PDF_avec_tags - signe_pades
+    - PDF_avec_tags
+    - PDF_sans_tags - repositionnement signature
+    - PDF_sans_tags - signe_pades
+    - PDF_sans_tags
+  - Signature
+    - PDF_avec_tags
+    - PDF_avec_tags
+    - PDF_avec_tags - repositionnement signature
+    - PDF_avec_tags-signature_pades
+    - PDF_avec_tags
+    - PDF_sans_tags - repositionnement signature
+    - PDF_sans_tags-signature_pades - signe_pades
+    - PDF_sans_tags
+- XAdES det
+  - Signature
+    - PDF_avec_tags - signe_cades
+    - PDF_avec_tags - signe_xades
+    - PDF_avec_tags
+    - PDF_sans_tags - signe_cades
+    - PDF_sans_tags - signe_xades
+    - PDF_sans_tags
+    - RTF - signe_cades
+    - RTF - signe_xades
+    - RTF
+
+---
+
 @see src/test/resources/features/999_business/998_Formats de signature/002_folders/XAdES det/001 - Signature - RTF.feature
 
 // sudo snap install xmlstarlet

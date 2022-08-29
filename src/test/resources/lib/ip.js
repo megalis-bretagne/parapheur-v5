@@ -27,6 +27,11 @@ var namespace = function (obj, path, item) {
 
 function fn(config) {
     config['ip'] = config['ip'] || {};
+
+    config.ip['version'] = function() {
+        return 5;
+    };
+
     config.ip['signature'] = config.ip['signature'] || {};
 
     config.ip.signature['cades'] = config.ip.signature['cades'] || {};
