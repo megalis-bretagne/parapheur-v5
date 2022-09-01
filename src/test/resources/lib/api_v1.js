@@ -298,7 +298,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('sortBy', 'ID')
             .get();
 
@@ -319,7 +319,7 @@ function fn(config) {
                 .http(baseUrl)
                 .path('/api/v1/admin/tenant/')
                 .param('asc', true)
-                .param('pageSize', 100)
+                .param('size', 100)
                 .param('searchTerm', partialName)
                 .param('sortBy', 'NAME')
                 .header('Accept', 'application/json')
@@ -347,7 +347,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('sortBy', 'ID')
             .get();
 
@@ -390,7 +390,7 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/metadata')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('sortBy', 'KEY')
             .get();
 
@@ -414,7 +414,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('sortBy', 'ID')
             .get();
 
@@ -565,7 +565,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('searchTerm', name)
             .param('sortBy', 'ID')
             .get();

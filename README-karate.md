@@ -1,5 +1,16 @@
 # Karate
 
+## @fixme
+
+- [x] pageSize -> size
+- [x] page -> page
+- [ ] asc et sortBy => sort["name,ASC", "id,DESC"...]
+
+## @todo
+
+- [ ] que la création avec les métadonnées ? à scripter alors... (autre issue)
+- voir https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/ip-web/-/issues/270
+
 ## WIP
 
 ```bash
