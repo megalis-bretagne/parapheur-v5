@@ -21,10 +21,9 @@
 # Do not modify this file, it will be reset on every update.
 # Any modification will be lost
 #
-# To modify anything from here, you should create a separate `docker-compose.override-instance-xxx.yml` file,
+# To modify anything from here, you should use the separate `docker-compose.override.instance.yml` file,
 # That will contain every overridden parameter.
 #
-
 
 
 volumes:
