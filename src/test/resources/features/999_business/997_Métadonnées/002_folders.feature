@@ -149,7 +149,7 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
 }
 """
 
-    Scenario Outline: Create 1 "${subtype}" folders without annex
+    Scenario Outline: Create 1 "${nameTemplate}" folder
         * def params =
 """
 {
@@ -219,8 +219,7 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
             | Texte rejet et validation   | Liste - Validation - Texte rejet et validation        |
             | Toutes validation et rejet  | Liste - Validation - Toutes validation et rejet       |
 
-    @x-wip @ignore
-    Scenario Outline: ${action} avec métadonnées sur le dossier "${folder}" par ecapucine
+    Scenario Outline: Traitement du dossier "${folder}" via UI par ecapucine
         * def params =
 """
 {
@@ -257,15 +256,40 @@ Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
         * def fillMetadatas =
 """
 function(metadatas) {
-    var field, key, xpath;
+    var field, key, labelValue, optionXpath, xpath;
     for (key in metadatas) {
         xpath = "//app-metadata-form//label[normalize-space(text())='" + fields[key] + "']/parent::div/app-metadata-input";
-        karate.log({key: key, text: fields[key]});
-        // @todo: faire quelque chose avec les ng-select
+        // Type de champ
+        if (exists(xpath + "//ng-select") === true) {
+            mouse().move(xpath + "//ng-select//*[@class='ng-arrow-wrapper']").click();
+            labelValue = metadatas[key];
+            if (types[key] === "BOOLEAN") {
+                if (metadatas[key] === true) {
+                    labelValue = "Oui";
+                } else if (metadatas[key] === false) {
+                    labelValue = "Non";
+                }
+            } else if (types[key] === "DATE") {
+                labelValue = metadatas[key].replace(/^(....)-(..)-(..)$/, "$3/$2/$1");
+            }
+            optionXpath = xpath + "//ng-select//*[@role='option']//*[@class='ng-option-label'][text()='" + labelValue + "']";
+            waitFor(optionXpath);
+            mouse().move(optionXpath).click()
+        } else if (exists(xpath + "//input[(@type='number' or @type='text' or @type='url') and not(@readonly)]") === true) {
+            if (types[key] === "FLOAT" || types[key] === "INTEGER") {
+                input(xpath + "//input", String(metadatas[key]));
+            } else {
+                input(xpath + "//input", metadatas[key]);
+            }
+        } else if (exists(xpath + "//input[(@type='date') and not(@readonly)]") === true) {
+            input(xpath + "//input", metadatas[key].replace(/^(....)-(..)-(..)$/, "$3/$2/$1"));
+        } else {
+            karate.fail('Le champ renseigné n\'est pas pris en compte pour la clé "' + key + '" pour le xpath ' + xpath);
+        }
+        pause(5);
     }
 }
 """
-        * karate.log(metadatas)
         * fillMetadatas(metadatas)
 
         * click("{^}Valider")
@@ -273,94 +297,37 @@ function(metadatas) {
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))
 
         Examples:
-            | folder                                               | action |
-            | Individuel - Validation - Toutes validation et rejet | Visa   |
-@x-wip
-    # @todo: via UI
-    Scenario Outline: Traitement du dossier "${folder}" par ecapucine
-        * def params =
-"""
-{
-    tenant: "Métadonnées",
-    annotation: "visa",
-    username: "ecapucine",
-    desktop: "Capucine",
-    folder: "#(folder)",
-    metadata: "#(map['<folder>'])"
-}
-"""
-        * api_v1.auth.login(params.username, 'a123456')
-        * call read("classpath:lib/v5/business/api/folder/<action>.feature") params
-
-        Examples:
             | folder                                                | action |
-            | Individuel - Rejet - Aucune métadonnée                | reject |
-            | Individuel - Rejet - Booleen rejet                    | reject |
-            | Individuel - Rejet - Booleen validation               | reject |
-            | Individuel - Rejet - Booleen rejet et validation      | reject |
-            | Individuel - Rejet - Texte rejet                      | reject |
-            | Individuel - Rejet - Texte validation                 | reject |
-            | Individuel - Rejet - Texte rejet et validation        | reject |
-            | Individuel - Rejet - Toutes validation et rejet       | reject |
-            | Individuel - Validation - Aucune métadonnée           | visa   |
-            | Individuel - Validation - Booleen rejet               | visa   |
-            | Individuel - Validation - Booleen validation          | visa   |
-            | Individuel - Validation - Booleen rejet et validation | visa   |
-            | Individuel - Validation - Texte rejet                 | visa   |
-            | Individuel - Validation - Texte validation            | visa   |
-            | Individuel - Validation - Texte rejet et validation   | visa   |
-            | Individuel - Validation - Toutes validation et rejet  | visa   |
+            | Individuel - Rejet - Aucune métadonnée                | Rejet  |
+            | Individuel - Rejet - Booleen rejet                    | Rejet  |
+            | Individuel - Rejet - Booleen validation               | Rejet  |
+            | Individuel - Rejet - Booleen rejet et validation      | Rejet  |
+            | Individuel - Rejet - Texte rejet                      | Rejet  |
+            | Individuel - Rejet - Texte validation                 | Rejet  |
+            | Individuel - Rejet - Texte rejet et validation        | Rejet  |
+            | Individuel - Rejet - Toutes validation et rejet       | Rejet  |
+            | Individuel - Validation - Aucune métadonnée           | Visa   |
+            | Individuel - Validation - Booleen rejet               | Visa   |
+            | Individuel - Validation - Booleen validation          | Visa   |
+            | Individuel - Validation - Booleen rejet et validation | Visa   |
+            | Individuel - Validation - Texte rejet                 | Visa   |
+            | Individuel - Validation - Texte validation            | Visa   |
+            | Individuel - Validation - Texte rejet et validation   | Visa   |
+            | Individuel - Validation - Toutes validation et rejet  | Visa   |
 
-    # @todo: via API + UI
-    @ignore
-    Scenario Outline: Vérification des métadonnées du dossier "${folder}" par ws-meta
+    Scenario Outline: Vérification des métadonnées sur le dossier "${folder}" par ws-meta (via UI)
         * def params =
 """
 {
     tenant: "Métadonnées",
     username: "ws-meta",
     desktop: "WebService",
-    folder: "#(folder)"
+    folder: "#(folder)",
+    state: "#(state)"
 }
 """
-        * api_v1.auth.login(params.username, 'a123456')
-        * def tenant = v5.business.api.tenant.getByName(params.tenant)
-        * def desktop = v5.business.api.desktop.getByName(tenant.id, params.desktop)
-        * def folder = v5.business.api.folder.getByName(tenant.id, desktop.id, "<state>", params.folder)
-
-        * def internal =
-"""
-{
-    "workflow_internal_final_group_id": "#uuid",
-    "workflow_internal_steps": "#present",
-    "i_Parapheur_internal_emitter_id": "#uuid",
-    "workflow_internal_validation_workflow_id": "#string"
-}
-"""
-        * def valuesToString =
-"""
-function (dict) {
-    var key;
-    for (key in dict) {
-        switch(typeof dict[key]) {
-            case "boolean":
-                if (dict[key] === true) {
-                    dict[key] = "true";
-                }
-                else if (dict[key] === false) {
-                    dict[key] = "false";
-                }
-                break;
-            case "number":
-                dict[key] = String(dict[key]);
-                break;
-        }
-    }
-    return dict;
-}
-"""
-        * def expected = karate.merge(internal, valuesToString(map['<folder>']))
-        * match folder.metadata == expected
+        * def rv = call read("classpath:lib/v5/business/Métadonnées/getFolderMetadatasThroughUI.feature") params
+        * match rv.metadatas == map['<folder>']
 
         Examples:
             | folder                                                | state    |
@@ -380,144 +347,3 @@ function (dict) {
             | Individuel - Validation - Texte validation            | finished |
             | Individuel - Validation - Texte rejet et validation   | finished |
             | Individuel - Validation - Toutes validation et rejet  | finished |
-
-    @wip @x-ignore
-    Scenario Outline: Vérification des métadonnées sur le dossier "${folder}" par ws-meta
-        * def params =
-"""
-{
-    tenant: "Métadonnées",
-    username: "ws-meta",
-    desktop: "WebService",
-    folder: "#(folder)"
-}
-"""
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
-        * ui.user.login(params.username, 'a123456')
-
-        * click("{a}" + params.desktop)
-        * click("//span[contains(@class, 'badge badge-<state> desk-badge')]")
-
-        # Filtre sur le nom du dossier
-        # @todo: ui.xxx.filter.toggle, ui.xxx.filter.apply
-        * click("//ngb-pagination/parent::div//button//span[text()='Filtrer']")
-        * input(ui.locator.input('Titre'), '<folder>')
-        * click("//app-folder-filter-panel//button//span[text()='Filtrer']")
-
-        * click("{a}<folder>")
-
-        * waitFor(ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
-
-        # @todo: métadonnées
-#        * def metadatas = map['<folder>']
-        * def getMetadatas =
-"""
-function() {
-    var actual = {},
-        content,
-        idx,
-        inputs,
-        label,
-        lines,
-        row,
-        inputType,
-        xpath = "//strong[text()='Métadonnées']/parent::div/parent::div/parent::div//app-step-metadata-list/div",
-        xpathInput;
-        //xpath = "//strong[text()='Métadonnées']/parent::div/parent::div/parent::div//app-metadata-input";
-
-    inputs = locateAll(xpath);
-    lines = karate.sizeOf(inputs);
-    //karate.log(inputs);
-
-    for (idx = 1;idx <= lines;idx++) {
-        label = text(xpath + "[position() = " + idx + "]/label").trim();
-        //karate.log(inverse[label]);
-
-        content = null;
-        if (exists(xpath + "[position() = " + idx + "]/app-metadata-input//ng-select") === true) {
-            xpathInput = xpath + "[position() = " + idx + "]/app-metadata-input//ng-select";
-            //script("(document.evaluate(\"" + xpathInput + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false");
-            //karate.log(xpathInput);
-            //karate.log(JSON.stringify(value(xpathInput)));
-            //content = value(xpathInput);//@todo: si date, etc... -> reformater
-            content = text(xpathInput + "//span[contains(@class, 'ng-value-label')]").trim();//@fixme: la valeur ? ou reformater ?
-
-            inputType = types[inverse[label]];
-            //karate.log(inputType);
-            if (inputType === "BOOLEAN") {
-                if (content === "Oui") {
-                    content = true;
-                } else if (content === "Non") {
-                    content = false;
-                }
-            } else if (inputType === "DATE") {
-                content = content.replace(/^(..)\/(..)\/(....)$/, "$3-$2-$1");
-            } else if (inputType === "FLOAT") {
-                content = parseFloat(content);
-            } else if (inputType === "INTEGER") {
-                content = parseInt(content, 10);
-            }
-        } else if (exists(xpath + "[position() = " + idx + "]/app-metadata-input//input") === true) {
-            xpathInput = xpath + "[position() = " + idx + "]/app-metadata-input//input";
-            content = value(xpathInput).trim();
-            inputType = types[inverse[label]];
-            //karate.log(inputType);
-            if (inputType === "FLOAT") {
-                content = parseFloat(content);
-            } else if (inputType === "INTEGER") {
-                content = parseInt(content, 10);
-            }
-            /*script("(document.evaluate(\"" + xpathInput + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false");
-            input = locate(xpathInput);
-            karate.log(input);
-            karate.log(html(xpathInput));
-            karate.log(value(xpathInput));*/
-        } else {
-            // @todo: fail
-        }
-
-        actual[inverse[label]] = content;
-    }
-
-    //------------------------------------------
-
-    //karate.doc(html(inputs[0]));
-    //karate.log(inputs[0].html());
-
-    /*
-    //waitFor("//strong[text()='Annotations publiques']/ancestor::div[@class='mt-3 ng-star-inserted']");
-    lines = karate.sizeOf(locateAll(xpath));
-    //karate.log(xpath);
-    //karate.log(locateAll(xpath));
-    //karate.log(lines);
-
-    for (idx = 1;idx <= lines;idx++) {
-        karate.log(idx);
-        var foo = "(" + xpath +")[" + idx + "]";
-        karate.log(foo);
-
-        // Label
-        label = text("(" + foo + "/parent::div//label)").trim();
-        karate.log(inverse[label]);
-
-        // Valeur - liste de sélection
-        //value = text(xpath + "[position() = " + idx + "]//span[contains(@class, 'ng-value-label')]").trim();
-        // @todo: traduire la valeur... (Oui -> true, ...)
-        //karate.log(value);
-
-        actual[inverse[label]] = value;
-    }*/
-    return actual;
-}
-"""
-    #* karate.log(metadatas)
-#    * pause(5)
-      * waitFor("//strong[text()='Métadonnées']");
-      * def metadatas = getMetadatas()
-      * karate.log(metadatas)
-      * match metadatas == map['<folder>']
-
-      Examples:
-          | folder                                               | state      |
-          | Individuel - Validation - Toutes validation et rejet | finished   |
