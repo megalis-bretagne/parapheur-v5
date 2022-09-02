@@ -43,7 +43,8 @@ First, copy the example file :
 cp .env.dist .env
 ```
 
-By default, the application will start on the http://iparapheur.dom.local URL. You can edit the `.env` file to change the passwords or URLs among others.
+By default, the application will start on the http://iparapheur.dom.local URL.  
+You can edit the `.env` file to change the passwords or URLs among others.
 
 #### Create data directories
 
@@ -112,19 +113,26 @@ Locale           : France
 
 You will need "Prometheus Node Exporter" to get your local machine data.
 
-```
+```bash
 sudo apt update
 sudo apt install prometheus-node-exporter
 ```
 
 Or in : https://github.com/prometheus/node_exporter.
 
+## Register the service file
+
+```bash
+ln -s /opt/iParapheur/iparapheur.service /etc/systemd/system/iparapheur.service
+systemctl enable iparapheur
+```
+
 ## Start
 
 The following command will serve a working i-Parapheur.
 
 ```bash
-docker-compose up
+systemctl start iparapheur
 ```
 
 To access it on a Linux machine, you may add this resolution in your `/etc/hosts` file :
@@ -135,16 +143,6 @@ To access it on a Linux machine, you may add this resolution in your `/etc/hosts
 
 And open the URL : http://iparapheur.dom.local
 
-## Specific tuning
-
-The original `docker-compose.yml` file will be updated on every upgrade.  
-Any needed modification should be set in an additional `yml` file, that will override what's needed.
-
-```bash
-docker-compose -f docker-compose.yml -f docker-compose.override-instance.yml up -d
-```
-
-
 ### Defining a custom truststore
 
 On a custom CA-covered URL, some Keycloak calls will be broken.  
@@ -154,10 +152,9 @@ We need to create a specific truststore to allow the connexion:
 keytool -import -file data/nginx/ssl/fullchain.pem -alias iparapheur.dom.local -keystore truststore.jks
 ```
 
-And link it to some specific elements, through the `override-instance.yml` file :
+And link it to some specific elements, through the `docker-compose.override.instance.yml` file :
 
 ```yml
-version: '2.4'
 services:
 
   core:
