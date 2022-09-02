@@ -84,6 +84,7 @@ services:
       - SECRET_PROTOCOL
       - SECRET_HOST
       - SECRET_PORT
+      - MAIL_FROM
     depends_on:
       postgres:
         condition: service_healthy
@@ -186,6 +187,7 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - MAIL_FROM
 
 
   feeder:

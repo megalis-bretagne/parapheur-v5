@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #
 # i-Parapheur
 # Copyright (C) 2019-2022 Libriciel SCOP

@@ -392,7 +392,15 @@
       ]
     }
   ],
-  "smtpServer": {},
+  "smtpServer": {
+    "starttls": "",
+    "auth": "false",
+    "port": "25",
+    "host": "172.17.0.1",
+    "from": "${env.MAIL_FROM}",
+    "fromDisplayName": "iparapheur",
+    "ssl": ""
+  },
   "sslRequired": "external",
   "ssoSessionIdleTimeout": 1800,
   "ssoSessionIdleTimeoutRememberMe": 0,
@@ -494,7 +502,7 @@
           "value": "password"
         }
       ],
-      "email": "sample-user@dom.local",
+      "email": "${env.MAIL_FROM}",
       "enabled": true,
       "firstName": "Sample",
       "lastName": "User",
