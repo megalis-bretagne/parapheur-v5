@@ -1,4 +1,4 @@
-i-Parapheur
+iparapheur
 ===========
 
 ## Installation
@@ -143,6 +143,25 @@ Any needed modification should be set in an additional `yml` file, that will ove
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.override-instance.yml up -d
 ```
+
+### SMTP
+
+By default, the `localhost`'s `25` port will be used.
+
+Core SMTP link can be updated in a overridden `application.yml` :
+```yaml
+spring:
+  mail:
+    host: mail.dom.local
+    port: 25
+    username: user
+    password: pass
+    properties.mail.smtp:
+      ssl.enable: true
+```
+
+And in the Keycloak's inner settings : http://iparapheur.adrien.local/auth/admin/master/console/#/realms/api/smtp-settings
+
 
 ### Defining a custom truststore
 
