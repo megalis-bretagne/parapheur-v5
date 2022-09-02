@@ -27,7 +27,14 @@ echo '    ${env.KEYCLOAK_WEB_CLIENT_ID} : '${KEYCLOAK_WEB_CLIENT_ID}
 echo '    ${env.KEYCLOAK_CLIENT_SECRET} : '$( [[ ${#KEYCLOAK_CLIENT_SECRET} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
 echo '    ${env.KEYCLOAK_USER}          : '${KEYCLOAK_USER}
 echo '    ${env.KEYCLOAK_PASSWORD}      : '$( [[ ${#KEYCLOAK_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.MAIL_FROM}              : '${MAIL_FROM}
+echo '    ${env.SMTP_HOST}              : '${SMTP_HOST}
+echo '    ${env.SMTP_PORT}              : '${SMTP_PORT}
+echo '    ${env.SMTP_ENABLE_AUTH}       : '${SMTP_ENABLE_AUTH}
+echo '    ${env.SMTP_USER}              : '${SMTP_USER}
+echo '    ${env.SMTP_PASSWORD}          : '${SMTP_PASSWORD}
+echo '    ${env.SMTP_MAIL_FROM}         : '${MAIL_FROM}
+echo '    ${env.SMTP_ENABLE_SSL}        : '${SMTP_ENABLE_SSL}
+echo '    ${env.SMTP_ENABLE_START_TLS}  : '${SMTP_ENABLE_START_TLS}
 
 sed -i "s/\${env.KEYCLOAK_REALM}/${KEYCLOAK_REALM}/g"                 /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_CLIENT_ID}/${KEYCLOAK_CLIENT_ID}/g"         /tmp/keycloak_env_var_patched.json
@@ -35,4 +42,11 @@ sed -i "s/\${env.KEYCLOAK_WEB_CLIENT_ID}/${KEYCLOAK_WEB_CLIENT_ID}/g" /tmp/keycl
 sed -i "s/\${env.KEYCLOAK_CLIENT_SECRET}/${KEYCLOAK_CLIENT_SECRET}/g" /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_USER}/${KEYCLOAK_USER}/g"                   /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.KEYCLOAK_PASSWORD}/${KEYCLOAK_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.MAIL_FROM}/${MAIL_FROM}/g"                           /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_HOST}/${SMTP_HOST}/g"                           /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_PORT}/${SMTP_PORT}/g"                           /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_AUTH}/${SMTP_ENABLE_AUTH}/g"             /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_USER}/${SMTP_USER}/g"                           /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_PASSWORD}/${SMTP_PASSWORD}/g"                   /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_MAIL_FROM}/${SMTP_MAIL_FROM}/g"                 /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_SSL}/${SMTP_ENABLE_SSL}/g"               /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_START_TLS}/${SMTP_ENABLE_START_TLS}/g"   /tmp/keycloak_env_var_patched.json

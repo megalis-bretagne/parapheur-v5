@@ -84,7 +84,14 @@ services:
       - SECRET_PROTOCOL
       - SECRET_HOST
       - SECRET_PORT
-      - MAIL_FROM
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - SMTP_ENABLE_AUTH
+      - SMTP_MAIL_FROM
+      - SMTP_ENABLE_SSL
+      - SMTP_ENABLE_START_TLS
     depends_on:
       postgres:
         condition: service_healthy
@@ -334,7 +341,14 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
-      - MAIL_FROM
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - SMTP_ENABLE_AUTH
+      - SMTP_MAIL_FROM
+      - SMTP_ENABLE_SSL
+      - SMTP_ENABLE_START_TLS
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}

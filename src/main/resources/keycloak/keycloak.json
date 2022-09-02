@@ -393,13 +393,15 @@
     }
   ],
   "smtpServer": {
-    "starttls": "",
-    "auth": "false",
-    "port": "25",
-    "host": "172.17.0.1",
-    "from": "${env.MAIL_FROM}",
+    "auth": "${anv.SMTP_ENABLE_AUTH}",
+    "from": "${env.SMTP_MAIL_FROM}",
     "fromDisplayName": "iparapheur",
-    "ssl": ""
+    "host": "${env.SMTP_HOST}",
+    "password": "${env.SMTP_PASSWORD}",
+    "port": "${env.SMTP_PORT}",
+    "ssl": "${env.SMTP_ENABLE_SSL}",
+    "starttls": "${env.SMTP_ENABLE_START_TLS}",
+    "user": "${env.SMTP_USER}"
   },
   "sslRequired": "external",
   "ssoSessionIdleTimeout": 1800,
@@ -502,7 +504,7 @@
           "value": "password"
         }
       ],
-      "email": "${env.MAIL_FROM}",
+      "email": "${env.SMTP_MAIL_FROM}",
       "enabled": true,
       "firstName": "Sample",
       "lastName": "User",
