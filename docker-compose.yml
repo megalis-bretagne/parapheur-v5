@@ -334,6 +334,7 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
+      - MAIL_FROM
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
