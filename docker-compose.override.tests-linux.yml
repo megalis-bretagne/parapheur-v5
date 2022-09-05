@@ -19,6 +19,7 @@
 services:
 
   core:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:smtp-vars
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
 
