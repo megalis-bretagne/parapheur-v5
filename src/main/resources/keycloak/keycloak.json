@@ -393,7 +393,7 @@
     }
   ],
   "smtpServer": {
-    "auth": "${anv.SMTP_ENABLE_AUTH}",
+    "auth": "${env.SMTP_ENABLE_AUTH}",
     "from": "${env.SMTP_MAIL_FROM}",
     "fromDisplayName": "iparapheur",
     "host": "${env.SMTP_HOST}",
