@@ -293,5 +293,5 @@ WHERE id = 1;
 
 From the shell in the redis conrtainer, assuming we want to reup the latest error message :  
 ```
-redis-cli --raw XREVRANGE ipng-error + - COUNT 1 | tail -n 10 |  tr "\n" " " | xargs redis-cli XADD ipng-proof '*'
+redis-cli --raw XREVRANGE ipng-error + - COUNT 1 | tail -n 8 |  tr "\n" " " | xargs redis-cli XADD ipng-proof '*'
 ```

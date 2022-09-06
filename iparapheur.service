@@ -1,0 +1,17 @@
+# /etc/systemd/system/docker-compose-app.service
+
+[Unit]
+Description=iparapheur
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/iParapheur
+ExecStart=/usr/bin/docker-compose -f docker-compose.yml -f docker-compose.override.instance.yml up -d --remove-orphans
+ExecStop=/usr/bin/docker-compose -f docker-compose.yml -f docker-compose.override.instance.yml down -v
+StandardOutput=syslog
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -21,10 +21,9 @@
 # Do not modify this file, it will be reset on every update.
 # Any modification will be lost
 #
-# To modify anything from here, you should create a separate `docker-compose.override-instance-xxx.yml` file,
+# To modify anything from here, you should use the separate `docker-compose.override.instance.yml` file,
 # That will contain every overridden parameter.
 #
-
 
 
 volumes:
@@ -57,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.2
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.3
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -84,6 +83,14 @@ services:
       - SECRET_PROTOCOL
       - SECRET_HOST
       - SECRET_PORT
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - SMTP_ENABLE_AUTH
+      - SMTP_MAIL_FROM
+      - SMTP_ENABLE_SSL
+      - SMTP_ENABLE_START_TLS
     depends_on:
       postgres:
         condition: service_healthy
@@ -96,13 +103,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.11
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.0.12
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta46
+      - VERSION=5.0.0-beta47
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -162,7 +169,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.3
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.4
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -186,6 +193,7 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - MAIL_FROM
 
 
   feeder:
@@ -332,6 +340,14 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - SMTP_ENABLE_AUTH
+      - SMTP_MAIL_FROM
+      - SMTP_ENABLE_SSL
+      - SMTP_ENABLE_START_TLS
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
