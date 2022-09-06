@@ -17,8 +17,8 @@
  */
 
 /*
-namespace(config, 'ip.signature.pades.certificates.read', function(path) {});
-namespace(config, 'ip.signature.pades.certificates.default', function(alias) {});
+namespace(config, 'config.ip.signature.pades.certificates.read', function(path) {});
+namespace(config, 'config.ip.signature.pades.certificates.default', function(alias) {});
 var namespace = function (obj, path, item) {
     //obj['ip'] = obj['ip'] || {};
     obj["foo"] = "bar";
@@ -27,6 +27,145 @@ var namespace = function (obj, path, item) {
 
 function fn(config) {
     config['ip'] = config['ip'] || {};
+
+    // @todo: déplacer dans metadatas.js et ne le charger que dans les tests qui en ont besoin
+    config.ip['metadatas'] = config.ip['metadatas'] || {};
+
+    config.ip.metadatas['types'] = {
+        booleen: "BOOLEAN",
+        date: "DATE",
+        date_restreinte: "DATE",
+        nombre_virgule: "FLOAT",
+        nombre_virgule_restreint: "FLOAT",
+        nombre_entier: "INTEGER",
+        nombre_entier_restreint: "INTEGER",
+        texte: "TEXT",
+        texte_restreint: "TEXT",
+        url: "TEXT",
+        url_restreint: "TEXT"
+    };
+
+    config.ip.metadatas['labels'] = {
+        booleen: "Booléen",
+        date: "Date",
+        date_restreinte: "Date restreinte",
+        nombre_virgule: "Nombre à virgule",
+        nombre_virgule_restreint: "Nombre à virgule restreint",
+        nombre_entier: "Nombre entier",
+        nombre_entier_restreint: "Nombre entier restreint",
+        texte: "Texte",
+        texte_restreint: "Texte restreint",
+        url: "URL",
+        url_restreint: "URL restreint"
+    };
+
+    config.ip.metadatas['inverse'] = {
+        "Booléen": "booleen",
+        "Date": "date",
+        "Date restreinte": "date_restreinte",
+        "Nombre à virgule": "nombre_virgule",
+        "Nombre à virgule restreint": "nombre_virgule_restreint",
+        "Nombre entier": "nombre_entier",
+        "Nombre entier restreint": "nombre_entier_restreint",
+        "Texte": "texte",
+        "Texte restreint": "texte_restreint",
+        "URL": "url",
+        "URL restreint": "url_restreint"
+    };
+
+    config.ip.metadatas['tmp'] = {
+        "Rejet - Aucune métadonnée": {},
+        "Rejet - Booleen rejet": {booleen: false},
+        "Rejet - Booleen validation": {},
+        "Rejet - Booleen rejet et validation": {booleen: false},
+        "Rejet - Texte rejet": {texte: "Texte rejet"},
+        "Rejet - Texte validation": {},
+        "Rejet - Texte rejet et validation": {texte: "Texte rejet"},
+        "Rejet - Toutes validation et rejet": {
+            booleen: false,
+            date: "2022-09-01",
+            date_restreinte: "2022-01-15",
+            nombre_virgule: 0.33,
+            nombre_virgule_restreint: 0,
+            nombre_entier: 0,
+            nombre_entier_restreint: 0,
+            texte: "Texte rejet",
+            texte_restreint: "a",
+            url: "https://perdu.com/",
+            url_restreint: "http://www.lesoir.be",
+        },
+        "Validation - Aucune métadonnée": {},
+        "Validation - Booleen rejet": {},
+        "Validation - Booleen validation": {booleen: true},
+        "Validation - Booleen rejet et validation": {booleen: true},
+        "Validation - Texte rejet": {},
+        "Validation - Texte validation": {texte: "Texte validation"},
+        "Validation - Texte rejet et validation": {texte: "Texte validation"},
+        "Validation - Toutes validation et rejet": {
+            booleen: true,
+            date: "2022-09-02",
+            date_restreinte: "2022-02-15",
+            nombre_virgule: 0.77,
+            nombre_virgule_restreint: 1.5,
+            nombre_entier: 1,
+            nombre_entier_restreint: 2,
+            texte: "Texte validation",
+            texte_restreint: "b",
+            url: "https://dernierepage.com/",
+            url_restreint: "https://www.libriciel.fr/nos-logiciels/",
+        }
+    };
+
+    config.ip.metadatas['map'] = {
+        "Groupe - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
+        "Groupe - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
+        "Groupe - Rejet - Booleen validation": config.ip.metadatas.tmp['Rejet - Booleen validation'],
+        "Groupe - Rejet - Booleen rejet et validation": config.ip.metadatas.tmp['Rejet - Booleen rejet et validation'],
+        "Groupe - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
+        "Groupe - Rejet - Texte validation": config.ip.metadatas.tmp['Rejet - Texte validation'],
+        "Groupe - Rejet - Texte rejet et validation": config.ip.metadatas.tmp['Rejet - Texte rejet et validation'],
+        "Groupe - Rejet - Toutes validation et rejet": config.ip.metadatas.tmp['Rejet - Toutes validation et rejet'],
+        "Groupe - Validation - Aucune métadonnée": config.ip.metadatas.tmp['Validation - Aucune métadonnée'],
+        "Groupe - Validation - Booleen rejet": config.ip.metadatas.tmp['Validation - Booleen rejet'],
+        "Groupe - Validation - Booleen validation": config.ip.metadatas.tmp['Validation - Booleen validation'],
+        "Groupe - Validation - Booleen rejet et validation": config.ip.metadatas.tmp['Validation - Booleen rejet et validation'],
+        "Groupe - Validation - Texte rejet": config.ip.metadatas.tmp['Validation - Texte rejet'],
+        "Groupe - Validation - Texte validation": config.ip.metadatas.tmp['Validation - Texte validation'],
+        "Groupe - Validation - Texte rejet et validation": config.ip.metadatas.tmp['Validation - Texte rejet et validation'],
+        "Groupe - Validation - Toutes validation et rejet": config.ip.metadatas.tmp['Validation - Toutes validation et rejet'],
+        "Individuel - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
+        "Individuel - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
+        "Individuel - Rejet - Booleen validation": config.ip.metadatas.tmp['Rejet - Booleen validation'],
+        "Individuel - Rejet - Booleen rejet et validation": config.ip.metadatas.tmp['Rejet - Booleen rejet et validation'],
+        "Individuel - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
+        "Individuel - Rejet - Texte validation": config.ip.metadatas.tmp['Rejet - Texte validation'],
+        "Individuel - Rejet - Texte rejet et validation": config.ip.metadatas.tmp['Rejet - Texte rejet et validation'],
+        "Individuel - Rejet - Toutes validation et rejet": config.ip.metadatas.tmp['Rejet - Toutes validation et rejet'],
+        "Individuel - Validation - Aucune métadonnée": config.ip.metadatas.tmp['Validation - Aucune métadonnée'],
+        "Individuel - Validation - Booleen rejet": config.ip.metadatas.tmp['Validation - Booleen rejet'],
+        "Individuel - Validation - Booleen validation": config.ip.metadatas.tmp['Validation - Booleen validation'],
+        "Individuel - Validation - Booleen rejet et validation": config.ip.metadatas.tmp['Validation - Booleen rejet et validation'],
+        "Individuel - Validation - Texte rejet": config.ip.metadatas.tmp['Validation - Texte rejet'],
+        "Individuel - Validation - Texte validation": config.ip.metadatas.tmp['Validation - Texte validation'],
+        "Individuel - Validation - Texte rejet et validation": config.ip.metadatas.tmp['Validation - Texte rejet et validation'],
+        "Individuel - Validation - Toutes validation et rejet": config.ip.metadatas.tmp['Validation - Toutes validation et rejet'],
+        "Liste - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
+        "Liste - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
+        "Liste - Rejet - Booleen validation": config.ip.metadatas.tmp['Rejet - Booleen validation'],
+        "Liste - Rejet - Booleen rejet et validation": config.ip.metadatas.tmp['Rejet - Booleen rejet et validation'],
+        "Liste - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
+        "Liste - Rejet - Texte validation": config.ip.metadatas.tmp['Rejet - Texte validation'],
+        "Liste - Rejet - Texte rejet et validation": config.ip.metadatas.tmp['Rejet - Texte rejet et validation'],
+        "Liste - Rejet - Toutes validation et rejet": config.ip.metadatas.tmp['Rejet - Toutes validation et rejet'],
+        "Liste - Validation - Aucune métadonnée": config.ip.metadatas.tmp['Validation - Aucune métadonnée'],
+        "Liste - Validation - Booleen rejet": config.ip.metadatas.tmp['Validation - Booleen rejet'],
+        "Liste - Validation - Booleen validation": config.ip.metadatas.tmp['Validation - Booleen validation'],
+        "Liste - Validation - Booleen rejet et validation": config.ip.metadatas.tmp['Validation - Booleen rejet et validation'],
+        "Liste - Validation - Texte rejet": config.ip.metadatas.tmp['Validation - Texte rejet'],
+        "Liste - Validation - Texte validation": config.ip.metadatas.tmp['Validation - Texte validation'],
+        "Liste - Validation - Texte rejet et validation": config.ip.metadatas.tmp['Validation - Texte rejet et validation'],
+        "Liste - Validation - Toutes validation et rejet": config.ip.metadatas.tmp['Validation - Toutes validation et rejet'],
+    };
 
     config.ip['version'] = function() {
         return 5;
@@ -146,7 +285,7 @@ function fn(config) {
     config.ip.signature['pades'] = config.ip.signature['pades'] || {};
     config.ip.signature.pades['annotations'] = config.ip.signature.pades['annotations'] || {};
     config.ip.signature.pades.annotations['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "annotations", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "annotations", path],
             idx,
             lines,
             matches,
@@ -251,14 +390,14 @@ function fn(config) {
                 "valid": true
             };
         } else {
-            var msg = "No ip.signature.pades.certificates.default for the \"" + alias + "\" alias. Use one of: seal, signature-user, signature-cnoir";
+            var msg = "No config.ip.signature.pades.certificates.default for the \"" + alias + "\" alias. Use one of: seal, signature-user, signature-cnoir";
             karate.log(msg);
             karate.fail(msg);
         }
     };
     config.ip.signature.pades['fields'] = config.ip.signature.pades['fields'] || {};
     config.ip.signature.pades.fields['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "signatures", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "signatures", path],
             idx,
             lines,
             matches,
@@ -282,7 +421,7 @@ function fn(config) {
     config.ip.signature.pades['images'] = config.ip.signature.pades['images'] || {};
     config.ip.signature.pades.images['compare'] = function(actual, expected) {
         var cmd, diff, diffPath, dirname, img, keyImage, keyPage, keyPosition,
-            proc, result = {}, script = karate.toAbsolutePath("classpath:python/karate-ip.py");
+            proc, result = {}, script = karate.toAbsolutePath("classpath:python/karate-config.ip.py");
         for (keyPage in expected) {
             for (keyPosition in expected[keyPage]) {
                 for (keyImage in expected[keyPage][keyPosition]) {
@@ -329,7 +468,7 @@ function fn(config) {
         }
     };
     config.ip.signature.pades.images['export'] = function(path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "images", path, utils.file.dirname(path) + "/images"],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "images", path, utils.file.dirname(path) + "/images"],
             proc;
         proc = karate.fork(cmd);
         proc.waitSync();
@@ -396,10 +535,10 @@ function fn(config) {
     // @todo-karate: meilleurs vérifications
     config.ip.signature.xades['validate'] = function(document, xades, certificate) {
         certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
-        var actualData = ip.signature.xades.actual(document, xades, certificate),
+        var actualData = config.ip.signature.xades.actual(document, xades, certificate),
             actualXml = karate.read("file://" + xades),
             expectedSchema = karate.read("classpath:lib/v5/schemas/xades.xml"),
-            expectedData = ip.signature.xades.expected(document, xades, certificate),
+            expectedData = config.ip.signature.xades.expected(document, xades, certificate),
             result;
 
         // 1. Vérification du schéma

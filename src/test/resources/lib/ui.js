@@ -54,6 +54,9 @@ function fn(config) {
         headless: config.headless,
         showDriverLog: false,
         type: 'chrome',
+        // @see https://github.com/karatelabs/karate/blob/master/karate-docker/karate-chrome/supervisord.conf
+        // @see https://stackoverflow.com/questions/73337435/karate-dsl-options-window-size-and-incognito-is-not-working-for-chromedrive
+        addOptions: ['--disable-gpu'],
         //addOptions: ['--windows-size=1024,768'],
         /*webDriverSession: {
             capabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
@@ -150,6 +153,11 @@ function fn(config) {
         // return '//input[@id=//label[contains(., \'' + text + '\')]/@for]';
             return '//input[@id=//label[contains(., \'' + text.replace("'", "\\\u0027") + '\')]/@for]';
     };
+
+    config.ui.locator['tray'] = {};
+    config.ui.locator.tray['filter'] = {};
+    config.ui.locator.tray.filter['apply'] = "//app-folder-filter-panel//button//span[text()='Filtrer']";
+    config.ui.locator.tray.filter['toggle'] = "//ngb-pagination/parent::div//button//span[text()='Filtrer']";
 
     /**
      * URL

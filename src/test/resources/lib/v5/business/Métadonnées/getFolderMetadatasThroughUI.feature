@@ -10,10 +10,9 @@ Feature: ...
         * click("//span[contains(@class, 'badge badge-" + __arg.state + " desk-badge')]")
 
           # Filtre sur le nom du dossier
-          # @todo: ui.xxx.filter.toggle, ui.xxx.filter.apply
-        * click("//ngb-pagination/parent::div//button//span[text()='Filtrer']")
+        * click(ui.locator.tray.filter.toggle)
         * input(ui.locator.input('Titre'), __arg.folder)
-        * click("//app-folder-filter-panel//button//span[text()='Filtrer']")
+        * click(ui.locator.tray.filter.apply)
 
         * click("{a}" + __arg.folder)
 
@@ -41,7 +40,7 @@ function() {
             inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//ng-select";
             content = text(inputXpath + "//span[contains(@class, 'ng-value-label')]").trim();//@fixme: la valeur ? ou reformater ?
             if (content !== "") {
-                inputType = types[inverse[label]];
+                inputType = ip.metadatas.types[ip.metadatas.inverse[label]];
                 if (inputType === "BOOLEAN") {
                     if (content === "Oui") {
                         content = true;
@@ -60,7 +59,7 @@ function() {
             inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//input";
             content = value(inputXpath).trim();
             if (content !== "") {
-                inputType = types[inverse[label]];
+                inputType = ip.metadatas.types[ip.metadatas.inverse[label]];
                 if (inputType === "FLOAT") {
                     content = parseFloat(content);
                 } else if (inputType === "INTEGER") {
@@ -71,7 +70,7 @@ function() {
             karate.fail('Champ non trouvé via "' + xpath + "[position() = " + idx + "]/app-metadata-input//ng-select" + '" ou "' + xpath + "[position() = " + idx + "]/app-metadata-input//input" + '"');
         }
 
-        actual[inverse[label]] = content;
+        actual[ip.metadatas.inverse[label]] = content;
     }
 
     return actual;

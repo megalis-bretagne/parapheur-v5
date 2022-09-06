@@ -38,5 +38,5 @@ function (dict) {
     return dict;
 }
 """
-        * def expected = karate.merge(internal, valuesToString(map[__arg.folder]))
+        * def expected = karate.merge(internal, valuesToString(ip.metadatas.map[__arg.folder]))
         * match folder.metadata == expected

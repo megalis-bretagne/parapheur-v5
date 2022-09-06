@@ -266,7 +266,7 @@ strict-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict"
-    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature --tags ~@fixme-ip --tags ~@ip4 "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature,@metadonnees --tags ~@fixme-ip --tags ~@ip4 "
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
@@ -276,7 +276,7 @@ tolerant-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests tolerant"
-    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature --tags ~@ip4 "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@legacy-bridge,@formats-de-signature,@metadonnees --tags ~@ip4 "
   needs: [ tolerant-e2e-tests-deploy ]
   only: [ develop ]
   allow_failure: true
