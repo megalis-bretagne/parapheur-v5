@@ -266,13 +266,13 @@ function fn(config) {
     config.api_v1.entity['getIdByName'] = function (name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/tenant')
+            .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('page', 0)
             .param('size', 100)
             .param('searchTerm', name)
-            .param('sort', 'ID,ASC')
+            .param('sort', 'id,ASC')
             .get();
 
         if (response.status !== 200) {
