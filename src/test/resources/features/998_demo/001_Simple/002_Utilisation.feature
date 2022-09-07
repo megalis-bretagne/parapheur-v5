@@ -45,7 +45,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
         #* waitFor("//div[@id='viewe#rContainer']//div[contains(concat(' ', @class,  ' '), ' textLayer ')]//*[contains(., 'Convention bipartite')]")
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
         * waitFor("{}Annotation publique").input("Annotation publique FLO (" + action + ")")
         * driver.screenshot()
         * waitFor("{}Annotation privée").input("Annotation privée FLO (" + action + ")")
@@ -100,7 +100,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
-        * click("//button[contains(normalize-space(text()), 'vis complémentaire')]")
+        * click("//*[contains(normalize-space(text()), 'vis complémentaire')]/ancestor-or-self::button")
         * waitFor("{}Annotation publique").input("Annotation publique MPI (Avis complémentaire)")
         * driver.screenshot()
         * waitFor("{}Annotation privée").input("Annotation privée MPI (Avis complémentaire)")
@@ -121,7 +121,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
         * waitFor("#publicAnnotation").input("Annotation publique FLO (" + action + ")")
         * driver.screenshot()
         * waitFor("#privateAnnotation").input("Annotation privée FLO (" + action + ")")
