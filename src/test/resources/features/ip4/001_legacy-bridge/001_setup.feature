@@ -2,6 +2,8 @@
 Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     Background:
+        * configure ssl = true
+        * configure readTimeout = 100000
         * v4.business.api.user.login("admin@legacy-bridge", "a123456")
 
     Scenario Outline: Création du connecteur Pastell mail-sécurisé "${title}"
@@ -63,6 +65,8 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     Scenario Outline: Création du sous-type "${type} / ${name}"
         * call read('classpath:lib/v4/business/api/subtype/create.feature') __row
+        # @info: permet d'éviter la 503
+        * pause(1)
 
         Examples:
             | type          | name           | description | parapheurs!    | workflow  | multidoc | cachet | mailsec         | metadatas!                                                                                   |

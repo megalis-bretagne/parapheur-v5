@@ -8,13 +8,18 @@
 
 ## @todo
 
-- [ ] que la création avec les métadonnées ? à scripter alors... (autre issue)
+- [x] que la création avec les métadonnées ? à scripter alors... (autre issue)
 - voir https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/ip-web/-/issues/270
 
 ## WIP
 
 ```bash
 # IP 4
+# Augmenter les 3G -> 6G ?
+# docker-compose down --volumes --remove-orphans && sudo rm -rf ./data && docker-compose up
+# parapheur-core_1     | 07-Sep-2022 12:17:37.676 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [165085] milliseconds
+./gradlew test --info -Dkarate.options="--tags @wip" -Dkarate.headless=true -Dkarate.baseUrl=https://ip4.dom.local/
+
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 # IP 5@20220803 - 40m 5s - 610 tests completed, 106 failed
 ./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true

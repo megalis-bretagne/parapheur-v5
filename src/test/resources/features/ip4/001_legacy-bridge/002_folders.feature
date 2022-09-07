@@ -1,6 +1,10 @@
 @legacy-bridge @folder @ip4
 Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
 
+    Background:
+        * configure ssl = true
+        * configure readTimeout = 100000
+
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
         * v4.business.api.user.login(username, password)
 
