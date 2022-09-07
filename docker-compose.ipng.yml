@@ -48,3 +48,11 @@ services:
     image: mongo:4.2.18-bionic
     ports:
       - 27017:27017
+
+  nginx:
+    volumes:
+      - ./src/main/resources/nginx/iparapheur.ipng.conf.template:/etc/nginx/templates/iparapheur.conf.template
+
+  core:
+    volumes:
+      - ./src/main/resources/core/application-dev-ipng.yml:/application.yml
