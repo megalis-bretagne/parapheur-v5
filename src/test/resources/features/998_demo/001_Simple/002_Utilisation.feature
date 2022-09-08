@@ -44,8 +44,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
         * ui.folder.annotate.both("flosserand@demo-simple", action, name)
+
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
@@ -93,8 +94,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
-        * click("//button[contains(normalize-space(text()), 'vis complémentaire')]")
+        * click("//*[contains(normalize-space(text()), 'vis complémentaire')]/ancestor-or-self::button")
         * ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
+
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
@@ -111,8 +113,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
         * ui.folder.annotate.both("flosserand@demo-simple", action, name)
+
         * click("{^}Valider")
         * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
         * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
