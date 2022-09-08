@@ -27,6 +27,9 @@ function fn() {
     const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
 
+    // Skip SSL certificate validation
+    karate.configure("ssl", true);
+
     var config = {
         env: env,
         //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?

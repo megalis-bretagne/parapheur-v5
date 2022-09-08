@@ -12,13 +12,13 @@ Feature: Traitement des dossiers
 
         Examples:
             | username                 | password | desktop   | folder                | action      | annotation            | to! | certificate |
-            | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_sign_avec_meta_1 | sign        | Auto_sign_avec_meta_1 | []  | signature   |
-            | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_sign_avec_meta_2 | reject      | Auto_sign_avec_meta_2 | []  |             |
+            | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_sign_avec_meta_1 | reject      | Auto_sign_avec_meta_1 | []  |             |
+#            | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_sign_avec_meta_2 | sign        | Auto_sign_avec_meta_2 | []  | signature   |
             | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_visa_avec_meta_1 | visa        | Auto_visa_avec_meta_1 | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_visa_avec_meta_2 | reject      | Auto_visa_avec_meta_2 | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_visa_avec_meta_3 | visa        | Auto_visa_avec_meta_3 | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | Auto_visa_avec_meta_4 | reject      | Auto_visa_avec_meta_4 | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | PAdES_cachet_1        | seal        | PAdES_cachet_1        | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | PAdES_cachet_2        | reject      | PAdES_cachet_2        | []  |             |
-            | lvermillon@legacy-bridge | a123456  | Vermillon | PAdES_mailsec_1       | mailsecSend | PAdES_mailsec_1       | []  |             |
+#            | lvermillon@legacy-bridge | a123456  | Vermillon | PAdES_mailsec_1       | mailsecSend | PAdES_mailsec_1       | []  |             |
             | lvermillon@legacy-bridge | a123456  | Vermillon | PAdES_mailsec_2       | reject      | PAdES_mailsec_2       | []  |             |
