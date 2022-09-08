@@ -15,13 +15,13 @@ Feature: Traitement des dossiers
 
         * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
 
         * if (action == 'Mail sécurisé') waitFor("//*[@id='mailTo']//input").input("cbuffin+lvermillon-legacy-bridge@libriciel.net")
         * if (action == 'Mail sécurisé') waitFor("//input[@id='mailObject']").input("Mail sécurisé par lvermillon@legacy-bridge (" + name + ")")
         * if (action == 'Mail sécurisé') waitFor("//textarea[@id='mailBody']").input("Veuillez accuser bonne réception...")
-        * if (action == 'Mail sécurisé') script("(document.evaluate(\"//button[@title='Mail sécurisé']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false")
-        * if (action == 'Mail sécurisé') waitFor("//*[contains(normalize-space(text()), 'Mail sécurisé')]/parent::button").click()
+        * if (action == 'Mail sécurisé') script("(document.evaluate(\"//app-send-by-mail-popup//button[@title='Mail sécurisé']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false")
+        * if (action == 'Mail sécurisé') waitFor("//app-send-by-mail-popup//*[contains(normalize-space(text()), 'Mail sécurisé')]/parent::button").click()
 
         * if (action != 'Mail sécurisé') ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
         * if (action != 'Mail sécurisé') click("{^}Valider")

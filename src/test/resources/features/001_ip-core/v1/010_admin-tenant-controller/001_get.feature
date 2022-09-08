@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/'
 			And header Accept = 'application/json'
-			And param sort = ['<sort>,<direction>']
+			And param sort = '<sort>,<direction>'
 			And param searchTerm = '<searchTerm>'
 		When method GET
 		Then status 200

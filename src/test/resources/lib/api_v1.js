@@ -298,7 +298,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('page', 0)
             .param('size', 100)
-            .param('sort', ['ID,ASC'])
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -319,7 +319,7 @@ function fn(config) {
                 .path('/api/v1/admin/tenant/')
                 .param('size', 100)
                 .param('searchTerm', partialName)
-                .param('sort', ['NAME,ASC'])
+                .param('sort', 'NAME,ASC')
                 .header('Accept', 'application/json')
                 .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
                 .get();
@@ -345,7 +345,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('page', 0)
             .param('size', 100)
-            .param('sort', ['ID,ASC'])
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -388,7 +388,7 @@ function fn(config) {
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('size', 100)
-            .param('sort', ['KEY,ASC'])
+            .param('sort', 'key,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -411,7 +411,7 @@ function fn(config) {
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('page', 0)
             .param('size', 100)
-            .param('sort', ['ID,ASC'])
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -562,7 +562,7 @@ function fn(config) {
             .param('page', 0)
             .param('size', 100)
             .param('searchTerm', name)
-            .param('sort', ['ID,ASC'])
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {

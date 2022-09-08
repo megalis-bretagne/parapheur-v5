@@ -28,7 +28,7 @@ Feature: Traitement de dossiers pour le paramétrage métier "Métadonnées"
 
         * waitFor(ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 
-        * click("//button[contains(normalize-space(text()), '" + action + "')]")
+        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
 
         * ui.folder.annotate.both(params.username, action, params.folder)
         * v5.business.ui.metadatas.fill(ip.metadatas.map['<folder>'])

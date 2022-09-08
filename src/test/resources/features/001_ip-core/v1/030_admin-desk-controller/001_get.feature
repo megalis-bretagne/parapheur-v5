@@ -58,7 +58,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
-            And param sort = ['<sort>,<direction>']
+            And param sort = '<sort>,<direction>'
             And param searchTerm = '<searchTerm>'
         When method GET
         Then status 200
