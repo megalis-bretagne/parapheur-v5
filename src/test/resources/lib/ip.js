@@ -285,7 +285,7 @@ function fn(config) {
     config.ip.signature['pades'] = config.ip.signature['pades'] || {};
     config.ip.signature.pades['annotations'] = config.ip.signature.pades['annotations'] || {};
     config.ip.signature.pades.annotations['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "annotations", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "annotations", path],
             idx,
             lines,
             matches,
@@ -397,7 +397,7 @@ function fn(config) {
     };
     config.ip.signature.pades['fields'] = config.ip.signature.pades['fields'] || {};
     config.ip.signature.pades.fields['read'] = function (path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "signatures", path],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "signatures", path],
             idx,
             lines,
             matches,
@@ -421,7 +421,7 @@ function fn(config) {
     config.ip.signature.pades['images'] = config.ip.signature.pades['images'] || {};
     config.ip.signature.pades.images['compare'] = function(actual, expected) {
         var cmd, diff, diffPath, dirname, img, keyImage, keyPage, keyPosition,
-            proc, result = {}, script = karate.toAbsolutePath("classpath:python/karate-config.ip.py");
+            proc, result = {}, script = karate.toAbsolutePath("classpath:python/karate-ip.py");
         for (keyPage in expected) {
             for (keyPosition in expected[keyPage]) {
                 for (keyImage in expected[keyPage][keyPosition]) {
@@ -468,7 +468,7 @@ function fn(config) {
         }
     };
     config.ip.signature.pades.images['export'] = function(path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-config.ip.py"), "images", path, utils.file.dirname(path) + "/images"],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "images", path, utils.file.dirname(path) + "/images"],
             proc;
         proc = karate.fork(cmd);
         proc.waitSync();
@@ -535,10 +535,10 @@ function fn(config) {
     // @todo-karate: meilleurs vérifications
     config.ip.signature.xades['validate'] = function(document, xades, certificate) {
         certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
-        var actualData = config.ip.signature.xades.actual(document, xades, certificate),
+        var actualData = ip.signature.xades.actual(document, xades, certificate),
             actualXml = karate.read("file://" + xades),
             expectedSchema = karate.read("classpath:lib/v5/schemas/xades.xml"),
-            expectedData = config.ip.signature.xades.expected(document, xades, certificate),
+            expectedData = ip.signature.xades.expected(document, xades, certificate),
             result;
 
         // 1. Vérification du schéma
