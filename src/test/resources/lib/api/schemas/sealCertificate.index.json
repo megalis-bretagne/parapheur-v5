@@ -1,6 +1,6 @@
 {
   "total": "#number",
   "data": "#[] #(schemas.sealCertificate.element)",
-  "pageSize": "#number",
+  "size": "#number",
   "page": "#number"
 }

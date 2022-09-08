@@ -1,11 +1,5 @@
 # Karate
 
-## @fixme
-
-- [x] pageSize -> size
-- [x] page -> page
-- [ ] asc et sortBy => sort["name,ASC", "id,DESC"...]
-
 ## @todo
 
 - [x] que la création avec les métadonnées ? à scripter alors... (autre issue)

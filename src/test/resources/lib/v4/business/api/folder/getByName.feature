@@ -10,7 +10,7 @@ Feature: IP v.4 REST folder lib
         * param filter = '{"and":[{"or":[{"cm:title":"*' + __arg.name + '*"},{"cm:name":"*' + __arg.name + '*"}]},{"or":[]},{"or":[]}]}'
         * param metas = '{"metas":[]}'
         * param page = 0
-        * param pageSize = 0
+        * param size = 0
         * param pendingFile = 0
         * param skipped = 0
         * param sort = "cm:title"

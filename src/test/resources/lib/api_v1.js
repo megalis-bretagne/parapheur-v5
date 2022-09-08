@@ -296,10 +296,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
             .param('size', 100)
-            .param('sortBy', 'ID')
+            .param('sort', ['ID,ASC'])
             .get();
 
         if (response.status !== 200) {
@@ -318,10 +317,9 @@ function fn(config) {
             response = karate
                 .http(baseUrl)
                 .path('/api/v1/admin/tenant/')
-                .param('asc', true)
                 .param('size', 100)
                 .param('searchTerm', partialName)
-                .param('sortBy', 'NAME')
+                .param('sort', ['NAME,ASC'])
                 .header('Accept', 'application/json')
                 .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
                 .get();
@@ -345,10 +343,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/externalSignature/config')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
             .param('size', 100)
-            .param('sortBy', 'ID')
+            .param('sort', ['ID,ASC'])
             .get();
 
         if (response.status !== 200) {
@@ -391,7 +388,7 @@ function fn(config) {
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
             .param('size', 100)
-            .param('sortBy', 'KEY')
+            .param('sort', ['KEY,ASC'])
             .get();
 
         if (response.status !== 200) {
@@ -412,10 +409,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/secureMail/server')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
             .param('size', 100)
-            .param('sortBy', 'ID')
+            .param('sort', ['ID,ASC'])
             .get();
 
         if (response.status !== 200) {
@@ -563,11 +559,10 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/sealCertificate')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
             .param('size', 100)
             .param('searchTerm', name)
-            .param('sortBy', 'ID')
+            .param('sort', ['ID,ASC'])
             .get();
 
         if (response.status !== 200) {

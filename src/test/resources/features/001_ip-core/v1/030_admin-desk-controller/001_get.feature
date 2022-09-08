@@ -52,14 +52,13 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             |                  |              |          | 404    |
 
     @searching
-    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sortBy, asc)}
+    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sort, direction)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
-            And param asc = <asc>
-            And param sortBy = '<sortBy>'
+            And param sort = ['<sort>,<direction>']
             And param searchTerm = '<searchTerm>'
         When method GET
         Then status 200
@@ -68,14 +67,14 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
             And match $.data[*]['<field>'] == <value>
 
         Examples:
-            | searchTerm  | sortBy | asc!  | total | field | value!                           |
-            | foo         | NAME   | false | 0     | name  | []                               |
-            | lucide      | NAME   | true  | 1     | name  | [ 'Translucide' ]                |
-            | trans       | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
-            | TRANS       | NAME   | true  | 2     | name  | [ 'Translucide', 'Transparent' ] |
+            | searchTerm | sort | direction | total | field | value!                           |
+            | foo        | NAME | DESC      | 0     | name  | []                               |
+            | lucide     | NAME | ASC       | 1     | name  | [ 'Translucide' ]                |
+            | trans      | NAME | ASC       | 2     | name  | [ 'Translucide', 'Transparent' ] |
+            | TRANS      | NAME | ASC       | 2     | name  | [ 'Translucide', 'Transparent' ] |
         @fixme-ip-core @issue-ip-core-todo
         Examples:
-            | searchTerm  | sortBy | asc!  | total | field | value!                           |
-            |             | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
-            | trans       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
-            | TRANS       | NAME   | false | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | searchTerm | sort | direction | total | field | value!                           |
+            |            | NAME | DESC      | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | trans      | NAME | DESC      | 2     | name  | [ 'Transparent', 'Translucide' ] |
+            | TRANS      | NAME | DESC      | 2     | name  | [ 'Transparent', 'Translucide' ] |

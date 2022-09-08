@@ -36,7 +36,7 @@ class TypologySimulation extends Simulation {
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
-        .queryParam("pageSize", 250)
+        .queryParam("size", 250)
         .check(status.is(200))
         .check(jsonPath("$.total").exists)
         .check(jsonPath("$.data").exists)

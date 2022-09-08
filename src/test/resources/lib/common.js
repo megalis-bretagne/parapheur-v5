@@ -84,23 +84,6 @@ function fn(config) {
     //==================================================================================================================
     // Scenario titles
     //==================================================================================================================
-/*
-You are here: @666
-
-Scenario Outline: ${scenario.title.permissions(role, 'get the tenant list', status)}
-Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'create a tenant', status)}
-Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, wrong_data)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'edit an existing tenant', status)}
-Scenario Outline: ${scenario.title.permissions(role, 'edit a non-existing tenant', status)}
-Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a tenant', status, wrong_data)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
-Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tenant', status)}
-*/
-
     config.scenario.title['existing'] = function(exists){
         return exists == true ? 'an existing' : 'a non existing';
     };
@@ -125,7 +108,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         return 'Data validation - ' + role + ' ' + status + ' ' + target + ' with ' + String(data);
     };
 
-    config.scenario.title['searching'] = function(role, target, status, total, searchTerm = null, sortBy = null, asc = null){
+    config.scenario.title['searching'] = function(role, target, status, total, searchTerm = null, sort = null, direction = null){
         role = scenario.title.role(utils.string.normalize(role));
         searchTerm = utils.string.normalize(searchTerm);
         status = scenario.title.status(status);
@@ -134,7 +117,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         return 'Searching - ' + role + ' ' + status + ' '
             + target
             + ( searchTerm === '' ? '' : ' filtered with "' + searchTerm + '"' ) + ' '
-            + scenario.title.sorted(sortBy, asc)
+            + scenario.title.sorted(sort, direction)
             + ' and obtain ' + total + ' ' + (total < 2 ? 'result' : 'results') + ' '
         ;
     };
@@ -145,7 +128,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         if (field === '' || utils.string.normalize(direction) === '') {
             return '';
         } else {
-            return 'sorted by ' + field + ' ' + (direction === true ? 'ascending' : 'descending');
+            return 'sorted by ' + field + ' ' + (direction === 'ASC' ? 'ascending' : 'descending');
         }
     };
 

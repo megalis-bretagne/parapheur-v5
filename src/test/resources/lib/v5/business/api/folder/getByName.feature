@@ -4,10 +4,9 @@ Feature: IP v.5 REST folder lib
     Scenario: Get available folder by name
         * url baseUrl
         * path "/api/v1/tenant/" + __arg.tenantId + "/desk/" + __arg.deskId +"/search/" + karate.lowerCase(__arg.state)
-        * param sortBy = "FOLDER_NAME"
-        * param asc = true
+        * param sort = ["FOLDER_NAME,ASC"]
         * param page = 0
-        * param pageSize = 1
+        * param size = 1
         * def upperCaseState = __arg.state.toUpperCase()
         * request { state: "#(upperCaseState)", searchData: "#(__arg.name)" }
         * method POST
