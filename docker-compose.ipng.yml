@@ -46,6 +46,8 @@ services:
 
   mongo:
     image: mongo:4.2.18-bionic
+    volumes:
+      - ./data/ipng/cache-db:/data/db:rw
     ports:
       - 27017:27017
 
