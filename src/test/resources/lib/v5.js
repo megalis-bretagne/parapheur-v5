@@ -208,7 +208,7 @@ function fn(config) {
         // @todo: essayer une étape de création avec le premier document, puis ajouter les autres documents, puis ajouter les signature détachées, puis les annexes
         // @todo: du coup, on pourrait simplifier le retour
         // { files: { name: path }, detached: { name: path }, annexes: { name: path } }
-        // ...teamplates.wait10TimesForWithContext(["document_rtf.rtf"], ["document_rtf-0-signature_externe.p7s"])
+        // ...teamplates.ui.expect(["document_rtf.rtf"], ["document_rtf-0-signature_externe.p7s"])
         for(idxDoc=0;idxDoc<folder.documentList.length;idxDoc++) {
             row = {};
 
@@ -282,74 +282,13 @@ function fn(config) {
     config.v5.business.ui["metadatas"] = {};
 
     config.v5.business.ui.metadatas["fill"] = function(metadatas, labels, types, base) {
-        var /*cnt,*/ name, metadata, optionXpath, type, xpath;
+        var name, metadata;
 
         base = typeof base !== "undefined" ? base : "//ngb-modal-window//app-metadata-form";
         labels = typeof labels !== "undefined" ? labels : ip.metadatas.labels;
         types = typeof types !== "undefined" ? labels : ip.metadatas.types;
 
-        /*var waitForNoFail = function(locator, max, sleep) {
-            var cnt = 0;
-            max = typeof max !== "undefined" ? max : 5;
-            sleep = typeof sleep !== "undefined" ? sleep : 1;
-
-            while(cnt < max) {
-                karate.log("Retry #" + (cnt + 1) + " for locator " + locator);
-                if (exists(locator) === true) {
-                    return true;
-                } else {
-                    pause(sleep);
-                    cnt++;
-                }
-            }
-
-            return false;
-        };
-        var waitForDebugFail = function(locator, max, context) {
-            max = typeof max !== "undefined" ? max : 10;
-            karate.log("Waiting for locator " + locator);
-
-            if (waitForNoFail(locator, max) === false) {
-                if (typeof context !== "undefined") {
-                    karate.log("HTML context: " + html(context));
-                }
-                driver.screenshot();
-                karate.fail("Locator not found (see context above): " + locator);
-            } else {
-                karate.log("... found: " + locator);
-                return locate(locator);
-            }
-        };*/
-        // retry(10).waitFor
-        var wait10TimesForWithContext = function(locator, context) {
-            var cnt = 0, max = 10;
-            karate.log("Waiting for locator " + locator);
-            while(exists(locator) === false && cnt < 10) {
-                karate.log("Retry #" + (cnt + 1) + " for locator " + locator);
-                cnt++;
-                pause(1);
-            }
-            if(exists(locator) === false) {
-                driver.screenshot();
-                if (typeof context !== "undefined") {
-                    karate.log("... HTML context: " + html(context));
-                }
-                karate.fail("... not found " + locator);
-                throw new Error(locator);
-            } else {
-                // @todo: not when found ?
-                if (typeof context !== "undefined") {
-                    karate.log("... HTML context: " + html(context));
-                }
-                karate.log("... found " + locator);
-                return locate(locator);
-            }
-        };
-
-        // karate.log(waitFor);
-        // karate.log(driver.waitFor);
-
-        wait10TimesForWithContext(base);
+        ui.expect(base);
 
         for (name in metadatas) {
             metadata = {
@@ -365,12 +304,8 @@ function fn(config) {
             metadata.inputXpath = metadata.xpath + "//input[(@type='number' or @type='text' or @type='url') and not(@readonly)]";
             metadata.selectXpath = metadata.xpath + "//ng-select";
 
-            //metadata.selectArrowXpath = metadata.selectXpath + "//*[@class='ng-arrow-wrapper']";
-            metadata.selectArrowXpath = metadata.selectXpath + "//*[contains(concat(' ', @class, ' '),' ng-select-container ')]";
-
-            wait10TimesForWithContext(metadata.xpath).mouse().go();
+            ui.expect(metadata.xpath).mouse().go();
             scroll(metadata.xpath);
-            //driver.screenshot();
 
             // 1. ng-select
             if (exists(metadata.selectXpath) === true) {
@@ -388,21 +323,9 @@ function fn(config) {
                     metadata.value = metadata.value.toFixed(1);//@todo: not always 1
                 }
 
-                wait10TimesForWithContext(metadata.selectArrowXpath, metadata.xpath);
-                mouse().move(metadata.selectArrowXpath).click();
-                wait10TimesForWithContext(metadata.xpath + "//*[@role='combobox'][@aria-expanded='true']", metadata.xpath);
-                wait10TimesForWithContext(metadata.xpath + "//ng-dropdown-panel[@role='listbox']", metadata.xpath);
-
-                optionXpath = metadata.selectXpath + "//*[@role='option']//*[@class='ng-option-label'][normalize-space(text())='" + metadata.value + "']";
-                wait10TimesForWithContext(optionXpath, metadata.xpath);
-                mouse().move(optionXpath).click()
+                ui.ngSelect(metadata.selectXpath, metadata.value);
             } else if (exists(metadata.inputXpath) === true) {
                 karate.log("... input found: " + metadata.inputXpath);
-                /*if (metadata.type === "FLOAT" || metadata.type === "INTEGER") {
-                    input(metadata.inputXpath, String(metadata.value));
-                } else {
-                    input(metadata.inputXpath, metadata.value);
-                }*/
                 input(metadata.inputXpath, String(metadata.value));
             } else if (exists(metadata.dateXpath) === true) {
                 karate.log("... date found: " + metadata.dateXpath);

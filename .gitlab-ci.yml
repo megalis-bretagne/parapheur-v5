@@ -281,7 +281,7 @@ strict-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict"
-    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde --tags ~@fixme-ip --tags ~@ignore --tags ~@ip4 "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@metadonnees --tags ~@fixme-ip --tags ~@ignore --tags ~@ip4 "
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
@@ -291,7 +291,7 @@ tolerant-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests tolerant"
-    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde --tags ~@ip4  --tags ~@ignore "
+    KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@metadonnees --tags ~@ip4  --tags ~@ignore "
   needs: [ tolerant-e2e-tests-deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null

@@ -234,5 +234,99 @@ function fn(config) {
         // @todo: move somewhere else
     };
 
+    //--------------------------------------------------------------------------
+
+    config.ui['expect'] = function(locator, retries = 10, context = null) {
+        var cnt = 0;
+        karate.log("Expecting locator (" + String(retries) + " retries max)" + locator);
+        while(exists(locator) === false && cnt < retries) {
+            karate.log("Retry #" + String(cnt + 1));
+            cnt++;
+            pause(1);
+        }
+        if(exists(locator) === false) {
+            driver.screenshot();
+            if (typeof context !== "undefined") {
+                karate.log("... HTML context: " + html(context));
+            }
+            karate.fail("... not found " + locator);
+            throw new Error("Expected locator not found " + locator);
+        } else {
+            // @todo: not when found ?
+            if (typeof context !== "undefined" && context !== null) {
+                karate.log("... HTML context: " + html(context));
+            }
+            karate.log("... found " + locator);
+            return locate(locator);
+        }
+    };
+
+    // # @todo: à mettre ailleurs(ngSelect)  + généraliser l'usage
+    // # Ne pas mettre les métadonnées dans l'intégration continue (@demo-simple-bde,@legacy-bridge,@formats-de-signature)
+    config.ui['ngSelect'] = function(xpath, value) {
+        ui.expect(xpath + "//*[contains(concat(' ', @class, ' '),' ng-select-container ')]").click().script("_.dispatchEvent(new Event('mousedown'))");
+        ui.expect(xpath + "//*[@role='combobox'][@aria-expanded='true']");
+        ui.expect(xpath + "//ng-dropdown-panel[@role='listbox']");
+        // @todo: value -> String (bool, etc...)
+        ui.expect(xpath + "//*[@role='option']//*[contains(concat(' ', @class, ' '),' ng-option-label ')][normalize-space(text())='" + value +"']").click();
+    };
+
+    // # @todo: à mettre ailleurs(ip_5.ui.business.metadatas.extract(?))
+    config.ui['getMetadatas'] = function() {
+        var actual = {},
+            content,
+            idx,
+            label,
+            lines,
+            inputType,
+            xpath = "//strong[text()='Métadonnées']/parent::div/parent::div/parent::div//app-step-metadata-list/div",
+            inputXpath;
+
+        lines = karate.sizeOf(locateAll(xpath));
+
+        for (idx = 1;idx <= lines;idx++) {
+            label = text(xpath + "[position() = " + idx + "]/label").trim();
+
+            content = null;
+            if (exists(xpath + "[position() = " + idx + "]/app-metadata-input//ng-select") === true) {
+                inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//ng-select";
+                content = text(inputXpath + "//span[contains(@class, 'ng-value-label')]").trim();//@fixme: la valeur ? ou reformater ?
+                if (content !== "") {
+                    inputType = ip.metadatas.types[ip.metadatas.inverse[label]];
+                    if (inputType === "BOOLEAN") {
+                        if (content === "Oui") {
+                            content = true;
+                        } else if (content === "Non") {
+                            content = false;
+                        }
+                    } else if (inputType === "DATE") {
+                        content = content.replace(/^(..)\/(..)\/(....)$/, "$3-$2-$1");
+                    } else if (inputType === "FLOAT") {
+                        content = parseFloat(content);
+                    } else if (inputType === "INTEGER") {
+                        content = parseInt(content, 10);
+                    }
+                }
+            } else if (exists(xpath + "[position() = " + idx + "]/app-metadata-input//input") === true) {
+                inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//input";
+                content = value(inputXpath).trim();
+                if (content !== "") {
+                    inputType = ip.metadatas.types[ip.metadatas.inverse[label]];
+                    if (inputType === "FLOAT") {
+                        content = parseFloat(content);
+                    } else if (inputType === "INTEGER") {
+                        content = parseInt(content, 10);
+                    }
+                }
+            } else {
+                karate.fail('Champ non trouvé via "' + xpath + "[position() = " + idx + "]/app-metadata-input//ng-select" + '" ou "' + xpath + "[position() = " + idx + "]/app-metadata-input//input" + '"');
+            }
+
+            actual[ip.metadatas.inverse[label]] = content;
+        }
+
+        return actual;
+    };
+
     return config;
 }
