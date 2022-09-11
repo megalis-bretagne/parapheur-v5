@@ -1,6 +1,6 @@
 @business @formats-de-signature @folder
 Feature: Automatique - Signature - PDF_sans_tags
-
+    # @fixme: python3 src/scripts/karate-tests-fixme-ip-tag.py
     Background:
         * def type = "Automatique"
         * def subtype = "Signature"
@@ -40,7 +40,7 @@ Feature: Automatique - Signature - PDF_sans_tags
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
-    @see-next-scenario
+    @fixme-ip @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -54,25 +54,9 @@ Feature: Automatique - Signature - PDF_sans_tags
         * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
-            | key    | position!       | line1            | line2   |
-            | normal | [0, 0, 200, 70] | Florence Garance | Nacarat |
-
-    @fixme-ip @issue-compose-579 @see-previous-scenario
-    Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
-
-        Examples:
-            | key       | position!       | line1          | line2                    |
-            | surcharge | [0, 0, 200, 70] | Gilles Nacarat | Responsable des méthodes |
+            | key       | position!       | line1            | line2                    |
+            | normal    | [0, 0, 200, 70] | Florence Garance | Nacarat                  |
+            | surcharge | [0, 0, 200, 70] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")

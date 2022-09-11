@@ -16,6 +16,8 @@ import urllib.request
 # ./gradlew test --info -Dkarate.options="--tags @formats-de-signature" -Dkarate.headless=true
 # 20220811-13h32 - 41m 27s - 766 tests completed, 131 failed
 # ./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
+# 20220910-18h45 - 1h 5m 7s - 917 tests completed, 150 failed
+# ./gradlew test --info -Dkarate.options="--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge,@metadonnees --tags ~@ignore --tags ~@ip4" -Dkarate.headless=true
 # ======================================================================================================================
 
 def get_parser() -> argparse.ArgumentParser:

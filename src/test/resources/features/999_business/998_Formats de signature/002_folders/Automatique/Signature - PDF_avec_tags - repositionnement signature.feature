@@ -41,6 +41,7 @@ Feature: Automatique - Signature - PDF_avec_tags - repositionnement signature
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
+    @fixme-ip
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =

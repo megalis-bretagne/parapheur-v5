@@ -340,7 +340,7 @@ function fn(config) {
                 signature["algorithm"] = matches[1];
             } else if(matches = lines[idx].match(/^\s+- Signature Type: (.*)$/)) {
                 signature["type"] = matches[1];
-            } else if(matches = lines[idx].match(/^\s+- Signature Visa: (.*)$/)) {
+            } else if(matches = lines[idx].match(/^\s+- Signature Validation: (.*)$/)) {
                 signature["valid"] = matches[1] === "Signature is Valid.";
             } else if(matches = lines[idx].match(/^\s+- (Not total document signed|Total document signed)$/)) {
                 signature["wholeDocumentSigned"] = matches[1] === "Total document signed";

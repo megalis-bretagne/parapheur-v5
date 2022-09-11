@@ -41,7 +41,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
-    @see-next-scenario
+    @fixme-ip @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -55,26 +55,9 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
         * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
-            | key    | position!            | line1            | line2   |
-            | normal | [100, 665, 300, 735] | Florence Garance | Nacarat |
-
-    @fixme-ip @issue-compose-579 @see-previous-scenario
-    Scenario Outline: Vérifications des annotations (${key})
-        # @todo: après correction dans IP, fusionner avec le précédent
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
-
-        Examples:
-            | key       | position!            | line1          | line2                    |
-            | surcharge | [100, 665, 300, 735] | Gilles Nacarat | Responsable des méthodes |
+            | key       | position!            | line1            | line2                    |
+            | normal    | [100, 665, 300, 735] | Florence Garance | Nacarat                  |
+            | surcharge | [100, 665, 300, 735] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")

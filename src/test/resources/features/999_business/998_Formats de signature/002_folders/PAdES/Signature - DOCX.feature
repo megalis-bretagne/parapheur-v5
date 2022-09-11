@@ -40,6 +40,7 @@ Feature: PAdES - Signature - PDF_avec_tags
             | normal    | Nacarat                   | Montpellier |
             | surcharge | Responsable des méthodes  | Agde        |
 
+    @fixme-ip @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -55,22 +56,6 @@ Feature: PAdES - Signature - PDF_avec_tags
         Examples:
             | key       | line1            | line2                    |
             | normal    | Florence Garance | Nacarat                  |
-
-    @fixme-ip @issue-compose-579 @issue-compose-todo
-    Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/document_ooxml.pdf") == expected
-
-        Examples:
-            | key       | line1            | line2                    |
             | surcharge | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
