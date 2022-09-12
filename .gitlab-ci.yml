@@ -268,16 +268,12 @@ dev-deploy:
     - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libxml2-utils=2.9.10+dfsg-6.7+deb11u2 python3-pip=20.3.4-4+deb11u1 poppler-utils=20.09.0-3.1 xmlsec1=1.2.31-1 zip=3.0-12 && pip3 install jsonpath-ng==1.5.3 Pillow==9.2.0 PyPDF2==2.10.0
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
     - ./gradlew test -Dkarate.options="${KARATE_ADDITIONAL_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
-    - python3 src/scripts/karate-tests-fixme-ip-tag.py | tee build/karate-tests-fixme-ip-tag.txt
-  after_script:
-    - if [ ! -f build/karate-tests-fixme-ip-tag.txt ] ; then python3 src/scripts/karate-tests-fixme-ip-tag.py | tee build/karate-tests-fixme-ip-tag.txt ; fi
   artifacts:
     when: always
     name: ${REPORT_NAME}
     paths:
       - build/ip5-folders
       - build/karate-reports
-      - build/karate-tests-fixme-ip-tag.txt
 
 strict-e2e-tests-test:
   extends: [ .e2e-tests ]
