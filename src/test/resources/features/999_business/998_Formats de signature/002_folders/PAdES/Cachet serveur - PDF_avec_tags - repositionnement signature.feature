@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @fixme-ip
 Feature: PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature
 
     Background:

@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @fixme-ip
 Feature: Automatique - Signature - RTF - signe_cades
 
     Background:

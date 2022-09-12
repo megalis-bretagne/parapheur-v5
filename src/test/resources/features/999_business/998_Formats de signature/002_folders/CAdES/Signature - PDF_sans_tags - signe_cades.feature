@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @fixme-ip
 Feature: CAdES - Signature - PDF_sans_tags - signe_cades
 
     Background:

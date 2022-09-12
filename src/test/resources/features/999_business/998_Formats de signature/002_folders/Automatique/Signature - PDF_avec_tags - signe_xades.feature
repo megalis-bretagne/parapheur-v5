@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @fixme-ip
 Feature: Automatique - Signature - PDF_avec_tags - signe_xades
 
     Background:

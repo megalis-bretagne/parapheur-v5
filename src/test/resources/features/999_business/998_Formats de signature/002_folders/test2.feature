@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder @ignore
+@business @formats-de-signature @folder @fixme-ip @ignore
 Feature: Automatique - Signature multidoc - 2
 
     Background:

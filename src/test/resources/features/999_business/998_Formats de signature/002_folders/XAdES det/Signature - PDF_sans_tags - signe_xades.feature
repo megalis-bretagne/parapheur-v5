@@ -1,4 +1,4 @@
-@business @formats-de-signature @folder
+@business @formats-de-signature @folder @fixme-ip
 Feature: XAdES det - Signature - PDF_sans_tags - signe_xades
 
     Background:
