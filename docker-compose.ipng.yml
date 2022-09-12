@@ -40,7 +40,7 @@ services:
     volumes:
       - ./data/ipng/wallet:/wallet
       - ./data/ipng/ca-certs:/crypto-config
-      - ./src/main/resources/ipng/application-dev.properties:/application.properties
+      - ./src/main/resources/ipng/application.properties:/application.properties
       - ./data/ipng/connection-profile.yml:/connection-profile.yml
     restart: unless-stopped
 
@@ -57,4 +57,4 @@ services:
 
   core:
     volumes:
-      - ./src/main/resources/core/application-dev-ipng.yml:/application.yml
+      - ./src/main/resources/core/application-ipng.yml:/application.yml
