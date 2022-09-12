@@ -80,7 +80,12 @@ def karate_print_results_details(path: str) -> None:
             for scenario in missing[fileKey]:
                 print("\t\t- " + scenario)
 
+    if len(extra.keys()) > 0 or len(missing.keys()) > 0:
+        exit(1)
+    else:
+        print(f"All fixme-ip tags are correct")
+        exit(0)
 # main
 parser = get_parser()
 args = parser.parse_args()
-results = karate_print_results_details(args.path)
+karate_print_results_details(args.path)
