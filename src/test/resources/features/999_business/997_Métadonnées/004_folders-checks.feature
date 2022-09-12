@@ -14,7 +14,6 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
             | Individuel | Rejet  | Texte rejet           |
             | Individuel | Rejet  | Texte visa            |
             | Individuel | Rejet  | Texte rejet et visa   |
-            | Individuel | Rejet  | Toutes visa et rejet  |
             | Individuel | Visa   | Aucune métadonnée     |
             | Individuel | Visa   | Booleen rejet         |
             | Individuel | Visa   | Booleen visa          |
@@ -22,7 +21,6 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
             | Individuel | Visa   | Texte rejet           |
             | Individuel | Visa   | Texte visa            |
             | Individuel | Visa   | Texte rejet et visa   |
-            | Individuel | Visa   | Toutes visa et rejet  |
 
     @fixme-ip
     Scenario Outline: Vérification des métadonnées sur le dossier "${mode} - ${action} - ${subtype}" par ws-meta (via UI)
@@ -45,6 +43,8 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
             | Groupe     | Visa   | Texte visa            |
             | Groupe     | Visa   | Texte rejet et visa   |
             | Groupe     | Visa   | Toutes visa et rejet  |
+            | Individuel | Rejet  | Toutes visa et rejet  |
+            | Individuel | Visa   | Toutes visa et rejet  |
             | Liste      | Rejet  | Aucune métadonnée     |
             | Liste      | Rejet  | Booleen rejet         |
             | Liste      | Rejet  | Booleen visa          |
