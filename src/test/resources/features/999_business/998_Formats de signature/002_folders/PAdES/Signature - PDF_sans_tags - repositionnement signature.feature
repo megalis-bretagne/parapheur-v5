@@ -8,7 +8,7 @@ Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
         * def files = [ { file: "PDF_sans_tags.pdf" } ]
         * def positions = { "PDF_sans_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} }
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files, positions)
 
     Scenario Outline: Vérifications de la liste des documents (${key})

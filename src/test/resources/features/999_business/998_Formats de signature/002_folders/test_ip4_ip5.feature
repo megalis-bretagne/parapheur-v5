@@ -20,7 +20,7 @@ Feature: Automatique - Signature - PDF_avec_tags
         # Tags du test
         * karate.log(karate.tags.indexOf('ip4') !== -1)
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * ip.business.fds.createAndSign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})

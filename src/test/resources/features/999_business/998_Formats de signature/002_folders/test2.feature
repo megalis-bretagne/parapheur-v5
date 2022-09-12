@@ -13,7 +13,7 @@ Feature: Automatique - Signature multidoc - 2
 ]
 """
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})

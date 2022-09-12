@@ -7,7 +7,7 @@ Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
         * def name = "HELIOS - XAdES env - Signature - XML (UTF-8)"
         * def files = [ { file: "PESALR1_unsigned.xml" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des fichiers (${key})

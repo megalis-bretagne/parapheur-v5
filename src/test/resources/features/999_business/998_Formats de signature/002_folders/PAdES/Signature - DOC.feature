@@ -7,7 +7,7 @@ Feature: PAdES - Signature - PDF_avec_tags
         * def name = "PAdES - Signature - DOC"
         * def files = [ { file: "document_office.doc" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})

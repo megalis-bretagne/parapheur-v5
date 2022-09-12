@@ -8,7 +8,7 @@ Feature: Automatique - Signature - PDF_avec_tags - repositionnement signature
         * def files = [ { file: "PDF_avec_tags.pdf" } ]
         * def positions = { "PDF_avec_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} }
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files, positions)
 
     Scenario Outline: Vérifications de la liste des documents (${key})

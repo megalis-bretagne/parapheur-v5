@@ -7,7 +7,7 @@ Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
         * def name = "HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)"
         * def files = [ { file: "pesWithASAP_unsigned.xml" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des fichiers (${key})

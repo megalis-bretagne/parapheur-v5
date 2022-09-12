@@ -7,7 +7,7 @@ Feature: CAdES - Signature - RTF - signe_cades
         * def name = "CAdES - Signature - RTF - signe_cades"
         * def files = [ { file: "document_rtf.rtf", detached: "document_rtf/signature_cades.p7s" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des fichiers (${key})

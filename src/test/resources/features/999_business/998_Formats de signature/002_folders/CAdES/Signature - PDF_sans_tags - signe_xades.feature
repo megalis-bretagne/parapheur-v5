@@ -7,7 +7,7 @@ Feature: CAdES - Signature - PDF_sans_tags - signe_xades
         * def name = "CAdES - Signature - PDF_sans_tags - signe_xades"
         * def files = [ { file: "PDF_sans_tags.pdf", detached: "PDF_sans_tags/signature_xades.xml" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des fichiers (${key})

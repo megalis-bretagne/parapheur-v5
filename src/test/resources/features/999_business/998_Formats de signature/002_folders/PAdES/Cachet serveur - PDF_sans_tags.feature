@@ -7,7 +7,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags
         * def name = "PAdES - Cachet serveur - PDF_sans_tags"
         * def files = [ { file: "PDF_sans_tags.pdf" } ]
 
-    Scenario: Création des dossiers
+    Scenario: Création et signature des dossiers (normal et surcharge)
         * v5.business.formatsDeSignature.seal(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
