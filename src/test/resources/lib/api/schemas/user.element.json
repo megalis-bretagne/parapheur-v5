@@ -12,7 +12,7 @@
   "firstName": "#string",
   "notificationsRedirectionMail": null,
   "isLocked": null,
-  "notificationsCronFrequency": null,
+  "notificationsCronFrequency": "##string",
   "id": "#uuid",
   "email": "#string",
   "signatureImageContentId": "##uuid",
