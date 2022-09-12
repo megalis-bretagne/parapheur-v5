@@ -4,7 +4,7 @@
   "supervisedDesks": "##[]",
   "lastName": "#string",
   "isLdapSynchronized": false,
-  "complementaryField": null,
+  "complementaryField": "##string",
   "rolesCount": "##number",
   "privilege": "#regex (ADMIN|FUNCTIONAL_ADMIN|NONE|SUPER_ADMIN|TENANT_ADMIN)",
   "userName": "#string",

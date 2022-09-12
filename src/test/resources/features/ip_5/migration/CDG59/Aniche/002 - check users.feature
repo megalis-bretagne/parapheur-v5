@@ -3,7 +3,7 @@
 
     Background:
         * api_v1.auth.login("user", "password")
-        * def tenant = "Default tenant"
+        * def tenant = "aniche"
         * def tenantId = api_v1.entity.getIdByName(tenant)
 
     Scenario Outline: Vérification des données de l'utilisateur "${userName}" par liste
@@ -59,5 +59,6 @@
 
         # @fixme-ip5: les valeurs de notificationsCronFrequency et rolesCount sont correctes ici, mais sont envoyées tout de même à vide dans la liste (test ci-dessus)
         Examples:
-            | userName | email                        | firstName | lastName | notificationsRedirectionMail! | notificationsCronFrequency! | complementaryField! | signatureImageContentId! | privilege   | administeredTenants! | administeredDesks! | supervisedDesks! | isChecked! | isLocked! | isLdapSynchronized! | rolesCount! | notifiedOnConfidentialFolders! | notifiedOnLateFolders! | notifiedOnFollowedFolders! | desktops! |
-            | user     | ne-pas-repondre@adrien.local | Sample    | User     | null                          | 'none'                      | null                | null                     | SUPER_ADMIN | null                 | null               | null             | null       | null      | false               | 3           | false                          | false                  | false                      | []        |
+            | userName         | email                           | firstName         | lastName     | notificationsRedirectionMail! | notificationsCronFrequency! | complementaryField!                         | signatureImageContentId! | privilege    | administeredTenants! | administeredDesks! | supervisedDesks! | isChecked! | isLocked! | isLdapSynchronized! | rolesCount! | notifiedOnConfidentialFolders! | notifiedOnLateFolders! | notifiedOnFollowedFolders! | desktops! |
+            | user             | ne-pas-repondre@adrien.local    | Sample            | User         | null                          | 'none'                      | null                                        | null                     | SUPER_ADMIN  | null                 | null               | null             | null       | null      | false               | 4           | false                          | false                  | false                      | []        |
+            | admin@aniche     | s.vast@adullact-projet.cooptest | Administrateur    | Adullact     | null                          | null                        | "Informations complémentaires"              | null                     | TENANT_ADMIN | null                 | null               | null             | null       | null      | false               | 4           | false                          | false                  | false                      | ["Utilisateur VIRTUEL"]        |

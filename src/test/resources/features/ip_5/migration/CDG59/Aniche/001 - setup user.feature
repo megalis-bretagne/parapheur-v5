@@ -3,7 +3,7 @@ Feature: Vérification de l'entité "CDG59/Aniche" et ajout de user à celle-ci 
 
     Background:
         * api_v1.auth.login("user", "password")
-        * def tenant = "Default tenant"
+        * def tenant = "aniche"
 
     Scenario: Vérification de l'existence de l'entité
         * call read("classpath:lib/v5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
