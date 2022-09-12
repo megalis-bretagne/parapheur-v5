@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: CreerDossier - Création de dossier
     # @see https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/iparapheur/legacy-bridge/-/issues/16
     # @fixme: ip4, je peux créer des dossiers multidoc dans une typologie monodoc

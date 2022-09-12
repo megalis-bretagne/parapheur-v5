@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: GetCircuit - Interrogation du circuit relatif à un type/sous-type
 
     Scenario Outline: Récupération du circuit du sous-types "${type} / ${sousType}"

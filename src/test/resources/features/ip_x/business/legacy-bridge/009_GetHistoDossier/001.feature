@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests @fixme-ip
+@legacy-bridge @ip4 @ip5 @soap @tests @fixme-ip
 
 Feature: GetHistoDossier - Interrogation d'histogramme de dossier
 

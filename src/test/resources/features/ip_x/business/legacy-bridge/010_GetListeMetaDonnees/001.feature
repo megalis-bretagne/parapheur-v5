@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: GetListeMetaDonnees - Interrogation des méta-données disponibles
     @fixme-ip
     Scenario: Récupération des méta-données

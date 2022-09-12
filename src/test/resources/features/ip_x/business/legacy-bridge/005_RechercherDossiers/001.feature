@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: RechercherDossiers - Recherche de dossiers
 
     Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"

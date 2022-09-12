@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: GetListeSousTypes - Interrogation des sous-types disponibles
 
     Scenario: Récupération des sous-types du type "Auto monodoc"

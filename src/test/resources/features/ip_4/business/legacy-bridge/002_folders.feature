@@ -1,4 +1,4 @@
-@legacy-bridge @folder @ip4
+@legacy-bridge @ip4 @folder
 Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
 
     Background:

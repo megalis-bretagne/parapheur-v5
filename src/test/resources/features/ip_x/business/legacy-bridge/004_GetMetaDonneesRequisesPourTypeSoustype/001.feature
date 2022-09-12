@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: GetMetaDonneesRequisesPourTypeSoustype - Renvoie la liste des méta-données utiles pour un couple type/sousType
 
     Scenario Outline: Récupération des méta-données du sous-type "${type}" / "${sousType}"

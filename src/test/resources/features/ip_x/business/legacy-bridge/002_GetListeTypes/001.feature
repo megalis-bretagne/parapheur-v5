@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 Feature: GetListeTypes - Interrogation des types techniques disponibles
 
     Scenario: Récupération des types

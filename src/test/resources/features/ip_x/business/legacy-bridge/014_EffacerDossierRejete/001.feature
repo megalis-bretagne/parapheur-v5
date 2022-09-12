@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests
+@legacy-bridge @ip4 @ip5 @soap @tests
 
 Feature: EffacerDossierRejete - Purge de dossier rejeté
 

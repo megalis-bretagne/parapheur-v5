@@ -1,4 +1,4 @@
-@ip_5 @migration @cdg59 @aniche
+@ip5 @migration @cdg59 @aniche
     Feature: Vérification des utilisateurs de l'entité "CDG59/Aniche"
 
     Background:
