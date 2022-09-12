@@ -169,3 +169,35 @@ services:
     volumes:
       - ./truststore.p12:/truststore.p12
 ```
+
+
+## Ipng
+
+What follows assumes that one already has an activated entity on the IPNG network, and is in possession of the corresponding material (certificate / wallet, connection profile, CA cert, ipng host url and Msp id). If not please contact your IPNG provider.  
+
+
+First fill in the two required var in .env : IPNG_HOST and IPNG_MSP, that must have been provided.  
+Create and the copy all the material into the directory data/ipng. It's final structure should look like this :
+
+```
+ ./data/ipng/
+   - connection-profile.xml
+   - ca-certs/
+     - ca/
+       - <CA cert>.pem
+   - wallet/
+     - ca/
+        <your-IPNG-entity-id>.id
+```
+
+Additionally, if the Entity that will be connected to IPNG already exists, you can map it in `src/main/resources/core/application-ipng.yml`, uncommenting and remplacing the values :  
+
+```yaml
+ipng:
+  tenantToEntities:
+    <iParapheur-entity-uuid>: <Ipng-entity-id>
+```
+
+
+Turn down  and erase containers  : `docker-compose [- f ...] down -v`.
+Then start it with the IPNG activated :  `docker-compose [- f ...] -f docker-compose.ipng.yml up -d`
