@@ -26,7 +26,7 @@
         Examples:
             | userName | email                        | firstName | lastName | notificationsRedirectionMail! | notificationsCronFrequency! | complementaryField! | signatureImageContentId! | privilege   | administeredTenants! | administeredDesks! | supervisedDesks! | isChecked! | isLocked! | isLdapSynchronized! | rolesCount! | notifiedOnConfidentialFolders! | notifiedOnLateFolders! | notifiedOnFollowedFolders! |
             | user     | ne-pas-repondre@adrien.local | Sample    | User     | null                          | null                        | null                | null                     | SUPER_ADMIN | null                 | null               | null             | null       | null      | false               | null        | false                          | false                  | false                      |
-@wip
+
     Scenario Outline: Vérification des données de l'utilisateur "${userName}" par détails
         * def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
 
