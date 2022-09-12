@@ -17,29 +17,73 @@
  */
 
 function fn(config) {
+        config['downloadpath'] = {};
+    // @todo: fail si le jsonPath ne retourne rien
+    config.downloadpath['annexe'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.annexes['" + basename +"']");
+    };
+    config.downloadpath['detached'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.documents[*][*].detached['" + basename +"']");
+    };
+    config.downloadpath['document'] = function(files, basename, prefix) {
+        prefix = typeof prefix === "undefined" ? "file://" : prefix;
+        return prefix + buildDir + karate.jsonPath(files, "$.documents[*]['" + basename +"'].path");
+    };
+    config.downloadpath['readAnnexe'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.annexe(files, basename, prefix));
+    };
+    config.downloadpath['readDetached'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.detached(files, basename, prefix));
+    };
+    config.downloadpath['readDocument'] = function(files, basename, prefix) {
+        return karate.read(downloadpath.document(files, basename, prefix));
+    };
+    // Classpath shortcuts for common files
+    config['commonpath'] = {};
+    config.commonpath['absolute'] = function(basename) {
+        return karate.toAbsolutePath(commonpath.get(basename));
+    };
+    config.commonpath['get'] = function(basename) {
+        var paths = {
+            "document_libre_office.odt": "classpath:files/formats/document_libre_office/document_libre_office.odt",
+            "document_office.doc": "classpath:files/formats/document_office/document_office.doc",
+            "document_office/signature_cades.p7s": "classpath:files/formats/document_office/signature_cades.p7s",
+            "document_office/signature_xades.xml": "classpath:files/formats/document_office/signature_xades.xml",
+            "document_ooxml.docx": "classpath:files/formats/document_ooxml/document_ooxml.docx",
+            "document_ooxml/signature_cades.p7s": "classpath:files/formats/document_ooxml/signature_cades.p7s",
+            "document_ooxml/signature_xades.xml": "classpath:files/formats/document_ooxml/signature_xades.xml",
+            "document_rtf.rtf": "classpath:files/formats/document_rtf/document_rtf.rtf",
+            "document_rtf/signature_cades.p7s": "classpath:files/formats/document_rtf/signature_cades.p7s",
+            "document_rtf/signature_xades.xml": "classpath:files/formats/document_rtf/signature_xades.xml",
+            "PESALR1_unsigned.xml": "classpath:files/formats/PESALR1_unsigned.xml",
+            "pesWithASAP_unsigned.xml": "classpath:files/formats/pesWithASAP_unsigned.xml",
+            "PDF_avec_tags.pdf": "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf",
+            "PDF_avec_tags/signature_cades.p7s": "classpath:files/formats/PDF_avec_tags/signature_cades.p7s",
+            "PDF_avec_tags/signature_xades.xml": "classpath:files/formats/PDF_avec_tags/signature_xades.xml",
+            "PDF_avec_tags-signature_pades.pdf": "classpath:files/formats/PDF_avec_tags/PDF_avec_tags-signature_pades.pdf",
+            "PDF_sans_tags.pdf": "classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf",
+            "PDF_sans_tags/signature_cades.p7s": "classpath:files/formats/PDF_sans_tags/signature_cades.p7s",
+            "PDF_sans_tags/signature_xades.xml": "classpath:files/formats/PDF_sans_tags/signature_xades.xml",
+            "PDF_sans_tags-signature_pades.pdf": "classpath:files/formats/PDF_sans_tags/PDF_sans_tags-signature_pades.pdf",
+        };
+        if (paths.hasOwnProperty(basename) === true) {
+            return paths[basename];
+        }
+
+        karate.log("File \"" + basename + "\" is missing from commonpath");
+        karate.fail("File \"" + basename + "\" is missing from commonpath");
+    };
+    config.commonpath['read'] = function(basename) {
+        return karate.read(commonpath.get(basename));
+    };
 
     config['scenario'] = {'title': {}};
 
     //==================================================================================================================
     // Scenario titles
     //==================================================================================================================
-/*
-You are here: @666
-
-Scenario Outline: ${scenario.title.permissions(role, 'get the tenant list', status)}
-Scenario Outline: ${scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sortBy, asc)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'create a tenant', status)}
-Scenario Outline: ${scenario.title.validation('ADMIN', 'create a tenant', status, wrong_data)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'edit an existing tenant', status)}
-Scenario Outline: ${scenario.title.permissions(role, 'edit a non-existing tenant', status)}
-Scenario Outline: ${scenario.title.validation('ADMIN', 'edit a tenant', status, wrong_data)}
-
-Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
-Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tenant', status)}
-*/
-
     config.scenario.title['existing'] = function(exists){
         return exists == true ? 'an existing' : 'a non existing';
     };
@@ -64,7 +108,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         return 'Data validation - ' + role + ' ' + status + ' ' + target + ' with ' + String(data);
     };
 
-    config.scenario.title['searching'] = function(role, target, status, total, searchTerm = null, sortBy = null, asc = null){
+    config.scenario.title['searching'] = function(role, target, status, total, searchTerm = null, sort = null, direction = null){
         role = scenario.title.role(utils.string.normalize(role));
         searchTerm = utils.string.normalize(searchTerm);
         status = scenario.title.status(status);
@@ -73,7 +117,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         return 'Searching - ' + role + ' ' + status + ' '
             + target
             + ( searchTerm === '' ? '' : ' filtered with "' + searchTerm + '"' ) + ' '
-            + scenario.title.sorted(sortBy, asc)
+            + scenario.title.sorted(sort, direction)
             + ' and obtain ' + total + ' ' + (total < 2 ? 'result' : 'results') + ' '
         ;
     };
@@ -84,7 +128,7 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
         if (field === '' || utils.string.normalize(direction) === '') {
             return '';
         } else {
-            return 'sorted by ' + field + ' ' + (direction === true ? 'ascending' : 'descending');
+            return 'sorted by ' + field + ' ' + (direction === 'ASC' ? 'ascending' : 'descending');
         }
     };
 
@@ -110,6 +154,48 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
                 a.push(arr[i]);
         return a;
     };
+
+    config.utils['certificate'] = {};
+    config.utils.certificate['alias'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "alias", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['base64Public'] = function(path) {
+        var collect = false,
+            content = karate.readAsString(path),
+            idx,
+            lines = content.split(/\r?\n/),
+            result = '';
+
+        for(idx = 0;idx < lines.length;idx++) {
+            if (lines[idx].match(/^\-+ *BEGIN/) !== null) {
+                collect = true;
+            } else if (lines[idx].match(/^\-+ *END/) !== null) {
+                collect = false;
+            } else if(collect === true) {
+                result += lines[idx];
+            }
+        }
+
+        return result;
+    };
+    config.utils.certificate['signHash'] = function(path, hash) {
+        var cmd = [
+            "/bin/sh",
+            "-c",
+            "echo \"" + hash +" \" | python -m base64 -d | openssl dgst -sha256 -sign \"" + karate.toAbsolutePath(path) +"\" | python -m base64 | tr -d '\\n'"
+        ];
+        return utils.safeExec(cmd);
+    };
+    config.utils.certificate['enddate'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "enddate", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['issuer'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "issuer", karate.toAbsolutePath(path), password]);
+    };
+    config.utils.certificate['subject'] = function(path, password) {
+        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "subject", karate.toAbsolutePath(path), password]);
+    };
+
     config.utils.array['getSortedUnique'] = function (array) {
         return utils.array.getUnique(array).sort();
     };
@@ -124,7 +210,10 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
     };
     config.utils['file'] = {};
     config.utils.file['basename'] = function (path) {
-        return String(path).replace(/.*\/([^\/]+)$/, '$1');
+        return String(path).replace(/^(.*)\/([^\/]+)$/, '$2');
+    };
+    config.utils.file['dirname'] = function (path) {
+        return String(path).replace(/^(.*)\/([^\/]+)$/, '$1');
     };
     config.utils.file['extension'] = function (path) {
         return path.split(".").pop().toLowerCase();
@@ -206,6 +295,14 @@ Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tena
             return true;
         }
         return false;
+    };
+    config.utils['safeExec'] = function(command) {
+        var proc = karate.fork(command);
+        proc.waitSync();
+        if (proc.exitCode !== 0) {
+            karate.fail('Got status code ' + proc.exitCode + ' for command ' + command);
+        }
+        return proc.sysOut.replace(/\n$/, '');
     };
     /**
      * utils.string

@@ -104,6 +104,8 @@ function fn(config) {
             typeId = api_v1.type.getIdByName(tenantId, params.type),
             subtypeId = api_v1.subtype.getIdByName(tenantId, typeId, params.subtype),
             length = max.toString().length,
+            annotation = params.annotation === undefined ? '' : params.annotation,
+            username = params.username === undefined ? '' : params.username,
             nameTemplate = params.nameTemplate === undefined ? params.subtype + '_%counter%' : params.nameTemplate,
             annexFilePath = params.annexFilePath === undefined ? 'classpath:files/pdf/annex-1_1.pdf' : params.annexFilePath,
             mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile
@@ -132,6 +134,8 @@ function fn(config) {
                 mainFilePath: mainFilePath['file'],
                 mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                username: username,
             });
         }
 
@@ -147,6 +151,8 @@ function fn(config) {
             typeId = api_v1.type.getIdByName(tenantId, params.type),
             subtypeId = api_v1.subtype.getIdByName(tenantId, typeId, params.subtype),
             length = max.toString().length,
+            annotation = params.annotation === undefined ? '' : params.annotation,
+            username = params.username === undefined ? '' : params.username,
             nameTemplate = params.nameTemplate === undefined ? params.subtype + '_%counter%' : params.nameTemplate,
             annexFilePath = params.annexFilePath === undefined ? 'classpath:files/pdf/annex-1_1.pdf' : params.annexFilePath,
             // mainFilePath = params.mainFile === undefined ? 'classpath:files/pdf/main-1_1.pdf' : params.mainFile,
@@ -173,6 +179,8 @@ function fn(config) {
                 // mainFilePath: mainFilePath,
                 mainFilesPaths: mainFilesPaths,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                username: username,
             });
         }
         return result;
@@ -288,10 +296,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
-            .param('sortBy', 'ID')
+            .param('size', 100)
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -310,10 +317,9 @@ function fn(config) {
             response = karate
                 .http(baseUrl)
                 .path('/api/v1/admin/tenant/')
-                .param('asc', true)
-                .param('pageSize', 100)
+                .param('size', 100)
                 .param('searchTerm', partialName)
-                .param('sortBy', 'NAME')
+                .param('sort', 'NAME,ASC')
                 .header('Accept', 'application/json')
                 .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
                 .get();
@@ -337,10 +343,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/externalSignature/config')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
-            .param('sortBy', 'ID')
+            .param('size', 100)
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -382,8 +387,8 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/metadata')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('pageSize', 100)
-            .param('sortBy', 'KEY')
+            .param('size', 100)
+            .param('sort', 'key,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -404,10 +409,9 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/secureMail/server')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
-            .param('sortBy', 'ID')
+            .param('size', 100)
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -495,7 +499,8 @@ function fn(config) {
     */
 
     config['matchers'] = {
-        'timestamp': '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}\\+[0-9]{2}:[0-9]{2}$'
+        'signingTime': '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$',
+        'timestamp': '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}\\+[0-9]{2}:[0-9]{2}$',
     };
     /**
      * schemas -> @todo: api_v1_schemas.js
@@ -554,11 +559,10 @@ function fn(config) {
             .path('/api/v1/admin/tenant/' + tenantId + '/sealCertificate')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + api_v1.auth.token.access_token)
-            .param('asc', 'true')
             .param('page', 0)
-            .param('pageSize', 100)
+            .param('size', 100)
             .param('searchTerm', name)
-            .param('sortBy', 'ID')
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {

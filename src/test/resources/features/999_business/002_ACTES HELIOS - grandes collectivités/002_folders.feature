@@ -11,7 +11,9 @@ Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - gran
     type: '<type>',
     subtype: '<subtype>',
     mainFile: <mainFile>,
-    nameTemplate: '<nameTemplate>'
+    nameTemplate: '<nameTemplate>',
+    annotation: '<annotation>',
+    username: '<username>',
 }
 """
         * api_v1.auth.login('user', 'password')
@@ -28,14 +30,14 @@ Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - gran
         #workflow_1                      |
         #workflow_1                      | org.flowable.common.engine.impl.javax.el.PropertyNotFoundException: Cannot resolve identifier 'i_Parapheur_internal_validation_variable_desk_id_0'
       Examples:
-          | tenant                               | username | password | desktop    | type          | subtype                 | mainFile!                                  | nameTemplate                                      | start! | count! | withOrWithout | extra!                            |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - PAdES | ACTES - PAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - PAdES - Monodoc - sans annexe - %counter% | 1      | 10     | without       | {}                                |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - PAdES | ACTES - PAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - PAdES - Monodoc - avec annexe - %counter% | 1      | 10     | with          | {}                                |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 1      | 10     | without       | { "metadata":{"GdaBjType":"1"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 11     | 10     | without       | { "metadata":{"GdaBjType":"2"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 21     | 10     | without       | { "metadata":{"GdaBjType":"3"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 1      | 10     | with          | { "metadata":{"GdaBjType":"1"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 11     | 10     | with          | { "metadata":{"GdaBjType":"2"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 21     | 10     | with          | { "metadata":{"GdaBjType":"3"} }  |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - CAdES | ACTES - CAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - CAdES - Monodoc - sans annexe - %counter% | 1      | 10     | without       | {}                                |
-          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - CAdES | ACTES - CAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - CAdES - Monodoc - avec annexe - %counter% | 1      | 10     | with          | {}                                |
+          | tenant                               | username | password | desktop    | type          | subtype                 | mainFile!                                  | nameTemplate                                      | start! | count! | withOrWithout | extra!                            | annotation |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - PAdES | ACTES - PAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - PAdES - Monodoc - sans annexe - %counter% | 1      | 10     | without       | {}                                | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - PAdES | ACTES - PAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - PAdES - Monodoc - avec annexe - %counter% | 1      | 10     | with          | {}                                | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 1      | 10     | without       | { "metadata":{"GdaBjType":"1"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 11     | 10     | without       | { "metadata":{"GdaBjType":"2"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - sans annexe - %counter%        | 21     | 10     | without       | { "metadata":{"GdaBjType":"3"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 1      | 10     | with          | { "metadata":{"GdaBjType":"1"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 11     | 10     | with          | { "metadata":{"GdaBjType":"2"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | HELIOS        | HELIOS - Monodoc        | 'classpath:files/xml/PESALR1_unsigned.xml' | HELIOS - Monodoc - avec annexe - %counter%        | 21     | 10     | with          | { "metadata":{"GdaBjType":"3"} }  | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - CAdES | ACTES - CAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - CAdES - Monodoc - sans annexe - %counter% | 1      | 10     | without       | {}                                | démarrage  |
+          | ACTES HELIOS - grandes collectivités | ws-ahgc  | a123456  | WebService | ACTES - CAdES | ACTES - CAdES - Monodoc | 'classpath:files/pdf/main-1_1.pdf'         | ACTES - CAdES - Monodoc - avec annexe - %counter% | 1      | 10     | with          | {}                                | démarrage  |

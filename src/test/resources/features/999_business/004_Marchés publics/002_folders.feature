@@ -11,7 +11,9 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
     type: '<type>',
     subtype: '<subtype>',
     mainFile: <mainFile>,
-    nameTemplate: '<nameTemplate>'
+    nameTemplate: '<nameTemplate>',
+    annotation: '<annotation>',
+    username: '<username>',
 }
 """
     * api_v1.auth.login('user', 'password')
@@ -21,5 +23,5 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
 
     # @todo: mainFiles n'est pas utilisé dans la préparation du payload
     Examples:
-        | tenant          | username | password | desktop    | type          | subtype      | mainFiles!                           | nameTemplate            | start! | count! | withOrWithout | extra! |
-        | Marchés publics | ws-mp    | a123456  | WebService | Marché public | Service fait | ['classpath:files/pdf/main-1_1.pdf'] | Marché public %counter% | 1      | 10     | without       | {}     |
+        | tenant          | username | password | desktop    | type          | subtype      | mainFiles!                           | nameTemplate            | start! | count! | withOrWithout | extra! | annotation |
+        | Marchés publics | ws-mp    | a123456  | WebService | Marché public | Service fait | ['classpath:files/pdf/main-1_1.pdf'] | Marché public %counter% | 1      | 10     | without       | {}     | démarrage  |
