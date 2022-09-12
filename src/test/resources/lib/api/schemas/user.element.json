@@ -6,7 +6,7 @@
   "isLdapSynchronized": false,
   "complementaryField": null,
   "rolesCount": "##number",
-  "privilege": "#regex (ADMIN|FUNCTIONAL_ADMIN|NONE|TENANT_ADMIN)",
+  "privilege": "#regex (ADMIN|FUNCTIONAL_ADMIN|NONE|SUPER_ADMIN|TENANT_ADMIN)",
   "userName": "#string",
   "isChecked": null,
   "firstName": "#string",
@@ -15,5 +15,8 @@
   "notificationsCronFrequency": null,
   "id": "#uuid",
   "email": "#string",
-  "signatureImageContentId": "##uuid"
+  "signatureImageContentId": "##uuid",
+  "notifiedOnConfidentialFolders": "##boolean",
+  "notifiedOnLateFolders": "##boolean",
+  "notifiedOnFollowedFolders": "##boolean"
 }

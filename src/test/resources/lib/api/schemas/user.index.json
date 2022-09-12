@@ -1,6 +1,6 @@
 {
     "total": "#number",
     "data": "#[] #(schemas.user.element)",
-    "size": "#number",
+    "pageSize": "#number",
     "page": "#number"
 }
