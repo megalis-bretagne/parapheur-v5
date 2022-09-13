@@ -36,7 +36,7 @@ class DesksSimulation extends Simulation {
         .header("Authorization", "bearer ${authToken}")
         .header("Accept", "application/json")
         .queryParam("page", 0)
-        .queryParam("pageSize", 1)
+        .queryParam("size", 1)
         .check(status.is(200))
         .check(jsonPath("$.total").exists)
         .check(jsonPath("$.data").exists)

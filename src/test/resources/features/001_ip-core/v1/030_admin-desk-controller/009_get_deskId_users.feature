@@ -38,7 +38,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
 {
     "total": "#number",
     "data": "#[] #(schemaElement)",
-    "pageSize": "#number",
+    "size": "#number",
     "page": "#number"
 }
 """

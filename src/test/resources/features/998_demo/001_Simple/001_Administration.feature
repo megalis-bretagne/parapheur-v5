@@ -115,7 +115,7 @@ Feature: 001 - Scénario de démo simple, partie administration
             | tenant      | name  | description | protocol | format | ville          | stamp! |
             | Démo simple | ACTES | ACTES       | ACTES    | PAdES  | Pont-à-Mousson | true   |
 
-    Scenario Outline: Créer un sous-type ${type}/${name} pour le circuit ${workflow}
+    Scenario Outline: Créer un sous-type ${type} / ${name} pour le circuit ${workflow}
         * ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ui/subtype/create.feature') __row
 

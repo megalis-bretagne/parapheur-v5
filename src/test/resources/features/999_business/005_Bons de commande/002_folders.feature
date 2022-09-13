@@ -12,7 +12,9 @@ Feature: Création de dossiers pour le paramétrage métier "Bons de commande"
     type: '<type>',
     subtype: '<subtype>',
     mainFile: <mainFile>,
-    nameTemplate: '<nameTemplate>'
+    nameTemplate: '<nameTemplate>',
+    annotation: '<annotation>',
+    username: '<username>',
 }
 """
     * api_v1.auth.login('user', 'password')
@@ -21,8 +23,8 @@ Feature: Création de dossiers pour le paramétrage métier "Bons de commande"
     * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
 
     Examples:
-        | tenant           | username | password | desktop    | type            | subtype             | mainFile!                                        | nameTemplate                              | start! | count! | withOrWithout | extra!                                   |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable     | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande bureau Fuchsia %counter%  | 1      | 2      | without       | { "variableDesksIds": {"0": "Fuchsia"} } |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable     | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande bureau Rose %counter%     | 1      | 2      | without       | { "variableDesksIds": {"0": "Rose"} }    |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Script de sélection | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Indigo %counter%  | 1      | 2      | without       | { "metadata":{"service":"Indigo"} }      |
-        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Script de sélection | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Pourpre %counter% | 1      | 2      | without       | { "metadata":{"service":"Pourpre"} }     |
+        | tenant           | username | password | desktop    | type            | subtype             | mainFile!                                        | nameTemplate                              | start! | count! | withOrWithout | extra!                                   | annotation                          |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable     | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande bureau Fuchsia %counter%  | 1      | 2      | without       | { "variableDesksIds": {"0": "Fuchsia"} } | démarrage |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Bureau variable     | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande bureau Rose %counter%     | 1      | 2      | without       | { "variableDesksIds": {"0": "Rose"} }    | démarrage |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Script de sélection | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Indigo %counter%  | 1      | 2      | without       | { "metadata":{"service":"Indigo"} }      | démarrage |
+        | Bons de commande | ws-bdc   | a123456  | WebService | Bon de commande | Script de sélection | 'classpath:files/pdf/main-1_1-tag_signature.pdf' | Bon de commande service Pourpre %counter% | 1      | 2      | without       | { "metadata":{"service":"Pourpre"} }     | démarrage |

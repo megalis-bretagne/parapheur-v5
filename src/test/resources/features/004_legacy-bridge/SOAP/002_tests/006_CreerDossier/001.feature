@@ -57,7 +57,7 @@ Feature: CreerDossier - Création de dossier
         Given def rv = call read('classpath:lib/soap/requests/CreerDossier/simple.feature') params
         Then match rv.response /Envelope/Body/CreerDossierResponse/MessageRetour/message == "Le nom de dossier est déjà présent dans le Parapheur: dossierID = " + uuid
             And match rv.response  == karate.read('classpath:lib/soap/schemas/CreerDossierResponse/KO.xml')
-
+    @fixme-ip
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
         Given configure cookies = null
             And url api.soap.url()
@@ -206,6 +206,7 @@ Feature: CreerDossier - Création de dossier
     # @info: IP 5 -> createDraftFolder - A mandatory metadata was not filled, abort -> créer un sous-type sans et avec métadonnée
     # @info: IP 4 -> Pas de circuit défini pour ce dossier (avec l'utilisateur lvermillon@legacy-bridge)
     #               https://iparapheur47.test.libriciel.fr/iparapheur/proxy/alfresco/parapheur/dossiers/e8c6abfb-6fb0-4801-8def-996b0a7890ba/circuit -> 500
+    @fixme-ip
     Scenario Outline: Création d'un dossier multidoc "${nom}" pour le type "${type} / ${sousType}", dont un avec une signature détachée XAdES et des annexes
         Given configure cookies = null
             And url api.soap.url()

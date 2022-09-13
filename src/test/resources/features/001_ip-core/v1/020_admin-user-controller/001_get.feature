@@ -52,7 +52,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 			|                  |              |          | 404    |
 
 	@searching
-	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sortBy, asc)}
+	Scenario Outline: ${scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sort, direction)}
 		* api_v1.auth.login('user', 'password')
 		* def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 		* api_v1.auth.login('cnoir', 'a123456')
@@ -60,8 +60,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', existingTenantId, '/user'
 			And header Accept = 'application/json'
-			And param asc = <asc>
-			And param sortBy = '<sortBy>'
+			And param sort = '<sort>,<direction>'
 			And param searchTerm = '<searchTerm>'
 		When method GET
 		Then status 200
@@ -70,24 +69,24 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 			And match $.data[*]['<field>'] == <value>
 
 		Examples:
-			| searchTerm | sortBy     | asc!  | total | field     | value!                                                                 |
-			|            | USERNAME   | true  | 6     | userName  | [ 'ablanc', 'cnoir', 'ltransparent', 'stranslucide', 'user', 'vgris' ] |
-			|            | USERNAME   | false | 6     | userName  | [ 'vgris', 'user', 'stranslucide', 'ltransparent', 'cnoir', 'ablanc' ] |
-			| foo        | USERNAME   | false | 0     | userName  | []                                                                     |
-			| la         | EMAIL      | true  | 2     | email     | [ 'ablanc@dom.local', 'ltransparent@dom.local' ]                       |
-			| la         | EMAIL      | false | 2     | email     | [ 'ltransparent@dom.local', 'ablanc@dom.local' ]                       |
-			| la         | FIRST_NAME | true  | 2     | firstName | [ 'Aurélie', 'Laetitia' ]                                              |
-			| la         | FIRST_NAME | false | 2     | firstName | [ 'Laetitia', 'Aurélie' ]                                              |
-			| la         | LAST_NAME  | true  | 2     | lastName  | [ 'Blanc', 'Transparent' ]                                             |
-			| la         | LAST_NAME  | false | 2     | lastName  | [ 'Transparent', 'Blanc' ]                                             |
-			| la         | USERNAME   | true  | 2     | userName  | [ 'ablanc', 'ltransparent' ]                                           |
-			| la         | USERNAME   | false | 2     | userName  | [ 'ltransparent', 'ablanc' ]                                           |
-			| aurélie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
-			| AURÉLIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+			| searchTerm | sort       | direction | total | field     | value!                                                                 |
+			|            | USERNAME   | ASC       | 6     | userName  | [ 'ablanc', 'cnoir', 'ltransparent', 'stranslucide', 'user', 'vgris' ] |
+			|            | USERNAME   | DESC      | 6     | userName  | [ 'vgris', 'user', 'stranslucide', 'ltransparent', 'cnoir', 'ablanc' ] |
+			| foo        | USERNAME   | DESC      | 0     | userName  | []                                                                     |
+			| la         | EMAIL      | ASC       | 2     | email     | [ 'ablanc@dom.local', 'ltransparent@dom.local' ]                       |
+			| la         | EMAIL      | DESC      | 2     | email     | [ 'ltransparent@dom.local', 'ablanc@dom.local' ]                       |
+			| la         | FIRST_NAME | ASC       | 2     | firstName | [ 'Aurélie', 'Laetitia' ]                                              |
+			| la         | FIRST_NAME | DESC      | 2     | firstName | [ 'Laetitia', 'Aurélie' ]                                              |
+			| la         | LAST_NAME  | ASC       | 2     | lastName  | [ 'Blanc', 'Transparent' ]                                             |
+			| la         | LAST_NAME  | DESC      | 2     | lastName  | [ 'Transparent', 'Blanc' ]                                             |
+			| la         | USERNAME   | ASC       | 2     | userName  | [ 'ablanc', 'ltransparent' ]                                           |
+			| la         | USERNAME   | DESC      | 2     | userName  | [ 'ltransparent', 'ablanc' ]                                           |
+			| aurélie    | FIRST_NAME | ASC       | 1     | firstName | [ 'Aurélie' ]                                                          |
+			| AURÉLIE    | FIRST_NAME | ASC       | 1     | firstName | [ 'Aurélie' ]                                                          |
 #		@fixme-ip-core @issue-ip-core-todo
 #		Examples:
-#			| searchTerm | sortBy     | asc!  | total | field     | value!                                                                 |
-#			| aurelie    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
-#			| AURELIE    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
-#			| aurélié    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
-#			| AURÉLIÉ    | FIRST_NAME | null  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| searchTerm | sort     | direction  | total | field     | value!                                                                 |
+#			| aurelie    | FIRST_NAME | ASC  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| AURELIE    | FIRST_NAME | ASC  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| aurélié    | FIRST_NAME | ASC  | 1     | firstName | [ 'Aurélie' ]                                                          |
+#			| AURÉLIÉ    | FIRST_NAME | ASC  | 1     | firstName | [ 'Aurélie' ]                                                          |

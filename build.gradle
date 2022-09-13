@@ -44,6 +44,7 @@ test {
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     systemProperty "karate.headless", System.properties.getProperty("karate.headless")
     systemProperty "karate.baseUrl", System.properties.getProperty("karate.baseUrl")
+    systemProperty "karate.soapBaseUrl", System.properties.getProperty("karate.soapBaseUrl")
     systemProperty "karate.chromeBin", System.properties.getProperty("karate.chromeBin")
     // Ensuring that the tests are always run, prevent us to add `clear` on every task
     outputs.upToDateWhen { false }

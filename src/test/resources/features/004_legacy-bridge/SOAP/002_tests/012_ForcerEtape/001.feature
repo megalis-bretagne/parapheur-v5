@@ -1,4 +1,4 @@
-@legacy-bridge @soap @tests @fixme-ip
+@legacy-bridge @soap @tests
 
 Feature: ForcerEtape - Forcer le passage d'une étape
 
