@@ -1,5 +1,7 @@
 @karate-function
 Feature: UI user lib
+    Background:
+        * configure cookies = null
 
     # @info: on accepte les valeurs par défaut des notifications à la connexion (si besoin)
     Scenario: Connexion

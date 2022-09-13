@@ -42,7 +42,7 @@ Feature: RechercherDossiers
             | "Auto monodoc" | "efiezuezozt"    | ""                      | 0         | []                                                                                                            |
             | "Auto monodoc" | "visa avec meta" | "efiezuezozt"           | 0         | []                                                                                                            |
 
-        @fixme-ip4
+        @fixme-ip4 @fixme-ip5
         # @info: bug karate, on doit pour l'instant dédoubler le test, si on met un tag dans des examples, aucun des autres exemples ne sera joué
         Scenario Outline: Récupération des dossiers par type "${type}", sous-type "${sousType}" et status "${status}"
             * if (expected == 0) karate.set("schema", "OK-empty.xml")
