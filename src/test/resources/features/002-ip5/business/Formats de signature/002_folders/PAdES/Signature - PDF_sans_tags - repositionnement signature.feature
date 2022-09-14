@@ -41,7 +41,6 @@ Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
             | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
 
-    @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
         * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
@@ -57,6 +56,22 @@ Feature: PAdES - Signature - PDF_sans_tags - repositionnement signature
         Examples:
             | key       | position!            | line1            | line2                    |
             | normal    | [100, 665, 300, 735] | Florence Garance | Nacarat                  |
+
+    @fixme-ip5 @issue-compose-579
+    Scenario Outline: Vérifications des annotations (${key})
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def expected =
+"""
+{
+    "page 1": {
+        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
+    }
+}
+"""
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
+
+        Examples:
+            | key       | position!            | line1            | line2                    |
             | surcharge | [100, 665, 300, 735] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
