@@ -65,7 +65,7 @@ function fn(config) {
     /**
      * utils
      */
-    config['utils'] = {};
+    config.ip['utils'] = {};
 
     config.ip.utils['array'] = {};
     // @see https://stackoverflow.com/a/43046408

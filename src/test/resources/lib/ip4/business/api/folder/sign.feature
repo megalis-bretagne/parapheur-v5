@@ -22,7 +22,7 @@ Feature: IP v.4 REST folder lib
         * method POST
 
         # 3.2. Signature du dossier - signature des hashes
-        * def signatures = ip4.ip.utils.folder.signatures(__arg.certificate.private, response)
+        * def signatures = ip4.utils.folder.signatures(__arg.certificate.private, response)
 
         # 3.2. Signature du dossier - envoi des hashes signés
         * path "/iparapheur/proxy/alfresco/parapheur/dossiers/" + folder.id + "/signature"

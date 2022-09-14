@@ -104,7 +104,7 @@ function fn(config) {
 
     config.ip4['utils'] = {};
     config.ip4.utils['folder'] = {};
-    config.ip4.ip.utils.folder['signatures'] = function(path, list) {
+    config.ip4.utils.folder['signatures'] = function(path, list) {
         var idx, result = { signature: [], signatureDateTime: [] };
         for (idx = 0;idx<list.length;idx++) {
             result.signature.push(ip.utils.certificate.signHash(path, list[idx].dataToSignBase64List));
