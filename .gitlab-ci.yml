@@ -194,7 +194,7 @@ publish:
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
-  stage: e2e-tests
+  stage: deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
