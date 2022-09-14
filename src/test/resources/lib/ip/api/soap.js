@@ -64,7 +64,7 @@ function fn(config) {
     config.api.soap['user'] = {};
     config.api.soap.user['authorization'] = function(username, password) {
         return karate.call(
-            'classpath:lib/basic-auth.js',
+            'classpath:lib/ip/basic-auth.js',
             {
                 username: username,
                 password: password
