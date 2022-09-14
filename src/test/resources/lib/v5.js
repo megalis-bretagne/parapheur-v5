@@ -147,7 +147,7 @@ function fn(config) {
     };
     config.v5.business["regexp"] = {};
     config.v5.business.regexp["annotation"] = {};
-    config.v5.business.regexp.annotation["date"] = "#regex [0-9]{1,2} (janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre) [0-9]{4}";
+    config.v5.business.regexp.annotation["date"] = "#regex [0-9]{1,2} (janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre|janv\.|févr\.|mars|avr\.|mai|juin|juil\.|août|sept\.|oct\.|nov\.|déc\.) [0-9]{4}";
 
     config.v5['utils'] = {};
     config.v5.utils['folder'] = {};
@@ -260,12 +260,12 @@ function fn(config) {
                 rowDataToSignList.push({
                     id: list[idx].dataToSignList[idxDataToSignList].id,
                     dataToSignBase64: list[idx].dataToSignList[idxDataToSignList].dataToSignBase64,
-                    signatureBase64: utils.certificate.signHash(path, list[idx].dataToSignList[idxDataToSignList].dataToSignBase64)
+                    digestBase64: null,
+                    signatureValue: utils.certificate.signHash(path, list[idx].dataToSignList[idxDataToSignList].dataToSignBase64)
                 });
             }
 
             row = {
-                folderId: list[idx].folderId,
                 documentId: list[idx].documentId,
                 dataToSignList: rowDataToSignList,
                 signatureDateTime: list[idx].signatureDateTime

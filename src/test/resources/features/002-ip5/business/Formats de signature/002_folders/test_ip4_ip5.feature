@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5 @ip4 @ip5 @ignore
+@business @ip5 @formats-de-signature @folder @ip4 @ip5 @ignore
 Feature: Automatique - Signature - PDF_avec_tags
 
     Background:

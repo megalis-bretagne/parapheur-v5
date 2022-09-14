@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
 
     Background:

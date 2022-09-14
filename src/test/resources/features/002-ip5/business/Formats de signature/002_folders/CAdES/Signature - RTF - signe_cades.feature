@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: CAdES - Signature - RTF - signe_cades
 
     Background:

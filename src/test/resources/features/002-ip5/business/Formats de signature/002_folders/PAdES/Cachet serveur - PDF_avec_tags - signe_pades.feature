@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: PAdES - Cachet serveur - PDF_avec_tags - signe_pades
 
     Background:
@@ -35,6 +35,7 @@ Feature: PAdES - Cachet serveur - PDF_avec_tags - signe_pades
             | normal    |
             | surcharge |
 
+    @fixme-ip5
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =

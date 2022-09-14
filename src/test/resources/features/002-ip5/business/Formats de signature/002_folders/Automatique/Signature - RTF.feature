@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: Automatique - Signature - RTF
 
     Background:

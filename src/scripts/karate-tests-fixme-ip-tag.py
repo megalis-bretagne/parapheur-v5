@@ -47,7 +47,7 @@ def karate_print_results_details(path: str, tag: str) -> None:
             data = json.load(content)
             # ------------------------------------------------------------------
             # Tag alors que le test passe ?
-            results = parser.parse('$.scenarioResults[?(@.failed==false)].tags[?(@=="{tag}")].`parent`.`parent`').find(data)
+            results = parser.parse('$.scenarioResults[?(@.failed==false)].tags[?(@=="' + tag + '")].`parent`.`parent`').find(data)
             if (len(results) > 0):
                 for result in results:
                     relativePath = result.context.context.value['relativePath']

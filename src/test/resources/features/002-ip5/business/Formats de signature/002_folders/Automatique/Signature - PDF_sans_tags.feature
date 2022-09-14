@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: Automatique - Signature - PDF_sans_tags
     # @fixme: python3 src/scripts/karate-tests-fixme-ip-tag.py
     Background:

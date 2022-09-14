@@ -182,7 +182,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Utilisateur          | Annotation publique                                                                                       |
             | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
             | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          |
-            | "Frédéric Losserand" | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
+            | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
             | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ui.folder.getPublicAnnotations() == expected
 
@@ -220,10 +220,10 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * table expected
             | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
-            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | ""         |
-            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | ""         |
+            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
-            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | ""         |
+            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected
@@ -263,13 +263,13 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * table expected
             | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
-            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | ""         |
-            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | ""         |
-            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          | "Visa"                    | ""         |
-            | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                        | "Lecture"                 | ""         |
-            | "DGS"        | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     | "Avis complémentaire"     | ""         |
+            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
+            | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | "Validée"  |
+            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          | "Visa"                    | "Validée"  |
+            | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                        | "Lecture"                 | "Validée"  |
+            | "DGS"        | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     | "Avis complémentaire"     | "Validée"  |
             | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
-            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | ""         |
+            | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
         * match ui.folder.getEventLog() == expected

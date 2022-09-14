@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5
+@business @ip5 @formats-de-signature @folder
 Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
 
     Background:

@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder @fixme-ip5 @ignore
+@business @ip5 @formats-de-signature @folder @ignore
 Feature: Automatique - Signature multidoc - 3
 
     Background:
