@@ -182,7 +182,7 @@ function fn(config) {
         var cmd = [
             "/bin/sh",
             "-c",
-            "echo \"" + hash +" \" | python -m base64 -d | openssl dgst -sha256 -sign \"" + karate.toAbsolutePath(path) +"\" | python -m base64 | tr -d '\\n'"
+            "echo \"" + hash +" \" | python3 -m base64 -d | openssl dgst -sha256 -sign \"" + karate.toAbsolutePath(path) +"\" | python3 -m base64 | tr -d '\\n'"
         ];
         return utils.safeExec(cmd);
     };
