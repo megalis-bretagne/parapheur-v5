@@ -2,7 +2,7 @@
 Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
 
     Scenario Outline: Vérification des métadonnées sur le dossier "${mode} - ${action} - ${subtype}" par ws-meta (via UI)
-        * call read("classpath:lib/v5/business/Métadonnées/folder/single.check.feature") __row
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/single.check.feature") __row
 
         Examples:
             | mode       | action | subtype               |
@@ -26,7 +26,7 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
 
     @fixme-ip5
     Scenario Outline: Vérification des métadonnées sur le dossier "${mode} - ${action} - ${subtype}" par ws-meta (via UI)
-        * call read("classpath:lib/v5/business/Métadonnées/folder/single.check.feature") __row
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/single.check.feature") __row
 
         Examples:
             | mode       | action | subtype               |

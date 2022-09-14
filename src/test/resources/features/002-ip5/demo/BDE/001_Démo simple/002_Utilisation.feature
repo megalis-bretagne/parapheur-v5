@@ -22,9 +22,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, {}, 1)
         * api_v1.auth.login('<username>', '<password>')
-        * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-without-annex.feature') folders
+        * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-without-annex.feature') folders
         # @todo: use UI ?
-        #* call read('classpath:lib/ui/desk/create-and-send.feature') __row
+        #* call read('classpath:lib/ip5/ui/desk/create-and-send.feature') __row
 
         Examples:
             | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! | annotation |

@@ -7,7 +7,7 @@ Feature: Test signatures IP 5
     # @info: il manque un type dans ce tenant...
 #    Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
 #        * api_v1.auth.login('user', 'password')
-#        * call read('classpath:lib/api/setup/type.create.feature') __row
+#        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 #
 #        Examples:
 #            | tenant      | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
@@ -15,7 +15,7 @@ Feature: Test signatures IP 5
 #
 #    Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
 #        * api_v1.auth.login('user', 'password')
-#        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+#        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 #
 #        Examples:
 #            | tenant      | type               | name                         | multiDocuments! | validationWorkflowId | sealAutomatic! | sealCertificateId                                  | secureMailServerId |
@@ -25,7 +25,7 @@ Feature: Test signatures IP 5
         * api_v1.auth.login("user", "password")
         * def folders = api_v1.desk.draft.getPayloadMonodoc(__row, 1, {}, 1)
         * api_v1.auth.login("<username>", "<password>")
-        * call read("classpath:lib/api/draft/create-and-send-monodoc-without-annex.feature") folders
+        * call read("classpath:lib/ip5/api/draft/create-and-send-monodoc-without-annex.feature") folders
 
         Examples:
             | tenant      | username       | password | desktop    | mainFile!                                                                                            | type        | subtype      | nameTemplate | annotation |
@@ -37,7 +37,7 @@ Feature: Test signatures IP 5
     Scenario Outline: Création du dossier "${name}" de type "${type} / ${subtype}" avec 2 annexes par ${username}
         * api_v1.auth.login("<username>", "<password>")
 
-        * def params = karate.call('classpath:lib/v5/business/api/draft/params.feature', __row)
+        * def params = karate.call('classpath:lib/ip5/business/api/draft/params.feature', __row)
 
         Given url baseUrl
             And path params.path
@@ -52,7 +52,7 @@ Feature: Test signatures IP 5
         # @info: si besoin de signatures détachées
         #* v5.business.api.draft.addDetachedSignature(response, params, mainFiles[0], commonpath.get("PDF_avec_tags/signature_cades.p7s"))
 
-        * karate.call('classpath:lib/v5/business/api/draft/send.feature', karate.merge(__row, { path: params.path }))
+        * karate.call('classpath:lib/ip5/business/api/draft/send.feature', karate.merge(__row, { path: params.path }))
 
         Examples:
             | tenant      | username       | password | desktop    | mainFiles!                       | type  | subtype      | name | annotation | annexes!                                                                |
@@ -61,7 +61,7 @@ Feature: Test signatures IP 5
     Scenario Outline: Signature du dossier "${folder}" par ${username}
         * api_v1.auth.login("<username>", "<password>")
 
-        * call read("classpath:lib/v5/business/api/folder/sign.feature") __row
+        * call read("classpath:lib/ip5/business/api/folder/sign.feature") __row
 
         Examples:
             | tenant      | username               | password | desktop   | folder | certificate | annotation |

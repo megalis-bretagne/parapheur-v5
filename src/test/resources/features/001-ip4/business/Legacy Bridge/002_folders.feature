@@ -9,7 +9,7 @@ Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
         * v4.business.api.user.login(username, password)
 
         * __row["annotation"] = "démarrage du dossier <title>"
-        * call read('classpath:lib/v4/business/api/folder/create.feature') __row
+        * call read('classpath:lib/ip4/business/api/folder/create.feature') __row
 
     Examples:
         | username         | password | desktop    | type         | subtype        | title                 | files!                                                      | metadatas!               |

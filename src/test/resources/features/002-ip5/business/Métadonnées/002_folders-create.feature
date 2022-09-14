@@ -2,7 +2,7 @@
 Feature: Création de dossiers pour le paramétrage métier "Métadonnées"
 
     Scenario Outline: Create one "${mode} - ${action} - ${subtype}" folder
-        * call read("classpath:lib/v5/business/Métadonnées/folder/single.create.feature") __row
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/single.create.feature") __row
 
         Examples:
             | mode       | action | subtype               |

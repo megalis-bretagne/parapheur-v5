@@ -28,7 +28,7 @@ function fn(config) {
 
         for(var idx = 0;idx < dossierIds.length;idx++) {
             params['dossierId'] = dossierIds[idx];
-            var rv = karate.call('classpath:lib/soap/requests/GetDossier/simple.feature', params),
+            var rv = karate.call('classpath:lib/ip/api/soap/requests/GetDossier/simple.feature', params),
                 name = karate.xmlPath(rv.response, '//MetaDonnee/nom[.="ph:dossierTitre"]/ancestor::MetaDonnee/valeur');
             if (name === expected) {
                 return dossierIds[idx];
@@ -44,7 +44,7 @@ function fn(config) {
             ext = utils.file.extension(path),
             result;
         if (ext === 'xml') {
-            result = karate.call('classpath:lib/common/xmlstring.feature', { value: karate.read(path) });
+            result = karate.call('classpath:lib/ip/xmlstring.feature', { value: karate.read(path) });
             return result.xml;
         } else {
             return Base64.encoder.encodeToString(karate.read(path));

@@ -5,35 +5,35 @@ Feature: Paramétrage métier "Legacy Bridge"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/api/setup/tenant.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
         Examples:
             | name          |
             | Legacy Bridge |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
-        * call read('classpath:lib/api/setup/metadata.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/metadata.create.feature') __row
 
         Examples:
             | tenant        | key         | name                    | type    | restrictedValues! |
             | Legacy Bridge | mameta_bool | Ma métadonnée booléenne | BOOLEAN | []                |
 
     Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
-        * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/seal-certificate.create.feature') __row
 
         Examples:
             | tenant        | path                                                  | password                        | image!                                           |
             | Legacy Bridge | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - benoit xvi.png' |
 
     Scenario Outline: Create a secure mail configuration "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/secure-mail.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/secure-mail.create.feature') __row
 
         Examples:
             | tenant        | name            | url                                      | login                                 | password | entity |
             | Legacy Bridge | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/api/setup/user.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
             | tenant        | userName                 | email                                                | firstName | lastName  | password | privilege | notificationsCronFrequency |
@@ -41,7 +41,7 @@ Feature: Paramétrage métier "Legacy Bridge"
             | Legacy Bridge | ws@legacy-bridge         | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net | Service   | Web       | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/desk.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant        | name       | owners!                                                  | parent! | associated! | permissions!                                                         |
@@ -49,7 +49,7 @@ Feature: Paramétrage métier "Legacy Bridge"
             | Legacy Bridge | WebService | ['cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant        | name      | deskName  | type        | mandatoryValidationMetadata! | mandatoryRejectionMetadata! |
@@ -59,7 +59,7 @@ Feature: Paramétrage métier "Legacy Bridge"
             | Legacy Bridge | Visa      | Vermillon | VISA        | []                           | []                          |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/api/setup/type.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
         Examples:
             | tenant        | name          | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
@@ -68,7 +68,7 @@ Feature: Paramétrage métier "Legacy Bridge"
             | Legacy Bridge | PAdES         | NONE     | PADES           | Montpellier       |                  | true              | {"x":0,"y":0,"page":1} |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant        | type          | name           | annotationsAllowed! | multiDocuments! | creationPermittedDeskIds! | creationWorkflowId | validationWorkflowId | externalSignatureConfigId | sealAutomatic! | sealCertificateId                                  | secureMailServerId | digitalSignatureMandatory! | workflowSelectionScript! | subtypeLayerList! | subtypeMetadataList!                                                                         | multiDocuments! |

@@ -4,7 +4,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 	Background:
 		* api_v1.auth.login('user', 'password')
 		* def list = api_v1.entity.getListByPartialName('tmp-')
-		* call read('classpath:lib/api/setup/tenant.delete.feature') list
+		* call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
 	@permissions
 	Scenario Outline: ${scenario.title.permissions(role, 'get the user list from an existing tenant', status)}

@@ -5,14 +5,14 @@ Feature: Paramétrage métier "Bons de commande"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/api/setup/tenant.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
         Examples:
             | name             |
             | Bons de commande |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/api/setup/user.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
             | tenant           | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency |
@@ -24,7 +24,7 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
-        * call read('classpath:lib/api/setup/metadata.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/metadata.create.feature') __row
 
         Examples:
             | tenant           | key     | name    | type  | restrictedValues!     |
@@ -32,7 +32,7 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | service | Service | TEXT  | ['Indigo', 'Pourpre'] |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/desk.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant           | name       | owners!                | parent! | associated!         | permissions!                                                         |
@@ -44,21 +44,21 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | WebService | ['ws-bdc@dom.local']   | ''      | ['Fuchsia', 'Rose'] | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant           | name      | deskName          | type      | mandatoryValidationMetadata! |
             | Bons de commande | Signature | ##VARIABLE_DESK## | SIGNATURE | ['montant']                  |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/api/setup/type.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
         Examples:
             | tenant           | name            | description     | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition! | workflowSelectionScript! |
             | Bons de commande | Bon de commande | Bon de commande |          | PADES           | Montpellier       |                  | false             |                    | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant           | type            | name                | description         | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript!                             | subtypeMetadataList!                                                                     |
@@ -66,7 +66,7 @@ Feature: Paramétrage métier "Bons de commande"
             | Bons de commande | Bon de commande | Script de sélection | Script de sélection |                      |                    |                   | 'classpath:files/workflowSelectionScript/bdc.groovy' | [{"metadataKey": "service", "defaultValue": null, "mandatory": true, "editable": false}] |
 
     Scenario Outline: Set the signature image for user "${email}"
-        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant           | email              | path                                            |

@@ -222,7 +222,7 @@ function fn(config) {
      **/
     config.ui['user'] = {};
     config.ui.user['login'] = function(username, password) {
-        karate.call('classpath:lib/ui/user/login.feature', { username: username, password: password });
+        karate.call('classpath:lib/ip5/ui/user/login.feature', { username: username, password: password });
     };
     config.ui.user['logout'] = function() {
         ui.user.menu("{^}Se déconnecter");

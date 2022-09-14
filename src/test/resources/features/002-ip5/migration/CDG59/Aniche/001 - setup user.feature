@@ -6,14 +6,14 @@ Feature: Vérification de l'entité "CDG59/Aniche" et ajout de user à celle-ci 
         * def tenant = "aniche"
 
     Scenario: Vérification de l'existence de l'entité
-        * call read("classpath:lib/v5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
+        * call read("classpath:lib/ip5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
 
     Scenario: Association de l'utilisateur "user" à l'entité
         # Récupération des ids
         * api_v1.auth.login("user", "password")
-        * def rv = call read("classpath:lib/v5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
+        * def rv = call read("classpath:lib/ip5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
         * def tenantId = rv.response.content[0].id
-        * def rv = call read("classpath:lib/api/admin-user/getByUsername.feature") { username: "user" }
+        * def rv = call read("classpath:lib/ip5/api/admin-user/getByUsername.feature") { username: "user" }
         * def userId = rv.response.data[0].id
 
         # Association de l'utilisateur à l'entité

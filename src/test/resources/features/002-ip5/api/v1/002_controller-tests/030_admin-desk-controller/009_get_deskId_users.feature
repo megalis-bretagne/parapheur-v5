@@ -4,7 +4,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
     Background:
         * api_v1.auth.login('user', 'password')
         * def list = api_v1.entity.getListByPartialName('tmp-')
-        * call read('classpath:lib/api/setup/tenant.delete.feature') list
+        * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()

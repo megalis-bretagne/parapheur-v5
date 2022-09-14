@@ -19,7 +19,7 @@ Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - gran
         * api_v1.auth.login('user', 'password')
         * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
         * api_v1.auth.login('<username>', '<password>')
-        * def result = call read('classpath:lib/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
+        * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
         #@fixme: IP 5, HELIOS - Monodoc, avec annexe: La signature XAdES enveloppée ne peut être effectuée que sur un unique document XML
         #@fixme: IP 5, HELIOS - Monodoc, sans annexe: Accès à la ressource refusé
         # core_1                          | 2022-06-20 16:01:13.227  WARN 7 --- [nio-8080-exec-1] c.l.i.s.p.KeycloakResourceService        : Caught an unexpected exception when testing permission : org.keycloak.authorization.client.util.HttpResponseException: Unexpected response from server: 400 / Bad Request / Response from server: {"error":"invalid_resource","error_description":"Resource with id [${i_Parapheur_internal_validation_variable_desk_id_0}] does not exist."}, caused by : org.keycloak.authorization.client.util.HttpResponseException: Unexpected response from server: 400 / Bad Request / Response from server: {"error":"invalid_resource","error_description":"Resource with id [${i_Parapheur_internal_validation_variable_desk_id_0}] does not exist."}

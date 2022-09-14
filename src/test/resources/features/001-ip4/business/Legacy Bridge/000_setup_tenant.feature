@@ -8,7 +8,7 @@ Feature: Création de l'entité "legacy-bridge" (IP 4)
         * v4.business.api.user.login("admin", "admin")
 
         * configure readTimeout = 100000
-        * call read('classpath:lib/v4/business/api/tenant/create.feature') __row
+        * call read('classpath:lib/ip4/business/api/tenant/create.feature') __row
 
         Examples:
             | tenantDomain  | password | title         | description   |

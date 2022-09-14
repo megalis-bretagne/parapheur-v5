@@ -4,14 +4,14 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/api/setup/tenant.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
         Examples:
             | name                                 |
             | ACTES HELIOS - petites collectivités |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/api/setup/user.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
             | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
@@ -19,7 +19,7 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
             | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/desk.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant                               | name       | owners!               | parent! | associated! | permissions!                                                         |
@@ -27,14 +27,14 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
             | ACTES HELIOS - petites collectivités | WebService | ['ws-ahpc@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant                               | name      | deskName | type      | mandatoryValidationMetadata! |
             | ACTES HELIOS - petites collectivités | Signature | Mauve    | SIGNATURE | []                           |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/api/setup/type.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
         Examples:
             | tenant                               | name          | description                        | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       | workflowSelectionScript! |
@@ -43,7 +43,7 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
             | ACTES HELIOS - petites collectivités | HELIOS        | Signature XAdES enveloppé (HELIOS) | HELIOS   | PES_V2          | Montpellier       | 34000            | false             |                          | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant                               | type          | name                    | description                     | validationWorkflowId | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataList! |
@@ -52,7 +52,7 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
             | ACTES HELIOS - petites collectivités | HELIOS        | HELIOS - Monodoc        | Signature HELIOS monodoc        | Signature            |                    |                   | ''                       | []                   |
 
     Scenario Outline: Set the signature image for user "${email}"
-        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant                               | email            | path                                          |

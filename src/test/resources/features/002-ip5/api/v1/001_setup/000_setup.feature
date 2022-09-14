@@ -4,7 +4,7 @@ Feature: Basic setup
 		* api_v1.auth.login('user', 'password')
 
 	Scenario Outline: Create tenant "${name}"
-		* call read('classpath:lib/api/setup/tenant.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
 		Examples:
 			| name                               |
@@ -12,7 +12,7 @@ Feature: Basic setup
 			| Montpellier Méditerranée Métropole |
 
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-		* call read('classpath:lib/api/setup/user.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
@@ -23,7 +23,7 @@ Feature: Basic setup
 			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |
 
 	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
-		* call read('classpath:lib/api/setup/tenant.user.associate.feature') __row
+		* call read('classpath:lib/ip5/api/setup/tenant.user.associate.feature') __row
 
 		Examples:
 			| email           | tenant                             |
@@ -32,7 +32,7 @@ Feature: Basic setup
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
 	Scenario Outline: Create desk "${name}" in "${tenant}"
-		* call read('classpath:lib/api/setup/desk.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
 		Examples:
 			| tenant         | name        | owners!                    | parent! | associated! | permissions!                                       |
@@ -40,7 +40,7 @@ Feature: Basic setup
 			| Default tenant | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
 	Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
-		* call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/seal-certificate.create.feature') __row
 
 		Examples:
 			| tenant         | path                                                  | password                        | image! |
@@ -49,7 +49,7 @@ Feature: Basic setup
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
 	Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-		* call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
 		Examples:
 			| tenant         | name                            | deskName    | type               | mandatoryValidationMetadata! |
@@ -64,7 +64,7 @@ Feature: Basic setup
 	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java
 	Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-		* call read('classpath:lib/api/setup/type.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
 		# @fixme: remplir les colonnes signatureLocation | signatureZipCode | signaturePosition
 		Examples:
@@ -78,7 +78,7 @@ Feature: Basic setup
 
 	@todo-karate @signature-format
 	Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-		* call read('classpath:lib/api/setup/subtype.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
 		Examples:
 			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataList! |
@@ -90,7 +90,7 @@ Feature: Basic setup
 			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
 
 	Scenario Outline: Set the signature image for user "${email}"
-		* call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+		* call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
 		Examples:
 			| tenant         | email                  | path                                                |

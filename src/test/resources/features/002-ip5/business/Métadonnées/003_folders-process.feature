@@ -9,7 +9,7 @@ Feature: Traitement de dossiers pour le paramétrage métier "Métadonnées"
     folder: "Individuel - <action> - <subtype>"
 }
 """
-        * call read("classpath:lib/v5/business/Métadonnées/folder/single.process.feature") karate.merge(defaults, __row)
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/single.process.feature") karate.merge(defaults, __row)
 
         Examples:
             | action | subtype               |
@@ -38,7 +38,7 @@ Feature: Traitement de dossiers pour le paramétrage métier "Métadonnées"
     folder: "Liste - <action> - <subtype>"
 }
 """
-        * call read("classpath:lib/v5/business/Métadonnées/folder/list.process.feature") karate.merge(defaults, __row)
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/list.process.feature") karate.merge(defaults, __row)
 
         Examples:
             | action | subtype           |
@@ -58,7 +58,7 @@ Feature: Traitement de dossiers pour le paramétrage métier "Métadonnées"
     folder: "Liste - <action> - <subtype>"
 }
 """
-        * call read("classpath:lib/v5/business/Métadonnées/folder/list.process.feature") karate.merge(defaults, __row)
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/list.process.feature") karate.merge(defaults, __row)
 
         Examples:
             | action | subtype               |
@@ -75,7 +75,7 @@ Feature: Traitement de dossiers pour le paramétrage métier "Métadonnées"
 
     @fixme-ip5
     Scenario Outline: Traitement des dossiers "${folder}" en groupe via UI par ecapucine
-        * call read("classpath:lib/v5/business/Métadonnées/folder/group.process.feature") __row
+        * call read("classpath:lib/ip5/business/Métadonnées/folder/group.process.feature") __row
 
         Examples:
             | action | folder         |

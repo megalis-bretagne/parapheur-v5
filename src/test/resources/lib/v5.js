@@ -26,7 +26,7 @@ function fn(config) {
     // REST API desktop lib
     config.v5.business.api['desktop'] = {};
     config.v5.business.api.desktop['getByName'] = function(tenantId, name) {
-        var rv = karate.call('classpath:lib/v5/business/api/desktop/getByName.feature', { "tenantId": tenantId, "name": name });
+        var rv = karate.call('classpath:lib/ip5/business/api/desktop/getByName.feature', { "tenantId": tenantId, "name": name });
         return rv.desktop;
     };
 
@@ -34,7 +34,7 @@ function fn(config) {
     config.v5.business.api.draft['addDetachedSignature'] = function(folder, params, file, path) {
         var document = { id: utils.getDraftDocumentId(folder, file) };//@todo: whole document
         return karate.call(
-            'classpath:lib/v5/business/api/draft/addDetachedSignature.feature',
+            'classpath:lib/ip5/business/api/draft/addDetachedSignature.feature',
             {
                 tenant: params.tenant,
                 desktop: params.desktop,
@@ -47,7 +47,7 @@ function fn(config) {
     config.v5.business.api.draft['createAndSendSimple'] = function(args) {
         // @todo: annexes
         var idx,
-            params = karate.call('classpath:lib/v5/business/api/draft/params.feature', args)
+            params = karate.call('classpath:lib/ip5/business/api/draft/params.feature', args)
             draft = v5.business.api.draft.createSimple(params, args.mainFiles), rv;
         if (typeof args.mainFiles[0].detached !== "undefined") {
             v5.business.api.draft.addDetachedSignature(draft, params, commonpath.get(args.mainFiles[0].file), commonpath.get(args.mainFiles[0].detached));
@@ -56,12 +56,12 @@ function fn(config) {
         if (args.mainFiles.length > 1) {
             for(idx=1;idx<args.mainFiles.length;idx++) {
                 karate.call(
-                    'classpath:lib/v5/business/api/draft/addMainDocument.feature',
+                    'classpath:lib/ip5/business/api/draft/addMainDocument.feature',
                     { tenant: params.tenant, draft: draft, file: commonpath.get(args.mainFiles[idx].file) }
                 );
             }
             rv = karate.call(
-                'classpath:lib/v5/business/api/draft/getById.feature',
+                'classpath:lib/ip5/business/api/draft/getById.feature',
                 { tenant: params.tenant, draft: draft, desktop: params.desktop }
             );
             draft = rv.response;
@@ -71,31 +71,31 @@ function fn(config) {
                 }
             }
         }
-        karate.call('classpath:lib/v5/business/api/draft/send.feature', karate.merge(args, { draft: draft, path: params.path }));
+        karate.call('classpath:lib/ip5/business/api/draft/send.feature', karate.merge(args, { draft: draft, path: params.path }));
     };
     config.v5.business.api.draft['createSimple'] = function(params, mainFiles) {
-        var rv = karate.call('classpath:lib/v5/business/api/draft/createSimple.feature', { params: params, mainFiles: mainFiles } );
+        var rv = karate.call('classpath:lib/ip5/business/api/draft/createSimple.feature', { params: params, mainFiles: mainFiles } );
         return rv.folder;
     };
     // REST API folder lib
     config.v5.business.api['folder'] = {};
     config.v5.business.api.folder['download'] = function(tenant, desktop, state, name) {
         var params = { "tenant": tenant, "desktop": desktop, "state": state, "name": name },
-            rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
+            rv = karate.call('classpath:lib/ip5/business/api/folder/downloadFiles.feature', params);
         return rv.download;
     };
     // @deprecated
     config.v5.business.api.folder['downloadFiles'] = function(tenant, desktop, state, name) {
         var params = { "tenant": tenant, "desktop": desktop, "state": state, "name": name },
-            rv = karate.call('classpath:lib/v5/business/api/folder/downloadFiles.feature', params);
+            rv = karate.call('classpath:lib/ip5/business/api/folder/downloadFiles.feature', params);
         return rv.files;
     };
     config.v5.business.api.folder['getByName'] = function(tenantId, deskId, state, name) {
-        var rv = karate.call('classpath:lib/v5/business/api/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
+        var rv = karate.call('classpath:lib/ip5/business/api/folder/getByName.feature', { "tenantId": tenantId, "deskId": deskId, "state": state, "name": name });
         return rv.folder;
     };
     config.v5.business.api.folder['getDetails'] = function(tenantId, desktopId, folderId) {
-        var rv = karate.call('classpath:lib/v5/business/api/folder/getDetails.feature', { "tenantId": tenantId, "desktopId": desktopId, "folderId": folderId });
+        var rv = karate.call('classpath:lib/ip5/business/api/folder/getDetails.feature', { "tenantId": tenantId, "desktopId": desktopId, "folderId": folderId });
         return rv.folder;
     };
 
@@ -103,7 +103,7 @@ function fn(config) {
     config.v5.business.api['tenant'] = {};
     config.v5.business.api.tenant['getByName'] = function(name, withAdminRights) {
         withAdminRights = (typeof withAdminRights === "undefined") ? false : withAdminRights;
-        var rv = karate.call('classpath:lib/v5/business/api/tenant/getByName.feature', { "name": name, "withAdminRights": withAdminRights });
+        var rv = karate.call('classpath:lib/ip5/business/api/tenant/getByName.feature', { "name": name, "withAdminRights": withAdminRights });
         return rv.tenant;
     };
 
@@ -129,8 +129,8 @@ function fn(config) {
         if (typeof positions !== "undefined") {
             params["positions"] = positions;
         }
-        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSealFolderNormal.feature", params);
-        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSealFolderSurcharge.feature", params);
+        karate.call("classpath:lib/ip5/business/Formats de signature/createSendAndSealFolderNormal.feature", params);
+        karate.call("classpath:lib/ip5/business/Formats de signature/createSendAndSealFolderSurcharge.feature", params);
     };
     config.v5.business.formatsDeSignature['sign'] = function(type, subtype, name, files, positions) {
         var params = {
@@ -142,8 +142,8 @@ function fn(config) {
         if (typeof positions !== "undefined") {
             params["positions"] = positions;
         }
-        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
-        karate.call("classpath:lib/v5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
+        karate.call("classpath:lib/ip5/business/Formats de signature/createSendAndSignFolderNormal.feature", params);
+        karate.call("classpath:lib/ip5/business/Formats de signature/createSendAndSignFolderSurcharge.feature", params);
     };
     config.v5.business["regexp"] = {};
     config.v5.business.regexp["annotation"] = {};
@@ -167,7 +167,7 @@ function fn(config) {
             // Document
             document = folder.documentList[idxDoc];
             url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id;
-            content = karate.call('classpath:lib/common/get.feature', { url: url });
+            content = karate.call('classpath:lib/ip/get.feature', { url: url });
             if (document.isMainDocument === true) {
                 path = document.name;
                 //karate.write(content.bytes, basePath + "/" + path);
@@ -183,7 +183,7 @@ function fn(config) {
             for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
                 detached = document.detachedSignatures[idxDet];
                 url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
-                content = karate.call('classpath:lib/common/get.feature', { url: url });
+                content = karate.call('classpath:lib/ip/get.feature', { url: url });
                 path = detached.name;
                 //karate.write(content.bytes, basePath + "/" + path);
                 result.push(path);
@@ -215,7 +215,7 @@ function fn(config) {
             // Document
             document = folder.documentList[idxDoc];
             url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id;
-            content = karate.call('classpath:lib/common/get.feature', { url: url });
+            content = karate.call('classpath:lib/ip/get.feature', { url: url });
             if (document.isMainDocument === true) {
                 //path = basePath + "/" + idxDoc + "/" + document.name;
                 path = basePath + "/" + document.name;
@@ -232,7 +232,7 @@ function fn(config) {
             for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
                 detached = document.detachedSignatures[idxDet];
                 url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
-                content = karate.call('classpath:lib/common/get.feature', { url: url });
+                content = karate.call('classpath:lib/ip/get.feature', { url: url });
                 // path = basePath + "/" + idxDoc + "/detached/" + detached.name;
                 path = basePath + "/" + detached.name;
                 karate.write(content.bytes, path);

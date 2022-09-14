@@ -25,14 +25,14 @@ function fn(config) {
     config.v4.business.api['desktop'] = {};
     config.v4.business.api.desktop['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/business/api/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/ip4/business/api/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
     config.v4.business.api.desktop['getAllIdsByName'] = function(names, asAdmin) {
         var idx, result = [], rv;
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         for (idx = 0;idx < names.length;idx++) {
-            rv = karate.call('classpath:lib/v4/business/api/desktop/getByName.feature', { "name": names[idx], "asAdmin": asAdmin });
+            rv = karate.call('classpath:lib/ip4/business/api/desktop/getByName.feature', { "name": names[idx], "asAdmin": asAdmin });
             result.push(rv.desktop.id);
         }
         return result;
@@ -41,11 +41,11 @@ function fn(config) {
     // REST API folder lib
     config.v4.business.api['folder'] = {};
     config.v4.business.api.folder['getById'] = function(deskId, folderId) {
-        var rv = karate.call('classpath:lib/v4/business/api/folder/getById.feature', { "deskId": deskId, "folderId": folderId });
+        var rv = karate.call('classpath:lib/ip4/business/api/folder/getById.feature', { "deskId": deskId, "folderId": folderId });
         return rv.response;
     };
     config.v4.business.api.folder['getByName'] = function(deskId, corbeilleName, name) {
-        var rv = karate.call('classpath:lib/v4/business/api/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
+        var rv = karate.call('classpath:lib/ip4/business/api/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
         return rv.folder;
     };
 
@@ -53,7 +53,7 @@ function fn(config) {
     config.v4.business.api['metadata'] = {};
     config.v4.business.api.metadata['getById'] = function(id, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/business/api/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/ip4/business/api/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
         return rv.metadata;
     };
 
@@ -61,7 +61,7 @@ function fn(config) {
     config.v4.business.api['pastellConnector'] = {};
     config.v4.business.api.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/business/api/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/ip4/business/api/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.pastellConnector;
     };
 
@@ -69,7 +69,7 @@ function fn(config) {
     config.v4.business.api['seal'] = {};
     config.v4.business.api.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/business/api/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/ip4/business/api/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.seal;
     };
 
@@ -77,7 +77,7 @@ function fn(config) {
     config.v4.business.api['type'] = {};
     config.v4.business.api.type['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
-        var rv = karate.call('classpath:lib/v4/business/api/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
+        var rv = karate.call('classpath:lib/ip4/business/api/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.type;
     };
 
@@ -85,7 +85,7 @@ function fn(config) {
     config.v4.business.api['user'] = {};
     config.v4.business.api.user['login'] = function(username, password) {
         // @see https://github.com/karatelabs/karate#call-vs-read
-        return karate.call(true, 'classpath:lib/v4/business/api/user/login.feature', { "username": username, "password": password });
+        return karate.call(true, 'classpath:lib/ip4/business/api/user/login.feature', { "username": username, "password": password });
     };
 
     config.v4['signature'] = config.v4['signature'] ? config.v4['signature'] : {};

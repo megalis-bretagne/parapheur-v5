@@ -10,19 +10,19 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario: Créer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo simple" }
+        * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     Scenario: Supprimer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/delete.feature') { tenant: "Démo simple" }
+        * call read('classpath:lib/ip5/ui/tenant/delete.feature') { tenant: "Démo simple" }
 
     Scenario: Créer une entité
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/tenant/create.feature') { tenant: "Démo simple" }
+        * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     Scenario Outline: Créer un utilisateur ${role} et connexion avec celui-ci
         * ui.user.login("user", "password")
-        * call read('classpath:lib/ui/user/create.feature') __row
+        * call read('classpath:lib/ip5/ui/user/create.feature') __row
         * ui.user.logout()
 
         * ui.user.login(username, password)
@@ -37,7 +37,7 @@ Feature: 001 - Scénario de démo simple, partie administration
     @issue-ip-compose-537
     Scenario Outline: Créer un user sans droit avec notif unitaire et image de signature
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/user/create.feature') __row
+        * call read('classpath:lib/ip5/ui/user/create.feature') __row
         * ui.user.logout()
 
         * api_v1.auth.login("user", "password")
@@ -69,7 +69,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un bureau ${title} pour utilisateur sans droit
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/desk/create.feature') __row
+        * call read('classpath:lib/ip5/ui/desk/create.feature') __row
 
         Examples:
             | tenant      | title     | shortName | owners!                    | permissions!             |
@@ -77,7 +77,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un bureau pour le WebService
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/desk/create.feature') __row
+        * call read('classpath:lib/ip5/ui/desk/create.feature') __row
 
         Examples:
             | tenant      | title      | shortName  | owners!            | permissions!                                                                             |
@@ -85,7 +85,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un bureau ${title} pour utilisateur sans droit et association avec le bureau DGS
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/desk/create.feature') __row
+        * call read('classpath:lib/ip5/ui/desk/create.feature') __row
 
         Examples:
             | tenant      | title     | shortName | owners!                    | permissions!             | associatedDesks! |
@@ -93,7 +93,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un circuit 1 étape de signature du bureau ${desk}
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
+        * call read('classpath:lib/ip5/ui/workflow/create_1_step.feature') __row
 
         Examples:
             | tenant      | name      | type      | desk      |
@@ -101,7 +101,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un circuit 1 étape de visa du bureau ${desk}
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/workflow/create_1_step.feature') __row
+        * call read('classpath:lib/ip5/ui/workflow/create_1_step.feature') __row
 
         Examples:
             | tenant      | name | type | desk      |
@@ -109,7 +109,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un type ACTES/PAdES
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/type/create.feature') __row
+        * call read('classpath:lib/ip5/ui/type/create.feature') __row
 
         Examples:
             | tenant      | name  | description | protocol | format | ville          | stamp! |
@@ -117,7 +117,7 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Scenario Outline: Créer un sous-type ${type} / ${name} pour le circuit ${workflow}
         * ui.user.login("admin-entite@demo-simple", "a123456")
-        * call read('classpath:lib/ui/subtype/create.feature') __row
+        * call read('classpath:lib/ip5/ui/subtype/create.feature') __row
 
         Examples:
             | tenant      | type  | name         | description  | workflow  |

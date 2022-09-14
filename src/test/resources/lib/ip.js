@@ -537,7 +537,7 @@ function fn(config) {
         certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
         var actualData = ip.signature.xades.actual(document, xades, certificate),
             actualXml = karate.read("file://" + xades),
-            expectedSchema = karate.read("classpath:lib/v5/schemas/xades.xml"),
+            expectedSchema = karate.read("classpath:lib/ip5/schemas/xades.xml"),
             expectedData = ip.signature.xades.expected(document, xades, certificate),
             result;
 

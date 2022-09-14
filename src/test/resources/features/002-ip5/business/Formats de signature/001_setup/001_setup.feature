@@ -5,14 +5,14 @@ Feature: Paramétrage métier "Formats de signature"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/api/setup/tenant.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
         Examples:
             | name                 |
             | Formats de signature |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/api/setup/user.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
             | tenant               | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               |
@@ -21,7 +21,7 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/desk.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant               | name       | owners!                                      | parent! | associated! | permissions!                                                         |
@@ -29,14 +29,14 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | WebService | ['ws-fds@dom.local']                         | ''      | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
-        * call read('classpath:lib/api/setup/seal-certificate.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/seal-certificate.create.feature') __row
 
         Examples:
             | tenant               | path                                                  | password                        | image!                                                     |
             | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
-        * call read('classpath:lib/api/setup/one-step-workflow.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
             | tenant               | name           | deskName | type      |
@@ -44,7 +44,7 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | Signature      | Nacarat  | SIGNATURE |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/api/setup/type.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
         Examples:
             | tenant               | name               | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!     |
@@ -57,7 +57,7 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | XAdES det          | NONE     | XADES_DETACHED | Montpellier       | 34000            | false             | {}                     |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant               | type               | name                         | multiDocuments! | validationWorkflowId | sealAutomatic! | sealCertificateId                                  | secureMailServerId |
@@ -80,7 +80,7 @@ Feature: Paramétrage métier "Formats de signature"
             | Formats de signature | XAdES det          | Signature multidoc           | true            | Signature            | null           |                                                    |                    |
 
     Scenario Outline: Set the signature image for user "${email}"
-        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant               | email              | path                                            |

@@ -4,14 +4,14 @@ Feature: Paramétrage métier "Marchés publics"
         * api_v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
-        * call read('classpath:lib/api/setup/tenant.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
 
         Examples:
             | name            |
             | Marchés publics |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
-        * call read('classpath:lib/api/setup/user.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
             | tenant          | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency |
@@ -22,7 +22,7 @@ Feature: Paramétrage métier "Marchés publics"
             | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456  | NONE      | disabled                   |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
-        * call read('classpath:lib/api/setup/desk.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
         Examples:
             | tenant          | name       | owners!                  | parent!     | associated! | permissions!                                                         |
@@ -58,21 +58,21 @@ Feature: Paramétrage métier "Marchés publics"
         Then status 201
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
-        * call read('classpath:lib/api/setup/type.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/type.create.feature') __row
 
         Examples:
             | tenant          | name          | description   | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition! | workflowSelectionScript! |
             | Marchés publics | Marché public | Marché public |          | PADES           | Montpellier       |                  | false             |                    | ''                       |
 
     Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
-        * call read('classpath:lib/api/setup/subtype.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
             | tenant          | type          | name         | description  | multiDocuments! | validationWorkflowId    | secureMailServerId | sealCertificateId | workflowSelectionScript! | subtypeMetadataList! |
             | Marchés publics | Marché public | Service fait | Service fait | true            | Validation et signature |                    |                   | ''                       | []                   |
 
     Scenario Outline: Set the signature image for user "${email}"
-        * call read('classpath:lib/api/setup/user.signatureImage.create.feature') __row
+        * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
         Examples:
             | tenant          | email             | path                                           |
