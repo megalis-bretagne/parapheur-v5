@@ -7,7 +7,7 @@ Feature: UI desk lib
 function (owners) {
     var idx, selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
     // @todo: attendre un élément particulier ?
-    pause(5);
+    ip.pause(5);
     for(idx = 0;idx < owners.length;idx++) {
         value(selector, '');
         input(selector, owners[idx]);
@@ -41,7 +41,7 @@ function (permissions) {
 function (associatedDesks) {
     var idx, selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
     // @todo: attendre un élément particulier ?
-    pause(5);
+    ip.pause(5);
     for(idx = 0;idx < associatedDesks.length;idx++) {
         value(selector, '');
         input(selector, associatedDesks[idx]);
@@ -53,16 +53,16 @@ function (associatedDesks) {
 """
 
         Given assert exists("//app-header") == true
-            And click(ui.locator.header['Administration'])
-        #Then waitFor(ui.element.breadcrumb("Administration / Informations serveur"))
+            And click(ip5.ui.locator.header['Administration'])
+        #Then waitFor(ip5.ui.element.breadcrumb("Administration / Informations serveur"))
 
-        When ui.admin.selectTenant(tenant)
+        When ip5.ui.admin.selectTenant(tenant)
         And click("{^}Bureaux")
-        Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
 
         When click("{^}Créer un Bureau")
-            And input(ui.locator.input("Titre"), title)
-            And input(ui.locator.input("Nom court"), shortName)
+            And input(ip5.ui.locator.input("Titre"), title)
+            And input(ip5.ui.locator.input("Nom court"), shortName)
             And click("{^}Acteurs")
             And selectOwners(owners)
             And click("{^}Habilitations")
@@ -70,8 +70,8 @@ function (associatedDesks) {
             # @todo: metadonnées
             And click("{^}Bureaux associés")
             And selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
-            * pause(15)
-            And waitForEnabled(ui.locator.button("Enregistrer")).click()
-        Then waitFor(ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
-            And waitFor(ui.toast.success("Le bureau " + title + " a été créé avec succès"))
+            * ip.pause(15)
+            And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+            And waitFor(ip5.ui.toast.success("Le bureau " + title + " a été créé avec succès"))
             And waitFor("//tbody//td[contains(text(),'" + title + "')]")

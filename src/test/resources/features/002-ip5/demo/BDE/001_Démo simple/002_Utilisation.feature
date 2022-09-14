@@ -2,8 +2,8 @@
 Feature: 002 - Scénario de démo simple, partie utilisation
 
     Background:
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
 
     Scenario Outline: Envoi de ${count} dossier(s) "${nameTemplate}" dans le circuit pour le sous-type ${type} / ${subtype}
         * def params =
@@ -35,21 +35,21 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | démarrage  |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
-        * ui.user.login("flosserand@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
         * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
-        * ui.folder.annotate.both("flosserand@demo-simple", action, name)
+        * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * click("{^}Valider")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
             | name               | action | pending! |
@@ -64,61 +64,61 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Demande d'avis complémentaire et ${action} sur le dossier "${name}" (ACTES/Visa)
         # 1. Demande d'avis complémentaire
-        * ui.user.login("flosserand@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::a[contains(@class, 'dropdown')]").click()
-        * ui.folder.annotate.both("flosserand@demo-simple", "demande d'avis complémentaire", name)
+        * ip5.ui.folder.annotate.both("flosserand@demo-simple", "demande d'avis complémentaire", name)
         # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
         * click("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        #* waitFor(ui.toast.success("avis complémentaire a été effectuée avec succès"))
-        * ui.user.logout()
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        #* waitFor(ip5.ui.toast.success("avis complémentaire a été effectuée avec succès"))
+        * ip5.ui.user.logout()
 
         # 2. Avis complémentaire
         # @todo: vérifier l'annotation privée
-        * ui.user.login("mpiaumier@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('DGS') == { pending: 1 }
+        * ip5.ui.user.login("mpiaumier@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('DGS') == { pending: 1 }
 
         * click("{a}DGS")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
         * click("{a}" + name)
 
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / " + name))
 
         * click("//*[contains(normalize-space(text()), 'vis complémentaire')]/ancestor-or-self::button")
-        * ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
+        * ip5.ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
 
         * click("{^}Valider")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * waitFor(ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
-        * ui.user.logout()
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
+        * ip5.ui.user.logout()
 
         # 3. Action sur le dossier
         # @todo: vérifier l'annotation privée
-        * ui.user.login("flosserand@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('Président') == { pending: #(pending) }
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * click("{a}Président")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / " + name))
 
         * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
-        * ui.folder.annotate.both("flosserand@demo-simple", action, name)
+        * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * click("{^}Valider")
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
             | name                          | action | pending! |
@@ -126,15 +126,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Demande avis complémentaire 2 | Rejet  | 1        |
 
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
@@ -142,16 +142,16 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Utilisateur          | Annotation publique                                                                                       |
             | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
             | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
-        * match ui.folder.getPublicAnnotations() == expected
+        * match ip5.ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée                                                                                          |
             | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
-        * match ui.folder.getPrivateAnnotations() == expected
+        * match ip5.ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         Examples:
             | badge           | title             | name               | action | state  |
@@ -166,15 +166,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
             # Vérifications des annotations
             # 1. Annotation(s) publique(s)
@@ -184,16 +184,16 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          |
             | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
             | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
-        * match ui.folder.getPublicAnnotations() == expected
+        * match ip5.ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée                                                                                          |
             | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
-        * match ui.folder.getPrivateAnnotations() == expected
+        * match ip5.ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         Examples:
             | badge           | title             | name                          | action | state  |
@@ -202,15 +202,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5 @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # Vérifications du journal des événements
         * mouse().move("{^button}Actions").go()
@@ -226,11 +226,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
-        * match ui.folder.getEventLog() == expected
+        * match ip5.ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         Examples:
             | badge           | title             | name               | action | state  |
@@ -245,15 +245,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5 @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # Vérifications du journal des événements
         * mouse().move("{^button}Actions").go()
@@ -272,11 +272,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
-        * match ui.folder.getEventLog() == expected
+        * match ip5.ui.folder.getEventLog() == expected
         * click("//*[contains(normalize-space(text()),'Fermer')]//ancestor::button")
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         Examples:
             | badge           | title             | name                          | action | state  |
@@ -285,15 +285,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # Vérifications des impressions
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
@@ -306,7 +306,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         Examples:
             | badge           | title             | name                          | action | state  |
@@ -323,15 +323,15 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
-        * ui.user.login("ws@demo-simple", "a123456")
-        #* match ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
+        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * click("{a}WebService")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
         * click("{a}<name>")
-        * waitFor(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
 
         # 2. Sans le bordereau de signature (case cochée par défaut)
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
@@ -344,8 +344,8 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
-        * exists(ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
-        * pause(15)
+        * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
+        * ip.pause(15)
 
         Examples:
             | badge           | title             | name                          | action | state  |

@@ -32,7 +32,7 @@ function() {
     var existingTenantId = api_v1.entity.getIdByName('Default tenant');
 
     payload.annotationsAllowed = true
-    payload.name = 'tmp-' + utils.getUUID()
+    payload.name = 'tmp-' + ip.utils.getUUID()
     payload.validationWorkflowId = api_v1.workflow.getKeyByName(existingTenantId, 'tmp-', true)
 
     return payload;
@@ -40,7 +40,7 @@ function() {
 """
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a subtype and associate it to an existing type in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingTypeId = api_v1.type.getIdByName(existingTenantId, 'tmp-', true)
@@ -56,8 +56,8 @@ function() {
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == {'value': '#uuid'}")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == {'value': '#uuid'}")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -71,7 +71,7 @@ function() {
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a subtype and associate it to an existing type in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingTypeId = api_v1.type.getIdByName(api_v1.entity.getIdByName('Default tenant'), 'tmp-', true)
@@ -87,7 +87,7 @@ function() {
 
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -101,7 +101,7 @@ function() {
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTypeId = api_v1.type.getNonExistingId()
@@ -117,7 +117,7 @@ function() {
 
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -131,7 +131,7 @@ function() {
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def nonExistingTypeId = api_v1.type.getNonExistingId()
@@ -147,7 +147,7 @@ function() {
 
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -161,13 +161,13 @@ function() {
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a subtype and associate it to an existing type in an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a subtype and associate it to an existing type in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingTypeId = api_v1.type.getIdByName(existingTenantId, 'tmp-', true)
 
         * def payload = getCleanPayload()
-        * payload[field] = utils.eval(value)
+        * payload[field] = ip.utils.eval(value)
 
         * api_v1.auth.login('cnoir', 'a123456')
 
@@ -178,15 +178,15 @@ function() {
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == {'value': '#uuid'}")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == {'value': '#uuid'}")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field | value!                             | data                                |
-            | 201    | name  | eval(utils.string.getRandom(1))    | a name that is 1 character long     |
-            | 201    | name  | eval(utils.string.getRandom(255))  | a name that is 255 characters long  |
+            | 201    | name  | eval(ip.utils.string.getRandom(1))    | a name that is 1 character long     |
+            | 201    | name  | eval(ip.utils.string.getRandom(255))  | a name that is 255 characters long  |
         @fixme-ip5 @issue-todo
         Examples:
             | status | field | value!                             | data                                |
             | 400    | name  | ''                                 | an empty name                       |
-            | 400    | name  | eval(utils.string.getRandom(1024)) | a name that is 1024 characters long |
+            | 400    | name  | eval(ip.utils.string.getRandom(1024)) | a name that is 1024 characters long |

@@ -10,10 +10,10 @@ Feature: IP v.4 REST seal lib
         * def imageContent = karate.read(image)
         * def sealImage = Base64.getEncoder().encodeToString(imageContent)
 
-        * def alias = utils.certificate.alias(certificate, password)
-        * def enddate = utils.certificate.enddate(certificate, password)
-        * def issuer = utils.certificate.issuer(certificate, password)
-        * def subject = utils.certificate.subject(certificate, password)
+        * def alias = ip.utils.certificate.alias(certificate, password)
+        * def enddate = ip.utils.certificate.enddate(certificate, password)
+        * def issuer = ip.utils.certificate.issuer(certificate, password)
+        * def subject = ip.utils.certificate.subject(certificate, password)
 
         Given def payload =
 """
@@ -21,7 +21,7 @@ Feature: IP v.4 REST seal lib
     "isNew": true,
     "title": "#(title)",
     "editing": true,
-    "originalName": "#(utils.file.basename(certificate))",
+    "originalName": "#(ip.utils.file.basename(certificate))",
     "certificate": "#(sealCertificate)",
     "description": {
         "notAfter": #(enddate),
@@ -31,7 +31,7 @@ Feature: IP v.4 REST seal lib
     },
     "password": "#(password)",
     "loadChange": false,
-    "imageName": "#(utils.file.basename(image))",
+    "imageName": "#(ip.utils.file.basename(image))",
     "image": "#(sealImage)",
     "additionalText": "#(text)"
 }

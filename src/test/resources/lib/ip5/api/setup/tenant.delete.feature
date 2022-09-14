@@ -7,4 +7,4 @@ Scenario: Delete tenant
         And header Accept = 'application/json'
     When method DELETE
     Then status 204
-        And utils.assert("response == ''")
+        And ip.utils.assert("response == ''")

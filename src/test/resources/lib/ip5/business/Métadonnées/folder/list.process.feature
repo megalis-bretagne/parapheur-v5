@@ -15,18 +15,18 @@ Feature: ...
         * def params = karate.merge(defaults, __arg)
         * params["metadata"] = ip.metadatas.map[params.folder]
 
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
-        * ui.user.login(params.username, params.password)
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
+        * ip5.ui.user.login(params.username, params.password)
 
         * click("{a}" + params.desktop)
 
         # Filtre sur le type, sous-type et nom du dossier
-        * click(ui.locator.tray.filter.toggle)
-        * ui.ngSelect("//app-type-selector//ng-select", params.type)
-        * ui.ngSelect("//app-subtype-selector//ng-select", params.subtype)
-        * input(ui.locator.input('Titre'), params.folder)
-        * click(ui.locator.tray.filter.apply)
+        * click(ip5.ui.locator.tray.filter.toggle)
+        * ip5.ui.ngSelect("//app-type-selector//ng-select", params.type)
+        * ip5.ui.ngSelect("//app-subtype-selector//ng-select", params.subtype)
+        * input(ip5.ui.locator.input('Titre'), params.folder)
+        * click(ip5.ui.locator.tray.filter.apply)
 
         * def folderXpath = "//table//a[normalize-space(text()='" + params.folder + "')]"
         * waitFor(folderXpath)
@@ -37,9 +37,9 @@ Feature: ...
         * waitFor(checkboxXpath).click()
         * waitFor("//span[contains(normalize-space(text()), '" + params.action + "')]").click()
 
-        * ui.folder.annotate.both(params.username, params.action, params.folder)
-        * v5.business.ui.metadatas.fill(params.metadata)
+        * ip5.ui.folder.annotate.both(params.username, params.action, params.folder)
+        * ip5.business.ui.metadatas.fill(params.metadata)
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))

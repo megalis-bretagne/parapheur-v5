@@ -12,7 +12,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -20,9 +20,9 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.user.element")
-            And if (<status> === 200) utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.user.element")
+            And if (<status> === 200) ip.utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -41,7 +41,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:
@@ -55,7 +55,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -63,7 +63,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -74,7 +74,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -82,7 +82,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

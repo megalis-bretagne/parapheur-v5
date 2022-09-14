@@ -10,7 +10,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'import a new seal certificate into an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'import a new seal certificate into an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -22,9 +22,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
-            And if (<status> === 201) utils.assert("$ contains expected")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == schemas.sealCertificate.element")
+            And if (<status> === 201) ip.utils.assert("$ contains expected")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -38,7 +38,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
-    Scenario Outline: ${scenario.title.permissions(role, 'import a new seal certificate into a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'import a new seal certificate into a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -49,7 +49,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
 
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @issue-todo
         Examples:
@@ -63,20 +63,20 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
             And multipart file file = { read: '<path>', 'contentType': 'application/x-pkcs12' }
-            And multipart field <field> = utils.eval(value)
+            And multipart field <field> = ip.utils.eval(value)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.sealCertificate.element")
-            And if (<status> === 201) utils.assert("$ contains expected")
-            And if (<status> === 400) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == schemas.sealCertificate.element")
+            And if (<status> === 201) ip.utils.assert("$ contains expected")
+            And if (<status> === 400) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field    | value!                                     | data                                    | path                                                | expected!                                                                                               |
@@ -85,4 +85,4 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
             | 400    | password | ''                                         | an empty password                       | classpath:files/certificate.p12                     |                                                                                                         |
             | 400    | password | ' '                                        | a space as a password                   | classpath:files/certificate.p12                     |                                                                                                         |
             | 400    | password | 'foobarbaz'                                | a wrong password                        | classpath:files/certificate.p12                     |                                                                                                         |
-            | 400    | password | eval(utils.string.getRandom(1025, 'tmp-')) | a password that is too long             | classpath:files/certificate.p12                     |                                                                                                         |
+            | 400    | password | eval(ip.utils.string.getRandom(1025, 'tmp-')) | a password that is too long             | classpath:files/certificate.p12                     |                                                                                                         |

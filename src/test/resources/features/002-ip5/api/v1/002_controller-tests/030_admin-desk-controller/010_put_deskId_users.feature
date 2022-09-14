@@ -10,10 +10,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'associate an existing desk to an existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate an existing desk to an existing user in an existing tenant', status)}
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -53,8 +53,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             And request { "userIdList": ["#(existingUserId)"] }
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -68,7 +68,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'associate an existing desk to a non-existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate an existing desk to a non-existing user in an existing tenant', status)}
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
 
@@ -124,7 +124,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             | NONE             | ltransparent | a123456  | 403    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'associate a non-existing desk to an existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate a non-existing desk to an existing user in an existing tenant', status)}
         # Get data
         * api_v1.auth.login('user', 'password')
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
@@ -153,7 +153,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'associate a non-existing desk to a non-existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate a non-existing desk to a non-existing user in an existing tenant', status)}
         # Get data
         * api_v1.auth.login('user', 'password')
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()

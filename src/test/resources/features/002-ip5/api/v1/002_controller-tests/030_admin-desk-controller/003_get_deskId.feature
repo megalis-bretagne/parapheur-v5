@@ -12,7 +12,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing desk from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -20,9 +20,9 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.desk.element")
-            And if (<status> === 200) utils.assert("$ contains { 'name': 'Transparent' }")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.desk.element")
+            And if (<status> === 200) ip.utils.assert("$ contains { 'name': 'Transparent' }")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing desk from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -54,7 +54,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -72,7 +72,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId} (getDeskInfo)
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

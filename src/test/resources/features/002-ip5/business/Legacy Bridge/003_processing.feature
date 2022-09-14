@@ -2,18 +2,18 @@
 Feature: Traitement des dossiers
 
     Background:
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
 
     Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge
-        * ui.user.login("lvermillon@legacy-bridge", "a123456")
-        #* match ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
+        * ip5.ui.user.login("lvermillon@legacy-bridge", "a123456")
+        #* match ip5.ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
         * click("{a}Vermillon")
-        #* waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
+        #* waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
         * waitFor("{a}" + name).click()
 
-        * waitFor(ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
 
         * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
 
@@ -23,11 +23,11 @@ Feature: Traitement des dossiers
         * if (action == 'Mail sécurisé') script("(document.evaluate(\"//app-send-by-mail-popup//button[@title='Mail sécurisé']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).disabled = false")
         * if (action == 'Mail sécurisé') waitFor("//app-send-by-mail-popup//*[contains(normalize-space(text()), 'Mail sécurisé')]/parent::button").click()
 
-        * if (action != 'Mail sécurisé') ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
+        * if (action != 'Mail sécurisé') ip5.ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
         * if (action != 'Mail sécurisé') click("{^}Valider")
 
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
-        * if (action != 'Mail sécurisé') waitFor(ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * if (action != 'Mail sécurisé') waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
             | name                  | action        | pending! |

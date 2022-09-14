@@ -7,7 +7,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 		* call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
 	@permissions
-	Scenario Outline: ${scenario.title.permissions(role, 'delete an existing tenant', status)}
+	Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing tenant', status)}
 		* api_v1.auth.login('user', 'password')
 		* def id = api_v1.entity.createTemporary()
 
@@ -18,8 +18,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>
-			And if (<status> === 204) utils.assert("response == ''")
-			And if (<status> !== 204) utils.assert("$ == schemas.error")
+			And if (<status> === 204) ip.utils.assert("response == ''")
+			And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
 		Examples:
 			| role             | username     | password | status |
@@ -30,7 +30,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 			|                  |              |          | 401    |
 
 	@permissions
-	Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing tenant', status)}
+	Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing tenant', status)}
 		* def id = api_v1.entity.getNonExistingId()
 		* api_v1.auth.login('<username>', '<password>')
 
@@ -39,7 +39,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 			And header Accept = 'application/json'
 		When method DELETE
 		Then status <status>
-			And utils.assert("$ == schemas.error")
+			And ip.utils.assert("$ == schemas.error")
 
 		Examples:
 			| role             | username     | password | status |

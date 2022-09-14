@@ -10,10 +10,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an existing user from an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from an existing desk in an existing tenant', status)}
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -60,8 +60,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -72,10 +72,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an existing user from an existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from an existing desk in a non-existing tenant', status)}
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -122,7 +122,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -133,7 +133,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an existing user from a non-existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from a non-existing desk in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
@@ -156,10 +156,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
 
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove a non-existing user from an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove a non-existing user from an existing desk in an existing tenant', status)}
         # Create a temporary desk
         * api_v1.auth.login('user', 'password')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -198,8 +198,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:

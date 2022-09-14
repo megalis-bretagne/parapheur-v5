@@ -24,7 +24,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 """
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in an existing tenant', status)}
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
@@ -36,8 +36,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request requestData
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("response == ''")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -48,7 +48,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in a non-existing tenant', status)}
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
@@ -60,7 +60,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request baseRequestData
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -71,7 +71,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target existing desk to a non-existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to a non-existing desk in an existing tenant', status)}
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
@@ -83,7 +83,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request baseRequestData
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5
         Examples:
@@ -97,7 +97,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a new delegation from target non-existing desk to an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target non-existing desk to an existing desk in an existing tenant', status)}
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
         * api_v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
@@ -123,9 +123,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a new delegation from target desk', status, data)}
         * copy requestData = request_data
-        * if (field !== '') requestData[field] = utils.eval(value)
+        * if (field !== '') requestData[field] = ip.utils.eval(value)
 
         * api_v1.auth.login('cnoir', 'a123456')
         Given url baseUrl
@@ -134,8 +134,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
             And request requestData
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("response == ''")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field!             | value!                                                         | request_data!                                                                                                                                        | data                                           |

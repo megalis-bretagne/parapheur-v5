@@ -7,7 +7,7 @@ Feature: ForcerEtape
         When def rv = call read('classpath:lib/ip/api/soap/requests/CreerDossier/simple_success.feature') params
         Then def dossierId = rv.dossierId
 
-        * pause(5)
+        * ip.pause(5)
 
         # 2. Forçage de l'étape
         * def params =

@@ -7,13 +7,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
 
         * api_v1.auth.login('<username>', '<password>')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
         * def key = api_v1.desk.getKeyStringFromNameString(unique)
 
         Given url baseUrl
@@ -41,8 +41,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 """
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("response == ''")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -56,14 +56,14 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
 
         * api_v1.auth.login('<username>', '<password>')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
         * def key = api_v1.desk.getKeyStringFromNameString(unique)
 
         Given url baseUrl
@@ -91,7 +91,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 """
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -104,13 +104,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     # ------------------------------------------------------------------------------------------------------------------
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
 
         * api_v1.auth.login('cnoir', 'a123456')
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
         * def key = api_v1.desk.getKeyStringFromNameString(unique)
 
         * def requestData =
@@ -133,7 +133,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     "deploymentId": "#(key)"
 }
 """
-        * requestData[field] = utils.eval(value)
+        * requestData[field] = ip.utils.eval(value)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/workflowDefinition'
@@ -142,35 +142,35 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("response == ''")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("response == ''")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field        | value!                                     | data                                                 |
-            | 201    | id           | eval(utils.string.getRandom(1))            | an id that is 1 character long                       |
-            | 201    | id           | eval(utils.string.getRandom(244, 'tmp-'))  | an id that is up to 244 characters long              |
-            | 201    | deploymentId | eval(utils.string.getRandom(1))            | a deploymentId that is 1 character long              |
-            | 201    | deploymentId | eval(utils.string.getRandom(2000, 'tmp-')) | a deploymentId that is at least 2000 characters long |
-            | 201    | key          | eval(utils.string.getRandom(1))            | a key that is 1 character long                       |
-            | 201    | key          | eval(utils.string.getRandom(2000))         | a key that is at least 2000 characters long          |
-            | 201    | name         | eval(utils.string.getRandom(1))            | a name that is 1 character long                      |
-            | 201    | name         | eval(utils.string.getRandom(255, 'tmp-'))  | a name that is up to 255 characters long             |
+            | 201    | id           | eval(ip.utils.string.getRandom(1))            | an id that is 1 character long                       |
+            | 201    | id           | eval(ip.utils.string.getRandom(244, 'tmp-'))  | an id that is up to 244 characters long              |
+            | 201    | deploymentId | eval(ip.utils.string.getRandom(1))            | a deploymentId that is 1 character long              |
+            | 201    | deploymentId | eval(ip.utils.string.getRandom(2000, 'tmp-')) | a deploymentId that is at least 2000 characters long |
+            | 201    | key          | eval(ip.utils.string.getRandom(1))            | a key that is 1 character long                       |
+            | 201    | key          | eval(ip.utils.string.getRandom(2000))         | a key that is at least 2000 characters long          |
+            | 201    | name         | eval(ip.utils.string.getRandom(1))            | a name that is 1 character long                      |
+            | 201    | name         | eval(ip.utils.string.getRandom(255, 'tmp-'))  | a name that is up to 255 characters long             |
         @fixme-ip5 @issue-todo
         Examples:
             | status | field        | value!                                     | data                                                 |
             | 400    | id           | ''                                         | an empty id                                          |
             | 400    | id           | ' '                                        | a space as an id                                     |
-            | 400    | id           | eval(utils.string.getRandom(245, 'tmp-'))  | an id that is 245 characters long                    |
+            | 400    | id           | eval(ip.utils.string.getRandom(245, 'tmp-'))  | an id that is 245 characters long                    |
             | 400    | key          | ''                                         | an empty key                                         |
             | 400    | key          | ' '                                        | a space as an id                                     |
             | 400    | deploymentId | ''                                         | an empty deploymentId                                |
             | 400    | deploymentId | ' '                                        | a space as an deploymentId                           |
             | 400    | name         | ''                                         | an empty name                                        |
             | 400    | name         | ' '                                        | a space as a name                                    |
-            | 400    | name         | eval(utils.string.getRandom(256, 'tmp-'))  | a name that is 256 characters long                   |
+            | 400    | name         | eval(ip.utils.string.getRandom(256, 'tmp-'))  | a name that is 256 characters long                   |
 
 #    @data-validation @666
-#    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
+#    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
 #        * api_v1.auth.login('user', 'password')
 #        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 #        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
@@ -184,8 +184,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 #
 #        When method POST
 #        Then status <status>
-#            And if (<status> === 201) utils.assert("response == ''")
-#            And if (<status> !== 201) utils.assert("$ == schemas.error")
+#            And if (<status> === 201) ip.utils.assert("response == ''")
+#            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 #
 #        Examples:
 #            | status | path |

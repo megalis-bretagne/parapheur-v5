@@ -9,9 +9,9 @@ Feature: IP v.5 REST folder lib
         # @todo: __arg["metadata"]
 
         # 2. Récupération et lecture du dossier
-    * def tenant = v5.business.api.tenant.getByName(__arg.tenant)
-    * def desktop = v5.business.api.desktop.getByName(tenant.id, __arg.desktop)
-    * def folder = v5.business.api.folder.getByName(tenant.id, desktop.id, "pending", __arg.folder)
+    * def tenant = ip5.business.api.tenant.getByName(__arg.tenant)
+    * def desktop = ip5.business.api.desktop.getByName(tenant.id, __arg.desktop)
+    * def folder = ip5.business.api.folder.getByName(tenant.id, desktop.id, "pending", __arg.folder)
 
         # 3. Rejet du dossier
     * def taskId = karate.jsonPath(folder, "$.stepList[?(@.state=='PENDING')].id")

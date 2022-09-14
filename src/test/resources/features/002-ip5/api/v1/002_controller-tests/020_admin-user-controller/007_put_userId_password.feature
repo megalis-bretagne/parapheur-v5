@@ -12,7 +12,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'update the password of an existing user from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of an existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -21,8 +21,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -33,7 +33,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of a non-existing user from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -42,7 +42,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-todo
         Examples:
@@ -56,7 +56,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'update the password of an existing user from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of an existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -65,7 +65,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             And request { password: 'a123456' }
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -76,7 +76,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'update the password of a non-existing user from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of a non-existing user from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -99,7 +99,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
         * api_v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
@@ -109,8 +109,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field    | value!    | data                |

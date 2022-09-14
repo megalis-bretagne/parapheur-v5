@@ -10,6 +10,6 @@ Feature: Stamp setup lib
             And path '/api/v1/admin/tenant/' + tenantId + '/layer/' + layerId + '/stamp'
             And header Accept = 'application/json'
             And multipart file stamp = { 'value': '#(payload)', 'contentType': 'application/json', 'filename': 'blob' }
-            And multipart file file = utils.file.payload(file)
+            And multipart file file = ip.utils.file.payload(file)
         When method POST
         Then status 201

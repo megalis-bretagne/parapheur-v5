@@ -5,7 +5,7 @@ Feature: IP v.4 REST folder lib
         * url baseUrl
         * path "/iparapheur/addDocument"
         * header Accept = 'application/json'
-        * multipart file file = { read: "#(__arg.file)", contentType: "#(utils.file.mime(__arg.file))", filename: "#(utils.file.basename(__arg.file))" }
+        * multipart file file = { read: "#(__arg.file)", contentType: "#(ip.utils.file.mime(__arg.file))", filename: "#(ip.utils.file.basename(__arg.file))" }
         * multipart field browser = "notIe"
         * multipart field dossier = __arg.dossierId
         * multipart field isMainDocument = "true"

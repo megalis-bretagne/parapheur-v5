@@ -19,4 +19,4 @@ Feature: Metadata setup lib
 """
         When method POST
         Then status 201
-        And utils.assert("$ == schemas.metadata.element")
+        And ip.utils.assert("$ == schemas.metadata.element")

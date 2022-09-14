@@ -2,7 +2,7 @@
 Feature: IP v.5 REST folder lib
 
     Scenario: Signature placements
-        * def details = v5.business.api.folder.getDetails(__arg.tenant.id, __arg.desktop.id, __arg.folder.id)
+        * def details = ip5.business.api.folder.getDetails(__arg.tenant.id, __arg.desktop.id, __arg.folder.id)
         * def setSignaturePlacements =
 """
 function (tenant, desktop, details, positions) {

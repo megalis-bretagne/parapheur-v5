@@ -15,16 +15,16 @@ Feature: ...
         * def params = karate.merge(defaults, __arg)
         * params["metadata"] = ip.metadatas.map[params.folder]
 
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
-        * ui.user.login(params.username, params.password)
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
+        * ip5.ui.user.login(params.username, params.password)
 
         * click("{a}" + params.desktop)
 
         # Filtre sur le nom du dossier
-        * click(ui.locator.tray.filter.toggle)
-        * input(ui.locator.input('Titre'), params.folder)
-        * click(ui.locator.tray.filter.apply)
+        * click(ip5.ui.locator.tray.filter.toggle)
+        * input(ip5.ui.locator.input('Titre'), params.folder)
+        * click(ip5.ui.locator.tray.filter.apply)
 
         * def checkboxXpath = "//table//th//input[@type='checkbox']"
         * waitFor(checkboxXpath)
@@ -33,7 +33,7 @@ Feature: ...
 
         * waitFor("//span[contains(normalize-space(text()), '" + params.action + "')]").click()
 
-        * ui.folder.annotate.both(params.username, params.action, params.folder)
+        * ip5.ui.folder.annotate.both(params.username, params.action, params.folder)
 
         * def mergeMetadatasStartingWith =
 """
@@ -49,10 +49,10 @@ function(obj, start) {
 """
 
         * def metadatas = mergeMetadatasStartingWith(ip.metadatas.map, params.folder)
-        * v5.business.ui.metadatas.fill(metadatas)
+        * ip5.business.ui.metadatas.fill(metadatas)
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
         # @fixme: ne fonctionne pas tout le temps, alors que le toaster apparaît bien sur l'image
-        #* waitFor(ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))
+        #* waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))

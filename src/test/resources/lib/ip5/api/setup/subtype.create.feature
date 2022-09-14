@@ -2,7 +2,7 @@
 Feature: Subtype setup lib
 
     Scenario: Create subtype
-        * pause(5)
+        * ip.pause(5)
         * def tenantId = api_v1.entity.getIdByName(tenant)
         * def prepareSubtypeLayerList =
 """
@@ -42,7 +42,7 @@ function (tenantId, subtypeMetadataList) {
 function(payload, defaults) {
     var keys = ['externalSignatureConfig', 'multiDocuments', 'secureMailServerId', 'sealCertificateId', 'subtypeLayerRequestList', 'subtypeMetadataList', 'workflowSelectionScript'];
     for (var key of keys) {
-        if (utils.isEmpty(payload[key])) {
+        if (ip.utils.isEmpty(payload[key])) {
             delete payload[key];
         }
     }
@@ -80,16 +80,16 @@ function(payload, defaults) {
 """
 
         * def payload = karate.merge(defaults, __row)
-        * payload['creationPermittedDeskIds'] = utils.isEmpty(payload['creationPermittedDeskIds']) ? null : api_v1.desk.getAllIdsByNames(tenantId, payload['creationPermittedDeskIds'])
-        * payload['creationWorkflowId'] = utils.isEmpty(payload['creationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['creationWorkflowId'])
-        * payload['description'] = utils.isEmpty(payload['description']) ? payload['name'] : payload['description']
-        * payload['externalSignatureConfigId'] = utils.isEmpty(payload['externalSignatureConfigId']) ? null : api_v1.externalSignature.getIdByName(tenantId, payload['externalSignatureConfigId'])
-        * payload['sealCertificateId'] = utils.isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
-        * payload['secureMailServerId'] = utils.isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
-        * payload['subtypeLayerList'] = utils.isEmpty(payload['subtypeLayerList']) ? [] : prepareSubtypeLayerList(tenantId, payload['subtypeLayerList'])
+        * payload['creationPermittedDeskIds'] = ip.utils.isEmpty(payload['creationPermittedDeskIds']) ? null : api_v1.desk.getAllIdsByNames(tenantId, payload['creationPermittedDeskIds'])
+        * payload['creationWorkflowId'] = ip.utils.isEmpty(payload['creationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['creationWorkflowId'])
+        * payload['description'] = ip.utils.isEmpty(payload['description']) ? payload['name'] : payload['description']
+        * payload['externalSignatureConfigId'] = ip.utils.isEmpty(payload['externalSignatureConfigId']) ? null : api_v1.externalSignature.getIdByName(tenantId, payload['externalSignatureConfigId'])
+        * payload['sealCertificateId'] = ip.utils.isEmpty(payload['sealCertificateId']) ? null : api_v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
+        * payload['secureMailServerId'] = ip.utils.isEmpty(payload['secureMailServerId']) ? null : api_v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
+        * payload['subtypeLayerList'] = ip.utils.isEmpty(payload['subtypeLayerList']) ? [] : prepareSubtypeLayerList(tenantId, payload['subtypeLayerList'])
         * payload['subtypeMetadataList'] = replaceMetadataKeyById(tenantId, payload['subtypeMetadataList'])
-        * payload['validationWorkflowId'] = utils.isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
-        * payload['workflowSelectionScript'] = utils.isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
+        * payload['validationWorkflowId'] = ip.utils.isEmpty(payload['validationWorkflowId']) ? null : api_v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
+        * payload['workflowSelectionScript'] = ip.utils.isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
 
         * def payload = cleanupPayload(payload, defaults);
 

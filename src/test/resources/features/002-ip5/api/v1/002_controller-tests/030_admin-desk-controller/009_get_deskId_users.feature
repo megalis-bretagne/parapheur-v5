@@ -44,7 +44,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
 """
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list users from an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list users from an existing desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -52,8 +52,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
           And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemaIndex")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemaIndex")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -64,7 +64,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list users from an existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list users from an existing desk in a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -86,7 +86,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list users from a non-existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list users from a non-existing desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -108,7 +108,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (List users fro
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list users from a non-existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list users from a non-existing desk in a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

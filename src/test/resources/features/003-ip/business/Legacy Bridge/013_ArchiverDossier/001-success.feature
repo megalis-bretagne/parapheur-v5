@@ -7,7 +7,7 @@ Feature: ArchiverDossier
         * def rv = call read('classpath:lib/ip/api/soap/requests/CreerDossier/simple_success.feature') params
         * def dossierId = rv.dossierId
 
-        * pause(5)
+        * ip.pause(5)
 
         # 2. Forçage de l'étape
         * def params =
@@ -21,7 +21,7 @@ Feature: ArchiverDossier
 """
         * call read('classpath:lib/ip/api/soap/requests/ForcerEtape/success.feature') params
 
-        * pause(5)
+        * ip.pause(5)
 
         # 3. Archivage du dossier
         Given def params = karate.merge(__row, { archivageAction: "<archivageAction>", dossierId: dossierId, username: "ws@legacy-bridge", password: "a123456" })

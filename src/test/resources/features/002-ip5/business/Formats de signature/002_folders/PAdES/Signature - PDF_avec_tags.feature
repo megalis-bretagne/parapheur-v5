@@ -8,10 +8,10 @@ Feature: PAdES - Signature - PDF_avec_tags
         * def files = [ { file: "PDF_avec_tags.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags.pdf" ]
 
         Examples:
@@ -20,7 +20,7 @@ Feature: PAdES - Signature - PDF_avec_tags
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags.pdf") == expected
 
@@ -31,7 +31,7 @@ Feature: PAdES - Signature - PDF_avec_tags
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags.pdf") == expected
 
@@ -42,7 +42,7 @@ Feature: PAdES - Signature - PDF_avec_tags
 
     @fixme-ip5 @issue-compose-579 @issue-todo
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
@@ -60,7 +60,7 @@ Feature: PAdES - Signature - PDF_avec_tags
 
     @fixme-ip5
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
         * def expected =
 """

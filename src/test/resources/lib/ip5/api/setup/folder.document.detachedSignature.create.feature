@@ -2,7 +2,7 @@
 Feature:
 
     Scenario:
-        * def detachedSignatureContentType = utils.file.mime(detachedSignature)
+        * def detachedSignatureContentType = ip.utils.file.mime(detachedSignature)
 
         Given url baseUrl
             And path '/api/v1/tenant/' + tenantId + '/folder/' + folderId + '/document/' + documentId + '/detachedSignature'

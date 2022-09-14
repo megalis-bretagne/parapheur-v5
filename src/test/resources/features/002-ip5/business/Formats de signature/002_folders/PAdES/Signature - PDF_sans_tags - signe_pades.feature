@@ -8,10 +8,10 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
         * def files = [ { file: "PDF_sans_tags-signature_pades.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_sans_tags-signature_pades.pdf" ]
 
         Examples:
@@ -20,7 +20,7 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -37,7 +37,7 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -54,7 +54,7 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
@@ -62,7 +62,7 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
         "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     },
     "page 2": {
-        "1": "#(v4.signature.pades.annotations.default([342, 61, 536, 128], 'Christian Noir', 'Responsable des méthodes'))"
+        "1": "#(ip4.signature.pades.annotations.default([342, 61, 536, 128], 'Christian Noir', 'Responsable des méthodes'))"
     }
 }
 """
@@ -74,7 +74,7 @@ Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
             | surcharge | [0, 0, 200, 70] | Gilles Nacarat   | Responsable des méthodes |
     @fixme-ip5
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags-signature_pades.pdf")
         * def expected =
 """

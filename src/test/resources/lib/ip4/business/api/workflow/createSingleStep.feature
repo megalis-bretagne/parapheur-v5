@@ -2,7 +2,7 @@
 Feature: IP v.4 REST workflow lib
 
     Scenario: Create workflow
-        * def desk = v4.business.api.desktop.getByName(__arg.desktop, true)
+        * def desk = ip4.business.api.desktop.getByName(__arg.desktop, true)
         * def payload =
 """
 {

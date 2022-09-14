@@ -3,8 +3,8 @@ Feature: SOAP ForcerEtape lib
 
     Scenario: Création d'un dossier simple
         * configure cookies = null
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization(username, password)
+        * url ip.api.soap.url()
+        * header Authorization = ip.api.soap.user.authorization(username, password)
 
         Given request
 """

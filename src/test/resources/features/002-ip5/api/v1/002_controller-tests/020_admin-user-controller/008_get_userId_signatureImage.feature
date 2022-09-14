@@ -11,7 +11,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user\'s signature image from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user\'s signature image from an existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -20,9 +20,9 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("header Content-Type == 'image/png;charset=UTF-8'")
-            And if (<status> === 200) utils.assert("response == read('<path>')")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("header Content-Type == 'image/png;charset=UTF-8'")
+            And if (<status> === 200) ip.utils.assert("response == read('<path>')")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | status | path                                                |
@@ -35,7 +35,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             |                  |              |          | ltransparent@dom.local | 401    |                                                     |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user\'s signature image from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -43,7 +43,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-todo
         Examples:
@@ -57,7 +57,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing user\'s signature image from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user\'s signature image from a non-existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -66,7 +66,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | email                  | status |
@@ -77,7 +77,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             |                  |              |          | ltransparent@dom.local | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing user\'s signature image from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user\'s signature image from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -85,7 +85,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

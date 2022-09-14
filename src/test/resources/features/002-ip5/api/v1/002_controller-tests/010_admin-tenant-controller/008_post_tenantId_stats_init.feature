@@ -7,7 +7,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create or recreate a stats entry for an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create or recreate a stats entry for an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.createTemporary()
         * api_v1.auth.login('<username>', '<password>')
@@ -17,8 +17,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
             And header Accept = 'application/json'
         When method POST
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -29,7 +29,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create or recreate a stats entry for a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create or recreate a stats entry for a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
@@ -40,7 +40,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
             And header Accept = 'application/json'
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

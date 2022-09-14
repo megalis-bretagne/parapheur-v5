@@ -17,18 +17,18 @@
  */
 
 function fn(config) {
-    config['v4'] = {};
-    config.v4['business'] = {};
-    config.v4.business['api'] = {};
+    config['ip4'] = config['ip4'] || {};
+    config.ip4['business'] = config.ip4['business'] || {};
+    config.ip4.business['api'] = config.ip4.business['api'] || {};
 
     // REST API desktop lib
-    config.v4.business.api['desktop'] = {};
-    config.v4.business.api.desktop['getByName'] = function(name, asAdmin) {
+    config.ip4.business.api['desktop'] = {};
+    config.ip4.business.api.desktop['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         var rv = karate.call('classpath:lib/ip4/business/api/desktop/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.desktop;
     };
-    config.v4.business.api.desktop['getAllIdsByName'] = function(names, asAdmin) {
+    config.ip4.business.api.desktop['getAllIdsByName'] = function(names, asAdmin) {
         var idx, result = [], rv;
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         for (idx = 0;idx < names.length;idx++) {
@@ -39,59 +39,59 @@ function fn(config) {
     };
 
     // REST API folder lib
-    config.v4.business.api['folder'] = {};
-    config.v4.business.api.folder['getById'] = function(deskId, folderId) {
+    config.ip4.business.api['folder'] = {};
+    config.ip4.business.api.folder['getById'] = function(deskId, folderId) {
         var rv = karate.call('classpath:lib/ip4/business/api/folder/getById.feature', { "deskId": deskId, "folderId": folderId });
         return rv.response;
     };
-    config.v4.business.api.folder['getByName'] = function(deskId, corbeilleName, name) {
+    config.ip4.business.api.folder['getByName'] = function(deskId, corbeilleName, name) {
         var rv = karate.call('classpath:lib/ip4/business/api/folder/getByName.feature', { "deskId": deskId, "corbeilleName": corbeilleName, "name": name });
         return rv.folder;
     };
 
     // REST API metadata lib
-    config.v4.business.api['metadata'] = {};
-    config.v4.business.api.metadata['getById'] = function(id, asAdmin) {
+    config.ip4.business.api['metadata'] = {};
+    config.ip4.business.api.metadata['getById'] = function(id, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         var rv = karate.call('classpath:lib/ip4/business/api/metadata/getById.feature', { "id": id, "asAdmin": asAdmin });
         return rv.metadata;
     };
 
     // REST API pastellConnector lib
-    config.v4.business.api['pastellConnector'] = {};
-    config.v4.business.api.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+    config.ip4.business.api['pastellConnector'] = {};
+    config.ip4.business.api.pastellConnector['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         var rv = karate.call('classpath:lib/ip4/business/api/pastellConnector/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.pastellConnector;
     };
 
     // REST API seal lib
-    config.v4.business.api['seal'] = {};
-    config.v4.business.api.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
+    config.ip4.business.api['seal'] = {};
+    config.ip4.business.api.seal['getByName'] = function(name, asAdmin) { //@todo: asAdmin ?
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         var rv = karate.call('classpath:lib/ip4/business/api/seal/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.seal;
     };
 
     // REST API type lib
-    config.v4.business.api['type'] = {};
-    config.v4.business.api.type['getByName'] = function(name, asAdmin) {
+    config.ip4.business.api['type'] = {};
+    config.ip4.business.api.type['getByName'] = function(name, asAdmin) {
         asAdmin = typeof asAdmin === 'undefined' ? false : true;
         var rv = karate.call('classpath:lib/ip4/business/api/type/getByName.feature', { "name": name, "asAdmin": asAdmin });
         return rv.type;
     };
 
     // REST API user lib
-    config.v4.business.api['user'] = {};
-    config.v4.business.api.user['login'] = function(username, password) {
+    config.ip4.business.api['user'] = {};
+    config.ip4.business.api.user['login'] = function(username, password) {
         // @see https://github.com/karatelabs/karate#call-vs-read
         return karate.call(true, 'classpath:lib/ip4/business/api/user/login.feature', { "username": username, "password": password });
     };
 
-    config.v4['signature'] = config.v4['signature'] ? config.v4['signature'] : {};
-    config.v4.signature['pades'] = config.v4.signature['pades'] ? config.v4.signature['pades'] : {};
-    config.v4.signature.pades['annotations'] = config.v4.signature.pades['annotations'] ? config.v4.signature.pades['annotations'] : {};
-    config.v4.signature.pades.annotations['default'] = function(position, line1, line2) {
+    config.ip4['signature'] = config.ip4['signature'] ? config.ip4['signature'] : {};
+    config.ip4.signature['pades'] = config.ip4.signature['pades'] ? config.ip4.signature['pades'] : {};
+    config.ip4.signature.pades['annotations'] = config.ip4.signature.pades['annotations'] ? config.ip4.signature.pades['annotations'] : {};
+    config.ip4.signature.pades.annotations['default'] = function(position, line1, line2) {
         return {
             "position": position,
             "text":[
@@ -102,12 +102,12 @@ function fn(config) {
         };
     };
 
-    config.v4['utils'] = {};
-    config.v4.utils['folder'] = {};
-    config.v4.utils.folder['signatures'] = function(path, list) {
+    config.ip4['utils'] = {};
+    config.ip4.utils['folder'] = {};
+    config.ip4.ip.utils.folder['signatures'] = function(path, list) {
         var idx, result = { signature: [], signatureDateTime: [] };
         for (idx = 0;idx<list.length;idx++) {
-            result.signature.push(utils.certificate.signHash(path, list[idx].dataToSignBase64List));
+            result.signature.push(ip.utils.certificate.signHash(path, list[idx].dataToSignBase64List));
             result.signatureDateTime.push(list[idx].signatureDateTime);
         }
         return result;

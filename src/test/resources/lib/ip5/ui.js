@@ -17,13 +17,15 @@
  */
 
 function fn(config) {
-    config['ui'] = {};
+    config['ip5'] = config['ip5'] || {};
+
+    config.ip5['ui'] = config.ip5['ui'] || {};
 
     /**
      * Desk
      **/
-    config.ui['desk'] = {};
-    config.ui.desk['getTileBadges'] = function(desk) {
+    config.ip5.ui['desk'] = {};
+    config.ip5.ui.desk['getTileBadges'] = function(desk) {
         var actual = {},
             clasName,
             classes,
@@ -45,39 +47,18 @@ function fn(config) {
     };
 
     /**
-     * Driver
-     **/
-    config.ui['driver'] = {};
-    // @see https://github.com/intuit/karate/blob/master/karate-demo/src/test/java/driver/demo/demo-01.feature
-    config.ui.driver['configure'] = {
-        executable: config.CHROME_BIN,
-        headless: config.headless,
-        showDriverLog: false,
-        type: 'chrome',
-        // @see https://github.com/karatelabs/karate/blob/master/karate-docker/karate-chrome/supervisord.conf
-        // @see https://stackoverflow.com/questions/73337435/karate-dsl-options-window-size-and-incognito-is-not-working-for-chromedrive
-        addOptions: ['--disable-gpu','lang=fr_FR,fr'],
-        //addOptions: ['--windows-size=1024,768'],
-        /*webDriverSession: {
-            capabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
-            desiredCapabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
-            prefs: { 'credentials_enable_service': false, 'profile.password_manager_enabled': false },
-        }*/
-    };
-
-    /**
      * Folder
      **/
-    config.ui['folder'] = {};
+    config.ip5.ui['folder'] = {};
     /**
      * Annotations
      **/
-    config.ui.folder['annotate'] = {};
-    config.ui.folder.annotate['both'] = function(username, action, folder) {
+    config.ip5.ui.folder['annotate'] = {};
+    config.ip5.ui.folder.annotate['both'] = function(username, action, folder) {
         waitFor("{label}Annotation publique").input(templates.annotations.getPublic(username, action, folder));
         waitFor("{label}Annotation privée").input(templates.annotations.getPrivate(username, action, folder));
     };
-    config.ui.folder['getAnnotations'] = function(singular, plural) {
+    config.ip5.ui.folder['getAnnotations'] = function(singular, plural) {
         var actual = [],
             idx,
             linePrefix,
@@ -98,17 +79,17 @@ function fn(config) {
         }
         return actual;
     };
-    config.ui.folder['getPrivateAnnotations'] = function() {
-        return ui.folder.getAnnotations('Annotation privée', 'Annotations privées');
+    config.ip5.ui.folder['getPrivateAnnotations'] = function() {
+        return ip5.ui.folder.getAnnotations('Annotation privée', 'Annotations privées');
     };
-    config.ui.folder['getPublicAnnotations'] = function() {
-        return ui.folder.getAnnotations('Annotation publique', 'Annotations publiques');
+    config.ip5.ui.folder['getPublicAnnotations'] = function() {
+        return ip5.ui.folder.getAnnotations('Annotation publique', 'Annotations publiques');
     };
 
     /**
      * Journal des événements
      **/
-    config.ui.folder['getEventLog'] = function() {
+    config.ip5.ui.folder['getEventLog'] = function() {
         var actual = [],
             idx,
             lines,
@@ -137,33 +118,33 @@ function fn(config) {
      * Locator
      * @todo: find lib or port custom from behat's
      **/
-    config.ui['locator'] = {};
-    config.ui.locator['button'] = function (text) {
+    config.ip5.ui['locator'] = {};
+    config.ip5.ui.locator['button'] = function (text) {
         return '//button[contains(., \'' + text + '\')]';
     };
-    config.ui.locator['header'] = {};
-    config.ui.locator.header['iparapheur'] = '//app-header//*[@routerlink=\'/\'][1]';
-    config.ui.locator.header['Maison'] = '//app-header//*[@routerlink=\'/\'][last()]';
-    config.ui.locator.header['Archives'] = '//app-header//*[@routerlink=\'/archive\']';
-    config.ui.locator.header['Statistiques'] = '//app-header//*[@routerlink=\'/stats\']';
-    config.ui.locator.header['Administration'] = "//app-header//*[contains(@class, 'fa-wrench')]//parent::fa-icon";
-    config.ui.locator.header['Profil'] = '//app-header//*[@routerlink=\'/profile\']';
-    config.ui.locator.header['Déconnexion'] = '//app-header//fa-icon[last()]';
-    config.ui.locator['input'] = function (text) {
+    config.ip5.ui.locator['header'] = {};
+    config.ip5.ui.locator.header['iparapheur'] = '//app-header//*[@routerlink=\'/\'][1]';
+    config.ip5.ui.locator.header['Maison'] = '//app-header//*[@routerlink=\'/\'][last()]';
+    config.ip5.ui.locator.header['Archives'] = '//app-header//*[@routerlink=\'/archive\']';
+    config.ip5.ui.locator.header['Statistiques'] = '//app-header//*[@routerlink=\'/stats\']';
+    config.ip5.ui.locator.header['Administration'] = "//app-header//*[contains(@class, 'fa-wrench')]//parent::fa-icon";
+    config.ip5.ui.locator.header['Profil'] = '//app-header//*[@routerlink=\'/profile\']';
+    config.ip5.ui.locator.header['Déconnexion'] = '//app-header//fa-icon[last()]';
+    config.ip5.ui.locator['input'] = function (text) {
         // return '//input[@id=//label[contains(., \'' + text + '\')]/@for]';
             return '//input[@id=//label[contains(., \'' + text.replace("'", "\\\u0027") + '\')]/@for]';
     };
 
-    config.ui.locator['tray'] = {};
-    config.ui.locator.tray['filter'] = {};
-    config.ui.locator.tray.filter['apply'] = "//app-folder-filter-panel//button//span[text()='Filtrer']";
-    config.ui.locator.tray.filter['toggle'] = "//ngb-pagination/parent::div//button//span[text()='Filtrer']";
+    config.ip5.ui.locator['tray'] = {};
+    config.ip5.ui.locator.tray['filter'] = {};
+    config.ip5.ui.locator.tray.filter['apply'] = "//app-folder-filter-panel//button//span[text()='Filtrer']";
+    config.ip5.ui.locator.tray.filter['toggle'] = "//ngb-pagination/parent::div//button//span[text()='Filtrer']";
 
     /**
      * URL
      **/
-    config.ui['admin'] = {};
-    config.ui.admin['getRoleIndex'] = function(name) {
+    config.ip5.ui['admin'] = {};
+    config.ip5.ui.admin['getRoleIndex'] = function(name) {
         switch(name) {
             case 'Administrateur':
                 return 1;
@@ -176,7 +157,7 @@ function fn(config) {
         }
         karate.fail('Role "' + name + '" does not exist');
     };
-    config.ui.admin['selectTenant'] = function(tenant) {
+    config.ip5.ui.admin['selectTenant'] = function(tenant) {
         waitFor("//input[@aria-autocomplete='list']");
         click("//input[@aria-autocomplete='list']");
         input("//input[@aria-autocomplete='list']", tenant);
@@ -186,8 +167,8 @@ function fn(config) {
     /**
      * Elements
      **/
-    config.ui['element'] = {};
-    config.ui.element['breadcrumb'] = function(path) {
+    config.ip5.ui['element'] = {};
+    config.ip5.ui.element['breadcrumb'] = function(path) {
         var idx, tokens = path.split(/\s*\/\s*/), result = '';
         for (idx = 0; idx < tokens.length ; idx++) {
             if (idx === 0) {
@@ -202,8 +183,8 @@ function fn(config) {
     /**
      * Toast
      **/
-    config.ui['toast'] = {};
-    config.ui.toast['success'] = function(message) {
+    config.ip5.ui['toast'] = {};
+    config.ip5.ui.toast['success'] = function(message) {
         if (typeof message !== 'undefined') {
             return "//div[contains(@class, 'toast-success')]//*[contains(normalize-space(text()), '" + message + "')]";
         } else {
@@ -214,21 +195,21 @@ function fn(config) {
     /**
      * URL
      **/
-    config.ui['url'] = {};
-    config.ui.url['logout'] = '/auth/realms/api/protocol/openid-connect/logout';
+    config.ip5.ui['url'] = {};
+    config.ip5.ui.url['logout'] = '/auth/realms/api/protocol/openid-connect/logout';
 
     /**
      * User
      **/
-    config.ui['user'] = {};
-    config.ui.user['login'] = function(username, password) {
+    config.ip5.ui['user'] = {};
+    config.ip5.ui.user['login'] = function(username, password) {
         karate.call('classpath:lib/ip5/ui/user/login.feature', { username: username, password: password });
     };
-    config.ui.user['logout'] = function() {
-        ui.user.menu("{^}Se déconnecter");
+    config.ip5.ui.user['logout'] = function() {
+        ip5.ui.user.menu("{^}Se déconnecter");
         waitFor('{^}Veuillez saisir vos identifiants de connexion');
     };
-    config.ui.user['menu'] = function(locator) {
+    config.ip5.ui.user['menu'] = function(locator) {
         mouse().move("//div[contains(@class, 'header-menu ')]").go();
         click(locator);
         // @todo: move somewhere else
@@ -236,43 +217,18 @@ function fn(config) {
 
     //--------------------------------------------------------------------------
 
-    config.ui['expect'] = function(locator, retries = 10, context = null) {
-        var cnt = 0;
-        karate.log("Expecting locator (" + String(retries) + " retries max)" + locator);
-        while(exists(locator) === false && cnt < retries) {
-            karate.log("Retry #" + String(cnt + 1));
-            cnt++;
-            pause(1);
-        }
-        if(exists(locator) === false) {
-            driver.screenshot();
-            if (typeof context !== "undefined") {
-                karate.log("... HTML context: " + html(context));
-            }
-            karate.fail("... not found " + locator);
-            throw new Error("Expected locator not found " + locator);
-        } else {
-            // @todo: not when found ?
-            if (typeof context !== "undefined" && context !== null) {
-                karate.log("... HTML context: " + html(context));
-            }
-            karate.log("... found " + locator);
-            return locate(locator);
-        }
-    };
-
     // # @todo: à mettre ailleurs(ngSelect)  + généraliser l'usage
     // # Ne pas mettre les métadonnées dans l'intégration continue (@demo-simple-bde,@legacy-bridge,@formats-de-signature)
-    config.ui['ngSelect'] = function(xpath, value) {
-        ui.expect(xpath + "//*[contains(concat(' ', @class, ' '),' ng-select-container ')]").click().script("_.dispatchEvent(new Event('mousedown'))");
-        ui.expect(xpath + "//*[@role='combobox'][@aria-expanded='true']");
-        ui.expect(xpath + "//ng-dropdown-panel[@role='listbox']");
+    config.ip5.ui['ngSelect'] = function(xpath, value) {
+        ip.ui.expect(xpath + "//*[contains(concat(' ', @class, ' '),' ng-select-container ')]").click().script("_.dispatchEvent(new Event('mousedown'))");
+        ip.ui.expect(xpath + "//*[@role='combobox'][@aria-expanded='true']");
+        ip.ui.expect(xpath + "//ng-dropdown-panel[@role='listbox']");
         // @todo: value -> String (bool, etc...)
-        ui.expect(xpath + "//*[@role='option']//*[contains(concat(' ', @class, ' '),' ng-option-label ')][normalize-space(text())='" + value +"']").click();
+        ip.ui.expect(xpath + "//*[@role='option']//*[contains(concat(' ', @class, ' '),' ng-option-label ')][normalize-space(text())='" + value +"']").click();
     };
 
-    // # @todo: à mettre ailleurs(ip_5.ui.business.metadatas.extract(?))
-    config.ui['getMetadatas'] = function() {
+    // # @todo: à mettre ailleurs(ip_5.ip5.ui.business.metadatas.extract(?))
+    config.ip5.ui['getMetadatas'] = function() {
         var actual = {},
             content,
             idx,

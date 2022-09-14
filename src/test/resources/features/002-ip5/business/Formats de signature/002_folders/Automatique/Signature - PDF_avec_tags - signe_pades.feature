@@ -8,10 +8,10 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
         * def files = [ { file: "PDF_avec_tags-signature_pades.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags-signature_pades.pdf" ]
 
         Examples:
@@ -20,7 +20,7 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -37,7 +37,7 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 [
@@ -54,12 +54,12 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
     "page 1": {
-        "1": "#(v4.signature.pades.annotations.default([350, 6, 519, 59], 'Christian Noir', 'Responsable des méthodes'))"
+        "1": "#(ip4.signature.pades.annotations.default([350, 6, 519, 59], 'Christian Noir', 'Responsable des méthodes'))"
     },
     "page 3": {
         "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
@@ -75,7 +75,7 @@ Feature: Automatique - Signature - PDF_avec_tags - signe_pades
 
     @fixme-ip5
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags-signature_pades.pdf")
         * def expected =
 """

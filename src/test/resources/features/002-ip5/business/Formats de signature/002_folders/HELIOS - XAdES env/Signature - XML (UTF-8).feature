@@ -8,10 +8,10 @@ Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
         * def files = [ { file: "PESALR1_unsigned.xml" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des fichiers (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PESALR1_unsigned.xml" ]
 
         Examples:
@@ -20,7 +20,7 @@ Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
             | surcharge | Gilles Nacarat   |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * ip.signature.helios.validateSchema(download.base + "/PESALR1_unsigned.xml")
         * ip.signature.helios.validate(download.base + "/PESALR1_unsigned.xml")
         * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }

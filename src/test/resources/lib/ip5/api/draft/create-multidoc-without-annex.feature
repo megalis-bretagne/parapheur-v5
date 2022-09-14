@@ -3,8 +3,8 @@ Feature:
 
     Scenario:
         * def mainFilesContentTypes = []
-        * mainFilesContentTypes[0] = utils.file.mime(mainFilesPaths[0])
-        * mainFilesContentTypes[1] = utils.file.mime(mainFilesPaths[1])
+        * mainFilesContentTypes[0] = ip.utils.file.mime(mainFilesPaths[0])
+        * mainFilesContentTypes[1] = ip.utils.file.mime(mainFilesPaths[1])
 
         Given url baseUrl
             And path path

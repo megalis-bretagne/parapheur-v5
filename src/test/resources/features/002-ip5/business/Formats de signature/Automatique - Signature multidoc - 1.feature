@@ -8,10 +8,10 @@ Feature: Automatique - Signature multidoc - 1
         * def files = [ { file: "PDF_avec_tags.pdf" }, { file: "PDF_sans_tags.pdf" } ]
 
     Scenario: Création des dossiers
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_avec_tags.pdf", "PDF_sans_tags.pdf" ]
 
         Examples:
@@ -20,7 +20,7 @@ Feature: Automatique - Signature multidoc - 1
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags.pdf") == expected
         * match ip.signature.pades.certificates.read(download.base + "/PDF_sans_tags.pdf") == expected
@@ -32,7 +32,7 @@ Feature: Automatique - Signature multidoc - 1
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         # @todo: si ça ne diffère pas d'une ligne à l'autre, il faudrait le retirer des colonnes
         * def expected = [ "#(ip.signature.pades.fields.default('Prenom Nom - Usages', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags.pdf") == expected
@@ -45,7 +45,7 @@ Feature: Automatique - Signature multidoc - 1
 
     @fixme-ip5 @issue-compose-579 @issue-todo
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expectedAvec =
 """
 {
@@ -73,7 +73,7 @@ Feature: Automatique - Signature multidoc - 1
 
     @fixme-ip5
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actualAvec = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
         * def expectedAvec =
 """

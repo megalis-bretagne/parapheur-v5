@@ -9,10 +9,10 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
         * def positions = { "PDF_sans_tags.pdf": {"signatureNumber":0,"page":"1","x":200,"y":700} }
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * v5.business.formatsDeSignature.sign(type, subtype, name, files, positions)
+        * ip5.business.formatsDeSignature.sign(type, subtype, name, files, positions)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * match download.files == [ "PDF_sans_tags.pdf" ]
 
         Examples:
@@ -21,7 +21,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/PDF_sans_tags.pdf") == expected
 
@@ -32,7 +32,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_sans_tags.pdf") == expected
 
@@ -43,7 +43,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def expected =
 """
 {
@@ -60,7 +60,7 @@ Feature: Automatique - Signature - PDF_sans_tags - repositionnement signature
             | surcharge | [100, 665, 300, 735] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = v5.business.formatsDeSignature.download("finished", name + " - <key>")
+        * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags.pdf")
         * def expected =
 """

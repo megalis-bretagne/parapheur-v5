@@ -6,7 +6,7 @@ Feature: Création de dossiers pour le paramétrage métier "Legacy Bridge"
         * configure readTimeout = 100000
 
     Scenario Outline: Création du dossier "${title}" de type "${type} / ${subtype}" par "${username}" sur le bureau "${desktop}"
-        * v4.business.api.user.login(username, password)
+        * ip4.business.api.user.login(username, password)
 
         * __row["annotation"] = "démarrage du dossier <title>"
         * call read('classpath:lib/ip4/business/api/folder/create.feature') __row

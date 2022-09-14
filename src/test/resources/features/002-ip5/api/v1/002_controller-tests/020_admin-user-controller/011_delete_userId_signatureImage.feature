@@ -7,7 +7,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for an existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for an existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = api_v1.user.createTemporary(existingTenantId)
@@ -27,8 +27,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -42,7 +42,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for a non-existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for a non-existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
@@ -53,7 +53,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-todo
         Examples:
@@ -67,7 +67,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for an existing user in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for an existing user in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -79,7 +79,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -90,7 +90,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a signature image for a non-existing user in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for a non-existing user in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def nonExistingUserId = api_v1.user.getNonExistingId()
@@ -101,7 +101,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -112,7 +112,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             |                  |              |          | 404    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'delete a signature image for an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'delete a signature image for an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')
@@ -124,8 +124,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | email                  | data                                  |

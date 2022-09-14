@@ -7,10 +7,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/metadata (Create metadata)
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a simple test metadata and associate it to an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a simple test metadata and associate it to an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def name = 'tmp-' + utils.getUUID()
+        * def name = 'tmp-' + ip.utils.getUUID()
 
         * api_v1.auth.login('<username>', '<password>')
 
@@ -29,8 +29,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/metadata (Create metadata)
 """
         When method POST
         Then status <status>
-        And if (<status> === 201) utils.assert("$ == schemas.metadata.element")
-        And if (<status> !== 201) utils.assert("$ == schemas.error")
+        And if (<status> === 201) ip.utils.assert("$ == schemas.metadata.element")
+        And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

@@ -7,7 +7,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing seal certificate in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in an existing tenant', status)}
         # Create a temporary seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -28,8 +28,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -43,7 +43,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing seal certificate in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in an existing tenant', status)}
         # Get informations
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -57,8 +57,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-todo
         Examples:
@@ -73,7 +73,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing seal certificate in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in a non-existing tenant', status)}
         # Create a temporary seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -96,7 +96,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
         And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -110,7 +110,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing seal certificate in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in a non-existing tenant', status)}
         # Create a seal certificate
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -125,7 +125,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
         And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

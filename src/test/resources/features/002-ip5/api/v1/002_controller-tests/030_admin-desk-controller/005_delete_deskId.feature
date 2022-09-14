@@ -13,7 +13,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
         * def deskData = api_v1.desk.getById(existingTenantId, existingDeskId)
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing desk from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -31,7 +31,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete an existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -49,7 +49,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing desk from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing desk from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -70,7 +70,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'delete a non-existing desk from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing desk from a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

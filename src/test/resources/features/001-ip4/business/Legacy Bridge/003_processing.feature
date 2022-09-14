@@ -6,7 +6,7 @@ Feature: Traitement des dossiers
         * configure readTimeout = 100000
 
     Scenario Outline: Traitement du dossier "${folder}" par "${username}"
-        * v4.business.api.user.login(username, password)
+        * ip4.business.api.user.login(username, password)
 
         * call read('classpath:lib/ip4/business/api/folder/<action>.feature') __row
 

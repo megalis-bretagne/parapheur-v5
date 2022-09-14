@@ -31,7 +31,7 @@ function fn(config) {
         });
         api_v1.auth.token = {};
 
-        if (utils.isInteger(status) === false) {
+        if (ip.utils.isInteger(status) === false) {
             if (status === true || (status === null && username !== '')) {
                 status = 200;
             } else if (status === false || (status === null && username === '')) {
@@ -250,7 +250,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting desk id by its tenantId and name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'desk', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'desk', 'name', name, containing);
         return element['id'];
     };
     config.api_v1.desk['getKeyStringFromNameString'] = function (name) {
@@ -287,7 +287,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting entity id by its name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'entity', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'entity', 'name', name, containing);
         return element['id'];
     };
     config.api_v1.entity['getNameById'] = function (id) {
@@ -305,7 +305,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting entity name by its id');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'entity', 'id', id);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'entity', 'id', id);
         return element['name'];
     };
     config.api_v1.entity['getNonExistingId'] = function () {
@@ -352,7 +352,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting external signature id by its name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'externalSignature', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'externalSignature', 'name', name, containing);
         return element['id'];
     };
 
@@ -373,7 +373,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting layer id by its tenantId and name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'layer', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'layer', 'name', name, containing);
         return element['id'];
     };
 
@@ -395,7 +395,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting metadata id by its tenantId and key');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'metadata', 'key', key, false);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'metadata', 'key', key, false);
         return element['id'];
     };
 
@@ -418,7 +418,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting secure mail id by its name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'secureMail', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'secureMail', 'name', name, containing);
         return element['id'];
     };
 
@@ -486,7 +486,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting user id by its tenantId and email');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'user', 'email', email, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'user', 'email', email, containing);
         return element['id'];
     };
     config.api_v1.user['getNonExistingId'] = function () {
@@ -569,7 +569,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting seal certificate id by its name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'sealCertificate', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'sealCertificate', 'name', name, containing);
         return element['id'];
     };
     config.api_v1.sealCertificate['getNonExistingId'] = function () {
@@ -594,7 +594,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting type by its tenantId and name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
         return element['id'];
     };
     config.api_v1.type['getNonExistingId'] = function () {
@@ -619,7 +619,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting type by its tenantId and name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
         return element['id'];
     };
 
@@ -673,7 +673,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting workflow by its tenantId and name');
         }
 
-        var element = api_v1.utils.filterSingleElementFromGetResponse(response, 'workflow', 'name', name, containing);
+        var element = api_v1.ip.utils.filterSingleElementFromGetResponse(response, 'workflow', 'name', name, containing);
         return element['key'];
     };
 

@@ -17,11 +17,12 @@
  */
 
 function fn(config) {
-    config['api'] = config['api'] || {};
-    config['api']['soap'] = {};
+    config['ip'] = config['ip'] || {};
+    config.ip['api'] = config.ip['api'] || {};
+    config.ip.api['soap'] = config.ip.api['soap'] || {};
 
-    config.api.soap['dossier'] = {};
-    config.api.soap.dossier['filterDossiersIdsByName'] = function (dossierIds, expected, params) {
+    config.ip.api.soap['dossier'] = {};
+    config.ip.api.soap.dossier['filterDossiersIdsByName'] = function (dossierIds, expected, params) {
         if(Array.isArray(dossierIds) === false) {
             dossierIds = [dossierIds];
         }
@@ -38,10 +39,10 @@ function fn(config) {
         karate.fail('Folder with name "' + expected + '" not found amongst the following ids: ' + JSON.stringify(dossierIds));
     };
 
-    config.api.soap['file'] = {};
-    config.api.soap.file['encode'] = function(path) {
+    config.ip.api.soap['file'] = {};
+    config.ip.api.soap.file['encode'] = function(path) {
         var Base64 = Java.type('java.util.Base64'),
-            ext = utils.file.extension(path),
+            ext = ip.utils.file.extension(path),
             result;
         if (ext === 'xml') {
             result = karate.call('classpath:lib/ip/xmlstring.feature', { value: karate.read(path) });
@@ -51,18 +52,18 @@ function fn(config) {
         }
     };
 
-    config.api.soap['schema'] = {};
-    config.api.soap.schema['folder'] = {};
-    config.api.soap.schema.folder['statuses'] = '#regex (Archive|CachetOK|EnCoursMailSecPastell|EnCoursVisa|Lu|NonLu|PretCachet|RejetCachet|RejetMailSecPastell|RejetSignataire|RejetVisa|Signe|Vise)';
-    config.api.soap.schema['logDossier'] = {};
-    config.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}(Z|(\\+|-)[0-9]{2}:[0-9]{2})$';
+    config.ip.api.soap['schema'] = {};
+    config.ip.api.soap.schema['folder'] = {};
+    config.ip.api.soap.schema.folder['statuses'] = '#regex (Archive|CachetOK|EnCoursMailSecPastell|EnCoursVisa|Lu|NonLu|PretCachet|RejetCachet|RejetMailSecPastell|RejetSignataire|RejetVisa|Signe|Vise)';
+    config.ip.api.soap.schema['logDossier'] = {};
+    config.ip.api.soap.schema.logDossier['timestamp'] = '#regex ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}(Z|(\\+|-)[0-9]{2}:[0-9]{2})$';
 
-    config.api.soap['url'] = function() {
+    config.ip.api.soap['url'] = function() {
         return soapBaseUrl.replace(/\/$/, '') + "/ws-iparapheur-no-mtom";
     };
 
-    config.api.soap['user'] = {};
-    config.api.soap.user['authorization'] = function(username, password) {
+    config.ip.api.soap['user'] = {};
+    config.ip.api.soap.user['authorization'] = function(username, password) {
         return karate.call(
             'classpath:lib/ip/basic-auth.js',
             {

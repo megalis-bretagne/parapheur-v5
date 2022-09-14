@@ -32,7 +32,7 @@ Feature: CreerDossier
         Then match rv.response == karate.read('classpath:lib/ip/api/soap/schemas/CreerDossierResponse/OK.xml')
 
     Scenario: Création du dossier "SOAP avec DossierID en doublon" pour le type "Auto monodoc / visa sans meta"
-        Given def uuid = utils.getUUID()
+        Given def uuid = ip.utils.getUUID()
             And def params =
 """
 {
@@ -60,10 +60,10 @@ Feature: CreerDossier
     @fixme-ip5
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
         Given configure cookies = null
-            And url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And url ip.api.soap.url()
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
             And def annotationPublique = "Annotation publique (" + nom + ")"
             And def annotationPrivee = "Annotation privée (" + nom + ")"
 
@@ -109,11 +109,11 @@ Feature: CreerDossier
 
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}" avec une annexe PDF
         Given configure cookies = null
-            And url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And url ip.api.soap.url()
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-            And def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
+            And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def annexe = ip.api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
             And def annotationPublique = "Annotation publique (" + nom + ")"
             And def annotationPrivee = "Annotation privée (" + nom + ")"
 
@@ -161,11 +161,11 @@ Feature: CreerDossier
     # @todo: il est bien créé mais sans la signature détachée
     Scenario Outline: Création d'un dossier monodoc "${nom}" pour le type "${type} / ${sousType}", avec une signature détachée XAdES
         Given configure cookies = null
-            And url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And url ip.api.soap.url()
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-            And def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
+            And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def signature = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
             And def annotationPublique = "Annotation publique (" + nom + ")"
             And def annotationPrivee = "Annotation privée (" + nom + ")"
 
@@ -209,12 +209,12 @@ Feature: CreerDossier
     @fixme-ip4 @fixme-ip5
     Scenario Outline: Création d'un dossier multidoc "${nom}" pour le type "${type} / ${sousType}", dont un avec une signature détachée XAdES et des annexes
         Given configure cookies = null
-            And url api.soap.url()
-            And header Authorization = api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And url ip.api.soap.url()
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
 
-            And def documentPrincipal = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
-            And def signature = api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
-            And def annexe = api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
+            And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
+            And def signature = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
+            And def annexe = ip.api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
             And def annotationPublique = "Annotation publique (" + nom + ")"
             And def annotationPrivee = "Annotation privée (" + nom + ")"
 

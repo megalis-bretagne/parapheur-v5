@@ -7,7 +7,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get the workflow definition list from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the workflow definition list from an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 
@@ -18,8 +18,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.workflow.index")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.workflow.index")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get the workflow definition list from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the workflow definition list from a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
 
@@ -56,7 +56,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/workflowDefinition (getWorkflowDefi
             |                  |              |          | 401    |
 
     @searching
-    Scenario Outline: ${scenario.title.searching('ADMIN', 'get the workflow definition list from an existing tenant', 200, total, searchTerm, sort, direction)}
+    Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the workflow definition list from an existing tenant', 200, total, searchTerm, sort, direction)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
 

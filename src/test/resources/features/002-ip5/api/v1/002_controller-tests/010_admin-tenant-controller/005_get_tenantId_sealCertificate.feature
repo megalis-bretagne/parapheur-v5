@@ -7,7 +7,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get the seal certificates list of an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the seal certificates list of an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * api_v1.auth.login('<username>', '<password>')
@@ -17,8 +17,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> == 200) utils.assert("$ == schemas.sealCertificate.index")
-            And if (<status> == 200) utils.assert("$.total == 1")
+            And if (<status> == 200) ip.utils.assert("$ == schemas.sealCertificate.index")
+            And if (<status> == 200) ip.utils.assert("$.total == 1")
 
         Examples:
             | role             | username     | password | status |
@@ -32,7 +32,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get the seal certificates list of a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the seal certificates list of a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * api_v1.auth.login('<username>', '<password>')
@@ -42,7 +42,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

@@ -6,11 +6,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
         * def list = api_v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def unique = 'tmp-' + utils.getUUID()
+        * def unique = 'tmp-' + ip.utils.getUUID()
         * def cleanRequestData = { name: '#(unique)' }
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'edit an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit an existing tenant', status)}
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
         * def id = api_v1.entity.createTemporary()
@@ -24,9 +24,9 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             And request cleanRequestData
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.tenant.element")
-            And if (<status> === 200) utils.assert("$ contains cleanRequestData")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.tenant.element")
+            And if (<status> === 200) ip.utils.assert("$ contains cleanRequestData")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -37,7 +37,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'edit a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit a non-existing tenant', status)}
         * def id = api_v1.entity.getNonExistingId()
         * api_v1.auth.login('<username>', '<password>')
 
@@ -47,7 +47,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             And request cleanRequestData
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -58,7 +58,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             |                  |              |          | 404    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
         # Create a temporary tenant
         * api_v1.auth.login('user', 'password')
         * def id = api_v1.entity.createTemporary()
@@ -66,7 +66,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
         # Try to edit it
         * api_v1.auth.login('cnoir', 'a123456')
         * def requestData = cleanRequestData
-        * requestData[field] = utils.eval(value)
+        * requestData[field] = ip.utils.eval(value)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', id
@@ -74,19 +74,19 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
             And request requestData
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.tenant.element")
-            And if (<status> === 200) utils.assert("$ contains requestData")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.tenant.element")
+            And if (<status> === 200) ip.utils.assert("$ contains requestData")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field | value!                                      | data                                    |
-            | 200    | name  | eval(utils.string.getRandom(1))             | a name that is at least 1 character     |
-            | 200    | name  | eval(utils.string.getRandom(64, 'tmp-'))    | a name that is up to 64 characters long |
+            | 200    | name  | eval(ip.utils.string.getRandom(1))             | a name that is at least 1 character     |
+            | 200    | name  | eval(ip.utils.string.getRandom(64, 'tmp-'))    | a name that is up to 64 characters long |
         @fixme-ip5 @issue-todo
         Examples:
             | status | field | value!                                      | data                                    |
             | 400    | name  | ''                                          | an empty name                           |
             | 400    | name  | ' '                                         | a space as a name                       |
-            | 400    | name  | eval(utils.string.getRandom(65, 'tmp-'))    | a name that is above 64 characters long |
+            | 400    | name  | eval(ip.utils.string.getRandom(65, 'tmp-'))    | a name that is above 64 characters long |
             | 409    | name  | 'Montpellier Méditerranée Métropole'        | a name that already exists              |
 

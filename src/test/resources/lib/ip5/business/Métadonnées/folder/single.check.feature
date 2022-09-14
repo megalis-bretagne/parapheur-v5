@@ -2,8 +2,8 @@
 Feature: ...
 
     Scenario: ...
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
 
         * def getState = function(action) { return action === 'Rejet' ? 'rejected' : 'finished'; }
         * def params =
@@ -20,22 +20,22 @@ Feature: ...
         * params["state"] = getState(__arg.action)
         * karate.log(params)
 
-        * configure driver = ui.driver.configure
-        * driver baseUrl + ui.url.logout
-        * ui.user.login(params.username, params.password)
+        * configure driver = ip.ui.driver.configure
+        * driver baseUrl + ip5.ui.url.logout
+        * ip5.ui.user.login(params.username, params.password)
 
         * click("{a}" + params.desktop)
         * click("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]")
 
         # Filtre sur le nom du dossier
-        * click(ui.locator.tray.filter.toggle)
-        * input(ui.locator.input('Titre'), params.folder)
-        * click(ui.locator.tray.filter.apply)
+        * click(ip5.ui.locator.tray.filter.toggle)
+        * input(ip5.ui.locator.input('Titre'), params.folder)
+        * click(ip5.ui.locator.tray.filter.apply)
 
         * click("{a}" + params.folder)
 
-        * waitFor(ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 
         #* waitFor("//strong[text()='Métadonnées']");
-        * def metadatas = ui.getMetadatas()
+        * def metadatas = ip5.ui.getMetadatas()
         * match metadatas == params.metadatas

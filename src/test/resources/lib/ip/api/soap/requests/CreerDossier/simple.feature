@@ -3,11 +3,11 @@ Feature: SOAP CreerDossier lib
 
     Scenario: Création d'un dossier simple
         * configure cookies = null
-        * url api.soap.url()
-        * header Authorization = api.soap.user.authorization(username, password)
+        * url ip.api.soap.url()
+        * header Authorization = ip.api.soap.user.authorization(username, password)
 
         * def dossierId = typeof dossierId !== 'undefined' ? dossierId : ''
-        * def documentPrincipal = api.soap.file.encode(documentPrincipal)
+        * def documentPrincipal = ip.api.soap.file.encode(documentPrincipal)
         * def annotationPublique = typeof annotationPublique !== 'undefined' ? annotationPublique : "Annotation publique (" + nom + ")"
         * def annotationPrivee = typeof annotationPrivee !== 'undefined' ? annotationPrivee : "Annotation privée (" + nom + ")"
 

@@ -1,8 +1,8 @@
 @ignore
 Feature:
     Scenario:
-      * def mainFileContentType = utils.file.mime(mainFilePath)
-      * def annexFileContentType = utils.file.mime(annexFilePath)
+      * def mainFileContentType = ip.utils.file.mime(mainFilePath)
+      * def annexFileContentType = ip.utils.file.mime(annexFilePath)
 
         Given url baseUrl
           And path path
@@ -13,4 +13,4 @@ Feature:
         When method POST
         Then status 201
         # Ajout de la signature détachée le cas échéant
-      * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/ip5/api/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, deskId: deskId, documentId: utils.getDraftDocumentId(response, mainFilePath), detachedSignature: mainFileDetachedPath })
+      * eval if (mainFileDetachedPath !== null) karate.call('classpath:lib/ip5/api/setup/folder.document.detachedSignature.create.feature', { tenantId: tenantId, folderId: response.id, deskId: deskId, documentId: ip5.utils.getDraftDocumentId(response, mainFilePath), detachedSignature: mainFileDetachedPath })

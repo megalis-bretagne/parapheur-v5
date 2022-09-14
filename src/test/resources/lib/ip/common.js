@@ -17,35 +17,14 @@
  */
 
 function fn(config) {
-        config['downloadpath'] = {};
-    // @todo: fail si le jsonPath ne retourne rien
-    config.downloadpath['annexe'] = function(files, basename, prefix) {
-        prefix = typeof prefix === "undefined" ? "file://" : prefix;
-        return prefix + buildDir + karate.jsonPath(files, "$.annexes['" + basename +"']");
-    };
-    config.downloadpath['detached'] = function(files, basename, prefix) {
-        prefix = typeof prefix === "undefined" ? "file://" : prefix;
-        return prefix + buildDir + karate.jsonPath(files, "$.documents[*][*].detached['" + basename +"']");
-    };
-    config.downloadpath['document'] = function(files, basename, prefix) {
-        prefix = typeof prefix === "undefined" ? "file://" : prefix;
-        return prefix + buildDir + karate.jsonPath(files, "$.documents[*]['" + basename +"'].path");
-    };
-    config.downloadpath['readAnnexe'] = function(files, basename, prefix) {
-        return karate.read(downloadpath.annexe(files, basename, prefix));
-    };
-    config.downloadpath['readDetached'] = function(files, basename, prefix) {
-        return karate.read(downloadpath.detached(files, basename, prefix));
-    };
-    config.downloadpath['readDocument'] = function(files, basename, prefix) {
-        return karate.read(downloadpath.document(files, basename, prefix));
-    };
+    config['ip'] = config['ip'] || {};
+
     // Classpath shortcuts for common files
-    config['commonpath'] = {};
-    config.commonpath['absolute'] = function(basename) {
-        return karate.toAbsolutePath(commonpath.get(basename));
+    config.ip['commonpath'] = {};
+    config.ip.commonpath['absolute'] = function(basename) {
+        return karate.toAbsolutePath(ip.commonpath.get(basename));
     };
-    config.commonpath['get'] = function(basename) {
+    config.ip.commonpath['get'] = function(basename) {
         var paths = {
             "document_libre_office.odt": "classpath:files/formats/document_libre_office/document_libre_office.odt",
             "document_office.doc": "classpath:files/formats/document_office/document_office.doc",
@@ -75,68 +54,11 @@ function fn(config) {
         karate.log("File \"" + basename + "\" is missing from commonpath");
         karate.fail("File \"" + basename + "\" is missing from commonpath");
     };
-    config.commonpath['read'] = function(basename) {
-        return karate.read(commonpath.get(basename));
+    config.ip.commonpath['read'] = function(basename) {
+        return karate.read(ip.commonpath.get(basename));
     };
 
-    config['scenario'] = {'title': {}};
-
-    //==================================================================================================================
-    // Scenario titles
-    //==================================================================================================================
-    config.scenario.title['existing'] = function(exists){
-        return exists == true ? 'an existing' : 'a non existing';
-    };
-
-    config.scenario.title['role'] = function(role){
-        return role !== '' && role !== null ? 'a user with the role "' + role + '"' : 'an unauthenticated user';
-    };
-
-    config.scenario.title['permissions'] = function(role, target, status){
-        role = scenario.title.role(utils.string.normalize(role));
-        status = scenario.title.status(status);
-        target = utils.string.normalize(target);
-
-        return 'Permissions - ' + role + ' ' + status + ' ' + target;
-    };
-
-    config.scenario.title['validation'] = function(role, target, status, data){
-        role = scenario.title.role(utils.string.normalize(role));
-        status = scenario.title.status(status);
-        target = utils.string.normalize(target);
-
-        return 'Data validation - ' + role + ' ' + status + ' ' + target + ' with ' + String(data);
-    };
-
-    config.scenario.title['searching'] = function(role, target, status, total, searchTerm = null, sort = null, direction = null){
-        role = scenario.title.role(utils.string.normalize(role));
-        searchTerm = utils.string.normalize(searchTerm);
-        status = scenario.title.status(status);
-        target = utils.string.normalize(target);
-
-        return 'Searching - ' + role + ' ' + status + ' '
-            + target
-            + ( searchTerm === '' ? '' : ' filtered with "' + searchTerm + '"' ) + ' '
-            + scenario.title.sorted(sort, direction)
-            + ' and obtain ' + total + ' ' + (total < 2 ? 'result' : 'results') + ' '
-        ;
-    };
-
-    config.scenario.title['sorted'] = function(field = null, direction = null){
-        field = utils.string.normalize(field);
-
-        if (field === '' || utils.string.normalize(direction) === '') {
-            return '';
-        } else {
-            return 'sorted by ' + field + ' ' + (direction === 'ASC' ? 'ascending' : 'descending');
-        }
-    };
-
-    config.scenario.title['status'] = function(status){
-        return String(status).match(/^[2-3]/) ? 'can' : 'cannot';
-    };
-
-    config['pause'] = function(seconds){
+    config.ip['pause'] = function(seconds){
         java.lang.Thread.sleep(seconds * 1000);
     };
 
@@ -145,9 +67,9 @@ function fn(config) {
      */
     config['utils'] = {};
 
-    config.utils['array'] = {};
+    config.ip.utils['array'] = {};
     // @see https://stackoverflow.com/a/43046408
-    config.utils.array['getUnique'] = function (arr) {
+    config.ip.utils.array['getUnique'] = function (arr) {
         var a = [];
         for (var i=0, l=arr.length; i<l; i++)
             if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
@@ -155,11 +77,11 @@ function fn(config) {
         return a;
     };
 
-    config.utils['certificate'] = {};
-    config.utils.certificate['alias'] = function(path, password) {
-        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "alias", karate.toAbsolutePath(path), password]);
+    config.ip.utils['certificate'] = {};
+    config.ip.utils.certificate['alias'] = function(path, password) {
+        return ip.utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "alias", karate.toAbsolutePath(path), password]);
     };
-    config.utils.certificate['base64Public'] = function(path) {
+    config.ip.utils.certificate['base64Public'] = function(path) {
         var collect = false,
             content = karate.readAsString(path),
             idx,
@@ -178,29 +100,29 @@ function fn(config) {
 
         return result;
     };
-    config.utils.certificate['signHash'] = function(path, hash) {
+    config.ip.utils.certificate['signHash'] = function(path, hash) {
         var cmd = [
             "/bin/sh",
             "-c",
             "echo \"" + hash +" \" | python3 -m base64 -d | openssl dgst -sha256 -sign \"" + karate.toAbsolutePath(path) +"\" | python3 -m base64 | tr -d '\\n'"
         ];
-        return utils.safeExec(cmd);
+        return ip.utils.safeExec(cmd);
     };
-    config.utils.certificate['enddate'] = function(path, password) {
-        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "enddate", karate.toAbsolutePath(path), password]);
+    config.ip.utils.certificate['enddate'] = function(path, password) {
+        return ip.utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "enddate", karate.toAbsolutePath(path), password]);
     };
-    config.utils.certificate['issuer'] = function(path, password) {
-        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "issuer", karate.toAbsolutePath(path), password]);
+    config.ip.utils.certificate['issuer'] = function(path, password) {
+        return ip.utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "issuer", karate.toAbsolutePath(path), password]);
     };
-    config.utils.certificate['subject'] = function(path, password) {
-        return utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "subject", karate.toAbsolutePath(path), password]);
-    };
-
-    config.utils.array['getSortedUnique'] = function (array) {
-        return utils.array.getUnique(array).sort();
+    config.ip.utils.certificate['subject'] = function(path, password) {
+        return ip.utils.safeExec([karate.toAbsolutePath("classpath:lib/certinfos.sh"), "subject", karate.toAbsolutePath(path), password]);
     };
 
-    config.utils['eval'] = function (value) {
+    config.ip.utils.array['getSortedUnique'] = function (array) {
+        return ip.utils.array.getUnique(array).sort();
+    };
+
+    config.ip.utils['eval'] = function (value) {
         var matches = (''+value).match(/^eval\((.*)\)$/),
             result = value;
         if (matches !== null) {
@@ -208,18 +130,18 @@ function fn(config) {
         }
         return result;
     };
-    config.utils['file'] = {};
-    config.utils.file['basename'] = function (path) {
+    config.ip.utils['file'] = {};
+    config.ip.utils.file['basename'] = function (path) {
         return String(path).replace(/^(.*)\/([^\/]+)$/, '$2');
     };
-    config.utils.file['dirname'] = function (path) {
+    config.ip.utils.file['dirname'] = function (path) {
         return String(path).replace(/^(.*)\/([^\/]+)$/, '$1');
     };
-    config.utils.file['extension'] = function (path) {
+    config.ip.utils.file['extension'] = function (path) {
         return path.split(".").pop().toLowerCase();
     };
-    config.utils.file['mime'] = function(filename) {
-        var extension = utils.file.extension(filename),
+    config.ip.utils.file['mime'] = function(filename) {
+        var extension = ip.utils.file.extension(filename),
             associations = {
                 'doc': 'application/msword',
                 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -237,47 +159,38 @@ function fn(config) {
             return 'application/octet-stream';
         }
     };
-    config.utils.file['payload'] = function(path, defaultValue) {
+    config.ip.utils.file['payload'] = function(path, defaultValue) {
         defaultValue = typeof defaultValue === undefined ? null : defaultValue;
-        if (utils.isEmpty(path) === false) {
-            return { read: path, 'contentType': utils.file.mime(path), 'filename': utils.file.basename(path) };
+        if (ip.utils.isEmpty(path) === false) {
+            return { read: path, 'contentType': ip.utils.file.mime(path), 'filename': ip.utils.file.basename(path) };
         }
         return defaultValue;
     }
-    config.utils['filterMap'] = function (map) {
+    config.ip.utils['filterMap'] = function (map) {
         var result = {};
 
         for (const key in map) {
             const value = map[key];
             karate.log({value: value, key: key});
-            if (utils.isEmpty(value) === false) {
+            if (ip.utils.isEmpty(value) === false) {
                 result[key] = value;
             }
         }
 
         return result;
     };
-    config.utils['getDraftDocumentId'] = function (response, fileName) {
-        fileName = utils.file.basename(fileName);
-        for (var idx = 0;idx < response.documentList.length;idx++) {
-            if (fileName === response.documentList[idx].name && response.documentList[idx].id !== null) {
-                return response.documentList[idx].id;
-            }
-        }
-        return null;
-    };
     // @see https://stackoverflow.com/a/14794066
-    config.utils['isInteger'] = function (value) {
+    config.ip.utils['isInteger'] = function (value) {
         return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
     };
-    config.utils['getUUID'] = function (length = 32) {
+    config.ip.utils['getUUID'] = function (length = 32) {
         // @see https://github.com/intuit/karate#commonly-needed-utilities
         return java.util.UUID.randomUUID() + '';
     };
-    config.utils['getUniqueName'] = function(prefix) {
+    config.ip.utils['getUniqueName'] = function(prefix) {
         return String(prefix) + Date.now();
     };
-    config.utils['assert'] = function(string) {
+    config.ip.utils['assert'] = function(string) {
         var result = karate.match(string)
         if (result.pass !== true) {
             karate.fail(result.message);
@@ -285,9 +198,9 @@ function fn(config) {
         return result;
     };
     /**
-     * utils.string
+     * ip.utils.string
      */
-    config.utils['isEmpty'] = function (value) {
+    config.ip.utils['isEmpty'] = function (value) {
         // https://stackoverflow.com/a/32108184
         var isEmptyObject = value && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype;
         var isEmptyArray = Array.isArray(value) && value.length == 0;
@@ -296,7 +209,7 @@ function fn(config) {
         }
         return false;
     };
-    config.utils['safeExec'] = function(command) {
+    config.ip.utils['safeExec'] = function(command) {
         var proc = karate.fork(command);
         proc.waitSync();
         if (proc.exitCode !== 0) {
@@ -305,25 +218,25 @@ function fn(config) {
         return proc.sysOut.replace(/\n$/, '');
     };
     /**
-     * utils.string
+     * ip.utils.string
      */
-    config.utils['string'] = {
+    config.ip.utils['string'] = {
         'letters_lowercase': 'abcdefghijklmnopqrstuvwxyz',
         'letters_uppercase': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         'numbers': '9876543210',
     };
-    config.utils.string.normalize = function(text) {
+    config.ip.utils.string.normalize = function(text) {
         return (text === null ? '' : String(text)).trim();
 
     };
-    config.utils.string['letters'] = config.utils.string['letters_lowercase'] + config.utils.string['letters_uppercase'];
+    config.ip.utils.string['letters'] = config.ip.utils.string['letters_lowercase'] + config.ip.utils.string['letters_uppercase'];
     // @deprecated
-    config.utils.string['getByLength'] = function(length, prefix = null, characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+    config.ip.utils.string['getByLength'] = function(length, prefix = null, characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
         prefix = prefix === null ? '' : prefix;
         let charactersLength = String(characters).length;
         return String(String(prefix) + String(characters).repeat(Math.ceil(length/charactersLength))).substr(0, length);
     };
-    config.utils.string['getRandom'] = function(length, prefix = null, characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+    config.ip.utils.string['getRandom'] = function(length, prefix = null, characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
         // @see https://stackoverflow.com/a/1349426
         prefix = prefix === null ? '' : prefix;
         let charactersLength = String(characters).length,
@@ -334,12 +247,12 @@ function fn(config) {
         return String(String(prefix) + result.join('')).substr(0, length);
     };
 
-    config.utils['xmlPathSortedUnique'] = function(xml, expression) {
+    config.ip.utils['xmlPathSortedUnique'] = function(xml, expression) {
         var extracted = karate.xmlPath(xml, expression)
         if (typeof extracted !== 'object') {
             extracted = [extracted];
         }
-        return (extracted == '#notpresent') ? [] : utils.array.getSortedUnique(extracted);
+        return (extracted == '#notpresent') ? [] : ip.utils.array.getSortedUnique(extracted);
     };
 
     return config;

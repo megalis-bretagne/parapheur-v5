@@ -4,8 +4,8 @@
     Scenario: Create user
         * def tenantId = api_v1.entity.getIdByName(tenant)
 #        * karate.log(__row)
-#        * def complementaryField = utils.isEmpty(complementaryField) === true ? null : complementaryField
-        * def complementaryField = utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
+#        * def complementaryField = ip.utils.isEmpty(complementaryField) === true ? null : complementaryField
+        * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
 #        * karate.log(complementaryField)
 
         Given url baseUrl

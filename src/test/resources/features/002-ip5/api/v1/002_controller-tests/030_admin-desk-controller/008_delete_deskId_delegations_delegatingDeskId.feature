@@ -24,7 +24,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
 """
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in an existing tenant', status)}
         # Create a delegation
         * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
@@ -45,8 +45,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And if (<status> === 204) utils.assert("response == ''")
-            And if (<status> !== 204) utils.assert("$ == schemas.error")
+            And if (<status> === 204) ip.utils.assert("response == ''")
+            And if (<status> !== 204) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -60,7 +60,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in a non-existing tenant', status)}
         # Create a delegation
         * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
@@ -81,7 +81,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
             And header Accept = 'application/json'
         When method DELETE
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -95,7 +95,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to a non-existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to a non-existing desk in an existing tenant', status)}
         # Try to delete it
         * api_v1.auth.login('<username>', '<password>')
         Given url baseUrl
@@ -117,7 +117,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'remove an active or planned delegation from target non-existing desk to an existing desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target non-existing desk to an existing desk in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
 

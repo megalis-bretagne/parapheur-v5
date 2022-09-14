@@ -2,9 +2,9 @@
 Feature: Mot de passe oublié
 
     Background:
-        * configure driver = ui.driver.configure
+        * configure driver = ip.ui.driver.configure
         # force logout between each scenario
-        * driver baseUrl + ui.url.logout
+        * driver baseUrl + ip5.ui.url.logout
 
     Scenario: Accéder à la page de mot de passe oublié
         Given driver baseUrl

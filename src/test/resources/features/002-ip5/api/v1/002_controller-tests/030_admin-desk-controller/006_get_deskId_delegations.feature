@@ -12,7 +12,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
         * def nonExistingDeskId = api_v1.desk.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for an existing substitute desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for an existing substitute desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -20,8 +20,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.delegation.index")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.delegation.index")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -32,7 +32,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for an existing substitute desk in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for an existing substitute desk in a non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -54,7 +54,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'list delegations for a non-existing substitute desk in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for a non-existing substitute desk in an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

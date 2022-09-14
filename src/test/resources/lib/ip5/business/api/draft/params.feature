@@ -2,8 +2,8 @@
 Feature: IP v.5 REST draft lib
 
     Scenario: ...
-        * def tenant = v5.business.api.tenant.getByName(__arg.tenant)
-        * def desktop = v5.business.api.desktop.getByName(tenant.id, __arg.desktop)
+        * def tenant = ip5.business.api.tenant.getByName(__arg.tenant)
+        * def desktop = ip5.business.api.desktop.getByName(tenant.id, __arg.desktop)
 
         Given url baseUrl
             And path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types"

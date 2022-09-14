@@ -181,7 +181,7 @@ function fn(config) {
             "-c",
             "openssl smime -verify -binary -inform PEM -in \"" + pkcs7 + "\" -content \"" + document + "\" -certfile \"" + certificate + "\" -nointern -noverify > /dev/null"
         ];
-        utils.safeExec(cmd);
+        ip.utils.safeExec(cmd);
     };
 
     config.ip.signature['helios'] = config.ip.signature['helios'] || {};
@@ -194,7 +194,7 @@ function fn(config) {
             "-c",
             "xmllint --schema \"" + schema + "\" \"" + document + "\" --noout"
         ];
-        output = utils.safeExec(cmd);
+        output = ip.utils.safeExec(cmd);
         if (output.match(/.xml validates$/) === null) {
             karate.fail('XML document does not validate with schema at ' + classpath + ': ' + document);
         }
@@ -263,7 +263,7 @@ function fn(config) {
                 "--id-attr:Id " + name + " " +
                 "\"" + document + "\"";
 
-            output = utils.safeExec(["/bin/sh", "-c", cmd]);
+            output = ip.utils.safeExec(["/bin/sh", "-c", cmd]);
             tokens = output.split("\n");
 
             if (tokens[0] !== "OK") {
@@ -297,7 +297,7 @@ function fn(config) {
         return karate.fromString(proc.sysOut);
     };
     config.ip.signature.pades.annotations['default'] = function(position, line1, line2, line3) {
-        line3 = (typeof line3 === "undefined") ? v5.business.regexp.annotation.date : line3;
+        line3 = (typeof line3 === "undefined") ? ip5.business.regexp.annotation.date : line3;
         return {
             "position": position,
             "text":[
@@ -426,8 +426,8 @@ function fn(config) {
             for (keyPosition in expected[keyPage]) {
                 for (keyImage in expected[keyPage][keyPosition]) {
                     if (keyPage in actual && keyPosition in actual[keyPage] && keyImage in actual[keyPage][keyPosition]) {
-                        dirname = utils.file.dirname(utils.file.dirname(utils.file.dirname(expected[keyPage][keyPosition][keyImage]))) + "/diffs";
-                        diffPath = dirname + "/" + keyPage + "/" + keyPosition + "/" + utils.file.basename(expected[keyPage][keyPosition][keyImage]);
+                        dirname = ip.utils.file.dirname(ip.utils.file.dirname(ip.utils.file.dirname(expected[keyPage][keyPosition][keyImage]))) + "/diffs";
+                        diffPath = dirname + "/" + keyPage + "/" + keyPosition + "/" + ip.utils.file.basename(expected[keyPage][keyPosition][keyImage]);
                         cmd = [
                             "python3",
                             script,
@@ -468,7 +468,7 @@ function fn(config) {
         }
     };
     config.ip.signature.pades.images['export'] = function(path) {
-        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "images", path, utils.file.dirname(path) + "/images"],
+        var cmd = ["python3", karate.toAbsolutePath("classpath:python/karate-ip.py"), "images", path, ip.utils.file.dirname(path) + "/images"],
             proc;
         proc = karate.fork(cmd);
         proc.waitSync();
@@ -509,7 +509,7 @@ function fn(config) {
             expected = {};
 
         // 1. Partie publique dans ds:X509Certificate
-        expected["X509Certificate"] = utils.certificate.base64Public("file://" + certificate);
+        expected["X509Certificate"] = ip.utils.certificate.base64Public("file://" + certificate);
 
         // 2. DigestValue du document signé
         algorithm = String(karate.xmlPath(content, "/Signature/SignedInfo/Reference/DigestMethod/@Algorithm")).replace(/^.*#/, "");
@@ -519,7 +519,7 @@ function fn(config) {
             "-c",
             "openssl dgst -binary -" + algorithm + " \"" + document + "\" | openssl enc -base64"
         ];
-        expected["DigestValue"] = utils.safeExec(cmd);
+        expected["DigestValue"] = ip.utils.safeExec(cmd);
         return expected;
     };
     config.ip.signature.xades['extract'] = function(path) {

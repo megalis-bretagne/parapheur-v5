@@ -7,7 +7,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'replace a signature image for an existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
@@ -19,8 +19,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/images/signature - ltransparent.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -31,7 +31,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'replace a signature image for a non-existing user in an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for a non-existing user in an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def nonExistingUserId = api_v1.user.getNonExistingId()
@@ -43,7 +43,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @fixme-ip5 @issue-todo
         Examples:
@@ -57,7 +57,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'replace a signature image for an existing user in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
@@ -70,7 +70,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -81,7 +81,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             |                  |              |          | 404    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'replace a signature image for a non-existing user in a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for a non-existing user in a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
         * def nonExistingUserId = api_v1.user.getNonExistingId()
@@ -93,7 +93,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: 'classpath:files/images/signature - stranslucide.png', 'contentType': 'image/png' }
         When method PUT
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -104,7 +104,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             |                  |              |          | 404    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')
@@ -117,8 +117,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
             And multipart file file = { read: <path>, 'contentType': '<contentType>' }
         When method PUT
         Then status <status>
-            And if (<status> === 200) utils.assert("response == ''")
-            And if (<status> !== 200) utils.assert("$ == schemas.error")
+            And if (<status> === 200) ip.utils.assert("response == ''")
+            And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | email                  | path!                                                 | contentType | data                                        |

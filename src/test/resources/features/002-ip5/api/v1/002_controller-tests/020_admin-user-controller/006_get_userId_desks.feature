@@ -11,7 +11,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         * def nonExistingUserId = api_v1.user.getNonExistingId()
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing single user\'s desks from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing single user\'s desks from an existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -20,8 +20,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And if (<status> === 200) utils.assert("$ == schemas.desk.index")
-            And if (<status> === 200) utils.assert("$.data[*].name == <name>")
+            And if (<status> === 200) ip.utils.assert("$ == schemas.desk.index")
+            And if (<status> === 200) ip.utils.assert("$.data[*].name == <name>")
 
         Examples:
             | role             | username     | password | email                  | status | name!             |
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             |                  |              |          | ltransparent@dom.local | 401    |                   |
 
     @permissions @fixme-ip5
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing single user\'s desks from an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing single user\'s desks from an existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -41,7 +41,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         @issue-todo
         Examples:
@@ -55,7 +55,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
-    Scenario Outline: ${scenario.title.permissions(role, 'get an existing single user\'s desks from a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing single user\'s desks from a non-existing tenant', status)}
         * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
         * api_v1.auth.login('<username>', '<password>')
 
@@ -64,7 +64,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -75,7 +75,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
-    Scenario Outline: ${scenario.title.permissions(role, 'get a non-existing single user\'s desks from non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing single user\'s desks from non-existing tenant', status)}
         * api_v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
@@ -83,7 +83,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
             And header Accept = 'application/json'
         When method GET
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |

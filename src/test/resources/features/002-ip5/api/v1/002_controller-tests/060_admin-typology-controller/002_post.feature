@@ -7,10 +7,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to an existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to an existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def name = 'tmp-' + utils.getUUID()
+        * def name = 'tmp-' + ip.utils.getUUID()
 
         * api_v1.auth.login('<username>', '<password>')
 
@@ -28,8 +28,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 """
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.type.element")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == schemas.type.element")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -43,10 +43,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
             |                  |              |          | 401    |
 
     @permissions
-    Scenario Outline: ${scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to a non-existing tenant', status)}
+    Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to a non-existing tenant', status)}
         * api_v1.auth.login('user', 'password')
         * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def name = 'tmp-' + utils.getUUID()
+        * def name = 'tmp-' + ip.utils.getUUID()
 
         * api_v1.auth.login('<username>', '<password>')
 
@@ -64,7 +64,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 """
         When method POST
         Then status <status>
-            And utils.assert("$ == schemas.error")
+            And ip.utils.assert("$ == schemas.error")
 
         Examples:
             | role             | username     | password | status |
@@ -78,10 +78,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
             |                  |              |          | 401    |
 
     @data-validation
-    Scenario Outline: ${scenario.title.validation('ADMIN', 'create a type with no protocol and associate it to a non-existing tenant', status, data)}
+    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a type with no protocol and associate it to a non-existing tenant', status, data)}
         * api_v1.auth.login('user', 'password')
         * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def name = 'tmp-' + utils.getUUID()
+        * def name = 'tmp-' + ip.utils.getUUID()
         * def requestData =
 """
 {
@@ -91,7 +91,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
     'signatureVisible': true
 }
 """
-        * requestData[field] = utils.eval(value)
+        * requestData[field] = ip.utils.eval(value)
 
         * api_v1.auth.login('cnoir', 'a123456')
 
@@ -102,18 +102,18 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
         When method POST
         Then status <status>
-            And if (<status> === 201) utils.assert("$ == schemas.type.element")
-            And if (<status> !== 201) utils.assert("$ == schemas.error")
+            And if (<status> === 201) ip.utils.assert("$ == schemas.type.element")
+            And if (<status> !== 201) ip.utils.assert("$ == schemas.error")
 
         Examples:
             | status | field           | value!                           | data                                    |
-            | 201    | description     | eval(utils.string.getRandom(3))  | a description that is 3 characters long |
-            | 201    | name            | eval(utils.string.getRandom(3))  | a name that is 3 characters long        |
+            | 201    | description     | eval(ip.utils.string.getRandom(3))  | a description that is 3 characters long |
+            | 201    | name            | eval(ip.utils.string.getRandom(3))  | a name that is 3 characters long        |
             | 201    | signatureFormat | 'PADES'                          | an existing signature format            |
             | 400    | signatureFormat | 'foo'                            | a non existing signature format         |
         @fixme-ip5 @issue-todo
         Examples:
             | status | field           | value!                           | data                                    |
-            | 400    | description     | eval(utils.string.getRandom(2))  | a description that is 2 characters long |
-            | 400    | name            | eval(utils.string.getRandom(2))  | a name that is 2 characters long        |
-            | 400    | name            | eval(utils.string.getRandom(29)) | a name that is 29 characters long       |
+            | 400    | description     | eval(ip.utils.string.getRandom(2))  | a description that is 2 characters long |
+            | 400    | name            | eval(ip.utils.string.getRandom(2))  | a name that is 2 characters long        |
+            | 400    | name            | eval(ip.utils.string.getRandom(29)) | a name that is 29 characters long       |

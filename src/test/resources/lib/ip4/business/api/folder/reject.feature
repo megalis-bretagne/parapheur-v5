@@ -7,9 +7,9 @@ Feature: IP v.4 REST folder lib
         * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "rejet", __arg.folder)
 
         # 2. Récupération et lecture du dossier
-        * def desktop = v4.business.api.desktop.getByName(__arg.desktop)
-        * def target = v4.business.api.folder.getByName(desktop.id, "a-traiter", __arg.folder)
-        * def folder = v4.business.api.folder.getById(desktop.id, target.id)
+        * def desktop = ip4.business.api.desktop.getByName(__arg.desktop)
+        * def target = ip4.business.api.folder.getByName(desktop.id, "a-traiter", __arg.folder)
+        * def folder = ip4.business.api.folder.getById(desktop.id, target.id)
 
         # 3. Rejet du dossier
         * url baseUrl
