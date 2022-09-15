@@ -22,14 +22,14 @@ function fn(config) {
         var templates = {};
 
         templates['annotations'] = {};
-        ip.templates.annotations['getPrivate'] = function (username, action, folder) {
+        templates.annotations['getPrivate'] = function (username, action, folder) {
             return "Annotation privée " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
         };
-        ip.templates.annotations['getPublic'] = function (username, action, folder) {
+        templates.annotations['getPublic'] = function (username, action, folder) {
             return "Annotation publique " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
         };
         templates['certificate'] = {};
-        ip.templates.certificate['default'] = function (subPath) {
+        templates.certificate['default'] = function (subPath) {
             return {
                 public: "classpath:files/certificates/" + subPath + "/public.pem",
                 private: "classpath:files/certificates/" + subPath + "/private.pem"

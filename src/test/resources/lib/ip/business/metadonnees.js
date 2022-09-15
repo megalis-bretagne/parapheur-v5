@@ -18,8 +18,8 @@
 
 function fn(config) {
     config['ip'] = config['ip'] || {};
-    config.ip['businnes'] = config.ip['businnes'] || {};
-    config.ip.businnes['metadonnees'] = config.ip.businnes['metadonnees'] || {};
+    config.ip['business'] = config.ip['business'] || {};
+    config.ip.business['metadonnees'] = config.ip.business['metadonnees'] || {};
 
     config.ip.business.metadonnees['types'] = {
         booleen: "BOOLEAN",
