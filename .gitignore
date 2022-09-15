@@ -268,7 +268,7 @@ hs_err_pid*
 ### Project-specific files
 
 docker-compose.override.instance-*
-data*/*
+#data*/*
 !.gitkeep
 patch-ssl/
 src/main/resources/nginx/ssl/
