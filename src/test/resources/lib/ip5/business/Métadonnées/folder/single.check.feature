@@ -16,7 +16,7 @@ Feature: ...
 }
 """
         * params["folder"] = __arg.mode + " - " + __arg.action + " - " + __arg.subtype
-        * params["metadatas"] = ip.businnes.metadonnees.map[params.folder]
+        * params["metadatas"] = ip.business.metadonnees.map[params.folder]
         * params["state"] = getState(__arg.action)
         * karate.log(params)
 

@@ -155,8 +155,8 @@ function fn(config) {
         var name, metadata;
 
         base = typeof base !== "undefined" ? base : "//ngb-modal-window//app-metadata-form";
-        labels = typeof labels !== "undefined" ? labels : ip.businnes.metadonnees.labels;
-        types = typeof types !== "undefined" ? labels : ip.businnes.metadonnees.types;
+        labels = typeof labels !== "undefined" ? labels : ip.business.metadonnees.labels;
+        types = typeof types !== "undefined" ? labels : ip.business.metadonnees.types;
 
         ip.ui.expect(base);
 

@@ -248,7 +248,7 @@ function fn(config) {
                 inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//ng-select";
                 content = text(inputXpath + "//span[contains(@class, 'ng-value-label')]").trim();//@fixme: la valeur ? ou reformater ?
                 if (content !== "") {
-                    inputType = ip.businnes.metadonnees.types[ip.businnes.metadonnees.inverse[label]];
+                    inputType = ip.business.metadonnees.types[ip.business.metadonnees.inverse[label]];
                     if (inputType === "BOOLEAN") {
                         if (content === "Oui") {
                             content = true;
@@ -267,7 +267,7 @@ function fn(config) {
                 inputXpath = xpath + "[position() = " + idx + "]/app-metadata-input//input";
                 content = value(inputXpath).trim();
                 if (content !== "") {
-                    inputType = ip.businnes.metadonnees.types[ip.businnes.metadonnees.inverse[label]];
+                    inputType = ip.business.metadonnees.types[ip.business.metadonnees.inverse[label]];
                     if (inputType === "FLOAT") {
                         content = parseFloat(content);
                     } else if (inputType === "INTEGER") {
@@ -278,7 +278,7 @@ function fn(config) {
                 karate.fail('Champ non trouvé via "' + xpath + "[position() = " + idx + "]/app-metadata-input//ng-select" + '" ou "' + xpath + "[position() = " + idx + "]/app-metadata-input//input" + '"');
             }
 
-            actual[ip.businnes.metadonnees.inverse[label]] = content;
+            actual[ip.business.metadonnees.inverse[label]] = content;
         }
 
         return actual;
