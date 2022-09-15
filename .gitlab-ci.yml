@@ -20,7 +20,9 @@ stages:
   - package
   - publish
   - deploy
-  - e2e-tests
+  - e2e-tests-strict
+  - deploy-tolerant-tests
+  - e2e-tests-tolerant
 
 variables:
   NIGHTLY:
@@ -194,7 +196,7 @@ publish:
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
-  stage: e2e-tests
+  stage: deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -211,7 +213,7 @@ strict-e2e-tests-deploy:
 
 tolerant-e2e-tests-deploy:
   extends: [ .deploy-job ]
-  stage: e2e-tests
+  stage: deploy-tolerant-tests
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
@@ -263,7 +265,6 @@ dev-deploy:
 
 .e2e-tests:
   image: markhobson/maven-chrome:jdk-11
-  stage: e2e-tests
   script:
     - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libxml2-utils=2.9.10+dfsg-6.7+deb11u2 python3-pip=20.3.4-4+deb11u1 poppler-utils=20.09.0-3.1 xmlsec1=1.2.31-1 zip=3.0-12 && pip3 install jsonpath-ng==1.5.3 Pillow==9.2.0 PyPDF2==2.10.0
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
@@ -277,6 +278,7 @@ dev-deploy:
 
 strict-e2e-tests-test:
   extends: [ .e2e-tests ]
+  stage: e2e-tests-strict
   variables:
     REPORT_NAME: "Karate - tests strict"
     KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge,@metadonnees --tags ~@fixme-ip --tags ~@ignore --tags ~@ip4 "
@@ -287,6 +289,7 @@ strict-e2e-tests-test:
 
 tolerant-e2e-tests-test:
   extends: [ .e2e-tests ]
+  stage: e2e-tests-tolerant
   variables:
     REPORT_NAME: "Karate - tests tolerant"
     KARATE_ADDITIONAL_TAGS: "--tags @demo-simple-bde,@formats-de-signature,@legacy-bridge,@metadonnees --tags ~@ip4  --tags ~@ignore "
