@@ -214,7 +214,7 @@ services:
     image: alfresco/alfresco-content-repository-community:7.1.1.2
     restart: unless-stopped
     tty: true
-    mem_limit: 3G
+    mem_limit: 1G
     environment:
       JAVA_TOOL_OPTIONS: "
         -Dencryption.keystore.type=JCEKS
@@ -228,11 +228,16 @@ services:
       "
       # TODO : Link to Solr6 with the params : -Dindex.subsystem.name=solr6 -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.http.connection.timeout=1000 -Dsolr.secureComms=none -Dsolr.base.url=/solr
       # TODO : Test a link to an external MS Office with the parameter -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
+
+      # Temporarily removed :
+      # -XX:+UseContainerSupport
+      # -XX:MinRAMPercentage=50
+      # -XX:MaxRAMPercentage=80
+      # Container support is broken for JDK 11 on Docker engine 20.10.12 (default on Ubuntu 22.04)
+      # We must use a 'hard' limit (-Xmx) for the heap to avoid overwhelming memory consumption
       JAVA_OPTS: "
         -Ddeployment.method=DOCKER_COMPOSE
-        -XX:+UseContainerSupport
-        -XX:MinRAMPercentage=50
-        -XX:MaxRAMPercentage=80
+        -Xmx512M
         -Dalfresco.host=${CONTENT_HOST}
         -Dalfresco.port=${CONTENT_PORT}
         -Dsystem.workflow.engine.activiti.enabled=false
