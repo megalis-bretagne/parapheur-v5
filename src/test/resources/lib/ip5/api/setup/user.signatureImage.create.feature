@@ -2,8 +2,8 @@
 Feature: User signature image setup lib
 
     Scenario: Create user signature image
-        * def tenantId = api_v1.entity.getIdByName(tenant)
-        * def userId = api_v1.user.getIdByEmail(tenantId, email)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
+        * def userId = ip5.api.v1.user.getIdByEmail(tenantId, email)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + tenantId + '/user/' + userId + '/signatureImage'

@@ -17,18 +17,19 @@
  */
 
 function fn(config) {
-    config['templates'] = config['templates'] || (function (config) {
+    config['ip'] = config['ip'] || {};
+    config.ip['templates'] = config.ip['templates'] || (function (config) {
         var templates = {};
 
         templates['annotations'] = {};
-        templates.annotations['getPrivate'] = function (username, action, folder) {
+        ip.templates.annotations['getPrivate'] = function (username, action, folder) {
             return "Annotation privée " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
         };
-        templates.annotations['getPublic'] = function (username, action, folder) {
+        ip.templates.annotations['getPublic'] = function (username, action, folder) {
             return "Annotation publique " + username + " (" + karate.lowerCase(action) + " du dossier " + folder + ")";
         };
         templates['certificate'] = {};
-        templates.certificate['default'] = function (subPath) {
+        ip.templates.certificate['default'] = function (subPath) {
             return {
                 public: "classpath:files/certificates/" + subPath + "/public.pem",
                 private: "classpath:files/certificates/" + subPath + "/private.pem"
@@ -37,5 +38,6 @@ function fn(config) {
 
         return templates;
     })(config);
+
     return config;
 }

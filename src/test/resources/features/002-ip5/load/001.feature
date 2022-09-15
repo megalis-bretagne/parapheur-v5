@@ -17,9 +17,9 @@ Feature: Draft folders creation
     username: '<username>',
 }
 """
-        * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def folders = ip5.api.v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/ip5/api/draft/create-monodoc-<withOrWithout>-annex.feature') folders
 
     Examples:

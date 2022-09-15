@@ -2,17 +2,17 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/metadata (Create metadata)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a simple test metadata and associate it to an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def name = 'tmp-' + ip.utils.getUUID()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/metadata'

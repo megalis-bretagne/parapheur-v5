@@ -17,7 +17,7 @@ Feature: Type setup lib
         * def row = karate.merge(defaults, __row)
         * def payload = karate.merge({"description": row['name']}, row)
 
-        * def tenantId = api_v1.entity.getIdByName(tenant)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/typology/type'

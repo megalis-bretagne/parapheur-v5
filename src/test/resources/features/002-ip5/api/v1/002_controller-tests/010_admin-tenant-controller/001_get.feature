@@ -2,13 +2,13 @@
 Feature: GET /api/v1/admin/tenant (List tenants)
 
 	Background:
-		* api_v1.auth.login('user', 'password')
-		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* ip5.api.v1.auth.login('user', 'password')
+		* def list = ip5.api.v1.entity.getListByPartialName('tmp-')
 		* call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the tenant list', status)}
-		* api_v1.auth.login('<username>', '<password>')
+		* ip5.api.v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant'
@@ -28,7 +28,7 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 
 	@searching
 	Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the tenant list', 200, total, searchTerm, sort, direction)}
-		* api_v1.auth.login('cnoir', 'a123456')
+		* ip5.api.v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/'

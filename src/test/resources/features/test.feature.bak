@@ -2,7 +2,7 @@
 Feature: ...
 
     Background:
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
         * def createTmpNumberedTenants =
 """
 function (max) {
@@ -25,5 +25,5 @@ function (max) {
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') names
 
     Scenario: Cleanup
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list

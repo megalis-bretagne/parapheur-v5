@@ -2,16 +2,16 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the desk list from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -31,7 +31,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the desk list from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk'
@@ -53,7 +53,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
     @searching
     Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sort, direction)}
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'

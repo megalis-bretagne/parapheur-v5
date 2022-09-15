@@ -2,16 +2,16 @@
 Feature: Workflow setup lib
 
     Scenario: Create one-step workflow
-        * def tenantId = api_v1.entity.getIdByName(tenant)
-        * def deskId = deskName.indexOf('#') == 0 ? deskName : api_v1.desk.getIdByName(tenantId, deskName)
-        * def key = api_v1.desk.getKeyStringFromNameString(name)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
+        * def deskId = deskName.indexOf('#') == 0 ? deskName : ip5.api.v1.desk.getIdByName(tenantId, deskName)
+        * def key = ip5.api.v1.desk.getKeyStringFromNameString(name)
         * def getWorkflowMandatoryMetadatas =
 """
 function (tenantId, metadataKeys) {
     var result = [];
     for (var i=0;i<metadataKeys.length;i++) {
         result.push({
-            id: api_v1.metadata.getIdByKey(tenantId, metadataKeys[i]),
+            id: ip5.api.v1.metadata.getIdByKey(tenantId, metadataKeys[i]),
             key: null,
             name: null,
             index: null,

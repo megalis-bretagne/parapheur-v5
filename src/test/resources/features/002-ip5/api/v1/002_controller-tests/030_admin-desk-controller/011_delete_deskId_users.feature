@@ -2,17 +2,17 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user from desk)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from an existing desk in an existing tenant', status)}
         # Create a temporary desk
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
         * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
@@ -42,7 +42,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 201
 
         * def existingDeskId = $.value
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
         Given url baseUrl
@@ -53,7 +53,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 200
 
         # Remove the user from the desk
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
@@ -74,7 +74,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from an existing desk in a non-existing tenant', status)}
         # Create a temporary desk
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
         * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
@@ -104,7 +104,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 201
 
         * def existingDeskId = $.value
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         # Associate an existing user to the temporary desk created above
         Given url baseUrl
@@ -115,7 +115,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 200
 
         # Remove the user from the desk
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + existingUserId
@@ -134,9 +134,9 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an existing user from a non-existing desk in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/users/?userIdList=' + existingUserId
@@ -158,7 +158,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove a non-existing user from an existing desk in an existing tenant', status)}
         # Create a temporary desk
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
         * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
@@ -188,10 +188,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Remove user
         Then status 201
 
         * def existingDeskId = $.value
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
         # Remove the user from the desk
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/users/?userIdList=' + nonExistingUserId

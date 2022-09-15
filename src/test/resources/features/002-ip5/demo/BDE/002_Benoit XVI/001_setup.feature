@@ -7,7 +7,7 @@
 Feature: Paramétrage métier "Benoit XVI"
 
     Background:
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
@@ -157,8 +157,8 @@ Feature: Paramétrage métier "Benoit XVI"
             | Benoit XVI | V_Var_SF        | ##VARIABLE_DESK##                     | VISA               | ['date_service_fait']        | []                          |
 
     Scenario: Create "S_CS_Pres" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
+        * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
         * def id = 's_cs_pres'
         * def payload =
 """
@@ -181,9 +181,9 @@ Feature: Paramétrage métier "Benoit XVI"
         Then status 201
 
     Scenario: Create "S_Pres_MS_ServFin" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-        * def finServDeskId = api_v1.desk.getIdByName(tenantId, 'Service Finances')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
+        * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
+        * def finServDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Service Finances')
         * def id = 's_pres_ms_servfin'
         * def payload =
 """
@@ -208,9 +208,9 @@ Feature: Paramétrage métier "Benoit XVI"
     # @info: bureaux spéciaux dans les étapes ET/OU plus possible depuis la 5.0.0-beta29 - https://gitlab.libriciel.fr/libriciel/pole-signature/iparapheur-v5/compose/-/issues/305
     # @info: ce circuit n'est pas autorisé
 #    Scenario: Create "S_Var_OU_Pres" workflow in "Benoit XVI"
-#        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-#        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-#        * def appDeskId = api_v1.desk.getIdByName(tenantId, 'APPLICATIONS')
+#        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
+#        * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
+#        * def appDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'APPLICATIONS')
 #        * def id = 's_var_ou_pres'
 #        * def payload =
 #"""
@@ -233,12 +233,12 @@ Feature: Paramétrage métier "Benoit XVI"
 #        Then status 201
 
     Scenario: Create "V_DGSETDirFin_SE_SG_S_PresOU1VP" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
-        * def dfinDeskId = api_v1.desk.getIdByName(tenantId, 'Directeur des Finances')
-        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
-        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
+        * def dgsDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
+        * def dfinDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Directeur des Finances')
+        * def secgenDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Secrétariat Général')
+        * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
+        * def premvicepresDeskId = ip5.api.v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
         * def id = 'v_dgsetdirfin_se_sg_s_presou1vp'
         * def payload =
 """
@@ -262,11 +262,11 @@ Feature: Paramétrage métier "Benoit XVI"
         Then status 201
 
 #    Scenario: Create "V_DGS_S_PresOU1VP_SE_SG" workflow in "Benoit XVI"
-#        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
-#        * def dgsDeskId = api_v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
-#        * def presDeskId = api_v1.desk.getIdByName(tenantId, 'Président du département')
-#        * def premvicepresDeskId = api_v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
-#        * def secgenDeskId = api_v1.desk.getIdByName(tenantId, 'Secrétariat Général')
+#        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
+#        * def dgsDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Directrice Générale des Services')
+#        * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
+#        * def premvicepresDeskId = ip5.api.v1.desk.getIdByName(tenantId, '1er Vice Président du Département')
+#        * def secgenDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Secrétariat Général')
 #        * def id = 'v_dgs_s_presou1vp_se_sg'
 #        * def payload =
 #"""
@@ -290,7 +290,7 @@ Feature: Paramétrage métier "Benoit XVI"
 #        Then status 201
 
     Scenario: Create "VVS_Chefde" workflow in "Benoit XVI"
-        * def tenantId = api_v1.entity.getIdByName('Benoit XVI')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
         * def id = 'vs_chefde'
         * def payload =
 """

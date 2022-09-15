@@ -2,8 +2,8 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
         * def unique = 'tmp-' + ip.utils.getUUID()
@@ -12,11 +12,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit an existing tenant', status)}
         # Create a temporary tenant
-        * api_v1.auth.login('user', 'password')
-        * def id = api_v1.entity.createTemporary()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def id = ip5.api.v1.entity.createTemporary()
 
 		# Try to edit it
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', id
@@ -38,8 +38,8 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit a non-existing tenant', status)}
-        * def id = api_v1.entity.getNonExistingId()
-        * api_v1.auth.login('<username>', '<password>')
+        * def id = ip5.api.v1.entity.getNonExistingId()
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', id
@@ -60,11 +60,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
         # Create a temporary tenant
-        * api_v1.auth.login('user', 'password')
-        * def id = api_v1.entity.createTemporary()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def id = ip5.api.v1.entity.createTemporary()
 
         # Try to edit it
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
         * def requestData = cleanRequestData
         * requestData[field] = ip.utils.eval(value)
 

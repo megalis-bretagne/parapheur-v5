@@ -2,7 +2,7 @@
 Feature: Paramétrage métier 'Signatures externes'
 
     Background:
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant '${name}'
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
@@ -51,9 +51,9 @@ Feature: Paramétrage métier 'Signatures externes'
             | Signatures externes | Signatures externes | Nankin   | EXTERNAL_SIGNATURE |
 
     Scenario Outline: Create a 2 steps "${name}" workflow - ${type1} on ${desk1}, ${type2} on ${desk2}
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-        * def desk1Id = api_v1.desk.getIdByName(tenantId, desk1)
-        * def desk2Id = api_v1.desk.getIdByName(tenantId, desk2)
+        * def tenantId = ip5.api.v1.entity.getIdByName('Signatures externes')
+        * def desk1Id = ip5.api.v1.desk.getIdByName(tenantId, desk1)
+        * def desk2Id = ip5.api.v1.desk.getIdByName(tenantId, desk2)
         * def payload =
 """
 {
@@ -83,8 +83,8 @@ Feature: Paramétrage métier 'Signatures externes'
           | Signatures externes - Signatures externes | signature_externe_-_signature_externe | Nankin | EXTERNAL_SIGNATURE | Nankin | EXTERNAL_SIGNATURE |
 
     Scenario: Create a 4 steps "Signature - Signatures externes - Signatures externes - Cachet serveur" workflow
-        * def tenantId = api_v1.entity.getIdByName('Signatures externes')
-        * def deskId = api_v1.desk.getIdByName(tenantId, 'Nankin')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Signatures externes')
+        * def deskId = ip5.api.v1.desk.getIdByName(tenantId, 'Nankin')
         * def payload =
 """
 {

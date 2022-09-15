@@ -2,16 +2,16 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
 	Background:
-		* api_v1.auth.login('user', 'password')
-		* def list = api_v1.entity.getListByPartialName('tmp-')
+		* ip5.api.v1.auth.login('user', 'password')
+		* def list = ip5.api.v1.entity.getListByPartialName('tmp-')
 		* call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing tenant', status)}
-		* api_v1.auth.login('user', 'password')
-		* def id = api_v1.entity.createTemporary()
+		* ip5.api.v1.auth.login('user', 'password')
+		* def id = ip5.api.v1.entity.createTemporary()
 
-		* api_v1.auth.login('<username>', '<password>')
+		* ip5.api.v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', id
@@ -31,8 +31,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId} (Delete tenant)
 
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing tenant', status)}
-		* def id = api_v1.entity.getNonExistingId()
-		* api_v1.auth.login('<username>', '<password>')
+		* def id = ip5.api.v1.entity.getNonExistingId()
+		* ip5.api.v1.auth.login('<username>', '<password>')
 
 		Given url baseUrl
 			And path '/api/v1/admin/tenant/', id

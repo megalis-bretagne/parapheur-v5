@@ -71,14 +71,16 @@ function fn() {
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     // Common code
     config = karate.call('classpath:lib/ip/api/soap.js', config);
+    config = karate.call('classpath:lib/ip/business/metadonnees.js', config);
     config = karate.call('classpath:lib/ip/common.js', config);
-    config = karate.call('classpath:lib/ip/ip.js', config);
+    config = karate.call('classpath:lib/ip/signature.js', config);
     config = karate.call('classpath:lib/ip/templates.js', config);
     config = karate.call('classpath:lib/ip/ui.js', config);
     // IP 4 code
     config = karate.call('classpath:lib/ip4/common.js', config);
     // IP 5 code
     config = karate.call('classpath:lib/ip5/api/v1.js', config);
+    config = karate.call('classpath:lib/ip5/business.js', config);
     config = karate.call('classpath:lib/ip5/common.js', config);
     config = karate.call('classpath:lib/ip5/ui.js', config);
 

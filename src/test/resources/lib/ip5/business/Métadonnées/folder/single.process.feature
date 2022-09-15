@@ -13,7 +13,7 @@ Feature: ...
 }
 """
         * def params = karate.merge(defaults, __arg)
-        * params["metadata"] = ip.metadatas.map[params.folder]
+        * params["metadata"] = ip.businnes.metadonnees.map[params.folder]
 
         * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
@@ -35,7 +35,7 @@ Feature: ...
         * click("//*[contains(normalize-space(text()), '" + params.action + "')]/ancestor-or-self::button")
 
         * ip5.ui.folder.annotate.both(params.username, params.action, params.folder)
-        * ip5.business.ui.metadatas.fill(ip.metadatas.map[params.folder])
+        * ip5.business.ui.metadatas.fill(ip.businnes.metadonnees.map[params.folder])
 
         * click("{^}Valider")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))

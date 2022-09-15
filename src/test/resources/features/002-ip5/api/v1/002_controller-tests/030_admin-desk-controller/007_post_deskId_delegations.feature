@@ -2,14 +2,14 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create a new delegation (active or planned) from target desk)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
-        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
+        * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
         * def baseRequestData =
 """
 {
@@ -25,8 +25,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in an existing tenant', status)}
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-        * api_v1.auth.login('<username>', '<password>')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
 
@@ -49,8 +49,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to an existing desk in a non-existing tenant', status)}
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-        * api_v1.auth.login('<username>', '<password>')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
 
@@ -72,8 +72,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target existing desk to a non-existing desk in an existing tenant', status)}
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-        * api_v1.auth.login('<username>', '<password>')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = nonExistingDeskId
 
@@ -98,8 +98,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a new delegation from target non-existing desk to an existing desk in an existing tenant', status)}
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
-        * api_v1.auth.login('<username>', '<password>')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
 
@@ -127,7 +127,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
         * copy requestData = request_data
         * if (field !== '') requestData[field] = ip.utils.eval(value)
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
             And header Accept = 'application/json'
@@ -139,7 +139,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (Create 
 
         Examples:
             | status | field!             | value!                                                         | request_data!                                                                                                                                        | data                                           |
-            | 201    | 'substituteDeskId' | eval(api_v1.desk.getIdByName(existingTenantId, 'Transparent')) | { "schedule":{ "2025-01-01T02:00:00.000Z": true, "2025-01-31T02:00:00.000Z": false, }, "substituteDeskId": null, "subtypeId": null, "typeId": null } | right data types                               |
+            | 201    | 'substituteDeskId' | eval(ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')) | { "schedule":{ "2025-01-01T02:00:00.000Z": true, "2025-01-31T02:00:00.000Z": false, }, "substituteDeskId": null, "subtypeId": null, "typeId": null } | right data types                               |
         @fixme-ip5 @issue-todo
         Examples:
             | status | field            | value!                                                         | request_data!                                                                                                                                        | data                                           |

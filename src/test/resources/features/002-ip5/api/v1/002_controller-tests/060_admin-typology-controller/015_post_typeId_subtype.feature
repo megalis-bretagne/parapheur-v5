@@ -2,8 +2,8 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
         * def getEmptyPayload =
@@ -29,11 +29,11 @@ function() {
 """
 function() {
     var payload = getEmptyPayload();
-    var existingTenantId = api_v1.entity.getIdByName('Default tenant');
+    var existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant');
 
     payload.annotationsAllowed = true
     payload.name = 'tmp-' + ip.utils.getUUID()
-    payload.validationWorkflowId = api_v1.workflow.getKeyByName(existingTenantId, 'tmp-', true)
+    payload.validationWorkflowId = ip5.api.v1.workflow.getKeyByName(existingTenantId, 'tmp-', true)
 
     return payload;
 }
@@ -41,13 +41,13 @@ function() {
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingTypeId = api_v1.type.getIdByName(existingTenantId, 'tmp-', true)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTypeId = ip5.api.v1.type.getIdByName(existingTenantId, 'tmp-', true)
 
         * def payload = getCleanPayload()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
         And path '/api/v1/admin/tenant/', existingTenantId, 'typology/type/', existingTypeId, '/subtype'
@@ -72,13 +72,13 @@ function() {
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingTypeId = api_v1.type.getIdByName(api_v1.entity.getIdByName('Default tenant'), 'tmp-', true)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingTypeId = ip5.api.v1.type.getIdByName(ip5.api.v1.entity.getIdByName('Default tenant'), 'tmp-', true)
 
         * def payload = getCleanPayload()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
         And path '/api/v1/admin/tenant/', nonExistingTenantId, 'typology/type/', existingTypeId, '/subtype'
@@ -102,13 +102,13 @@ function() {
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTypeId = api_v1.type.getNonExistingId()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTypeId = ip5.api.v1.type.getNonExistingId()
 
         * def payload = getCleanPayload()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
         And path '/api/v1/admin/tenant/', existingTenantId, 'typology/type/', nonExistingTypeId, '/subtype'
@@ -132,13 +132,13 @@ function() {
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def nonExistingTypeId = api_v1.type.getNonExistingId()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def nonExistingTypeId = ip5.api.v1.type.getNonExistingId()
 
         * def payload = getCleanPayload()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
         And path '/api/v1/admin/tenant/', nonExistingTenantId, 'typology/type/', nonExistingTypeId, '/subtype'
@@ -162,14 +162,14 @@ function() {
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a subtype and associate it to an existing type in an existing tenant', status, data)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingTypeId = api_v1.type.getIdByName(existingTenantId, 'tmp-', true)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTypeId = ip5.api.v1.type.getIdByName(existingTenantId, 'tmp-', true)
 
         * def payload = getCleanPayload()
         * payload[field] = ip.utils.eval(value)
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, 'typology/type/', existingTypeId, '/subtype'

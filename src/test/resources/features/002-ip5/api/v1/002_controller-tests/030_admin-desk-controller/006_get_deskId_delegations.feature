@@ -2,18 +2,18 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List delegations (active and planned) for given substitute desk)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
-        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
+        * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for an existing substitute desk in an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for an existing substitute desk in a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations'
@@ -55,7 +55,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations (List del
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'list delegations for a non-existing substitute desk in an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations'

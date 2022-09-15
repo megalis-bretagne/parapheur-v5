@@ -2,11 +2,11 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def unique = 'tmp-' + ip.utils.getUUID()
         * def email = unique + '@dom.local'
         * def uniqueRequestData =
@@ -25,7 +25,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a user in an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/user'
@@ -47,10 +47,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a user in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user'
@@ -71,7 +71,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a user in an existing tenant', status, data)}
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
         * def requestData = uniqueRequestData
         * requestData[field] = ip.utils.eval(value)
 

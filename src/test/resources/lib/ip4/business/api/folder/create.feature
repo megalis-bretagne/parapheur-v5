@@ -6,8 +6,8 @@ Feature: IP v.4 REST folder lib
         * def defaults = { metadatas: {}, visibility: "confidentiel" }
         * def row = karate.merge(defaults, __arg)
 
-        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "démarrage", row.title)
-        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "démarrage", row.title)
+        * def publicAnnotation = ip.templates.annotations.getPublic(__arg.username, "démarrage", row.title)
+        * def privateAnnotation = ip.templates.annotations.getPrivate(__arg.username, "démarrage", row.title)
 
         * def desktop = ip4.business.api.desktop.getByName(row.desktop)
 

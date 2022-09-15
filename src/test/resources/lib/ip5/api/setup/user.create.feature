@@ -2,7 +2,7 @@
     Feature: User setup lib
 
     Scenario: Create user
-        * def tenantId = api_v1.entity.getIdByName(tenant)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 #        * karate.log(__row)
 #        * def complementaryField = ip.utils.isEmpty(complementaryField) === true ? null : complementaryField
         * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
@@ -27,7 +27,7 @@
             When method POST
             Then status 201
 
-        * def userId = api_v1.user.getIdByEmail(tenantId, email)
+        * def userId = ip5.api.v1.user.getIdByEmail(tenantId, email)
 
         # @fixme: complementaryField, bien que fourni, sauvegarde une valeur null
         Given url baseUrl

@@ -3,10 +3,10 @@ Feature: IP v.5 REST folder lib
 
     Scenario: Sign folder
         # 1. Préparation
-        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "signature", __arg.folder)
-        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "signature", __arg.folder)
+        * def publicAnnotation = ip.templates.annotations.getPublic(__arg.username, "signature", __arg.folder)
+        * def privateAnnotation = ip.templates.annotations.getPrivate(__arg.username, "signature", __arg.folder)
 
-        * __arg["certificate"] = templates.certificate.default(__arg.certificate)
+        * __arg["certificate"] = ip.templates.certificate.default(__arg.certificate)
         # @todo: __arg["metadata"]
 
         # 2. Récupération et lecture du dossier

@@ -2,8 +2,8 @@
 Feature: IP v.5 REST draft lib
 
     Scenario: Send draft folder
-        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "démarrage", __arg.name)
-        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "démarrage", __arg.name)
+        * def publicAnnotation = ip.templates.annotations.getPublic(__arg.username, "démarrage", __arg.name)
+        * def privateAnnotation = ip.templates.annotations.getPrivate(__arg.username, "démarrage", __arg.name)
 
         Given url baseUrl
             And path __arg.path + "/" + __arg.draft.id

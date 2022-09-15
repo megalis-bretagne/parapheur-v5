@@ -2,8 +2,8 @@
 Feature: Stamp setup lib
 
     Scenario: Create stamp
-        * def tenantId = api_v1.entity.getIdByName(tenant)
-        * def layerId = api_v1.layer.getIdByName(tenantId, layer)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
+        * def layerId = ip5.api.v1.layer.getIdByName(tenantId, layer)
         * payload['id'] = 'new_stamp_temp_id'
 
         Given url baseUrl

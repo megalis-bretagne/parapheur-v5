@@ -19,9 +19,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     username: '<username>',
 }
 """
-        * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, {}, 1)
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def folders = ip5.api.v1.desk.draft.getPayloadMonodoc(params, <count>, {}, 1)
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-without-annex.feature') folders
         # @todo: use UI ?
         #* call read('classpath:lib/ip5/ui/desk/create-and-send.feature') __row
@@ -140,14 +140,14 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # 1. Annotation(s) publique(s)
         * table expected
             | Utilisateur          | Annotation publique                                                                                       |
-            | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
-            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
+            | "Web Service"        | ip.templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
+            | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ip5.ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée                                                                                          |
-            | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
+            | "Frédéric Losserand" | ip.templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ip5.ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -180,16 +180,16 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             # 1. Annotation(s) publique(s)
         * table expected
             | Utilisateur          | Annotation publique                                                                                       |
-            | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
-            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          |
-            | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
-            | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
+            | "Web Service"        | ip.templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      |
+            | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          |
+            | "Matthieu Piaumier"  | ip.templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     |
+            | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ip5.ui.folder.getPublicAnnotations() == expected
 
             # 2. Annotation privée
         * table expected
             | Utilisateur          | Annotation privée                                                                                          |
-            | "Frédéric Losserand" | templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
+            | "Frédéric Losserand" | ip.templates.annotations.getPrivate("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) |
         * match ip5.ui.folder.getPrivateAnnotations() == expected
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier
@@ -220,9 +220,9 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * table expected
             | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
-            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
+            | "WebService" | "Web Service"        | ip.templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
             | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | "Validée"  |
-            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
+            | "Président"  | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
             | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 
@@ -263,12 +263,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         * table expected
             | Bureau       | Utilisateur          | Annotation publique                                                                                       | Action                    | État       |
-            | "WebService" | "Web Service"        | templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
+            | "WebService" | "Web Service"        | ip.templates.annotations.getPublic("ws@demo-simple", "démarrage", name)                                      | "Envoyer dans le circuit" | "Validée"  |
             | "Président"  | "Frédéric Losserand" | ""                                                                                                        | "Lecture"                 | "Validée"  |
-            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          | "Visa"                    | "Validée"  |
+            | "Président"  | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", "demande d'avis complémentaire", name)          | "Visa"                    | "Validée"  |
             | "DGS"        | "Matthieu Piaumier"  | ""                                                                                                        | "Lecture"                 | "Validée"  |
-            | "DGS"        | "Matthieu Piaumier"  | templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     | "Avis complémentaire"     | "Validée"  |
-            | "Président"  | "Frédéric Losserand" | templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
+            | "DGS"        | "Matthieu Piaumier"  | ip.templates.annotations.getPublic("mpiaumier@demo-simple", "avis complémentaire", name)                     | "Avis complémentaire"     | "Validée"  |
+            | "Président"  | "Frédéric Losserand" | ip.templates.annotations.getPublic("flosserand@demo-simple", (state === "Rejeté" ? "Rejet" : action ), name) | "<action>"                | "<state>"  |
             | "WebService" | "Web Service"        | ""                                                                                                        | "Lecture"                 | "Validée"  |
             | "WebService" | ""                   | ""                                                                                                        | upcomingAction            | "En cours" |
 

@@ -2,18 +2,18 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user's desks)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing single user\'s desks from an existing tenant', status)}
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, '<email>')
-        * api_v1.auth.login('<username>', '<password>')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, '<email>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/desks'
@@ -34,7 +34,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
     @permissions @fixme-ip5
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing single user\'s desks from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/desks'
@@ -56,8 +56,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
     @permissions @fixme-ip5
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing single user\'s desks from a non-existing tenant', status)}
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
-        * api_v1.auth.login('<username>', '<password>')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/desks'
@@ -76,7 +76,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
     @permissions @fixme-ip5
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing single user\'s desks from non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/desks'

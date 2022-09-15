@@ -2,9 +2,9 @@
     Feature: Vérification des utilisateurs de l'entité "CDG59/Aniche"
 
     Background:
-        * api_v1.auth.login("user", "password")
+        * ip5.api.v1.auth.login("user", "password")
         * def tenant = "aniche"
-        * def tenantId = api_v1.entity.getIdByName(tenant)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 
     Scenario Outline: Vérification des données de l'utilisateur "${userName}" par liste
         * url baseUrl
@@ -28,7 +28,7 @@
             | user     | ne-pas-repondre@adrien.local | Sample    | User     | null                          | null                        | null                | null                     | SUPER_ADMIN | null                 | null               | null             | null       | null      | false               | null        | false                          | false                  | false                      |
 
     Scenario Outline: Vérification des données de l'utilisateur "${userName}" par détails
-        * def userId = api_v1.user.getIdByEmail(tenantId, '<email>')
+        * def userId = ip5.api.v1.user.getIdByEmail(tenantId, '<email>')
 
         # Onglets Général, Signature (partiel), Droits
         * url baseUrl

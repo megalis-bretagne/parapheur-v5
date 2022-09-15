@@ -40,9 +40,9 @@ Feature: 001 - Scénario de démo simple, partie administration
         * call read('classpath:lib/ip5/ui/user/create.feature') __row
         * ip5.ui.user.logout()
 
-        * api_v1.auth.login("user", "password")
-        * def existingTenantId = api_v1.entity.getIdByName("<tenant>")
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, "<email>")
+        * ip5.api.v1.auth.login("user", "password")
+        * def existingTenantId = ip5.api.v1.entity.getIdByName("<tenant>")
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, "<email>")
 
         # @info: l'ajout de l'image de signature se fait par web-service
         Given url baseUrl

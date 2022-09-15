@@ -1,7 +1,7 @@
 @prepare-business @ip5 @marchés-publics @setup
 Feature: Paramétrage métier "Marchés publics"
     Background:
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row
@@ -33,8 +33,8 @@ Feature: Paramétrage métier "Marchés publics"
             | Marchés publics | WebService | ['ws-mp@dom.local']      | ''          | []          | {'action': true, 'archiving': true, 'chain': true, 'creation': true} |
 
     Scenario: Create a 4 steps workflow, 3 first steps are VISA, fourth step is a signature, first validator is "Safran", other validators are "Boss of"
-        * def tenantId = api_v1.entity.getIdByName('Marchés publics')
-        * def safranDeskId = api_v1.desk.getIdByName(tenantId, 'Safran')
+        * def tenantId = ip5.api.v1.entity.getIdByName('Marchés publics')
+        * def safranDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Safran')
         * def payload =
 """
 {

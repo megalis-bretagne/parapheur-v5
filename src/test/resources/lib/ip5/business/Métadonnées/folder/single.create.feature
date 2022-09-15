@@ -17,7 +17,7 @@ Feature: ...
         * def params = karate.merge(defaults, __arg)
         * params["nameTemplate"] = params.mode + " - " + params.action + " - " + params.subtype
 
-        * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, 1, {}, 1)
-        * api_v1.auth.login(params.username, params.password)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def folders = ip5.api.v1.desk.draft.getPayloadMonodoc(params, 1, {}, 1)
+        * ip5.api.v1.auth.login(params.username, params.password)
         * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-without-annex.feature') folders

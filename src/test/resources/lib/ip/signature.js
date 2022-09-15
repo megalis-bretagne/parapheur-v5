@@ -27,155 +27,11 @@ var namespace = function (obj, path, item) {
 
 function fn(config) {
     config['ip'] = config['ip'] || {};
-
-    // @todo: déplacer dans metadatas.js et ne le charger que dans les tests qui en ont besoin
-    config.ip['metadatas'] = config.ip['metadatas'] || {};
-
-    config.ip.metadatas['types'] = {
-        booleen: "BOOLEAN",
-        date: "DATE",
-        date_restreinte: "DATE",
-        nombre_virgule: "FLOAT",
-        nombre_virgule_restreint: "FLOAT",
-        nombre_entier: "INTEGER",
-        nombre_entier_restreint: "INTEGER",
-        texte: "TEXT",
-        texte_restreint: "TEXT",
-        url: "TEXT",
-        url_restreint: "TEXT"
-    };
-
-    config.ip.metadatas['labels'] = {
-        booleen: "Booléen",
-        date: "Date",
-        date_restreinte: "Date restreinte",
-        nombre_virgule: "Nombre à virgule",
-        nombre_virgule_restreint: "Nombre à virgule restreint",
-        nombre_entier: "Nombre entier",
-        nombre_entier_restreint: "Nombre entier restreint",
-        texte: "Texte",
-        texte_restreint: "Texte restreint",
-        url: "URL",
-        url_restreint: "URL restreint"
-    };
-
-    config.ip.metadatas['inverse'] = {
-        "Booléen": "booleen",
-        "Date": "date",
-        "Date restreinte": "date_restreinte",
-        "Nombre à virgule": "nombre_virgule",
-        "Nombre à virgule restreint": "nombre_virgule_restreint",
-        "Nombre entier": "nombre_entier",
-        "Nombre entier restreint": "nombre_entier_restreint",
-        "Texte": "texte",
-        "Texte restreint": "texte_restreint",
-        "URL": "url",
-        "URL restreint": "url_restreint"
-    };
-
-    config.ip.metadatas['tmp'] = {
-        "Rejet - Aucune métadonnée": {},
-        "Rejet - Booleen rejet": {booleen: false},
-        "Rejet - Booleen visa": {},
-        "Rejet - Booleen rejet et visa": {booleen: false},
-        "Rejet - Texte rejet": {texte: "Texte rejet"},
-        "Rejet - Texte visa": {},
-        "Rejet - Texte rejet et visa": {texte: "Texte rejet"},
-        "Rejet - Toutes visa et rejet": {
-            booleen: false,
-            date: "2022-09-01",
-            date_restreinte: "2022-01-15",
-            nombre_virgule: 0.33,
-            nombre_virgule_restreint: 0,
-            nombre_entier: 0,
-            nombre_entier_restreint: 0,
-            texte: "Texte rejet",
-            texte_restreint: "a",
-            url: "https://perdu.com/",
-            url_restreint: "http://www.lesoir.be",
-        },
-        "Visa - Aucune métadonnée": {},
-        "Visa - Booleen rejet": {},
-        "Visa - Booleen visa": {booleen: true},
-        "Visa - Booleen rejet et visa": {booleen: true},
-        "Visa - Texte rejet": {},
-        "Visa - Texte visa": {texte: "Texte visa"},
-        "Visa - Texte rejet et visa": {texte: "Texte visa"},
-        "Visa - Toutes visa et rejet": {
-            booleen: true,
-            date: "2022-09-02",
-            date_restreinte: "2022-02-15",
-            nombre_virgule: 0.77,
-            nombre_virgule_restreint: 1.5,
-            nombre_entier: 1,
-            nombre_entier_restreint: 2,
-            texte: "Texte visa",
-            texte_restreint: "b",
-            url: "https://dernierepage.com/",
-            url_restreint: "https://www.libriciel.fr/nos-logiciels/",
-        }
-    };
-
-    config.ip.metadatas['map'] = {
-        "Groupe - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
-        "Groupe - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
-        "Groupe - Rejet - Booleen visa": config.ip.metadatas.tmp['Rejet - Booleen visa'],
-        "Groupe - Rejet - Booleen rejet et visa": config.ip.metadatas.tmp['Rejet - Booleen rejet et visa'],
-        "Groupe - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
-        "Groupe - Rejet - Texte visa": config.ip.metadatas.tmp['Rejet - Texte visa'],
-        "Groupe - Rejet - Texte rejet et visa": config.ip.metadatas.tmp['Rejet - Texte rejet et visa'],
-        "Groupe - Rejet - Toutes visa et rejet": config.ip.metadatas.tmp['Rejet - Toutes visa et rejet'],
-        "Groupe - Visa - Aucune métadonnée": config.ip.metadatas.tmp['Visa - Aucune métadonnée'],
-        "Groupe - Visa - Booleen rejet": config.ip.metadatas.tmp['Visa - Booleen rejet'],
-        "Groupe - Visa - Booleen visa": config.ip.metadatas.tmp['Visa - Booleen visa'],
-        "Groupe - Visa - Booleen rejet et visa": config.ip.metadatas.tmp['Visa - Booleen rejet et visa'],
-        "Groupe - Visa - Texte rejet": config.ip.metadatas.tmp['Visa - Texte rejet'],
-        "Groupe - Visa - Texte visa": config.ip.metadatas.tmp['Visa - Texte visa'],
-        "Groupe - Visa - Texte rejet et visa": config.ip.metadatas.tmp['Visa - Texte rejet et visa'],
-        "Groupe - Visa - Toutes visa et rejet": config.ip.metadatas.tmp['Visa - Toutes visa et rejet'],
-        "Individuel - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
-        "Individuel - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
-        "Individuel - Rejet - Booleen visa": config.ip.metadatas.tmp['Rejet - Booleen visa'],
-        "Individuel - Rejet - Booleen rejet et visa": config.ip.metadatas.tmp['Rejet - Booleen rejet et visa'],
-        "Individuel - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
-        "Individuel - Rejet - Texte visa": config.ip.metadatas.tmp['Rejet - Texte visa'],
-        "Individuel - Rejet - Texte rejet et visa": config.ip.metadatas.tmp['Rejet - Texte rejet et visa'],
-        "Individuel - Rejet - Toutes visa et rejet": config.ip.metadatas.tmp['Rejet - Toutes visa et rejet'],
-        "Individuel - Visa - Aucune métadonnée": config.ip.metadatas.tmp['Visa - Aucune métadonnée'],
-        "Individuel - Visa - Booleen rejet": config.ip.metadatas.tmp['Visa - Booleen rejet'],
-        "Individuel - Visa - Booleen visa": config.ip.metadatas.tmp['Visa - Booleen visa'],
-        "Individuel - Visa - Booleen rejet et visa": config.ip.metadatas.tmp['Visa - Booleen rejet et visa'],
-        "Individuel - Visa - Texte rejet": config.ip.metadatas.tmp['Visa - Texte rejet'],
-        "Individuel - Visa - Texte visa": config.ip.metadatas.tmp['Visa - Texte visa'],
-        "Individuel - Visa - Texte rejet et visa": config.ip.metadatas.tmp['Visa - Texte rejet et visa'],
-        "Individuel - Visa - Toutes visa et rejet": config.ip.metadatas.tmp['Visa - Toutes visa et rejet'],
-        "Liste - Rejet - Aucune métadonnée": config.ip.metadatas.tmp['Rejet - Aucune métadonnée'],
-        "Liste - Rejet - Booleen rejet": config.ip.metadatas.tmp['Rejet - Booleen rejet'],
-        "Liste - Rejet - Booleen visa": config.ip.metadatas.tmp['Rejet - Booleen visa'],
-        "Liste - Rejet - Booleen rejet et visa": config.ip.metadatas.tmp['Rejet - Booleen rejet et visa'],
-        "Liste - Rejet - Texte rejet": config.ip.metadatas.tmp['Rejet - Texte rejet'],
-        "Liste - Rejet - Texte visa": config.ip.metadatas.tmp['Rejet - Texte visa'],
-        "Liste - Rejet - Texte rejet et visa": config.ip.metadatas.tmp['Rejet - Texte rejet et visa'],
-        "Liste - Rejet - Toutes visa et rejet": config.ip.metadatas.tmp['Rejet - Toutes visa et rejet'],
-        "Liste - Visa - Aucune métadonnée": config.ip.metadatas.tmp['Visa - Aucune métadonnée'],
-        "Liste - Visa - Booleen rejet": config.ip.metadatas.tmp['Visa - Booleen rejet'],
-        "Liste - Visa - Booleen visa": config.ip.metadatas.tmp['Visa - Booleen visa'],
-        "Liste - Visa - Booleen rejet et visa": config.ip.metadatas.tmp['Visa - Booleen rejet et visa'],
-        "Liste - Visa - Texte rejet": config.ip.metadatas.tmp['Visa - Texte rejet'],
-        "Liste - Visa - Texte visa": config.ip.metadatas.tmp['Visa - Texte visa'],
-        "Liste - Visa - Texte rejet et visa": config.ip.metadatas.tmp['Visa - Texte rejet et visa'],
-        "Liste - Visa - Toutes visa et rejet": config.ip.metadatas.tmp['Visa - Toutes visa et rejet'],
-    };
-
-    config.ip['version'] = function() {
-        return 5;
-    };
-
     config.ip['signature'] = config.ip['signature'] || {};
 
     config.ip.signature['cades'] = config.ip.signature['cades'] || {};
     config.ip.signature.cades['check'] = function(document, pkcs7, certificate) {
-        certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
+        certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(ip.templates.certificate.default("signature")["public"]) : certificate;
         var cmd = [
             "/bin/sh",
             "-c",
@@ -534,7 +390,7 @@ function fn(config) {
     };
     // @todo-karate: meilleurs vérifications
     config.ip.signature.xades['validate'] = function(document, xades, certificate) {
-        certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(templates.certificate.default("signature")["public"]) : certificate;
+        certificate = (typeof certificate === "undefined") ? karate.toAbsolutePath(ip.templates.certificate.default("signature")["public"]) : certificate;
         var actualData = ip.signature.xades.actual(document, xades, certificate),
             actualXml = karate.read("file://" + xades),
             expectedSchema = karate.read("classpath:lib/ip5/schemas/xades.xml"),

@@ -2,14 +2,14 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Remove an active or planned delegation from target Desk)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
-        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
+        * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
         * def baseRequestData =
 """
 {
@@ -26,8 +26,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in an existing tenant', status)}
         # Create a delegation
-        * api_v1.auth.login('user', 'password')
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
 
@@ -39,7 +39,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
         Then status 201
 
         # Try to delete it
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
@@ -62,8 +62,8 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in a non-existing tenant', status)}
         # Create a delegation
-        * api_v1.auth.login('user', 'password')
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
 
@@ -75,7 +75,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
         Then status 201
 
         # Try to delete it
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/desk/' + existingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'
@@ -97,7 +97,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to a non-existing desk in an existing tenant', status)}
         # Try to delete it
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + existingDeskId + '/delegations/' + nonExistingDeskId
             And header Accept = 'application/json'
@@ -118,10 +118,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target non-existing desk to an existing desk in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def delegatingDeskId = api_v1.desk.getIdByName(existingTenantId, 'Transparent')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/desk/' + nonExistingDeskId + '/delegations/' + delegatingDeskId
             And header Accept = 'application/json'

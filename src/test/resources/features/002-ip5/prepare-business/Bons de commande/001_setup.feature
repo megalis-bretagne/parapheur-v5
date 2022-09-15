@@ -2,7 +2,7 @@
 Feature: Paramétrage métier "Bons de commande"
 
     Background:
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
 
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row

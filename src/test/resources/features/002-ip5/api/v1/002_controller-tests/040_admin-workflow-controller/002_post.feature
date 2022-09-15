@@ -2,19 +2,19 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workflow definition)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * def unique = 'tmp-' + ip.utils.getUUID()
-        * def key = api_v1.desk.getKeyStringFromNameString(unique)
+        * def key = ip5.api.v1.desk.getKeyStringFromNameString(unique)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/workflowDefinition'
@@ -57,14 +57,14 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * def unique = 'tmp-' + ip.utils.getUUID()
-        * def key = api_v1.desk.getKeyStringFromNameString(unique)
+        * def key = ip5.api.v1.desk.getKeyStringFromNameString(unique)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/workflowDefinition'
@@ -105,13 +105,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
         * def unique = 'tmp-' + ip.utils.getUUID()
-        * def key = api_v1.desk.getKeyStringFromNameString(unique)
+        * def key = ip5.api.v1.desk.getKeyStringFromNameString(unique)
 
         * def requestData =
 """
@@ -171,9 +171,9 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
 #    @data-validation @666
 #    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
-#        * api_v1.auth.login('user', 'password')
-#        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-#        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
+#        * ip5.api.v1.auth.login('user', 'password')
+#        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+#        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 #
 #        * def requestData = karate.read('classpath:fixtures/ip-core/v1/admin-workflow-controller/post/data-validation/' + path + '.js')
 #

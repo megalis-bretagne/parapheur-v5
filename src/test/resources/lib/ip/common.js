@@ -19,6 +19,10 @@
 function fn(config) {
     config['ip'] = config['ip'] || {};
 
+    config.ip['version'] = function() {
+        return 5;
+    };
+
     // Classpath shortcuts for common files
     config.ip['commonpath'] = {};
     config.ip.commonpath['absolute'] = function(basename) {

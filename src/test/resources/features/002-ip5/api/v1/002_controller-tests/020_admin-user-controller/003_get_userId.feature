@@ -2,18 +2,18 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/user/', existingUserId
@@ -34,7 +34,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/user/', nonExistingUserId
@@ -56,7 +56,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing user from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', existingUserId
@@ -75,7 +75,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get a non-existing user from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/user/', nonExistingUserId

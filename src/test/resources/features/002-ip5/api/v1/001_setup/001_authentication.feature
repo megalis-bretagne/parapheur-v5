@@ -3,7 +3,7 @@ Feature: POST /auth/realms/api/v1/protocol/openid-connect/token (Authentication)
 
 	@authentication
 	Scenario Outline: Successful authentication for role "${role}" with "${username}" and "${password}"
-		* api_v1.auth.login('<username>', '<password>', 200)
+		* ip5.api.v1.auth.login('<username>', '<password>', 200)
 
 		Examples:
 			| role             | username     | password |
@@ -14,7 +14,7 @@ Feature: POST /auth/realms/api/v1/protocol/openid-connect/token (Authentication)
 
 	@authentication
 	Scenario Outline: Unsuccessful authentication with "${username === null ? '' : username}" and "${password === null ? '' : password}"
-		* api_v1.auth.login('<username>', '<password>', 401)
+		* ip5.api.v1.auth.login('<username>', '<password>', 401)
 
 		Examples:
 			| username  | password      |

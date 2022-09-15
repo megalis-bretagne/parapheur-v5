@@ -1,7 +1,7 @@
 @karate-function
 Feature: Authentication lib
 	Background:
-		* api_v1.auth.logout()
+		* ip5.api.v1.auth.logout()
 		* configure cookies = null
 
 	Scenario: Assert error

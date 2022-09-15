@@ -2,7 +2,7 @@
 Feature: Vérification de l'entité "CDG59/Aniche" et ajout de user à celle-ci entité
 
     Background:
-        * api_v1.auth.login("user", "password")
+        * ip5.api.v1.auth.login("user", "password")
         * def tenant = "aniche"
 
     Scenario: Vérification de l'existence de l'entité
@@ -10,7 +10,7 @@ Feature: Vérification de l'entité "CDG59/Aniche" et ajout de user à celle-ci 
 
     Scenario: Association de l'utilisateur "user" à l'entité
         # Récupération des ids
-        * api_v1.auth.login("user", "password")
+        * ip5.api.v1.auth.login("user", "password")
         * def rv = call read("classpath:lib/ip5/business/api/tenant/adminFilterByName.feature") { name: "#(tenant)" }
         * def tenantId = rv.response.content[0].id
         * def rv = call read("classpath:lib/ip5/api/admin-user/getByUsername.feature") { username: "user" }

@@ -3,8 +3,8 @@ Feature: IP v.5 REST folder lib
 
     Scenario: Seal folder
         # 1. Préparation
-        * def publicAnnotation = templates.annotations.getPublic(__arg.username, "cachet serveur", __arg.folder)
-        * def privateAnnotation = templates.annotations.getPrivate(__arg.username, "cachet serveur", __arg.folder)
+        * def publicAnnotation = ip.templates.annotations.getPublic(__arg.username, "cachet serveur", __arg.folder)
+        * def privateAnnotation = ip.templates.annotations.getPrivate(__arg.username, "cachet serveur", __arg.folder)
 
         # @todo: __arg["metadata"]
 

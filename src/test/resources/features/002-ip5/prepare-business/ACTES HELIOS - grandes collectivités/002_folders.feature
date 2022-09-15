@@ -16,9 +16,9 @@ Feature: Création de dossiers pour le paramétrage métier "ACTES HELIOS - gran
     username: '<username>',
 }
 """
-        * api_v1.auth.login('user', 'password')
-        * def folders = api_v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def folders = ip5.api.v1.desk.draft.getPayloadMonodoc(params, <count>, <extra>, <start>)
+        * ip5.api.v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-<withOrWithout>-annex.feature') folders
         #@fixme: IP 5, HELIOS - Monodoc, avec annexe: La signature XAdES enveloppée ne peut être effectuée que sur un unique document XML
         #@fixme: IP 5, HELIOS - Monodoc, sans annexe: Accès à la ressource refusé

@@ -2,18 +2,18 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of an existing user from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'
@@ -34,7 +34,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of a non-existing user from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
@@ -57,7 +57,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of an existing user from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/password'
@@ -77,7 +77,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'update the password of a non-existing user from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/password'
@@ -100,7 +100,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'update the password of an existing user from an existing tenant', status, data)}
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/password'

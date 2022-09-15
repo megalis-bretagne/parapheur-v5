@@ -2,19 +2,19 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingDeskId = api_v1.desk.createTemporary(existingTenantId)
-        * def nonExistingDeskId = api_v1.desk.getNonExistingId()
-        * def deskData = api_v1.desk.getById(existingTenantId, existingDeskId)
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
+        * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
+        * def deskData = ip5.api.v1.desk.getById(existingTenantId, existingDeskId)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing desk from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId
@@ -32,7 +32,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing desk from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk/', existingDeskId
@@ -50,7 +50,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing desk from an existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId
@@ -71,7 +71,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Delete desk)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing desk from a non-existing tenant', status)}
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk/', nonExistingDeskId

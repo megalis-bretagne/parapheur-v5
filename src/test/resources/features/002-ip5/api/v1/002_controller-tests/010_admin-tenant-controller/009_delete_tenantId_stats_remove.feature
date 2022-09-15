@@ -2,17 +2,17 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for the given tenant, and delete every stats entries associated with)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'disable and delete stats for an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', 'password')
         # @fixme: 400 Request Header Or Cookie Too Large ?
-        * def existingTenantId = api_v1.entity.createTemporary()
+        * def existingTenantId = ip5.api.v1.entity.createTemporary()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/stats/remove'
             And header Accept = 'application/json'
@@ -31,10 +31,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/stats/remove (Disable stats for 
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'disable and delete stats for a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('<username>', '<password>')
         Given url baseUrl
             And path '/api/v1/admin/tenant/', nonExistingTenantId, '/stats/remove'
             And header Accept = 'application/json'

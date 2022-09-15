@@ -13,7 +13,7 @@ Feature: ...
 }
 """
         * def params = karate.merge(defaults, __arg)
-        * params["metadata"] = ip.metadatas.map[params.folder]
+        * params["metadata"] = ip.businnes.metadonnees.map[params.folder]
 
         * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
@@ -48,7 +48,7 @@ function(obj, start) {
 }
 """
 
-        * def metadatas = mergeMetadatasStartingWith(ip.metadatas.map, params.folder)
+        * def metadatas = mergeMetadatasStartingWith(ip.businnes.metadonnees.map, params.folder)
         * ip5.business.ui.metadatas.fill(metadatas)
 
         * driver.screenshot()

@@ -2,16 +2,16 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Replace user's signature image)
 
     Background:
-        * api_v1.auth.login('user', 'password')
-        * def list = api_v1.entity.getListByPartialName('tmp-')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'
@@ -32,10 +32,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for a non-existing user in an existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
@@ -58,11 +58,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingUserId = api_v1.user.getIdByEmail(existingTenantId, 'stranslucide@dom.local')
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'stranslucide@dom.local')
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + existingUserId + '/signatureImage'
@@ -82,10 +82,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for a non-existing user in a non-existing tenant', status)}
-        * api_v1.auth.login('user', 'password')
-        * def nonExistingTenantId = api_v1.entity.getNonExistingId()
-        * def nonExistingUserId = api_v1.user.getNonExistingId()
-        * api_v1.auth.login('<username>', '<password>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
+        * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
+        * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + nonExistingTenantId + '/user/' + nonExistingUserId + '/signatureImage'
@@ -105,11 +105,11 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
-        * api_v1.auth.login('user', 'password')
-        * def existingTenantId = api_v1.entity.getIdByName('Default tenant')
-        * def existingUserId = email == null ? api_v1.user.createTemporary(existingTenantId) : api_v1.user.getIdByEmail(existingTenantId, '<email>')
+        * ip5.api.v1.auth.login('user', 'password')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingUserId = email == null ? ip5.api.v1.user.createTemporary(existingTenantId) : ip5.api.v1.user.getIdByEmail(existingTenantId, '<email>')
 
-        * api_v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'

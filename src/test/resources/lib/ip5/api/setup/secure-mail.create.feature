@@ -2,7 +2,7 @@
 Feature: Secure mail setup lib
 
     Scenario: Create a secure mail configuration
-        * def tenantId = api_v1.entity.getIdByName(tenant)
+        * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/secureMail/server'
