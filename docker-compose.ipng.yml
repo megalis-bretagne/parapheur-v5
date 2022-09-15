@@ -37,6 +37,7 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
       - IPNG_HOST
+      - IPNG_MSPID
     volumes:
       - ./data/ipng/wallet:/wallet
       - ./data/ipng/ca-certs:/crypto-config
