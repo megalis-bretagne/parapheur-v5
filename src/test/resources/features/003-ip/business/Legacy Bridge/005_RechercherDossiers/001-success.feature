@@ -8,7 +8,7 @@ Feature: RechercherDossiers
 
         Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/RechercherDossiers/simple.feature') params
-            And match ip.utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
+            And match ip.utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == ip.utils.array.getSortedUnique(statuses)
             And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
             And match rv.response == karate.read('classpath:lib/ip/api/soap/schemas/RechercherDossiersResponse/' + schema)
 

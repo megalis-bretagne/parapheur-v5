@@ -1,12 +1,20 @@
 @legacy-bridge @ip4 @setup
 Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
-    Background:
-        * configure ssl = true
+    @tenant-create
+    Scenario Outline: Création de la collectivité "${tenantDomain}"
+        * ip4.business.api.user.login("admin", "admin")
+
+        # La création de l'entité met pas mal de temps
         * configure readTimeout = 100000
-        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
+        * call read('classpath:lib/ip4/business/api/tenant/create.feature') __row
+
+        Examples:
+            | tenantDomain  | password | title         | description   |
+            | legacy-bridge | a123456  | legacy-bridge | legacy-bridge |
 
     Scenario Outline: Création du connecteur Pastell mail-sécurisé "${title}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/pastellConnector/create.feature') __row
 
         Examples:
@@ -14,6 +22,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
 
     Scenario Outline: Création du cachet serveur "${title}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/seal/create.feature') __row
 
         Examples:
@@ -21,6 +30,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | Cachet | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | classpath:files/images/cachet - benoit xvi.png |      |
 
     Scenario Outline: Création de la méta-donnée "${id}" de type "${type}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/metadata/create.feature') __row
 
         Examples:
@@ -29,6 +39,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
     # @todo: image de signature
     Scenario Outline: Création de l'utilisateur "${username}@legacy-bridge"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/user/create.feature') __row
 
         Examples:
@@ -37,6 +48,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | ws         | a123456  | Web       | Service   | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net |
 
     Scenario Outline: Création du bureau "${name}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/desktop/create.feature') __row
 
         Examples:
@@ -45,6 +57,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | WebService | WebService | ["ws@legacy-bridge"]         | []           |
 
     Scenario Outline: Création du circuit "${name}" à une étape de "${action}" sur le bureau "${desktop}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/workflow/createSingleStep.feature') __row
 
         Examples:
@@ -55,6 +68,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | Visa      | VISA           | Vermillon |
 
     Scenario Outline: Création du type "${name}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/type/create.feature') __row
 
         Examples:
@@ -64,6 +78,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
             | PAdES         | Description | ACTES    | PAdES/basic | Montpellier | 34000      |
 
     Scenario Outline: Création du sous-type "${type} / ${name}"
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
         * call read('classpath:lib/ip4/business/api/subtype/create.feature') __row
         # @info: permet d'éviter la 503
         * ip.pause(1)

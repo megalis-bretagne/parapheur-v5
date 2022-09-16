@@ -33,7 +33,9 @@ dossier une numérotation.
 # Augmenter les 3G -> 6G ?
 # docker-compose down --volumes --remove-orphans && sudo rm -rf ./data && docker-compose up
 # parapheur-core_1     | 07-Sep-2022 12:17:37.676 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [165085] milliseconds
-./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
+./gradlew test --info -Dkarate.options=" --tags @ip4 --tags @legacy-bridge" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+./gradlew test --info -Dkarate.options=" --tags @ip4 --tags @legacy-bridge --tags @setup,@folder,@folder-ui-processing" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+./gradlew test --info -Dkarate.options=" --tags @ip4 --tags @legacy-bridge --tags ~@setup --tags ~@folder --tags ~@folder-ui-processing" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 ```
 
 ## Lancement des tests

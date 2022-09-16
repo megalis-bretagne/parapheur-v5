@@ -3,9 +3,9 @@ Feature: IP v.4 REST folder lib
 
     Scenario: Secure mail on folder
         # 1. Préparation
-        # @fixme: IIF empty
-        * __arg["cc"] = [ "" ]
-        * __arg["cci"] = [ "" ]
+        * __arg["to"] = ip.utils.isEmpty(__arg["to"]) === true ? ["cbuffin+lvermillon-legacy-bridge@libriciel.net"] : __arg["to"]
+        * __arg["cc"] = ip.utils.isEmpty(__arg["cc"]) === true ? [] : __arg["cc"]
+        * __arg["cci"] = ip.utils.isEmpty(__arg["cci"]) === true ? [] : __arg["cci"]
 
         # 2. Récupération et lecture du dossier
         * def desktop = ip4.business.api.desktop.getByName(__arg.desktop)
