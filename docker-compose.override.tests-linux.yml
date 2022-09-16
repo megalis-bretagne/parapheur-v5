@@ -19,8 +19,12 @@
 services:
 
   core:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:expired-seal
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
+
+  web:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:seal-certificate-api
 
   smtp:
     image: tophfr/mailcatcher:0.7.1
