@@ -1,0 +1,8 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Header>#ignore</S:Header>
+    <S:Body>
+        <RechercherDossiersResponse xmlns="http://www.adullact.org/spring-ws/iparapheur/1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+            #(karate.read('classpath:lib/ip/api/soap/schemas/RechercherDossiersResponse/OK-subschema-LogDossier.xml'))
+        </RechercherDossiersResponse>
+    </S:Body>
+</S:Envelope>
