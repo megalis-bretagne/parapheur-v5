@@ -1,6 +1,0 @@
-{
-  "total": "#number",
-  "data": "#[] #(schemas.desk.element)",
-  "size": "#number",
-  "page": "#number"
-}

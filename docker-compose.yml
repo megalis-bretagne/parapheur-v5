@@ -56,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.5
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -103,13 +103,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.1.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta48
+      - VERSION=5.0.0-beta49
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -169,14 +169,14 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.4
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.5
     restart: unless-stopped
     tty: true
     mem_limit: 1G
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.4
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.5
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -211,10 +211,10 @@ services:
 
 
   alfresco:
-    image: alfresco/alfresco-content-repository-community:7.1.1.2
+    image: alfresco/alfresco-content-repository-community:7.2.1
     restart: unless-stopped
     tty: true
-    mem_limit: 3G
+    mem_limit: 1536M
     environment:
       JAVA_TOOL_OPTIONS: "
         -Dencryption.keystore.type=JCEKS
@@ -228,11 +228,16 @@ services:
       "
       # TODO : Link to Solr6 with the params : -Dindex.subsystem.name=solr6 -Dsolr.host=solr6 -Dsolr.port=8983 -Dsolr.http.connection.timeout=1000 -Dsolr.secureComms=none -Dsolr.base.url=/solr
       # TODO : Test a link to an external MS Office with the parameter -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
+
+      # Temporarily removed :
+      # -XX:+UseContainerSupport
+      # -XX:MinRAMPercentage=50
+      # -XX:MaxRAMPercentage=80
+      # Container support is broken for JDK 11 on Docker engine 20.10.12 (default on Ubuntu 22.04)
+      # We must use a 'hard' limit (-Xmx) for the heap to avoid overwhelming memory consumption
       JAVA_OPTS: "
         -Ddeployment.method=DOCKER_COMPOSE
-        -XX:+UseContainerSupport
-        -XX:MinRAMPercentage=50
-        -XX:MaxRAMPercentage=80
+        -Xmx768M
         -Dalfresco.host=${CONTENT_HOST}
         -Dalfresco.port=${CONTENT_PORT}
         -Dsystem.workflow.engine.activiti.enabled=false
@@ -242,6 +247,8 @@ services:
         -Ddb.username=alfresco
         -Ddb.password=alfresco
         -Dmessaging.broker.url=\"failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true\"
+        -Dtransform.service.enabled=true
+        -Dcsrf.filter.enabled=false
         -DlocalTransform.core-aio.url=http://transform-core-aio:8090/
       "
     healthcheck:
@@ -265,7 +272,7 @@ services:
 
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:2.5.7
+    image: alfresco/alfresco-transform-core-aio:2.6.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -274,7 +281,7 @@ services:
 
 
   # solr6:
-  #   image: alfresco/alfresco-search-services:2.0.2
+  #   image: alfresco/alfresco-search-services:2.0.3
   #   mem_limit: 1G
   #   environment:
   #     #Solr needs to know how to register itself with Alfresco
@@ -292,10 +299,12 @@ services:
 
 
   activemq:
-    image: alfresco/alfresco-activemq:5.16.1
+    image: alfresco/alfresco-activemq:5.16.5-jre11-centos7
     restart: unless-stopped
     tty: true
     mem_limit: 256M
+    environment:
+      ACTIVEMQ_OPTS: "-Xms128M -Xmx208M"
 
 
   postgres:

@@ -1,5 +1,27 @@
 # Tests Karate
 
+## Organisation des fichiers et dossier
+
+### Premier niveau de dossiers
+
+Étant donné que certaines parties des tests sont communes à IP 4 et IP 5 mais nécessitent du paramétrage - distinct suivant
+la version d'IP, en amont (pour les tests du _legacy-bridge_) - le premier niveau de dossier, on ajoute en début de nom de
+dossier une numérotation.
+
+- __001-ip4:__ Tests IP 4
+- __002-ip5:__ Tests IP 5
+- __003-ip4-ip5:__ Tests IP 4 et IP 5
+
+### Second niveau de dossiers
+
+- __api:__ tests d'API (par contrôleur)
+- __business:__ tests de fonctionnalités métier de bout en bout (par entité thématique, par exemple "Formats de signature")
+- __demo:__ scénarios de démonstration
+- __load:__ tests de charge
+- __migration:__ tests suite au script de migration
+- __prepare-business:__ paramétrage et éventuelle création de dossiers (par entité thématique, par exemple "Circuits unitaires"), les tests de bout en bout ne sont pas encore écrits
+- __ui:__ tests d'interface graphique
+
 ## Notes pour IP 4
 
 à partir du projet [i-Parapheur-4/iparapheur-core](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-4/iparapheur-core).
