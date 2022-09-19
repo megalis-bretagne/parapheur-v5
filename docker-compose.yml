@@ -214,7 +214,7 @@ services:
     image: alfresco/alfresco-content-repository-community:7.1.1.2
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1536M
     environment:
       JAVA_TOOL_OPTIONS: "
         -Dencryption.keystore.type=JCEKS
@@ -237,7 +237,7 @@ services:
       # We must use a 'hard' limit (-Xmx) for the heap to avoid overwhelming memory consumption
       JAVA_OPTS: "
         -Ddeployment.method=DOCKER_COMPOSE
-        -Xmx512M
+        -Xmx768M
         -Dalfresco.host=${CONTENT_HOST}
         -Dalfresco.port=${CONTENT_PORT}
         -Dsystem.workflow.engine.activiti.enabled=false
