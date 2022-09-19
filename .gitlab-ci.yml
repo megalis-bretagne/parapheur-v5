@@ -218,11 +218,11 @@ tolerant-e2e-tests-deploy:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
     - if: $NIGHTLY == "TRUE"
-      when: always
+      when: manual
       variables:
         OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
     - if: $CI_COMMIT_BRANCH == 'develop'
-      when: always
+      when: manual
     - when: manual
   needs:
     #    must repeat package here because extends overwrites instead of merge properties
