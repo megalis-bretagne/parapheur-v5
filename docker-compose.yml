@@ -301,6 +301,8 @@ services:
     restart: unless-stopped
     tty: true
     mem_limit: 256M
+    environment:
+      ACTIVEMQ_OPTS: "-Xms128M -Xmx208M"
 
 
   postgres:
