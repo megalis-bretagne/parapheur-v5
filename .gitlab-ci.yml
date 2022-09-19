@@ -340,7 +340,7 @@ strict-e2e-tests-test-metadonnees:
   allow_failure: false
 
 tolerant-e2e-tests-test-demo-simple-bde:
-  extends: [ .e2e-tests ]
+  extends: [ .tolerant-e2e-tests-test ]
   stage: e2e-tests-tolerant
   variables:
     KARATE_TENANT: "@demo-simple-bde"
@@ -352,7 +352,7 @@ tolerant-e2e-tests-test-demo-simple-bde:
   allow_failure: true
 
 tolerant-e2e-tests-test-formats-de-signature:
-  extends: [ .e2e-tests ]
+  extends: [ .tolerant-e2e-tests-test ]
   stage: e2e-tests-tolerant
   variables:
     KARATE_TENANT: "@formats-de-signature"
@@ -364,7 +364,7 @@ tolerant-e2e-tests-test-formats-de-signature:
   allow_failure: true
 
 tolerant-e2e-tests-test-legacy-bridge:
-  extends: [ .e2e-tests ]
+  extends: [ .tolerant-e2e-tests-test ]
   stage: e2e-tests-tolerant
   variables:
     KARATE_TENANT: "@legacy-bridge"
@@ -376,7 +376,7 @@ tolerant-e2e-tests-test-legacy-bridge:
   allow_failure: true
 
 tolerant-e2e-tests-test-metadonnees:
-  extends: [ .e2e-tests ]
+  extends: [ .tolerant-e2e-tests-test ]
   stage: e2e-tests-tolerant
   variables:
     KARATE_TENANT: "@metadonnees"
