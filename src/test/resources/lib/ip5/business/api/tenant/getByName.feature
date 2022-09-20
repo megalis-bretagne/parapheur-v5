@@ -6,7 +6,7 @@ Feature: IP v.5 REST tenant lib
         * path "/api/v1/tenant"
         * param page = 0
         * param size = 1000
-        * param sort = "name,ASC"
+        * param sort = "NAME,ASC"
         * param withAdminRights = __arg.withAdminRights
         * method GET
         * status 200

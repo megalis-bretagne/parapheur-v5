@@ -7,7 +7,7 @@ Feature: IP v.5 REST tenant lib
         * param page = 0
         * param searchTerm = __arg.name
         * param size = 10
-        * param sort = "name,ASC"
+        * param sort = "NAME,ASC"
         * method GET
         * status 200
 

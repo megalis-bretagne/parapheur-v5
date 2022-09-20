@@ -282,7 +282,7 @@ function fn(config) {
             .param('page', 0)
             .param('size', 100)
             .param('searchTerm', name)
-            .param('sort', 'id,ASC')
+            .param('sort', 'ID,ASC')
             .get();
 
         if (response.status !== 200) {
@@ -390,7 +390,7 @@ function fn(config) {
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('size', 100)
-            .param('sort', 'key,ASC')
+            .param('sort', 'KEY,ASC')
             .get();
 
         if (response.status !== 200) {
