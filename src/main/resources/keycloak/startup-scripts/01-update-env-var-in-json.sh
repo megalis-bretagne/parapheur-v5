@@ -27,6 +27,8 @@ echo '    ${env.KEYCLOAK_WEB_CLIENT_ID} : '${KEYCLOAK_WEB_CLIENT_ID}
 echo '    ${env.KEYCLOAK_CLIENT_SECRET} : '$( [[ ${#KEYCLOAK_CLIENT_SECRET} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
 echo '    ${env.INITIAL_KEYCLOAK_ADMIN_USER}          : '${INITIAL_KEYCLOAK_ADMIN_USER}
 echo '    ${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}      : '$( [[ ${#INITIAL_KEYCLOAK_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_USER}          : '${INITIAL_IPARAPHEUR_ADMIN_USER}
+echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}      : '$( [[ ${#INITIAL_IPARAPHEUR_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
 echo '    ${env.SMTP_HOST}              : '${SMTP_HOST}
 echo '    ${env.SMTP_PORT}              : '${SMTP_PORT}
 echo '    ${env.SMTP_ENABLE_AUTH}       : '${SMTP_ENABLE_AUTH}
@@ -42,6 +44,8 @@ sed -i "s/\${env.KEYCLOAK_WEB_CLIENT_ID}/${KEYCLOAK_WEB_CLIENT_ID}/g" /tmp/keycl
 sed -i "s/\${env.KEYCLOAK_CLIENT_SECRET}/${KEYCLOAK_CLIENT_SECRET}/g" /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_USER}/${INITIAL_KEYCLOAK_ADMIN_USER}/g"                   /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}/${INITIAL_KEYCLOAK_ADMIN_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_USER}/${INITIAL_IPARAPHEUR_ADMIN_USER}/g"                   /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/${INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.SMTP_HOST}/${SMTP_HOST}/g"                           /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.SMTP_PORT}/${SMTP_PORT}/g"                           /tmp/keycloak_env_var_patched.json
 sed -i "s/\${env.SMTP_ENABLE_AUTH}/${SMTP_ENABLE_AUTH}/g"             /tmp/keycloak_env_var_patched.json
