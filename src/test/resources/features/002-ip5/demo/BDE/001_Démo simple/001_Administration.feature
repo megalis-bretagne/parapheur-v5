@@ -5,21 +5,26 @@ Feature: 001 - Scénario de démo simple, partie administration
         * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
 
+    @basic
     Scenario: Connexion avec un superadmin
         * ip5.ui.user.login("user", "password")
 
+    @basic
     Scenario: Créer une entité
         * ip5.ui.user.login("user", "password")
         * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
+    @basic
     Scenario: Supprimer une entité
         * ip5.ui.user.login("user", "password")
         * call read('classpath:lib/ip5/ui/tenant/delete.feature') { tenant: "Démo simple" }
 
+    @basic
     Scenario: Créer une entité
         * ip5.ui.user.login("user", "password")
         * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
+    @basic
     Scenario Outline: Créer un utilisateur ${role} et connexion avec celui-ci
         * ip5.ui.user.login("user", "password")
         * call read('classpath:lib/ip5/ui/user/create.feature') __row
@@ -34,7 +39,8 @@ Feature: 001 - Scénario de démo simple, partie administration
             | Démo simple | mpiaumier@demo-simple    | Piaumier  | Matthieu  | mpiaumier-demo@dom.local | a123456  | Aucun privilège         |
             | Démo simple | ws@demo-simple           | Service   | Web       | ws-demo@dom.local        | a123456  | Aucun privilège         |
 
-    @issue-ip-compose-537
+
+    @issue-ip-compose-537 @basic
     Scenario Outline: Créer un user sans droit avec notif unitaire et image de signature
         * ip5.ui.user.login("admin-entite@demo-simple", "a123456")
         * call read('classpath:lib/ip5/ui/user/create.feature') __row
