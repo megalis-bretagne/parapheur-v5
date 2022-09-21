@@ -52,11 +52,11 @@ SYS_PROPS=""
 # Add admin user #
 ##################
 
-file_env 'KEYCLOAK_USER'
-file_env 'KEYCLOAK_PASSWORD'
+file_env 'INITIAL_KEYCLOAK_ADMIN_USER'
+file_env 'INITIAL_KEYCLOAK_ADMIN_PASSWORD'
 
-if [[ -n ${KEYCLOAK_USER:-} && -n ${KEYCLOAK_PASSWORD:-} ]]; then
-    /opt/jboss/keycloak/bin/add-user-keycloak.sh --user "$KEYCLOAK_USER" --password "$KEYCLOAK_PASSWORD"
+if [[ -n ${INITIAL_KEYCLOAK_ADMIN_USER:-} && -n ${INITIAL_KEYCLOAK_ADMIN_PASSWORD:-} ]]; then
+    /opt/jboss/keycloak/bin/add-user-keycloak.sh --user "$INITIAL_KEYCLOAK_ADMIN_USER" --password "$INITIAL_KEYCLOAK_ADMIN_PASSWORD"
 fi
 
 ############

@@ -80,6 +80,7 @@ services:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - INITIAL_IPARAPHEUR_ADMIN_USER
       - SECRET_PROTOCOL
       - SECRET_HOST
       - SECRET_PORT
@@ -347,8 +348,10 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
-      - KEYCLOAK_USER
-      - KEYCLOAK_PASSWORD
+      - INITIAL_KEYCLOAK_ADMIN_USER
+      - INITIAL_KEYCLOAK_ADMIN_PASSWORD
+      - INITIAL_IPARAPHEUR_ADMIN_USER
+      - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
       - SMTP_HOST
       - SMTP_PORT
       - SMTP_USER
@@ -379,7 +382,7 @@ services:
       - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
       # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
       #     WARNING : The issue was closed, but the issue was not actually fixed, to date.
-      #     The bug is easy to reproduce : On the first launch, the KEYCLOAK_USER/KEYCLOAK_PASSWORD variables will create the default user.
+      #     The bug is easy to reproduce : On the first launch, the INITIAL_KEYCLOAK_ADMIN_USER/INITIAL_KEYCLOAK_ADMIN_PASSWORD variables will create the default user.
       #     On the second launch, Keycloak will crash, because the user already exist. The problematic line (l.2) was just commented out.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 

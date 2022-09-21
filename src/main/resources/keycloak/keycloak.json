@@ -501,18 +501,18 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}"
         }
       ],
       "email": "${env.SMTP_MAIL_FROM}",
       "enabled": true,
-      "firstName": "Sample",
-      "lastName": "User",
+      "firstName": "Initial",
+      "lastName": "Admin",
       "realmRoles": [
         "user",
         "admin"
       ],
-      "username": "user"
+      "username": "${env.INITIAL_IPARAPHEUR_ADMIN_USER}"
     }
   ],
   "verifyEmail": false,
