@@ -56,7 +56,8 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.5
+    # image: registry.libriciel.fr:443/public/signature/ip-core:1.0.5
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:more-workflows
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -104,7 +105,8 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.1.1
+    # image: registry.libriciel.fr:443/public/signature/ip-web:1.1.1
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:workflowLib
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -119,7 +121,8 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.5.7
+    # image: registry.libriciel.fr/public/signature/workflow:1.5.7
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:ease-requests
     restart: unless-stopped
     tty: true
     mem_limit: 768M
