@@ -1,17 +1,19 @@
 {
     "steps": [
     {
-        "validators": [
+        "validatingDeskIds": [
             "#(existingDeskId)"
         ],
-        "validationMode": "SIMPLE",
-        "name": "SEAL",
         "type": "SEAL",
-        "parallelType": "OR"
+        "parallelType": "OR",
+        "notifiedDeskIds": [],
+        "mandatoryValidationMetadataIds": [],
+        "mandatoryRejectionMetadataIds": []
     }
 ],
     "name": "Cachet serveur - #(existingDeskId)",
-    "id": "#(key)",
     "key": "#(key)",
-    "deploymentId": "#(key)"
+    "deploymentId": "#(key)",
+    "finalDeskId": "##EMITTER##",
+    "finalNotifiedDeskIds": []
 }
