@@ -164,13 +164,13 @@ Feature: Paramétrage métier "Benoit XVI"
 """
 {
     "steps":[
-        {"validators":["#(presDeskId)"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
-        {"validators":["#(presDeskId)"],"validationMode":"SIMPLE","name":"SEAL","type":"SEAL","parallelType":"OR"}
+        {"validatingDeskIds":["#(presDeskId)"],"type":"SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["#(presDeskId)"],"type":"SEAL","parallelType":"OR"}
     ],
     "name":"S_CS_Pres",
-    "id":"#(id)",
     "key":"#(id)",
-    "deploymentId":"#(id)"
+    "deploymentId":"#(id)",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl
@@ -189,13 +189,13 @@ Feature: Paramétrage métier "Benoit XVI"
 """
 {
     "steps":[
-        {"validators":["#(presDeskId)"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR","mandatoryValidationMetadata":['montant']},
-        {"validators":["#(finServDeskId)"],"validationMode":"SIMPLE","name":"SECURE_MAIL","type":"SECURE_MAIL","parallelType":"OR"}
+        {"validatingDeskIds":["#(presDeskId)"],"type":"SIGNATURE","parallelType":"OR","mandatoryValidationMetadata":['montant']},
+        {"validatingDeskIds":["#(finServDeskId)"],"type":"SECURE_MAIL","parallelType":"OR"}
     ],
     "name":"S_Pres_MS_ServFin",
-    "id":"#(id)",
     "key":"#(id)",
-    "deploymentId":"#(id)"
+    "deploymentId":"#(id)",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl
@@ -244,14 +244,14 @@ Feature: Paramétrage métier "Benoit XVI"
 """
 {
     "steps":[
-        {"validators":["#(dgsDeskId)","#(dfinDeskId)"],"validationMode":"AND","name":"Visa","type":"VISA","parallelType":"AND"},
-        {"validators":["#(secgenDeskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
-        {"validators":["#(presDeskId)","#(premvicepresDeskId)"],"validationMode":"OR","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"}
+        {"validatingDeskIds":["#(dgsDeskId)","#(dfinDeskId)"],"type":"VISA","parallelType":"AND"},
+        {"validatingDeskIds":["#(secgenDeskId)"],"type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["#(presDeskId)","#(premvicepresDeskId)"],"type":"SIGNATURE","parallelType":"OR"}
     ],
     "name":"V_DGSETDirFin_SE_SG_S_PresOU1VP",
-    "id":"#(id)",
     "key":"#(id)",
-    "deploymentId":"#(id)"
+    "deploymentId":"#(id)",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl
@@ -296,14 +296,14 @@ Feature: Paramétrage métier "Benoit XVI"
 """
 {
     "steps":[
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"VISA","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"VISA","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"SIGNATURE","parallelType":"OR"},
     ],
     "name":"VVS_Chefde",
-    "id":"#(id)",
     "key":"#(id)",
-    "deploymentId":"#(id)"
+    "deploymentId":"#(id)",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl
