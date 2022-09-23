@@ -45,6 +45,7 @@ Feature: Paramétrage métier "Marchés publics"
         {"validatingDeskIds":["##BOSS_OF##"],"type":"SIGNATURE","parallelType":"OR"}
     ],
     "name":"Validation et signature",
+    "id":"validation_et_signature",
     "key":"validation_et_signature",
     "deploymentId":"validation_et_signature",
     "finalDeskId": "##EMITTER##"

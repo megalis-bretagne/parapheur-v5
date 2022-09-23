@@ -62,6 +62,7 @@ Feature: Paramétrage métier 'Signatures externes'
         {"validatingDeskIds":["#(desk2Id)"],"type":"#(type2)","parallelType":"OR"}
     ],
     "name":"#(name)",
+    "id":"#(key)",
     "key":"#(key)",
     "deploymentId":"#(key)",
     "finalDeskId": "##EMITTER##"
@@ -95,6 +96,7 @@ Feature: Paramétrage métier 'Signatures externes'
         {"validatingDeskIds":["#(deskId)"],"type":"SEAL","parallelType":"OR"}
     ],
     "name":"Signature - Signatures externes - Signatures externes - Cachet serveur",
+    "id":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
     "key":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
     "deploymentId":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
     "finalDeskId": "##EMITTER##"

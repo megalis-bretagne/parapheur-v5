@@ -12,6 +12,7 @@
     }
 ],
     "name": "Cachet serveur - #(existingDeskId)",
+    "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)",
     "finalDeskId": "##EMITTER##",
