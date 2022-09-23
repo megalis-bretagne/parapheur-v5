@@ -44,6 +44,7 @@ function (tenantId, metadataKeys) {
         }
     ],
     "name": "#(name)",
+    "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)",
     "finalDeskId": "##EMITTER##",

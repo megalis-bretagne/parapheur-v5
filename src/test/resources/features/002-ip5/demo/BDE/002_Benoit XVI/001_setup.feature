@@ -168,6 +168,7 @@ Feature: Paramétrage métier "Benoit XVI"
         {"validatingDeskIds":["#(presDeskId)"],"type":"SEAL","parallelType":"OR"}
     ],
     "name":"S_CS_Pres",
+    "id":"#(id)",
     "key":"#(id)",
     "deploymentId":"#(id)",
     "finalDeskId": "##EMITTER##"
@@ -193,6 +194,7 @@ Feature: Paramétrage métier "Benoit XVI"
         {"validatingDeskIds":["#(finServDeskId)"],"type":"SECURE_MAIL","parallelType":"OR"}
     ],
     "name":"S_Pres_MS_ServFin",
+    "id":"#(id)",
     "key":"#(id)",
     "deploymentId":"#(id)",
     "finalDeskId": "##EMITTER##"
@@ -249,6 +251,7 @@ Feature: Paramétrage métier "Benoit XVI"
         {"validatingDeskIds":["#(presDeskId)","#(premvicepresDeskId)"],"type":"SIGNATURE","parallelType":"OR"}
     ],
     "name":"V_DGSETDirFin_SE_SG_S_PresOU1VP",
+    "id":"#(id)",
     "key":"#(id)",
     "deploymentId":"#(id)",
     "finalDeskId": "##EMITTER##"
@@ -301,6 +304,7 @@ Feature: Paramétrage métier "Benoit XVI"
         {"validatingDeskIds":["##BOSS_OF##"],"type":"SIGNATURE","parallelType":"OR"},
     ],
     "name":"VVS_Chefde",
+    "id":"#(id)",
     "key":"#(id)",
     "deploymentId":"#(id)",
     "finalDeskId": "##EMITTER##"

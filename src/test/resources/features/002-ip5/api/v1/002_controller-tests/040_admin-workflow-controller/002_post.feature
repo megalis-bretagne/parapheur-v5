@@ -35,6 +35,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         }
     ],
     "name": "#(unique)",
+    "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)",
     "finalDeskId": "##EMITTER##",
@@ -87,6 +88,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         }
     ],
     "name": "#(unique)",
+    "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)",
     "finalDeskId": "##EMITTER##",
@@ -133,6 +135,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         }
     ],
     "name": "#(unique)",
+    "id": "#(key)",
     "key": "#(key)",
     "deploymentId": "#(key)",
     "finalDeskId": "##EMITTER##",
