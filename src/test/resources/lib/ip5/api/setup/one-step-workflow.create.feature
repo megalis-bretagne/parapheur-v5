@@ -22,8 +22,8 @@ function (tenantId, metadataKeys) {
     return result;
 }
 """
-    * def mandatoryValidationMetadata = getWorkflowMandatoryMetadatas(tenantId, karate.get('mandatoryValidationMetadata', []))
-    * def mandatoryRejectionMetadata = getWorkflowMandatoryMetadatas(tenantId, karate.get('mandatoryRejectionMetadata', []))
+    * def mandatoryValidationMetadata = tenantId, karate.get('mandatoryValidationMetadata', [])
+    * def mandatoryRejectionMetadata = tenantId, karate.get('mandatoryRejectionMetadata', [])
 
     Given url baseUrl
     And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
