@@ -56,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.0.5
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -80,6 +80,7 @@ services:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - INITIAL_IPARAPHEUR_ADMIN_USER
       - SECRET_PROTOCOL
       - SECRET_HOST
       - SECRET_PORT
@@ -103,13 +104,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.1.1
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-beta49
+      - VERSION=5.0.0-RC1
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -118,7 +119,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.5.7
+    image: registry.libriciel.fr/public/signature/workflow:1.6.0
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -176,7 +177,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.5
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.6
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -347,8 +348,10 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
-      - KEYCLOAK_USER
-      - KEYCLOAK_PASSWORD
+      - INITIAL_KEYCLOAK_ADMIN_USER
+      - INITIAL_KEYCLOAK_ADMIN_PASSWORD
+      - INITIAL_IPARAPHEUR_ADMIN_USER
+      - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
       - SMTP_HOST
       - SMTP_PORT
       - SMTP_USER
@@ -379,7 +382,7 @@ services:
       - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
       # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
       #     WARNING : The issue was closed, but the issue was not actually fixed, to date.
-      #     The bug is easy to reproduce : On the first launch, the KEYCLOAK_USER/KEYCLOAK_PASSWORD variables will create the default user.
+      #     The bug is easy to reproduce : On the first launch, the INITIAL_KEYCLOAK_ADMIN_USER/INITIAL_KEYCLOAK_ADMIN_PASSWORD variables will create the default user.
       #     On the second launch, Keycloak will crash, because the user already exist. The problematic line (l.2) was just commented out.
       - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
 

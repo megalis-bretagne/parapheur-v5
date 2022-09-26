@@ -46,6 +46,12 @@ dossier une numérotation.
   -Dkarate.options="--tags @legacy-bridge --tags @tests --tags ~@fixme-tests"
 ```
 
+Tests les plus basiques uniquement :
+```bash
+./gradlew test --info -Dkarate.options="--tags @basic" -Dkarate.headless=true
+```
+
+
 #### Lancement des tests sur IP 4
 
 Attention, il faudra faire le ménage après et supprimer tous les dossiers nommés `SOAP` ("Rechercher par titre", dans la recherche de dossiers partie administrateur).

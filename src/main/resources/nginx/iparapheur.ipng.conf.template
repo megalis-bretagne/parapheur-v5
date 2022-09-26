@@ -54,6 +54,10 @@ upstream up_feeder {
   server feeder:8003;
 }
 
+upstream up_ipng {
+  server ipng:8081;
+}
+
 upstream up_web {
     server web:80;
 }
@@ -135,6 +139,12 @@ server {
       proxy_intercept_errors off;
       proxy_pass http://up_pes_viewer/bl-xemwebviewer;
   }
+
+ location /ipng {
+   # proxy_set_header X-Forwarded-Host $host:$server_port;
+   # proxy_set_header X-Forwarded-Server $host;
+   proxy_pass http://up_ipng/ipng;
+ }
 
   location /filetransfer/ {
     proxy_pass http://up_filetransfer/;

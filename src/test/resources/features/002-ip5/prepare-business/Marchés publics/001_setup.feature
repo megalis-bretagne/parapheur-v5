@@ -39,15 +39,16 @@ Feature: Paramétrage métier "Marchés publics"
 """
 {
     "steps":[
-        {"validators":["#(safranDeskId)"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"VISA","type":"VISA","parallelType":"OR"},
-        {"validators":["##BOSS_OF##"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"}
+        {"validatingDeskIds":["#(safranDeskId)"],"type":"VISA","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"VISA","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"VISA","parallelType":"OR"},
+        {"validatingDeskIds":["##BOSS_OF##"],"type":"SIGNATURE","parallelType":"OR"}
     ],
     "name":"Validation et signature",
     "id":"validation_et_signature",
     "key":"validation_et_signature",
-    "deploymentId":"validation_et_signature"
+    "deploymentId":"validation_et_signature",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl

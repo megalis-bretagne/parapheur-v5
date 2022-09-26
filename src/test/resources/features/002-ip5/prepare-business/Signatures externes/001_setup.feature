@@ -58,13 +58,14 @@ Feature: Paramétrage métier 'Signatures externes'
 """
 {
     "steps":[
-        {"validators":["#(desk1Id)"],"validationMode":"SIMPLE","name":"#(type1)","type":"#(type1)","parallelType":"OR"},
-        {"validators":["#(desk2Id)"],"validationMode":"SIMPLE","name":"#(type1)","type":"#(type2)","parallelType":"OR"}
+        {"validatingDeskIds":["#(desk1Id)"],"type":"#(type1)","parallelType":"OR"},
+        {"validatingDeskIds":["#(desk2Id)"],"type":"#(type2)","parallelType":"OR"}
     ],
     "name":"#(name)",
     "id":"#(key)",
     "key":"#(key)",
-    "deploymentId":"#(key)"
+    "deploymentId":"#(key)",
+    "finalDeskId": "##EMITTER##"
 }
 """
       Given url baseUrl
@@ -89,15 +90,16 @@ Feature: Paramétrage métier 'Signatures externes'
 """
 {
     "steps":[
-        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"SIGNATURE","type":"SIGNATURE","parallelType":"OR"},
-        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
-        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"EXTERNAL_SIGNATURE","type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
-        {"validators":["#(deskId)"],"validationMode":"SIMPLE","name":"SEAL","type":"SEAL","parallelType":"OR"}
+        {"validatingDeskIds":["#(deskId)"],"type":"SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["#(deskId)"],"type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["#(deskId)"],"type":"EXTERNAL_SIGNATURE","parallelType":"OR"},
+        {"validatingDeskIds":["#(deskId)"],"type":"SEAL","parallelType":"OR"}
     ],
     "name":"Signature - Signatures externes - Signatures externes - Cachet serveur",
     "id":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
     "key":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
-    "deploymentId":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur"
+    "deploymentId":"signature_-_signature_externe_-_signature_externe_-_cachet_serveur",
+    "finalDeskId": "##EMITTER##"
 }
 """
         Given url baseUrl
