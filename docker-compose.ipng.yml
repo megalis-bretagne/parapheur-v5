@@ -19,30 +19,42 @@
 
 
 services:
+
+
+  ipng:
+    image: registry.libriciel.fr:443/public/signature/ipng:1.0.0-beta03
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8081:8081
+    environment:
+      - KEYCLOAK_AUTH_PROTOCOL
+      - APPLICATION_PROTOCOL
+      - APPLICATION_HOST
+      - KEYCLOAK_HOST
+      - KEYCLOAK_PORT
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_CLIENT_SECRET
+      - IPNG_HOST
+      - IPNG_MSPID
+    volumes:
+      - ./data/ipng/wallet:/wallet
+      - ./data/ipng/ca-certs:/crypto-config
+      - ./src/main/resources/ipng/application.properties:/application.properties
+      - ./data/ipng/connection-profile.yml:/connection-profile.yml
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:4.2.18-bionic
+    volumes:
+      - ./data/ipng/cache-db:/data/db:rw
+    ports:
+      - 27017:27017
+
   nginx:
-    networks:
-      - ipng
-      - default
+    volumes:
+      - ./src/main/resources/nginx/iparapheur.ipng.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
   core:
     volumes:
-      - ./src/main/resources/core/application-dev-ipng.yml:/application.yml
-    networks:
-      - ipng
-      - default
-
-  keycloak:
-    networks:
-      - ipng
-      - default
-
-  redis:
-    networks:
-      - ipng
-      - default
-
-
-networks:
-  ipng:
-    external: true
-    name: ipng_ipng
+      - ./src/main/resources/core/application-ipng.yml:/application.yml
