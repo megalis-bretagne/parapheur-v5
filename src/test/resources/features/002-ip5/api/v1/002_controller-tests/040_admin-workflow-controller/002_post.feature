@@ -24,19 +24,22 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 {
     "steps": [
         {
-            "validators": [
+            "validatingDeskIds": [
                 "#(existingDeskId)"
             ],
-            "validationMode": "SIMPLE",
-            "name": "#(unique)",
             "type": "VISA",
-            "parallelType": "OR"
+            "parallelType": "OR",
+            "notifiedDeskIds": [],
+            "mandatoryValidationMetadataIds": [],
+            "mandatoryRejectionMetadataIds": []
         }
     ],
     "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
-    "deploymentId": "#(key)"
+    "deploymentId": "#(key)",
+    "finalDeskId": "##EMITTER##",
+    "finalNotifiedDeskIds": []
 }
 """
         When method POST
@@ -74,19 +77,22 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 {
     "steps": [
         {
-            "validators": [
+            "validatingDeskIds": [
                 "#(existingDeskId)"
             ],
-            "validationMode": "SIMPLE",
-            "name": "#(unique)",
             "type": "VISA",
-            "parallelType": "OR"
+            "parallelType": "OR",
+            "notifiedDeskIds": [],
+            "mandatoryValidationMetadataIds": [],
+            "mandatoryRejectionMetadataIds": []
         }
     ],
     "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
-    "deploymentId": "#(key)"
+    "deploymentId": "#(key)",
+    "finalDeskId": "##EMITTER##",
+    "finalNotifiedDeskIds": []
 }
 """
         When method POST
@@ -118,19 +124,22 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 {
     "steps": [
         {
-            "validators": [
+            "validatingDeskIds": [
                 "#(existingDeskId)"
             ],
-            "validationMode": "SIMPLE",
-            "name": "#(unique)",
             "type": "VISA",
-            "parallelType": "OR"
+            "parallelType": "OR",
+            "notifiedDeskIds": [],
+            "mandatoryValidationMetadataIds": [],
+            "mandatoryRejectionMetadataIds": []
         }
     ],
     "name": "#(unique)",
     "id": "#(key)",
     "key": "#(key)",
-    "deploymentId": "#(key)"
+    "deploymentId": "#(key)",
+    "finalDeskId": "##EMITTER##",
+    "finalNotifiedDeskIds": []
 }
 """
         * requestData[field] = ip.utils.eval(value)
