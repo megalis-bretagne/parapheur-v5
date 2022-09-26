@@ -25,7 +25,6 @@ services:
     image: registry.libriciel.fr:443/public/signature/ipng:1.0.0-beta03
     extra_hosts:
       - "host.docker.internal:host-gateway"
-      - "iparapheur.dom.local:host-gateway"
     ports:
       - 8081:8081
     environment:

@@ -171,13 +171,13 @@ services:
 ```
 
 
-## Ipng
+## IPNG
 
-What follows assumes that one already has an activated entity on the IPNG network, and is in possession of the corresponding material (certificate / wallet, connection profile, CA cert, ipng host url and Msp id). If not please contact your IPNG provider.  
+What follows assumes that one already has an activated entity on the IPNG network, and is in possession of the corresponding material (certificate / wallet, connection profile, CA cert, IPNG host URL and MSP id). If not please contact your IPNG provider.  
 
 
-First fill in the two required var in .env : IPNG_HOST and IPNG_MSP, that must have been provided.  
-Create and the copy all the material into the directory data/ipng. It's final structure should look like this :
+First fill in the two required var in `.env` : `IPNG_HOST` and `IPNG_MSP`, that must have been provided.  
+Create and the copy all the material into the directory `data/ipng`. It's final structure should look like this :
 
 ```
  ./data/ipng/
@@ -190,12 +190,12 @@ Create and the copy all the material into the directory data/ipng. It's final st
         <your-IPNG-entity-id>.id
 ```
 
-Additionally, if the Entity that will be connected to IPNG already exists, you can map it in `src/main/resources/core/application-ipng.yml`, uncommenting and remplacing the values :  
+Additionally, if the Entity that will be connected to IPNG already exists, you can map it in `src/main/resources/core/application-ipng.yml`, uncommenting and replacing the values :  
 
 ```yaml
 ipng:
-  tenantToEntities:
-    <iParapheur-entity-uuid>: <Ipng-entity-id>
+  tenant-to-entities:
+    <iparapheur-entity-uuid>: <ipng-entity-id>
 ```
 
 
