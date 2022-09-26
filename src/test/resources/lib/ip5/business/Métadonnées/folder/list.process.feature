@@ -34,6 +34,7 @@ Feature: ...
         #* waitFor(checkboxXpath)
 
         #* driver.screenshot()
+        *  ip.pause(1)
         * waitFor(checkboxXpath).click()
         * waitFor("//span[contains(normalize-space(text()), '" + params.action + "')]").click()
 
