@@ -276,9 +276,9 @@ services:
     image: alfresco/alfresco-transform-core-aio:2.6.0
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1280M
     environment:
-      JAVA_OPTS: "-XX:+UseContainerSupport -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80"
+      JAVA_OPTS: "-Xmx768M"
 
 
   # solr6:
