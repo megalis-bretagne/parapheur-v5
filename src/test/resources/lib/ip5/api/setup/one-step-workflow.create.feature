@@ -5,25 +5,20 @@ Feature: Workflow setup lib
     * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
     * def deskId = deskName.indexOf('#') == 0 ? deskName : ip5.api.v1.desk.getIdByName(tenantId, deskName)
     * def key = ip5.api.v1.desk.getKeyStringFromNameString(name)
-    * def getWorkflowMandatoryMetadatas =
+
+    * def getWorkflowMandatoryMetadataIds =
 """
 function (tenantId, metadataKeys) {
     var result = [];
     for (var i=0;i<metadataKeys.length;i++) {
-        result.push({
-            id: ip5.api.v1.metadata.getIdByKey(tenantId, metadataKeys[i]),
-            key: null,
-            name: null,
-            index: null,
-            type: null,
-            restrictedValues: []
-        });
+        result.push(ip5.api.v1.metadata.getIdByKey(tenantId, metadataKeys[i]));
     }
     return result;
 }
 """
-    * def mandatoryValidationMetadata = tenantId, karate.get('mandatoryValidationMetadata', [])
-    * def mandatoryRejectionMetadata = tenantId, karate.get('mandatoryRejectionMetadata', [])
+
+    * def mandatoryValidationMetadata = getWorkflowMandatoryMetadataIds(tenantId, karate.get('mandatoryValidationMetadata', []))
+    * def mandatoryRejectionMetadata = getWorkflowMandatoryMetadataIds(tenantId, karate.get('mandatoryRejectionMetadata', []))
 
     Given url baseUrl
     And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'

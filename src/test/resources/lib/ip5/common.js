@@ -43,6 +43,10 @@ function fn(config) {
         return karate.read(ip5.downloadpath.document(files, basename, prefix));
     };
 
+    config.ip5['log'] = function(message) {
+        karate.log('message : ' + message);
+    };
+
     //==================================================================================================================
     // Scenario titles
     //==================================================================================================================
