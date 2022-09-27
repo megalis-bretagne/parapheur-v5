@@ -119,7 +119,7 @@ function fn(config) {
 
         for (var i=start;i<=max;i++) {
             var draftFolderParams = {
-                limitDate: extra.limitDate === undefined ? null : extra.limitDate,
+                dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
                 name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
                 paperSignable: extra.paperSignable === undefined ? false : extra.paperSignable,
@@ -166,7 +166,7 @@ function fn(config) {
 
         for (var i=start;i<=max;i++) {
             var draftFolderParams = {
-                limitDate: extra.limitDate === undefined ? null : extra.limitDate,
+                dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
                 name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
                 paperSignable: extra.paperSignable === undefined ? false : extra.paperSignable,
