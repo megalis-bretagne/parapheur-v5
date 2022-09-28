@@ -16,7 +16,7 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
     username: '<username>',
 }
 """
-    * ip5.api.v1.auth.login('user', 'password')
+    * ip5.api.v1.auth.login('user', adminUserPwd)
     * def folders = ip5.api.v1.desk.draft.getPayloadMultidoc(params, <count>, <extra>, <start>)
     * ip5.api.v1.auth.login('<username>', '<password>')
     * def result = call read('classpath:lib/ip5/api/draft/create-and-send-multidoc-<withOrWithout>-annex.feature') folders

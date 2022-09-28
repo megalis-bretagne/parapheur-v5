@@ -26,6 +26,7 @@ function fn() {
     const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
     const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
+    const adminUserPwd = karate.properties['karate.adminUserPwd'] || 'pass';
 
     // Skip SSL certificate validation
     karate.configure("ssl", true);
@@ -37,6 +38,7 @@ function fn() {
         baseUrl: baseUrl,
         buildDir: karate.toAbsolutePath("classpath:karate-config.js").replace(/^(.*\/build\/).*$/, '$1'),
         soapBaseUrl: soapBaseUrl,
+        adminUserPwd:  adminUserPwd,
         // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),

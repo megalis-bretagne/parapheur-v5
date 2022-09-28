@@ -2,13 +2,13 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def name = 'tmp-' + ip.utils.getUUID()
 
@@ -44,7 +44,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def name = 'tmp-' + ip.utils.getUUID()
 
@@ -79,7 +79,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a type with no protocol and associate it to a non-existing tenant', status, data)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def name = 'tmp-' + ip.utils.getUUID()
         * def requestData =
