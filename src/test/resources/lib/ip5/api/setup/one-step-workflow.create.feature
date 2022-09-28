@@ -35,7 +35,7 @@ function (tenantId, metadataKeys) {
             "parallelType": "OR",
             "notifiedDeskIds": [],
             "mandatoryValidationMetadataIds": #(mandatoryValidationMetadata),
-            "mandatoryValidationMetadataIds": #(mandatoryRejectionMetadata)
+            "mandatoryRejectionMetadataIds": #(mandatoryRejectionMetadata)
         }
     ],
     "name": "#(name)",
