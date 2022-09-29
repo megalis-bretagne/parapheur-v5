@@ -6,7 +6,6 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
 
         Examples:
             | mode       | action | subtype               |
-            | Groupe     | Rejet  | Aucune métadonnée     |
             | Individuel | Rejet  | Aucune métadonnée     |
             | Individuel | Rejet  | Booleen rejet         |
             | Individuel | Rejet  | Booleen visa          |
@@ -30,6 +29,7 @@ Feature: Vérifications de dossiers pour le paramétrage métier "Métadonnées"
 
         Examples:
             | mode       | action | subtype               |
+            | Groupe     | Rejet  | Aucune métadonnée     |
             | Groupe     | Rejet  | Booleen rejet         |
             | Groupe     | Rejet  | Booleen visa          |
             | Groupe     | Rejet  | Booleen rejet et visa |
