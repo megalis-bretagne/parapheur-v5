@@ -2,13 +2,13 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for an existing user in an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def existingUserId = ip5.api.v1.user.createTemporary(existingTenantId)
 
@@ -43,7 +43,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for a non-existing user in an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
         * ip5.api.v1.auth.login('<username>', '<password>')
@@ -68,7 +68,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for an existing user in a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'stranslucide@dom.local')
@@ -91,7 +91,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a signature image for a non-existing user in a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
         * ip5.api.v1.auth.login('<username>', '<password>')
@@ -113,7 +113,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'delete a signature image for an existing user in an existing tenant', status, data)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def existingUserId = email == null ? ip5.api.v1.user.createTemporary(existingTenantId) : ip5.api.v1.user.getIdByEmail(existingTenantId, '<email>')
 

@@ -2,14 +2,14 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificateId} (Delete the given seal certificate)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in an existing tenant', status)}
         # Create a temporary seal certificate
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
@@ -45,7 +45,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in an existing tenant', status)}
         # Get informations
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def nonExistingSealCertificateId = ip5.api.v1.sealCertificate.getNonExistingId()
 
@@ -75,7 +75,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in a non-existing tenant', status)}
         # Create a temporary seal certificate
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
@@ -112,7 +112,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in a non-existing tenant', status)}
         # Create a seal certificate
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * def nonExistingSealCertificateId = ip5.api.v1.sealCertificate.getNonExistingId()
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()

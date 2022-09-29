@@ -2,13 +2,13 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a stats entry for the given tenant)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create or recreate a stats entry for an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.createTemporary()
         * ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -30,7 +30,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create or recreate a stats entry for a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
         * ip5.api.v1.auth.login('<username>', '<password>')

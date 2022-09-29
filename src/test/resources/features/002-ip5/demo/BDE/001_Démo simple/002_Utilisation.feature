@@ -19,7 +19,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     username: '<username>',
 }
 """
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def folders = ip5.api.v1.desk.draft.getPayloadMonodoc(params, <count>, {}, 1)
         * ip5.api.v1.auth.login('<username>', '<password>')
         * def result = call read('classpath:lib/ip5/api/draft/create-and-send-monodoc-without-annex.feature') folders

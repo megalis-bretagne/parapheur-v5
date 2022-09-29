@@ -7,26 +7,26 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     @basic
     Scenario: Connexion avec un superadmin
-        * ip5.ui.user.login("user", "password")
+        * ip5.ui.user.login("user", adminUserPwd)
 
     @basic
     Scenario: Créer une entité
-        * ip5.ui.user.login("user", "password")
+        * ip5.ui.user.login("user", adminUserPwd)
         * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     @basic
     Scenario: Supprimer une entité
-        * ip5.ui.user.login("user", "password")
+        * ip5.ui.user.login("user", adminUserPwd)
         * call read('classpath:lib/ip5/ui/tenant/delete.feature') { tenant: "Démo simple" }
 
     @basic
     Scenario: Créer une entité
-        * ip5.ui.user.login("user", "password")
+        * ip5.ui.user.login("user", adminUserPwd)
         * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
 
     @basic
     Scenario Outline: Créer un utilisateur ${role} et connexion avec celui-ci
-        * ip5.ui.user.login("user", "password")
+        * ip5.ui.user.login("user", adminUserPwd)
         * call read('classpath:lib/ip5/ui/user/create.feature') __row
         * ip5.ui.user.logout()
 
@@ -46,7 +46,7 @@ Feature: 001 - Scénario de démo simple, partie administration
         * call read('classpath:lib/ip5/ui/user/create.feature') __row
         * ip5.ui.user.logout()
 
-        * ip5.api.v1.auth.login("user", "password")
+        * ip5.api.v1.auth.login("user", adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName("<tenant>")
         * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, "<email>")
 

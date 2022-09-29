@@ -2,7 +2,7 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
@@ -12,7 +12,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit an existing tenant', status)}
         # Create a temporary tenant
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def id = ip5.api.v1.entity.createTemporary()
 
 		# Try to edit it
@@ -60,7 +60,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId} (Edit tenant)
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'edit an existing tenant', status, data)}
         # Create a temporary tenant
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def id = ip5.api.v1.entity.createTemporary()
 
         # Try to edit it
