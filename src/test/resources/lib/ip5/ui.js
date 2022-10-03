@@ -45,6 +45,32 @@ function fn(config) {
         }
         return actual;
     };
+    config.ip5.ui.desk['getTileNames'] = function() {
+        var
+            actual = [],
+            baseXpath = "//app-desk-list",
+            idxCell,
+            idxLine,
+            lines,
+            lineXpathPart = "//*[contains(concat(' ', @class, ' '), ' flex-nowrap ')]",
+            cells,
+            cellXpath = "//*[contains(concat(' ', @class, ' '), ' pointer ')]";
+
+        waitFor(baseXpath);
+
+        lines = karate.sizeOf(locateAll(baseXpath + lineXpathPart));
+        karate.log("lines " + lines);
+        for (idxLine = 1;idxLine <= lines;idxLine++) {
+            cells = karate.sizeOf(locateAll(baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath));
+            karate.log("xpath " + baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath);
+            karate.log("cells " + cells);
+            for (idxCell = 1;idxCell <= cells;idxCell++) {
+                actual.push(text(baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath + "[position() = " + idxCell + "]//*[contains(concat(' ', @class, ' '), ' desk-layout ')]//a/text()").trim());
+            }
+        }
+
+        return actual;
+    };
 
     /**
      * Folder
