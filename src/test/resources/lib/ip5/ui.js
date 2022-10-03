@@ -45,6 +45,29 @@ function fn(config) {
         }
         return actual;
     };
+    config.ip5.ui.desk['getAllListNames'] = function() {
+        var
+            actual = {},
+            idx,
+            lines,
+            tenant = null,
+            xpathPrefix = "//app-desk-list//table//tbody//tr";
+
+        click("//*[contains(concat(' ', @class, ' '), ' page-link ')][contains(text(),100)]");
+        waitFor("//app-desk-list//table");
+
+        lines = karate.sizeOf(locateAll(xpathPrefix));
+        for (idx = 1;idx <= lines;idx++) {
+            if(exists(xpathPrefix + "[position() = " + idx + "]//fa-icon[contains(concat(' ', @class, ' '), ' pointer ')]") === true) {
+                tenant = text(xpathPrefix + "[position() = " + idx + "]/td[position()=1]/text()").trim();
+                actual[tenant] = [];
+            } else {
+                actual[tenant].push(text(xpathPrefix + "[position() = " + idx + "]/td[position()=1]/text()").trim());
+            }
+        }
+
+        return actual;
+    };
     config.ip5.ui.desk['getTileNames'] = function() {
         var
             actual = [],
@@ -59,11 +82,8 @@ function fn(config) {
         waitFor(baseXpath);
 
         lines = karate.sizeOf(locateAll(baseXpath + lineXpathPart));
-        karate.log("lines " + lines);
         for (idxLine = 1;idxLine <= lines;idxLine++) {
             cells = karate.sizeOf(locateAll(baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath));
-            karate.log("xpath " + baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath);
-            karate.log("cells " + cells);
             for (idxCell = 1;idxCell <= cells;idxCell++) {
                 actual.push(text(baseXpath + lineXpathPart + "[position() = " + idxLine + "]" + cellXpath + "[position() = " + idxCell + "]//*[contains(concat(' ', @class, ' '), ' desk-layout ')]//a/text()").trim());
             }
