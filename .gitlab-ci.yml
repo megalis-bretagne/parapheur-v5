@@ -16,8 +16,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+include:
+  - project: "libriciel/integration-continue/templates"
+    ref: security-check-1.0.0
+    file: 'jobs/security-check-fs/security-check-fs.yml'
+
 stages:
   - package
+  - test
   - publish
   - deploy
   - e2e-tests-strict
