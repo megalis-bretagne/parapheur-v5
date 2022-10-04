@@ -18,7 +18,6 @@
 
 include:
   - project: "libriciel/integration-continue/templates"
-    ref: security-check-1.0.0
     file: 'jobs/security-check-fs/security-check-fs.yml'
 
 stages:
