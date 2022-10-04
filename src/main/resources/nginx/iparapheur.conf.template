@@ -80,6 +80,37 @@ server {
   proxy_buffers 4 256k;
   proxy_busy_buffers_size 256k;
   proxy_http_version 1.1;
+  root /var/www/html/wsdl;
+
+  location /ws-iparapheur {
+
+    error_page 418 = @wsdl;
+
+    set $isWsdlRequest 1;
+
+    if ( $query_string != "wsdl") {
+        set $isWsdlRequest 0;
+    }
+
+    if ( $request_method != GET) {
+        set $isWsdlRequest 0;
+    }
+
+    if ($isWsdlRequest) {
+        return 418;
+    }
+
+    proxy_pass http://up_legacy_bridge/ws-iparapheur;
+  }
+
+  location @wsdl {
+    try_files /ws-iparapheur.wsdl 404;
+  }
+
+  location /ws-iparapheur/xml {
+    root /var/www/html/wsdl;
+    try_files /xmlmime.xsd 404;
+  }
 
   location /auth {
     proxy_pass http://keycloak:8080/auth;
@@ -96,10 +127,6 @@ server {
 
   location /pastell-connector {
     proxy_pass http://up_pastell_connector/pastell-connector;
-  }
-
-  location /ws-iparapheur {
-    proxy_pass http://up_legacy_bridge/ws-iparapheur;
   }
 
   location /libersign {
