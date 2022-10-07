@@ -3,7 +3,7 @@ Contributing
 
 ## Project structure
 
-This project contains a main `docker-compose.yml` file, that should start an i-Parapheur properly.
+This project contains a main `docker-compose.yml` file, that should start an iparapheur properly.
 
 * `src/main/resources` every needed configuration files
 * `src/test` files for the integration tests (Karate)
