@@ -63,8 +63,14 @@ services:
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
+      - CORE_DB_USER
+      - CORE_DB_PASSWORD
+      - QUARTZ_DB_USER
+      - QUARTZ_DB_PASSWORD
       - CONTENT_HOST
       - CONTENT_PORT
+      - CONTENT_USER
+      - CONTENT_PASSWORD
       - MATOMO_TOKEN
       - STATS_SERVICE_PROTOCOL
       - VAULT_UNSEAL_KEY
@@ -80,6 +86,7 @@ services:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - KEYCLOAK_RESTADMIN_PASSWORD
       - INITIAL_IPARAPHEUR_ADMIN_USER
       - SECRET_PROTOCOL
       - SECRET_HOST
@@ -123,6 +130,9 @@ services:
     restart: unless-stopped
     tty: true
     mem_limit: 768M
+    environment:
+      - WORKFLOW_DB_USER
+      - WORKFLOW_DB_PASSWORD
     depends_on:
       postgres:
         condition: service_healthy
@@ -167,6 +177,8 @@ services:
       - POSTGRES_HOST=postgres
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - SECUREMAIL_DB_USER
+      - SECUREMAIL_DB_PASSWORD
 
 
   external-signature-connector:
@@ -245,8 +257,8 @@ services:
         -Dcsrf.filter.enabled=false
         -Ddb.driver=org.postgresql.Driver
         -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
-        -Ddb.username=alfresco
-        -Ddb.password=alfresco
+        -Ddb.username=${CONTENT_DB_USER}
+        -Ddb.password=${CONTENT_DB_PASSWORD}
         -Dmessaging.broker.url=\"failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true\"
         -Dtransform.service.enabled=true
         -Dcsrf.filter.enabled=false
@@ -316,7 +328,18 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz,pastellconnector
+      - KEYCLOAK_DB_USER
+      - KEYCLOAK_DB_PASSWORD
+      - CONTENT_DB_USER
+      - CONTENT_DB_PASSWORD
+      - CORE_DB_USER
+      - CORE_DB_PASSWORD
+      - QUARTZ_DB_USER
+      - QUARTZ_DB_PASSWORD
+      - WORKFLOW_DB_USER
+      - WORKFLOW_DB_PASSWORD
+      - SECUREMAIL_DB_USER
+      - SECUREMAIL_DB_PASSWORD
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -362,7 +385,8 @@ services:
       - SMTP_ENABLE_START_TLS
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
-      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
+      - DB_DATABASE=keycloak
+      # ${KEYCLOAK_DB_DATABASE}
       - DB_USER=${KEYCLOAK_DB_USER}
       - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       # - KEYCLOAK_LOGLEVEL=TRACE

@@ -20,12 +20,52 @@
 
 set -e
 
-IFS=', ' read -r -a db_to_create <<<"$DB_TO_CREATE"
 POSTGRES="psql -v ON_ERROR_STOP=1 --username ${POSTGRES_USER} "
 
-for i in "${db_to_create[@]}"; do
-  echo "Creating database: ${i}"
-  $POSTGRES <<-EOSQL
-        CREATE DATABASE ${i} OWNER ${i};
+#
+# ALFRESCO
+#
+echo "Creating database: alfresco"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE alfresco OWNER ${CONTENT_DB_USER};
 EOSQL
-done
+
+#
+# WORKFLOW
+#
+echo "Creating database: flowable"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE flowable OWNER ${WORKFLOW_DB_USER};
+EOSQL
+
+#
+# KEYCLOAK
+#
+echo "Creating database: keycloak"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE keycloak OWNER ${KEYCLOAK_DB_USER};
+EOSQL
+
+#
+# CORE
+#
+echo "Creating database: ipcore"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE ipcore OWNER ${CORE_DB_USER};
+EOSQL
+
+#
+# QUARTZ
+#
+echo "Creating database: quartz"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE quartz OWNER ${QUARTZ_DB_USER};
+EOSQL
+
+#
+# PASTELL CONECTOR
+#
+echo "Creating database: pastellconnector"
+$POSTGRES <<-EOSQL
+      CREATE DATABASE pastellconnector OWNER ${SECUREMAIL_DB_USER};
+EOSQL
