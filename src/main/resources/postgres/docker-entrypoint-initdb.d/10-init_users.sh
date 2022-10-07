@@ -20,12 +20,65 @@
 
 set -e
 
-IFS=', ' read -r -a db_to_create <<<"$DB_TO_CREATE"
+# IFS=', ' read -r -a db_to_create <<<"$DB_TO_CREATE"
+# POSTGRES="psql -v ON_ERROR_STOP=1 --username ${POSTGRES_USER} "
+#
+# for i in "${db_to_create[@]}"; do
+#   echo "Creating database role: ${i}"
+#   $POSTGRES <<-EOSQL
+#         CREATE USER ${i} WITH CREATEDB PASSWORD '${i}';
+# EOSQL
+# done
+
+
+
+
 POSTGRES="psql -v ON_ERROR_STOP=1 --username ${POSTGRES_USER} "
 
-for i in "${db_to_create[@]}"; do
-  echo "Creating database role: ${i}"
-  $POSTGRES <<-EOSQL
-        CREATE USER ${i} WITH CREATEDB PASSWORD '${i}';
+#
+# ALFRESCO
+#
+echo "Creating database role: ${CONTENT_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${CONTENT_DB_USER} WITH CREATEDB PASSWORD '${CONTENT_DB_PASSWORD}';
 EOSQL
-done
+
+#
+# WORKFLOW
+#
+echo "Creating database role: ${WORKFLOW_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${WORKFLOW_DB_USER} WITH CREATEDB PASSWORD '${WORKFLOW_DB_PASSWORD}';
+EOSQL
+
+#
+# KEYCLOAK
+#
+echo "Creating database role: ${KEYCLOAK_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${KEYCLOAK_DB_USER} WITH CREATEDB PASSWORD '${KEYCLOAK_DB_PASSWORD}';
+EOSQL
+
+#
+# CORE
+#
+echo "Creating database role: ${CORE_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${CORE_DB_USER} WITH CREATEDB PASSWORD '${CORE_DB_PASSWORD}';
+EOSQL
+
+#
+# QUARTZ
+#
+echo "Creating database role: ${QUARTZ_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${QUARTZ_DB_USER} WITH CREATEDB PASSWORD '${QUARTZ_DB_PASSWORD}';
+EOSQL
+
+#
+# PASTELL CONECTOR
+#
+echo "Creating database role: ${SECUREMAIL_DB_USER}"
+$POSTGRES <<-EOSQL
+      CREATE USER ${SECUREMAIL_DB_USER} WITH CREATEDB PASSWORD '${SECUREMAIL_DB_PASSWORD}';
+EOSQL
