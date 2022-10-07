@@ -1,4 +1,4 @@
-# @legacy-bridge @ip4 @ip5 @soap @tests @fixme-ip5
+@legacy-bridge @ip4 @ip5 @soap @tests @fixme-ip5
 Feature: ExercerDroitRemordDossier
 
     Scenario Outline: Exercice du droit de remord sur un dossier
