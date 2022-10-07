@@ -28,9 +28,9 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       FOREIGN DATA WRAPPER postgres_fdw
       OPTIONS (dbname 'keycloak', host 'postgres', port '5432');
 
-    CREATE USER MAPPING FOR ipcore
+    CREATE USER MAPPING FOR ${CORE_DB_USER}
       SERVER keycloak
-      OPTIONS (user 'keycloak', password 'keycloak');
+      OPTIONS (user '${KEYCLOAK_DB_USER}', password '${KEYCLOAK_DB_PASSWORD}');
 
 
     CREATE FOREIGN TABLE user_entity(
@@ -94,12 +94,12 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       OPTIONS (schema_name 'public', table_name 'user_role_mapping');
 
 
-    ALTER FOREIGN TABLE user_entity OWNER TO ipcore;
-    ALTER FOREIGN TABLE keycloak_role OWNER TO ipcore;
-    ALTER FOREIGN TABLE user_attribute OWNER TO ipcore;
-    ALTER FOREIGN TABLE component OWNER TO ipcore;
-    ALTER FOREIGN TABLE component_config OWNER TO ipcore;
-    ALTER FOREIGN TABLE user_role_mapping OWNER TO ipcore;
+    ALTER FOREIGN TABLE user_entity OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE keycloak_role OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE user_attribute OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE component OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE component_config OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE user_role_mapping OWNER TO ${CORE_DB_USER};
 
 EOSQL
 
