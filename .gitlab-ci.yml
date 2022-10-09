@@ -1,5 +1,5 @@
 #
-# i-Parapheur Web
+# iparapheur Web
 # Copyright (C) 2019-2022 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -38,13 +38,15 @@ variables:
   DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml docker-compose.override.tests-linux.yml"
   DOCKER_COMPOSE_OVERRIDES_TAG: "docker-compose.override.tests-linux.yml"
 
+
 .e2e-test-config:
   variables: &e2e-test-config
     TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
     TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "TRUE"
-    OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_TAG}
+    OVERWRITE_ADMIN_PASSWORD: "TRUE"
+    OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
   environment: &e2e-test-environment
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -167,6 +169,7 @@ publish:
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
+  - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/.env"; fi
   - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
@@ -202,10 +205,12 @@ strict-e2e-tests-deploy:
       when: never
     - if: $NIGHTLY == "TRUE"
       when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
-    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_TAG != null
+    - if: $CI_COMMIT_BRANCH == 'develop'
       when: always
+    - if: $CI_COMMIT_TAG != null
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_TAG}
     - when: manual
   allow_failure: false
   variables: *e2e-test-config
@@ -219,8 +224,6 @@ tolerant-e2e-tests-deploy:
       when: never
     - if: $NIGHTLY == "TRUE"
       when: manual
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_DEV}
     - if: $CI_COMMIT_BRANCH == 'develop'
       when: manual
     - when: manual
@@ -275,7 +278,7 @@ dev-deploy:
     - set -eo pipefail
     - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libpoppler102=20.09.* libxml2-utils=2.9.* locales=2.31-* locales-all=2.31-* python3-pip=20.3.* poppler-utils=20.09.* xmlsec1=1.2.* zip=3.0-12 && pip3 install jsonpath-ng==1.5.3 Pillow==9.2.0 PyPDF2==2.10.0 && locale-gen fr_FR.UTF-8
     - echo "Test ${CI_COMMIT_REF_NAME} deployed on ${E2E_TESTS_TARGET_SERVER_URL} with Karate - These tests mustn't fail"
-    - ./gradlew test -Dkarate.options="${KARATE_ADDITIONAL_TAGS}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
+    - ./gradlew test -Dkarate.options="${KARATE_ADDITIONAL_TAGS}" -Dkarate.adminUserPwd="${E2E_TESTS_INITIAL_ADMIN_PWD}" -Dkarate.headless=true -Dkarate.baseUrl="https://${E2E_TESTS_TARGET_SERVER_URL}" -Dkarate.chromeBin=/opt/google/chrome/google-chrome
     - python3 src/scripts/karate-tests-fixme-ip-tag.py | tee build/karate-tests-fixme-ip-tag.txt
   after_script:
     - if [ ! -f build/karate-tests-fixme-ip-tag.txt ] ; then python3 src/scripts/karate-tests-fixme-ip-tag.py | tee build/karate-tests-fixme-ip-tag.txt ; fi

@@ -2,7 +2,7 @@
     Feature: Vérification des utilisateurs de l'entité "CDG59/Aniche"
 
     Background:
-        * ip5.api.v1.auth.login("user", "password")
+        * ip5.api.v1.auth.login("user", adminUserPwd)
         * def tenant = "aniche"
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 

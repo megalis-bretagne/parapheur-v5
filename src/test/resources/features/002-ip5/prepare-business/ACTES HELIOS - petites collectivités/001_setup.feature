@@ -1,7 +1,7 @@
 @actes-helios-petites-collectivites @prepare-business @ip5 @setup
 Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
 
     Scenario Outline: Create tenant "${name}"
         * call read('classpath:lib/ip5/api/setup/tenant.create.feature') __row

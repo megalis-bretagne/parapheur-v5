@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# i-Parapheur
+# iparapheur
 # Copyright (C) 2019-2022 Libriciel SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -145,17 +145,17 @@ psql -v ON_ERROR_STOP=1 --dbname "quartz" <<-EOSQL
         job_data       bytea
     );
 
-    ALTER TABLE qrtz_blob_triggers OWNER TO quartz;
-    ALTER TABLE qrtz_calendars OWNER TO quartz;
-    ALTER TABLE qrtz_cron_triggers OWNER TO quartz;
-    ALTER TABLE qrtz_fired_triggers OWNER TO quartz;
-    ALTER TABLE qrtz_job_details OWNER TO quartz;
-    ALTER TABLE qrtz_locks OWNER TO quartz;
-    ALTER TABLE qrtz_paused_trigger_grps OWNER TO quartz;
-    ALTER TABLE qrtz_scheduler_state OWNER TO quartz;
-    ALTER TABLE qrtz_simple_triggers OWNER TO quartz;
-    ALTER TABLE qrtz_simprop_triggers OWNER TO quartz;
-    ALTER TABLE qrtz_triggers OWNER TO quartz;
+    ALTER TABLE qrtz_blob_triggers OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_calendars OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_cron_triggers OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_fired_triggers OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_job_details OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_locks OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_paused_trigger_grps OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_scheduler_state OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_simple_triggers OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_simprop_triggers OWNER TO ${QUARTZ_DB_USER};
+    ALTER TABLE qrtz_triggers OWNER TO ${QUARTZ_DB_USER};
 
     ALTER TABLE ONLY qrtz_blob_triggers
         ADD CONSTRAINT qrtz_blob_triggers_pkey

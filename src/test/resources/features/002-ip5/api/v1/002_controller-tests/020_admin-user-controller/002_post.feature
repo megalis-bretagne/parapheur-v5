@@ -2,7 +2,7 @@
 Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
@@ -47,7 +47,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a user in a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
         * ip5.api.v1.auth.login('<username>', '<password>')

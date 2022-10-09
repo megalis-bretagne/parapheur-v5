@@ -56,8 +56,8 @@ Feature: RechercherDossiers
             And match rv.response == karate.read('classpath:lib/ip/api/soap/schemas/RechercherDossiersResponse/' + schema)
 
             Examples:
-                | type!          | sousType!        | status!  | expected! | statuses!                       |
-                | "Auto monodoc" | "visa avec meta" | "Rejet*" | 3         | ["RejetSignataire","RejetVisa"] |
+                | type!          | sousType!        | status!  | expected! | statuses!     |
+                | "Auto monodoc" | "visa avec meta" | "Rejet*" | 3         | ["RejetVisa"] |
 
     Scenario: Récupération des dossiers par DossierID
         # 1. Récupération de la liste de DossierID pour le status "Archive"

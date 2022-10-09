@@ -2,7 +2,7 @@
 Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{delegatingDeskId} (Remove an active or planned delegation from target Desk)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
@@ -26,7 +26,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in an existing tenant', status)}
         # Create a delegation
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
@@ -62,7 +62,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target existing desk to an existing desk in a non-existing tenant', status)}
         # Create a delegation
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
         * copy requestData = baseRequestData
         * set requestData.substituteDeskId = delegatingDeskId
@@ -118,7 +118,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'remove an active or planned delegation from target non-existing desk to an existing desk in an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def delegatingDeskId = ip5.api.v1.desk.getIdByName(existingTenantId, 'Transparent')
 
         * ip5.api.v1.auth.login('<username>', '<password>')

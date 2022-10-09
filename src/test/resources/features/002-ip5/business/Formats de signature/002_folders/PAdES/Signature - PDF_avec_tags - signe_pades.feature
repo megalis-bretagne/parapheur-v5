@@ -82,7 +82,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
 {
     "page 1": {
         "1": "#(ip.signature.pades.images.expected('cnoir', 1))"
-    }
+    },
     "page 3": {
         "1": "#(ip.signature.pades.images.expected('<username>'))"
     }

@@ -129,7 +129,7 @@ systemctl enable iparapheur
 
 ## Start
 
-The following command will serve a working i-Parapheur.
+The following command will serve a working iparapheur.
 
 ```bash
 systemctl start iparapheur

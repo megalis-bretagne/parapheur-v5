@@ -2,13 +2,13 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 	Background:
-		* ip5.api.v1.auth.login('user', 'password')
+		* ip5.api.v1.auth.login('user', adminUserPwd)
 		* def list = ip5.api.v1.entity.getListByPartialName('tmp-')
 		* call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the user list from an existing tenant', status)}
-		* ip5.api.v1.auth.login('user', 'password')
+		* ip5.api.v1.auth.login('user', adminUserPwd)
 		* def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
 
 		* ip5.api.v1.auth.login('<username>', '<password>')
@@ -31,7 +31,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the user list from a non-existing tenant', status)}
-		* ip5.api.v1.auth.login('user', 'password')
+		* ip5.api.v1.auth.login('user', adminUserPwd)
 		* def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
 		* ip5.api.v1.auth.login('<username>', '<password>')
@@ -53,7 +53,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 
 	@searching
 	Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sort, direction)}
-		* ip5.api.v1.auth.login('user', 'password')
+		* ip5.api.v1.auth.login('user', adminUserPwd)
 		* def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
 		* ip5.api.v1.auth.login('cnoir', 'a123456')
 

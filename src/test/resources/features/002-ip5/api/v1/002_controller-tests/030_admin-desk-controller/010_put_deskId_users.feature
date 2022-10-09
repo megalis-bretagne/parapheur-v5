@@ -2,7 +2,7 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to desk)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
@@ -12,7 +12,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate an existing desk to an existing user in an existing tenant', status)}
         # Create a temporary desk
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def unique = 'tmp-' + ip.utils.getUUID()
 
         Given url baseUrl
@@ -70,7 +70,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate an existing desk to a non-existing user in an existing tenant', status)}
         # Create a temporary desk
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
@@ -126,7 +126,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate a non-existing desk to an existing user in an existing tenant', status)}
         # Get data
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
         * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
 
@@ -155,7 +155,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate a non-existing desk to a non-existing user in an existing tenant', status)}
         # Get data
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()
 
         # Associate a non-existing user to a non-existing desk

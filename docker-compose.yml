@@ -1,5 +1,5 @@
 #
-# i-Parapheur
+# iparapheur
 # Copyright (C) 2019-2022 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -56,15 +56,21 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.1
     restart: unless-stopped
     tty: true
     mem_limit: 1G
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
+      - CORE_DB_USER
+      - CORE_DB_PASSWORD
+      - QUARTZ_DB_USER
+      - QUARTZ_DB_PASSWORD
       - CONTENT_HOST
       - CONTENT_PORT
+      - CONTENT_USER
+      - CONTENT_PASSWORD
       - MATOMO_TOKEN
       - STATS_SERVICE_PROTOCOL
       - VAULT_UNSEAL_KEY
@@ -80,6 +86,7 @@ services:
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - KEYCLOAK_RESTADMIN_PASSWORD
       - INITIAL_IPARAPHEUR_ADMIN_USER
       - SECRET_PROTOCOL
       - SECRET_HOST
@@ -104,13 +111,13 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
     environment:
       - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
-      - VERSION=5.0.0-RC1
+      - VERSION=5.0.0
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
@@ -119,10 +126,13 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.0
+    image: registry.libriciel.fr/public/signature/workflow:1.6.2
     restart: unless-stopped
     tty: true
     mem_limit: 768M
+    environment:
+      - WORKFLOW_DB_USER
+      - WORKFLOW_DB_PASSWORD
     depends_on:
       postgres:
         condition: service_healthy
@@ -159,7 +169,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.6
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -167,6 +177,8 @@ services:
       - POSTGRES_HOST=postgres
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - SECUREMAIL_DB_USER
+      - SECUREMAIL_DB_PASSWORD
 
 
   external-signature-connector:
@@ -177,7 +189,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.2.6
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.3.0
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -245,8 +257,8 @@ services:
         -Dcsrf.filter.enabled=false
         -Ddb.driver=org.postgresql.Driver
         -Ddb.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/alfresco
-        -Ddb.username=alfresco
-        -Ddb.password=alfresco
+        -Ddb.username=${CONTENT_DB_USER}
+        -Ddb.password=${CONTENT_DB_PASSWORD}
         -Dmessaging.broker.url=\"failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true\"
         -Dtransform.service.enabled=true
         -Dcsrf.filter.enabled=false
@@ -268,6 +280,7 @@ services:
       - ./data/alfresco:/usr/local/tomcat/alf_data
       # DOC: file needs to end in -context.xml and to be in this location.
       # Details on (Deployment - App Server) -> https://docs.alfresco.com/6.2/references/dev-extension-points-content-model-define-and-deploy.html
+      - ./src/main/resources/content/alfresco-global.properties:/usr/local/tomcat/shared/classes/alfresco-global.properties
       - ./src/main/resources/content/ip-custom-models.xml:/usr/local/tomcat/shared/classes/alfresco/extension/ip-custom-models.xml
       - ./src/main/resources/content/custom-model-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/custom-model-context.xml
 
@@ -276,9 +289,9 @@ services:
     image: alfresco/alfresco-transform-core-aio:2.6.0
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1280M
     environment:
-      JAVA_OPTS: "-XX:+UseContainerSupport -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80"
+      JAVA_OPTS: "-Xmx768M"
 
 
   # solr6:
@@ -316,7 +329,18 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - DB_TO_CREATE=alfresco,flowable,${KEYCLOAK_DB_DATABASE},ipcore,quartz,pastellconnector
+      - KEYCLOAK_DB_USER
+      - KEYCLOAK_DB_PASSWORD
+      - CONTENT_DB_USER
+      - CONTENT_DB_PASSWORD
+      - CORE_DB_USER
+      - CORE_DB_PASSWORD
+      - QUARTZ_DB_USER
+      - QUARTZ_DB_PASSWORD
+      - WORKFLOW_DB_USER
+      - WORKFLOW_DB_PASSWORD
+      - SECUREMAIL_DB_USER
+      - SECUREMAIL_DB_PASSWORD
     command: postgres -c max_connections=500 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -362,7 +386,8 @@ services:
       - SMTP_ENABLE_START_TLS
       - DB_VENDOR=postgres
       - DB_ADDR=postgres
-      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
+      - DB_DATABASE=keycloak
+      # ${KEYCLOAK_DB_DATABASE}
       - DB_USER=${KEYCLOAK_DB_USER}
       - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       # - KEYCLOAK_LOGLEVEL=TRACE

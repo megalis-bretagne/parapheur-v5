@@ -2,7 +2,7 @@
 Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 

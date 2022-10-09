@@ -62,16 +62,16 @@ Feature: PAdES - Cachet serveur - PDF_avec_tags - signe_pades
         "1": "#(ip4.signature.pades.annotations.default([350, 6, 519, 59], 'Christian Noir', 'Responsable des méthodes'))"
     },
     "page 3": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
+        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>', '<line3>'))"
     }
 }
 """
         * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags-signature_pades.pdf") == expected
 
         Examples:
-            | key       | position!            | line1 | line2 |
-            | normal    | [323, 206, 523, 276] |       |       |
-            | surcharge | [323, 206, 523, 276] |       |       |
+            | key       | position!            | line1 | line2 | line3 |
+            | normal    | [323, 206, 523, 276] |       |       |       |
+            | surcharge | [323, 206, 523, 276] |       |       |       |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")

@@ -2,13 +2,13 @@
 Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certificates)
 
     Background:
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the seal certificates list of an existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
         * ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -33,7 +33,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the seal certificates list of a non-existing tenant', status)}
-        * ip5.api.v1.auth.login('user', 'password')
+        * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * ip5.api.v1.auth.login('<username>', '<password>')
 
