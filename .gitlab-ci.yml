@@ -233,7 +233,7 @@ tolerant-e2e-tests-deploy:
       optional: true
     - job: package_prod
       optional: true
-    - strict-e2e-tests
+    - strict-e2e-tests-test
   allow_failure: false
   variables: *e2e-test-config
   environment: *e2e-test-environment
