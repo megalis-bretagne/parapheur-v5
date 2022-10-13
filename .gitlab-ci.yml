@@ -339,6 +339,7 @@ strict-e2e-tests-test-metadonnees:
 
 tolerant-e2e-tests-tests:
   extends: [ .e2e-tests ]
+  stage: e2e-tests-tolerant
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TENANT}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TENANT} --tags ~@ignore "
@@ -350,6 +351,6 @@ tolerant-e2e-tests-tests:
   allow_failure: true
   parallel:
     matrix:
-      - KARATE_TENANT: ["demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees"]
+      - KARATE_TENANT: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 # </editor-fold desc="E2e tests">
