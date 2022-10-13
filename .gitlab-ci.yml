@@ -233,10 +233,7 @@ tolerant-e2e-tests-deploy:
       optional: true
     - job: package_prod
       optional: true
-    - strict-e2e-tests-test-demo-simple-bde
-    - strict-e2e-tests-test-formats-de-signature
-    - strict-e2e-tests-test-legacy-bridge
-    - strict-e2e-tests-test-metadonnees
+    - strict-e2e-tests
   allow_failure: false
   variables: *e2e-test-config
   environment: *e2e-test-environment
