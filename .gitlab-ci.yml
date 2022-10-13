@@ -292,10 +292,10 @@ dev-deploy:
 
 strict-e2e-tests-test:
   extends: [ .e2e-tests ]
+  stage: e2e-tests-strict
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TENANT}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TENANT} --tags ~@fixme-ip5 --tags ~@ignore "
-  stage: e2e-tests-strict
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
