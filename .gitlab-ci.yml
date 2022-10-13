@@ -341,7 +341,7 @@ tolerant-e2e-tests-tests:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TENANT}"
-    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags ${KARATE_TENANT} --tags ~@ignore "
+    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TENANT} --tags ~@ignore "
   needs: [ tolerant-e2e-tests-deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
@@ -350,6 +350,6 @@ tolerant-e2e-tests-tests:
   allow_failure: true
   parallel:
     matrix:
-      - KARATE_TENANT: ["@demo-simple-bde", "@formats-de-signature", "@legacy-bridge", "@metadonnees"]
+      - KARATE_TENANT: ["demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees"]
 
 # </editor-fold desc="E2e tests">
