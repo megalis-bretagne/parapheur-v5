@@ -290,52 +290,19 @@ dev-deploy:
       - build/karate-reports
       - build/karate-tests-fixme-ip-tag.txt
 
-.strict-e2e-tests-test:
+strict-e2e-tests-test:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TENANT}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags ${KARATE_TENANT} --tags ~@fixme-ip5 --tags ~@ignore "
-
-
-strict-e2e-tests-test-demo-simple-bde:
-  extends: [ .strict-e2e-tests-test ]
   stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@demo-simple-bde"
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
   allow_failure: false
-
-strict-e2e-tests-test-formats-de-signature:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@formats-de-signature"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-strict-e2e-tests-test-legacy-bridge:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@legacy-bridge"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-strict-e2e-tests-test-metadonnees:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@metadonnees"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
+  parallel:
+    matrix:
+      - KARATE_TENANT: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 tolerant-e2e-tests-tests:
   extends: [ .e2e-tests ]
