@@ -35,7 +35,7 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml docker-compose.override.tests-linux.yml"
+  DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml"
   DOCKER_COMPOSE_OVERRIDES_TAG: "docker-compose.override.tests-linux.yml"
 
 
