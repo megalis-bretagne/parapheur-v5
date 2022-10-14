@@ -35,6 +35,9 @@ fi
 
 POSTGRES_USER=$1
 POSTGRES_PASSWORD=$2
+MATOMO_DB_USER=$3
+MATOMO_DB_PASSWORD=$4
+MATOMO_DB_DATABASE=$5
 
 printf "POSTGRES_USER : %s\n" POSTGRES_USER
 printf "POSTGRES_PASSWORD : %s\n" POSTGRES_PASSWORD
@@ -59,7 +62,7 @@ __main__() {
   rm -r -f "${DUMP_PATH}"/matomo-db "${DUMP_PATH}"/postgres
 
   printf "Dumping MatomoDB databases"
-  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u matomo --password=matomo matomo > "${DUMP_PATH}/matomo-backup.sql"
+  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "${DUMP_PATH}/matomo-backup.sql"
 
   printf "Dumping PostgreSQL databases"
 
