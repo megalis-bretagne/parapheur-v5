@@ -21,7 +21,6 @@ stages:
   - publish
   - deploy
   - e2e-tests-strict
-  - deploy-tolerant-tests
   - e2e-tests-tolerant
 
 variables:
@@ -216,27 +215,27 @@ strict-e2e-tests-deploy:
   variables: *e2e-test-config
   environment: *e2e-test-environment
 
-tolerant-e2e-tests-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy-tolerant-tests
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-      when: never
-    - if: $NIGHTLY == "TRUE"
-      when: manual
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      when: manual
-    - when: manual
-  needs:
-    #    must repeat package here because extends overwrites instead of merge properties
-    - job: package
-      optional: true
-    - job: package_prod
-      optional: true
-    - strict-e2e-tests-test
-  allow_failure: false
-  variables: *e2e-test-config
-  environment: *e2e-test-environment
+#tolerant-e2e-tests-deploy:
+#  extends: [ .deploy-job ]
+#  stage: deploy-tolerant-tests
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
+#      when: never
+#    - if: $NIGHTLY == "TRUE"
+#      when: manual
+#    - if: $CI_COMMIT_BRANCH == 'develop'
+#      when: manual
+#    - when: manual
+#  needs:
+#    #    must repeat package here because extends overwrites instead of merge properties
+#    - job: package
+#      optional: true
+#    - job: package_prod
+#      optional: true
+#    - strict-e2e-tests-test
+#  allow_failure: false
+#  variables: *e2e-test-config
+#  environment: *e2e-test-environment
 
 acceptance-deploy:
   extends: [ .deploy-job ]
@@ -306,8 +305,8 @@ tolerant-e2e-tests-tests:
   stage: e2e-tests-tolerant
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
-    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@ignore "
-  needs: [ tolerant-e2e-tests-deploy ]
+    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
+  needs: [ strict-e2e-tests-test ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
