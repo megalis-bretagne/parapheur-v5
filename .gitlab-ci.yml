@@ -306,7 +306,7 @@ tolerant-e2e-tests:
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
-  needs: [ strict-e2e-tests-test ]
+  needs: [ strict-e2e-tests ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
