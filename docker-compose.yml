@@ -476,14 +476,3 @@ services:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
-
-  filetransfer:
-    image: dutchcoders/transfer.sh:v1.2.6
-    mem_limit: 256M
-    restart: unless-stopped
-    command: --provider local --basedir /data/ --temp-path /tmp/
-    volumes:
-      - ./data/transfer/data:/data/
-      - ./data/transfer/tmp:/tmp/
-    environment:
-      - RANDOM_TOKEN_LENGTH=0

@@ -146,6 +146,3 @@ services:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
 
-  filetransfer:
-    ports:
-      - "1807:8080"
