@@ -398,7 +398,7 @@ services:
       timeout: 5s
       retries: 5
   matomo-db:
-    image: mariadb:10.3
+    image: mariadb:10.3.36
     restart: unless-stopped
     tty: true
     mem_limit: 256M
