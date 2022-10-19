@@ -17,11 +17,11 @@ Feature: IP v.5 REST draft lib
         * def path = "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/draft"
 
         # @todo: defaults + merge des champs nécessaires
-        #* def defaults = { limitDate: null, metadata: {}, paperSignable: false, variableDesksIds: {}, visibility: "CONFIDENTIAL" }
+        #* def defaults = { dueDate: null, metadata: {}, paperSignable: false, variableDesksIds: {}, visibility: "CONFIDENTIAL" }
         * def draftFolderParams =
 """
 {
-    "limitDate": null,
+    "dueDate": null,
     "metadata": {},
     "name": "#(name)",
     "paperSignable": false,

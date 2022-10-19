@@ -1,5 +1,5 @@
 #
-# i-Parapheur Web
+# iparapheur
 # Copyright (C) 2019-2022 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -35,8 +35,8 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iParapheur"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml docker-compose.override.tests-linux.yml"
-  DOCKER_COMPOSE_OVERRIDES_TAG: "docker-compose.override.tests-linux.yml"
+  DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml"
+  DOCKER_COMPOSE_OVERRIDES_TAG: ""
 
 
 .e2e-test-config:
@@ -78,6 +78,7 @@ variables:
 .prepare-package: &prepare-package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
+    - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     - packageFiles=(
       "docker-compose.yml"
       "docker-compose.ipng.yml"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# i-Parapheur
+# iparapheur
 # Copyright (C) 2019-2022 Libriciel SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,9 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       FOREIGN DATA WRAPPER postgres_fdw
       OPTIONS (dbname 'flowable', host 'postgres', port '5432');
 
-    CREATE USER MAPPING FOR ipcore
+    CREATE USER MAPPING FOR ${CORE_DB_USER}
       SERVER flowable
-      OPTIONS (user 'flowable', password 'flowable');
+      OPTIONS (user '${WORKFLOW_DB_USER}', password '${WORKFLOW_DB_PASSWORD}');
 
 
     CREATE FOREIGN TABLE act_ru_task(
@@ -122,12 +122,12 @@ psql -v ON_ERROR_STOP=1 --dbname "ipcore" <<-EOSQL
       OPTIONS (schema_name 'public', table_name 'act_ru_variable');
 
 
-    ALTER FOREIGN TABLE act_ru_task OWNER TO ipcore;
-    ALTER FOREIGN TABLE act_ru_identitylink OWNER TO ipcore;
-    ALTER FOREIGN TABLE act_ru_execution OWNER TO ipcore;
-    ALTER FOREIGN TABLE act_ru_variable OWNER TO ipcore;
-    ALTER FOREIGN TABLE act_hi_varinst OWNER TO ipcore;
-    ALTER FOREIGN TABLE act_hi_procinst OWNER TO ipcore;
+    ALTER FOREIGN TABLE act_ru_task OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE act_ru_identitylink OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE act_ru_execution OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE act_ru_variable OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE act_hi_varinst OWNER TO ${CORE_DB_USER};
+    ALTER FOREIGN TABLE act_hi_procinst OWNER TO ${CORE_DB_USER};
 
 EOSQL
 

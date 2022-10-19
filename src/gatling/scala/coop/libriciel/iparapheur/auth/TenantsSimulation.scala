@@ -1,5 +1,5 @@
 /*
- * i-Parapheur
+ * iparapheur
  * Copyright (C) 2019-2022 Libriciel SCOP
  *
  * This program is free software: you can redistribute it and/or modify
