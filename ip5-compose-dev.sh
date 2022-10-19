@@ -306,7 +306,7 @@ __check_versions__() {
         fi
     done
 
-    # @info Matomo version 4.2.1, check __setup_matomo__
+    # @info Matomo version 4.2.1, check __setup_matomo__
     local MATOMO_VERSION="`grep "image.*matomo:" docker-compose.yml | sed 's/^.*matomo:\([0-9\.]\+\).*$/\1/g'`"
     if [ "${MATOMO_VERSION}" == "${MATOMO_EXPECTED_VERSION}" ] ; then
         log_icon_check "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
