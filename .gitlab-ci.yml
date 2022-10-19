@@ -1,5 +1,5 @@
 #
-# iparapheur Web
+# iparapheur
 # Copyright (C) 2019-2022 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
@@ -78,6 +78,8 @@ variables:
 .prepare-package: &prepare-package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
+    - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" package.json
+    - cat docker-compose.yml
     - packageFiles=(
       "docker-compose.yml"
       "docker-compose.ipng.yml"
