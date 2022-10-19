@@ -22,6 +22,31 @@ function fn(config) {
     config.ip5['ui'] = config.ip5['ui'] || {};
 
     /**
+     * Columns
+     **/
+    config.ip5.ui['columns'] = {};
+    config.ip5.ui.columns['getDashboardColumnsByType'] = function(columnsTitle, parents) {
+        var
+            actual = [],
+            baseXpath = "//app-user-dashboard//*[normalize-space(text())='" + columnsTitle + "']" + "/parent::div".repeat(parents) +"/div//div[contains(concat(' ', @class, ' '), ' list-group-item ')]",
+            idxLine,
+            lines;
+
+        karate.log({beforeWaitFor: baseXpath});
+        waitFor(baseXpath);
+        karate.log({afterWaitFor: baseXpath});
+
+        lines = karate.sizeOf(locateAll(baseXpath));
+        karate.log({lines: lines});
+        for (idxLine = 1;idxLine <= lines;idxLine++) {
+            karate.log(baseXpath + "[position() = " + idxLine + "]/span");
+            actual.push(text(baseXpath + "[position() = " + idxLine + "]//span").trim());
+        }
+
+        return actual;
+    };
+
+    /**
      * Desk
      **/
     config.ip5.ui['desk'] = {};

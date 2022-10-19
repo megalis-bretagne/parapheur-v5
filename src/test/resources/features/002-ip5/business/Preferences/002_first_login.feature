@@ -1,4 +1,4 @@
-@ip5 @ip-web @l10n @preferences @tests @wip
+@ip5 @ip-web @l10n @preferences @tests
 Feature: 002 - Scénario de test des préférences, première connexion
 
     Background:
