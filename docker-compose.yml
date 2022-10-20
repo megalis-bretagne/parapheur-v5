@@ -357,7 +357,8 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       # Here we replace the whole options, copying the defaults normally provided by KC, otherwise memory options are overriden at run time
-      - JAVA_OPTS=-XX:+UseContainerSupport -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80 -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+      # - JAVA_OPTS=-XX:+UseContainerSupport -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80 -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
       - PROXY_ADDRESS_FORWARDING=true
       - KEYCLOAK_FRONTEND_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
     volumes:
@@ -437,4 +438,3 @@ services:
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
