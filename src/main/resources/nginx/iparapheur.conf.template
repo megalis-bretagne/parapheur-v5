@@ -46,10 +46,6 @@ upstream up_pes_viewer {
     server pes-viewer:8888;
 }
 
-upstream up_filetransfer {
-  server filetransfer:8080;
-}
-
 upstream up_feeder {
   server feeder:8003;
 }
@@ -136,9 +132,6 @@ server {
       proxy_pass http://up_pes_viewer/bl-xemwebviewer;
   }
 
-  location /filetransfer/ {
-    proxy_pass http://up_filetransfer/;
-  }
 
   location /feeder/ {
       proxy_pass http://up_feeder/;
