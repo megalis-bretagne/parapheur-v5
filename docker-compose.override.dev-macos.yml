@@ -55,10 +55,8 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
-    environment:
-      - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
-      - "10080:10080"
+      - "10080:8080"
 
 
   pastell-connector:
