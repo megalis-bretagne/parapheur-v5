@@ -18,9 +18,10 @@
 
 plugins {
     id 'io.gatling.gradle' version '3.6.0'
+    id 'java'
+    id 'idea'
 }
 
-apply plugin: 'java'
 
 group = 'coop.libriciel'
 version = '5.0'
