@@ -52,22 +52,22 @@ DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 # Main function
 # ----------------------------------------------------------------------------------------------------------------------
 __main__() {
-  CURRENT_DATE=$(date "+%F_%T")
+  CURRENT_DATE=$(date '+%Y%m%d-%H%M')
   CURRENT_DATE=${CURRENT_DATE//:/-}
-  DUMP_PATH="data_${CURRENT_DATE}"
+  DUMP_PATH="backup_${CURRENT_DATE}"
 
   mkdir -m 757 "${DUMP_PATH}"
 
   rsync -av --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres  ./data "${DUMP_PATH}"
 
   printf "Dumping MatomoDB databases"
-  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "${DUMP_PATH}/matomo-backup.sql"
+  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "${DUMP_PATH}/${DUMP_PATH}_matomo-backup.sql"
 
   printf "Dumping PostgreSQL databases"
 
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s...\n" "${DB_NAME}"
-    docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" > "${DUMP_PATH}/postgres-backup-${DB_NAME}.sql"
+    docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" > "${DUMP_PATH}/${DUMP_PATH}-${DB_NAME}.sql"
   done
 
   printf "Shutting down iparapheur..."
