@@ -58,18 +58,16 @@ __main__() {
 
   mkdir -m 757 "${DUMP_PATH}"
 
-  cp -r data "${DUMP_PATH}"
-  rm -r -f "${DUMP_PATH}"/matomo-db "${DUMP_PATH}"/postgres
+  rsync -av --exclude=data/matomo-db --exclude=data/postgres  ./data "${DUMP_PATH}"
 
   printf "Dumping MatomoDB databases"
-  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "${DUMP_PATH}/matomo-backup.sql"
+  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" | gzip -9 >"${DUMP_PATH}/matomo-backup.sql.gz"
 
   printf "Dumping PostgreSQL databases"
 
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s...\n" "${DB_NAME}"
     docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" | gzip -9 >"${DUMP_PATH}/postgres-backup-${DB_NAME}.sql.gz"
-    gzip -d "${DUMP_PATH}/postgres-backup-${DB_NAME}.sql.gz"
   done
 
   printf "Shutting down iparapheur..."

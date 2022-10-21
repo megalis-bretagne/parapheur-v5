@@ -5,7 +5,7 @@
 ### Dump all data:
 
 ```bash
-sudo ./dump.sh <POSTGRES_USER> <POSTGRES_PASSWORD> <MATOMO_DB_USER> <MATOMO_DB_PASSWORD> <MATOMO_DB_DATABASE>
+sudo ./dump.sh root libriciel2k18 matomo matomo matomo
 ```
 
 ### Restore dump :
