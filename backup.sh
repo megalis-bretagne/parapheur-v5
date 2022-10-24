@@ -33,14 +33,8 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-POSTGRES_USER=$1
-POSTGRES_PASSWORD=$2
-MATOMO_DB_USER=$3
-MATOMO_DB_PASSWORD=$4
-MATOMO_DB_DATABASE=$5
-
-printf "POSTGRES_USER : %s\n" POSTGRES_USER
-printf "POSTGRES_PASSWORD : %s\n" POSTGRES_PASSWORD
+printf "POSTGRES_USER : %s\n" ${POSTGRES_USER}
+printf "POSTGRES_PASSWORD : %s\n" ${POSTGRES_PASSWORD}
 
 CONTAINER_NAME="iparapheur-postgres-1"
 
@@ -53,13 +47,16 @@ DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 # ----------------------------------------------------------------------------------------------------------------------
 __main__() {
   printf "Shutting down iparapheur..."
+  docker compose down -v
 
   CURRENT_DATE=$(date '+%Y%m%d-%H%M')
   CURRENT_DATE=${CURRENT_DATE//:/-}
   DUMP_PATH="backup_${CURRENT_DATE}"
 
   docker compose up -d postgres matomo-db
-  sleep 5s
+
+  # TODO check if service is healthy
+  sleep 10s
 
   printf "Dumping MatomoDB databases"
   docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "/tmp/${DUMP_PATH}_matomo-backup.sql"
@@ -70,6 +67,22 @@ __main__() {
     printf "Dumping %s...\n" "${DB_NAME}"
     docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${DUMP_PATH}-${DB_NAME}.sql"
   done
+
+  # The first --transform renames the /data directory to /backup_<current date>_data
+  # The second --transform removes the /tmp directory that contains all the .sql dumps so they are at the same level at the /backup_<current date>_data directory
+  #
+  # Without the transforms :
+  # backup_<current date>.tar.gz
+  #   | tmp/
+  #       | backup-2022-01-02_keycloak.sql
+  #       | backup-2022-01-02_alfresco.sql
+  #   | data/
+  #
+  # With the transforms :
+  # backup_<current date>.tar.gz
+  #   | backup-2022-01-02_keycloak.sql
+  #   | backup-2022-01-02_alfresco.sql
+  #   | backup-2022-01-02_data/
 
   tar --transform="flags=r;s|data|${DUMP_PATH}_data|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${DUMP_PATH}".tar.gz data /tmp/${DUMP_PATH}*
 

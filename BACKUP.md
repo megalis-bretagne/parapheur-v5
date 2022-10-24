@@ -5,7 +5,7 @@
 ### Dump all data:
 
 ```bash
-sudo ./backup.sh <POSTGRES_USER> <POSTGRES_PASSWORD> <MATOMO_DB_USER> <MATOMO_DB_PASSWORD> <MATOMO_DB_DATABASE>
+export $(grep -v '^#' .env | xargs -d '\n') && sudo -E ./backup.sh
 ```
 
 ### Restore dump :
@@ -33,15 +33,15 @@ sudo ./backup.sh <POSTGRES_USER> <POSTGRES_PASSWORD> <MATOMO_DB_USER> <MATOMO_DB
 5. Load the databases dumps
    ```bash
       cat matomo-backup.sql | sudo docker exec -i iparapheur-matomo-db-1 /usr/bin/mysql -u <MATOMO_DB_USER> --password=<MATOMO_DB_PASSWORD> <MATOMO_DB_DATABASE>
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> alfresco" <"./data_<date of the dump>/backup_<date of the dump>-alfresco.sql"
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> flowable" <"./data_<date of the dump>/backup_<date of the dump>-flowable.sql"
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> ipcore" <"./data_<date of the dump>/backup_<date of the dump>-ipcore.sql"
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> keycloak" <"./data_<date of the dump>/backup_<date of the dump>-keycloak.sql"
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> pastellconector" <"./data_<date of the dump>/backup_<date of the dump>-pastellconector.sql"
-      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> quartz" <"./data_<date of the dump>/backup_<date of the dump>_backup-quartz.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> alfresco" <"./backup_<date of the dump>/backup_<date of the dump>-alfresco.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> flowable" <"./backup_<date of the dump>/backup_<date of the dump>-flowable.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> ipcore" <"./backup_<date of the dump>/backup_<date of the dump>-ipcore.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> keycloak" <"./backup_<date of the dump>/backup_<date of the dump>-keycloak.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> pastellconector" <"./backup_<date of the dump>/backup_<date of the dump>-pastellconector.sql"
+      sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> quartz" <"./backup_<date of the dump>/backup_<date of the dump>_backup-quartz.sql"
    ```
 
-6. Restart all conatiners
+6. Restart all containers
    ```bash
       sudo docker-compose up -d
    ```
