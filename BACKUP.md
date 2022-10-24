@@ -5,7 +5,7 @@
 ### Dump all data:
 
 ```bash
-sudo ./dump.sh root libriciel2k18 matomo matomo matomo
+sudo ./backup.sh <POSTGRES_USER> <POSTGRES_PASSWORD> <MATOMO_DB_USER> <MATOMO_DB_PASSWORD> <MATOMO_DB_DATABASE>
 ```
 
 ### Restore dump :
@@ -22,7 +22,7 @@ sudo ./dump.sh root libriciel2k18 matomo matomo matomo
 3. Replace the ./data folder with the data_<date of the dump> folder in the unzipped dump.
    ```bash
       sudo rm -r ./data
-      sudo mv -r ./backup_<date of the dump>/backup_<date of the dump>/ ./data
+      sudo mv ./backup_<date of the dump>/backup_<date of the dump>/ ./data
    ```
 
 4. Start the Postgres database
@@ -30,7 +30,7 @@ sudo ./dump.sh root libriciel2k18 matomo matomo matomo
       sudo docker compose up -d postgres matomo-db
    ```
 
-5. Load the databses dumps
+5. Load the databases dumps
    ```bash
       cat matomo-backup.sql | sudo docker exec -i iparapheur-matomo-db-1 /usr/bin/mysql -u <MATOMO_DB_USER> --password=<MATOMO_DB_PASSWORD> <MATOMO_DB_DATABASE>
       sudo docker exec iparapheur-postgres-1 /bin/bash -c "PGPASSWORD=<POSTGRES_PASSWORD> psql --username <POSTGRES_USER> alfresco" <"./data_<date of the dump>/backup_<date of the dump>-alfresco.sql"

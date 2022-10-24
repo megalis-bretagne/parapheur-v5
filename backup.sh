@@ -52,31 +52,26 @@ DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 # Main function
 # ----------------------------------------------------------------------------------------------------------------------
 __main__() {
+  printf "Shutting down iparapheur..."
+
   CURRENT_DATE=$(date '+%Y%m%d-%H%M')
   CURRENT_DATE=${CURRENT_DATE//:/-}
   DUMP_PATH="backup_${CURRENT_DATE}"
 
-  mkdir -m 757 "${DUMP_PATH}"
-
-  rsync -av --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres  ./data "${DUMP_PATH}"
+  docker compose up -d postgres matomo-db
+  sleep 5s
 
   printf "Dumping MatomoDB databases"
-  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "${DUMP_PATH}/${DUMP_PATH}_matomo-backup.sql"
+  docker exec iparapheur-matomo-db-1 /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" > "/tmp/${DUMP_PATH}_matomo-backup.sql"
 
   printf "Dumping PostgreSQL databases"
 
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s...\n" "${DB_NAME}"
-    docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" > "${DUMP_PATH}/${DUMP_PATH}-${DB_NAME}.sql"
+    docker exec ${CONTAINER_NAME} /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${DUMP_PATH}-${DB_NAME}.sql"
   done
 
-  printf "Shutting down iparapheur..."
-  docker compose down -v
-
-  tar --transform="flags=r;s|data|${DUMP_PATH}_data|" -czf "${DUMP_PATH}".tar.gz "${DUMP_PATH}"
-  rm -r "${DUMP_PATH}"
-
-  chown 6789:6789 "${DUMP_PATH}".tar.gz
+  tar --transform="flags=r;s|data|${DUMP_PATH}_data|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${DUMP_PATH}".tar.gz data /tmp/${DUMP_PATH}*
 
   printf "DUMP complete -> %s.\n" "${DUMP_PATH}"
 }
