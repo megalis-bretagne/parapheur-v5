@@ -5,7 +5,7 @@
 ### Dump all data:
 
 ```bash
-export $(grep -v '^#' .env | xargs -d '\n') && sudo -E ./backup.sh
+set -a && source .env && set +a && sudo -E ./backup.sh
 ```
 
 ### Restore dump :
