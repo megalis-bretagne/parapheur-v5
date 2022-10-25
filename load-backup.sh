@@ -33,7 +33,8 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-ARCHIVE_PATH=$1
+DUMP_PATH=$1
+DATE=$2
 
 POSTGRES_CONTAINER_NAME="iparapheur-postgres-1"
 MATOMO_DB_CONTAINER_NAME="iparapheur-matomo-db-1"
@@ -49,23 +50,6 @@ __main__() {
   printf "Shutting down iparapheur...\n"
   docker compose down -v
 
-  DUMP_PATH=${ARCHIVE_PATH::-7}
-
-  printf "Unzipping backup...\n"
-  mkdir "${DUMP_PATH}"
-  tar -xf "${ARCHIVE_PATH}" -C "${DUMP_PATH}"
-
-  printf "Replacing .env...\n"
-  ENV_BACKUP_NAME=.env.backup."$(date '+%Y%m%d-%H%M')"
-  cp .env "${ENV_BACKUP_NAME}"
-  printf "Created .env file backup : %s\n" "${ENV_BACKUP_NAME}"
-
-  cp "${DUMP_PATH}/.env_${DUMP_PATH}" .env
-
-  printf "Replacing data folder...\n"
-  rm -r data
-  mv "${DUMP_PATH}/${DUMP_PATH}_data" data
-
   docker compose up -d postgres matomo-db
 
   # TODO check if service is healthy
@@ -73,14 +57,13 @@ __main__() {
 
   set -a && source .env && set +a
   printf "Loading MatomoDB databases dumps\n"
-  docker exec -i "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" <"${DUMP_PATH}/${DUMP_PATH}_matomo_backup.sql"
+  docker exec -i "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" <"${DUMP_PATH}/backup_${DATE}_matomo_backup.sql"
 
   printf "Loading PostgresSQL databases dumps\n"
 
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Loading dump %s...\n" "${DB_NAME}"
-    printf "--------------------------------------------------------------------------------------------------------\n"
-    docker exec -i "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ${DB_NAME}" <"${DUMP_PATH}/${DUMP_PATH}_${DB_NAME}.sql"
+    docker exec -i "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ${DB_NAME}" <"${DUMP_PATH}/backup_${DATE}_${DB_NAME}.sql"
   done
 
   rm -R "${DUMP_PATH}"
