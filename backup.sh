@@ -33,39 +33,30 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-printf "POSTGRES_USER : %s\n" "${POSTGRES_USER}"
-printf "POSTGRES_PASSWORD : %s\n" "${POSTGRES_PASSWORD}"
-
 POSTGRES_CONTAINER_NAME="iparapheur-postgres-1"
 MATOMO_DB_CONTAINER_NAME="iparapheur-matomo-db-1"
-
+CURRENT_DATE=$(date '+%Y%m%d-%H%M')
+CURRENT_DATE=${CURRENT_DATE//:/-}
+DUMP_PATH="backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
-# ======================================================================================================================
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Main function
-# ----------------------------------------------------------------------------------------------------------------------
 __main__() {
-  printf "Shutting down iparapheur...\n"
+  printf "Shutting down iparapheur -\n"
   docker compose down -v
 
-  CURRENT_DATE=$(date '+%Y%m%d-%H%M')
-  CURRENT_DATE=${CURRENT_DATE//:/-}
-  DUMP_PATH="backup_${CURRENT_DATE}"
-
+  printf "Starting databases -\n"
   docker compose up -d postgres matomo-db
 
   # TODO check if service is healthy
+  printf "Waiting 10 seconds -\n"
   sleep 10s
 
-  printf "Dumping MatomoDB databases\n"
+  printf "Dumping MatomoDB databases -\n"
   docker exec "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${DUMP_PATH}_matomo_backup.sql"
 
-  printf "Dumping PostgreSQL databases\n"
-
+  printf "Dumping PostgreSQL databases -\n"
   for DB_NAME in "${DB_NAMES[@]}"; do
-    printf "Dumping %s...\n" "${DB_NAME}"
+    printf "Dumping %s -\n" "${DB_NAME}"
     docker exec "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${DUMP_PATH}_${DB_NAME}.sql"
   done
 
@@ -85,9 +76,12 @@ __main__() {
   #   | backup-2022-01-02_alfresco.sql
   #   | backup-2022-01-02_data/
 
+  printf "Shutting down databases -\n"
+  docker compose down -v
+
   tar --transform="flags=r;s|data|${DUMP_PATH}_data|" --transform="flags=r;s|.env|.env_${DUMP_PATH}|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${DUMP_PATH}".tar.gz .env data /tmp/${DUMP_PATH}*
 
-  printf "DUMP complete -> %s.\n" "${DUMP_PATH}"
+  printf "DUMP complete -> %s -\n" "${DUMP_PATH}"
 }
 
 __main__ "${@}"

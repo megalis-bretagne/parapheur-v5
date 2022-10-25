@@ -35,39 +35,35 @@ fi
 
 DUMP_PATH=$1
 DATE=$2
-
 POSTGRES_CONTAINER_NAME="iparapheur-postgres-1"
 MATOMO_DB_CONTAINER_NAME="iparapheur-matomo-db-1"
-
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
-# ======================================================================================================================
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Main function
-# ----------------------------------------------------------------------------------------------------------------------
 __main__() {
-  printf "Shutting down iparapheur...\n"
+  printf "Shutting down iparapheur -\n"
   docker compose down -v
 
+  printf "Starting databases -\n"
   docker compose up -d postgres matomo-db
 
   # TODO check if service is healthy
-  sleep 5s
+  printf "Waiting 10 seconds -\n"
+  sleep 10s
 
+  printf "Exporting .env -\n"
   set -a && source .env && set +a
-  printf "Loading MatomoDB databases dumps\n"
+
+  printf "Loading MatomoDB database dump -\n"
   docker exec -i "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" <"${DUMP_PATH}/backup_${DATE}_matomo_backup.sql"
 
-  printf "Loading PostgresSQL databases dumps\n"
-
+  printf "Loading PostgresSQL databases dumps -\n"
   for DB_NAME in "${DB_NAMES[@]}"; do
-    printf "Loading dump %s...\n" "${DB_NAME}"
+    printf "Loading dump %s -\n" "${DB_NAME}"
     docker exec -i "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ${DB_NAME}" <"${DUMP_PATH}/backup_${DATE}_${DB_NAME}.sql"
   done
 
   rm -R "${DUMP_PATH}"
-  printf "Restoration complete."
+  printf "Restoration complete -\n"
 }
 
 __main__ "${@}"
