@@ -33,8 +33,6 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-POSTGRES_CONTAINER_NAME="iparapheur-postgres-1"
-MATOMO_DB_CONTAINER_NAME="iparapheur-matomo-db-1"
 CURRENT_DATE=$(date '+%Y%m%d-%H%M')
 CURRENT_DATE=${CURRENT_DATE//:/-}
 DUMP_PATH="backup_${CURRENT_DATE}"
@@ -52,12 +50,12 @@ __main__() {
   sleep 10s
 
   printf "Dumping MatomoDB databases -\n"
-  docker exec "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${DUMP_PATH}_matomo_backup.sql"
+  docker compose exec matomo-db /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${DUMP_PATH}_matomo_backup.sql"
 
   printf "Dumping PostgreSQL databases -\n"
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s -\n" "${DB_NAME}"
-    docker exec "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${DUMP_PATH}_${DB_NAME}.sql"
+    docker compose exec postgres /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${DUMP_PATH}_${DB_NAME}.sql"
   done
 
   # The first --transform renames the /data directory to /backup_<current date>_data

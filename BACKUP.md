@@ -16,7 +16,7 @@ set -a && source .env && set +a && sudo -E ./backup.sh
    ```
 2. Unzip the archived dump.
    ```bash
-      mkdir backup && sudo tar -xf <path-to-backup>.tar.gz -C backup
+      mkdir backup && sudo tar -xf <path-to-backup>.tar -C backup
    ```
 
 3. Replace .env file
