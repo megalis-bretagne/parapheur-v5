@@ -278,9 +278,9 @@ services:
     image: alfresco/alfresco-activemq:5.16.5-jre11-centos7
     restart: unless-stopped
     tty: true
-    mem_limit: 256M
+    mem_limit: 512M
     environment:
-      ACTIVEMQ_OPTS: "-Xms128M -Xmx208M"
+      ACTIVEMQ_OPTS: "-Xms128M -Xmx256M"
 
 
   postgres:
