@@ -62,7 +62,6 @@ __main__() {
     docker exec -i "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ${DB_NAME}" <"${DUMP_PATH}/backup_${DATE}_${DB_NAME}.sql"
   done
 
-  rm -R "${DUMP_PATH}"
   printf "Restoration complete -\n"
 }
 

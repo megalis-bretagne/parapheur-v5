@@ -27,7 +27,7 @@ set -a && source .env && set +a && sudo -E ./backup.sh
 4. Replace the ./data folder with the data_<date of the dump> folder in the unzipped dump.
    ```bash
       sudo rm -r ./data
-      sudo mv backup/backup_date of the dump>_data" data
+      sudo mv backup/backup_<date of the dump>_data data
    ```
 
 5. Load the databases dumps
