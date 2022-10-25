@@ -33,8 +33,7 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-printf "POSTGRES_USER : %s\n" "${POSTGRES_USER}"
-printf "POSTGRES_PASSWORD : %s\n" "${POSTGRES_PASSWORD}"
+ARCHIVE_PATH=$1
 
 POSTGRES_CONTAINER_NAME="iparapheur-postgres-1"
 MATOMO_DB_CONTAINER_NAME="iparapheur-matomo-db-1"
@@ -50,44 +49,42 @@ __main__() {
   printf "Shutting down iparapheur...\n"
   docker compose down -v
 
-  CURRENT_DATE=$(date '+%Y%m%d-%H%M')
-  CURRENT_DATE=${CURRENT_DATE//:/-}
-  DUMP_PATH="backup_${CURRENT_DATE}"
+  DUMP_PATH=${ARCHIVE_PATH::-7}
+
+  printf "Unzipping backup...\n"
+  mkdir "${DUMP_PATH}"
+  tar -xf "${ARCHIVE_PATH}" -C "${DUMP_PATH}"
+
+  printf "Replacing .env...\n"
+  ENV_BACKUP_NAME=.env.backup."$(date '+%Y%m%d-%H%M')"
+  cp .env "${ENV_BACKUP_NAME}"
+  printf "Created .env file backup : %s\n" "${ENV_BACKUP_NAME}"
+
+  cp "${DUMP_PATH}/.env_${DUMP_PATH}" .env
+
+  printf "Replacing data folder...\n"
+  rm -r data
+  mv "${DUMP_PATH}/${DUMP_PATH}_data" data
 
   docker compose up -d postgres matomo-db
 
   # TODO check if service is healthy
-  sleep 10s
+  sleep 5s
 
-  printf "Dumping MatomoDB databases\n"
-  docker exec "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${DUMP_PATH}_matomo_backup.sql"
+  set -a && source .env && set +a
+  printf "Loading MatomoDB databases dumps\n"
+  docker exec -i "${MATOMO_DB_CONTAINER_NAME}" /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" <"${DUMP_PATH}/${DUMP_PATH}_matomo_backup.sql"
 
-  printf "Dumping PostgreSQL databases\n"
+  printf "Loading PostgresSQL databases dumps\n"
 
   for DB_NAME in "${DB_NAMES[@]}"; do
-    printf "Dumping %s...\n" "${DB_NAME}"
-    docker exec "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${DUMP_PATH}_${DB_NAME}.sql"
+    printf "Loading dump %s...\n" "${DB_NAME}"
+    printf "--------------------------------------------------------------------------------------------------------\n"
+    docker exec -i "${POSTGRES_CONTAINER_NAME}" /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ${DB_NAME}" <"${DUMP_PATH}/${DUMP_PATH}_${DB_NAME}.sql"
   done
 
-  # The first --transform renames the /data directory to /backup_<current date>_data
-  # The second --transform removes the /tmp directory that contains all the .sql dumps so they are at the same level at the /backup_<current date>_data directory
-  #
-  # Without the transforms :
-  # backup_<current date>.tar.gz
-  #   | tmp/
-  #       | backup-2022-01-02_keycloak.sql
-  #       | backup-2022-01-02_alfresco.sql
-  #   | data/
-  #
-  # With the transforms :
-  # backup_<current date>.tar.gz
-  #   | backup-2022-01-02_keycloak.sql
-  #   | backup-2022-01-02_alfresco.sql
-  #   | backup-2022-01-02_data/
-
-  tar --transform="flags=r;s|data|${DUMP_PATH}_data|" --transform="flags=r;s|.env|.env_${DUMP_PATH}|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${DUMP_PATH}".tar.gz .env data /tmp/${DUMP_PATH}*
-
-  printf "DUMP complete -> %s.\n" "${DUMP_PATH}"
+  rm -R "${DUMP_PATH}"
+  printf "Restoration complete."
 }
 
 __main__ "${@}"
