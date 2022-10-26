@@ -21,7 +21,6 @@ stages:
   - publish
   - deploy
   - e2e-tests-strict
-  - deploy-tolerant-tests
   - e2e-tests-tolerant
 
 variables:
@@ -217,30 +216,27 @@ strict-e2e-tests-deploy:
   variables: *e2e-test-config
   environment: *e2e-test-environment
 
-tolerant-e2e-tests-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy-tolerant-tests
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-      when: never
-    - if: $NIGHTLY == "TRUE"
-      when: manual
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      when: manual
-    - when: manual
-  needs:
-    #    must repeat package here because extends overwrites instead of merge properties
-    - job: package
-      optional: true
-    - job: package_prod
-      optional: true
-    - strict-e2e-tests-test-demo-simple-bde
-    - strict-e2e-tests-test-formats-de-signature
-    - strict-e2e-tests-test-legacy-bridge
-    - strict-e2e-tests-test-metadonnees
-  allow_failure: false
-  variables: *e2e-test-config
-  environment: *e2e-test-environment
+#tolerant-e2e-tests-deploy:
+#  extends: [ .deploy-job ]
+#  stage: deploy-tolerant-tests
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
+#      when: never
+#    - if: $NIGHTLY == "TRUE"
+#      when: manual
+#    - if: $CI_COMMIT_BRANCH == 'develop'
+#      when: manual
+#    - when: manual
+#  needs:
+#    #    must repeat package here because extends overwrites instead of merge properties
+#    - job: package
+#      optional: true
+#    - job: package_prod
+#      optional: true
+#    - strict-e2e-tests-test
+#  allow_failure: false
+#  variables: *e2e-test-config
+#  environment: *e2e-test-environment
 
 acceptance-deploy:
   extends: [ .deploy-job ]
@@ -291,104 +287,34 @@ dev-deploy:
       - build/karate-reports
       - build/karate-tests-fixme-ip-tag.txt
 
-.strict-e2e-tests-test:
+strict-e2e-tests:
   extends: [ .e2e-tests ]
+  stage: e2e-tests-strict
   variables:
-    REPORT_NAME: "Karate - tests strict - ${KARATE_TENANT}"
-    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags ${KARATE_TENANT} --tags ~@fixme-ip5 --tags ~@ignore "
+    REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
+    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
+  needs:
+    - job: strict-e2e-tests-deploy
+      optional: true
+  allow_failure: false
+  parallel:
+    matrix:
+      - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
-.tolerant-e2e-tests-test:
+tolerant-e2e-tests:
   extends: [ .e2e-tests ]
-  variables:
-    REPORT_NAME: "Karate - tests tolerant - ${KARATE_TENANT}"
-    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags ${KARATE_TENANT} --tags ~@ignore "
-
-strict-e2e-tests-test-demo-simple-bde:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@demo-simple-bde"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-strict-e2e-tests-test-formats-de-signature:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@formats-de-signature"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-strict-e2e-tests-test-legacy-bridge:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@legacy-bridge"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-strict-e2e-tests-test-metadonnees:
-  extends: [ .strict-e2e-tests-test ]
-  stage: e2e-tests-strict
-  variables:
-    KARATE_TENANT: "@metadonnees"
-  needs:
-    - job: strict-e2e-tests-deploy
-      optional: true
-  allow_failure: false
-
-tolerant-e2e-tests-test-demo-simple-bde:
-  extends: [ .tolerant-e2e-tests-test ]
   stage: e2e-tests-tolerant
   variables:
-    KARATE_TENANT: "@demo-simple-bde"
-  needs: [ tolerant-e2e-tests-deploy ]
+    REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
+    KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
+  needs: [ strict-e2e-tests ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
-    - when: on_success
+    - when: manual
   allow_failure: true
-
-tolerant-e2e-tests-test-formats-de-signature:
-  extends: [ .tolerant-e2e-tests-test ]
-  stage: e2e-tests-tolerant
-  variables:
-    KARATE_TENANT: "@formats-de-signature"
-  needs: [ tolerant-e2e-tests-deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-      when: never
-    - when: on_success
-  allow_failure: true
-
-tolerant-e2e-tests-test-legacy-bridge:
-  extends: [ .tolerant-e2e-tests-test ]
-  stage: e2e-tests-tolerant
-  variables:
-    KARATE_TENANT: "@legacy-bridge"
-  needs: [ tolerant-e2e-tests-deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-      when: never
-    - when: on_success
-  allow_failure: true
-
-tolerant-e2e-tests-test-metadonnees:
-  extends: [ .tolerant-e2e-tests-test ]
-  stage: e2e-tests-tolerant
-  variables:
-    KARATE_TENANT: "@metadonnees"
-  needs: [ tolerant-e2e-tests-deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-      when: never
-    - when: on_success
-  allow_failure: true
+  parallel:
+    matrix:
+      - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 # </editor-fold desc="E2e tests">
