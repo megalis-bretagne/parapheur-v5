@@ -293,7 +293,7 @@ setup-e2e-tests:
   stage: e2e-tests-setup
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
-    KARATE_ADDITIONAL_TAGS: "--tags --tags @before --tags ~@ignore "
+    KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
   needs:
     - job: strict-e2e-tests-deploy
       optional: true
