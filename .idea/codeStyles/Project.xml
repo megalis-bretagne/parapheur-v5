@@ -5,6 +5,12 @@
       <option name="DO_NOT_WRAP_AFTER_SINGLE_ANNOTATION" value="true" />
       <option name="BLANK_LINES_AROUND_INITIALIZER" value="2" />
     </JavaCodeStyleSettings>
+    <Markdown>
+      <option name="MAX_LINES_AROUND_HEADER" value="0" />
+      <option name="MIN_LINES_AROUND_HEADER" value="2" />
+      <option name="MAX_LINES_AROUND_BLOCK_ELEMENTS" value="0" />
+      <option name="MIN_LINES_AROUND_BLOCK_ELEMENTS" value="2" />
+    </Markdown>
     <codeStyleSettings language="JAVA">
       <option name="BLANK_LINES_AFTER_IMPORTS" value="2" />
       <option name="BLANK_LINES_AROUND_CLASS" value="2" />

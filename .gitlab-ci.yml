@@ -20,6 +20,7 @@ stages:
   - package
   - publish
   - deploy
+  - e2e-tests-setup
   - e2e-tests-strict
   - e2e-tests-tolerant
 
@@ -87,7 +88,6 @@ variables:
       "README.md"
       "src/main/resources/nginx/iparapheur.conf.template"
       "src/main/resources/nginx/iparapheur.init.conf.template"
-      "src/main/resources/content"
       "src/main/resources/postgres/docker-entrypoint-initdb.d"
       "src/main/resources/keycloak"
       "src/main/resources/prometheus/alert.rules"
@@ -287,6 +287,17 @@ dev-deploy:
       - build/karate-reports
       - build/karate-tests-fixme-ip-tag.txt
 
+setup-e2e-tests:
+  extends: [ .e2e-tests ]
+  stage: e2e-tests-setup
+  variables:
+    REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
+    KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
+  needs:
+    - job: strict-e2e-tests-deploy
+      optional: true
+  allow_failure: false
+
 strict-e2e-tests:
   extends: [ .e2e-tests ]
   stage: e2e-tests-strict
@@ -294,7 +305,7 @@ strict-e2e-tests:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
   needs:
-    - job: strict-e2e-tests-deploy
+    - job: setup-e2e-tests
       optional: true
   allow_failure: false
   parallel:

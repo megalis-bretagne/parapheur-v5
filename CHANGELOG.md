@@ -1,0 +1,542 @@
+Change Log
+==========
+
+Toutes les modifications apportées au projet seront documentées dans ce fichier.
+
+Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/)
+et adhère aux principes du [Semantic Versioning](http://semver.org/).
+
+
+## [5.0.1] - 2022-10-20
+[5.0.1]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.1.tar.gz
+
+### Ajouts
+
+- Points d'entrée d'API
+- Analyses de failles de sécurité via Trivy
+
+### Corrections
+
+- Cachet automatique
+- Tampon de signature sur un cachet
+- Message d'erreur en cas de certificat de cachet expiré
+- Injection de documents no nPDF via Webservices
+- Sauvegarde des fréquences de notifications
+- Label dans le mail de notification
+
+### Suppressions
+
+- Service de transfert de fichiers d'IPNG, sur les installations non-IPNG
+
+
+## [5.0.0] - 2022-10-09
+[5.0.0]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.0.tar.gz
+
+### Ajouts
+
+- Page "À propos"
+- Popup d'historique des évènements
+- Circuit de création visible dans l'affichage d'un circuit en cours
+- Drag-N-Drop des documents sur la création d'un nouveau dossier
+- Tri par colonne dans l'administration des connecteurs de signature externe
+- Les tags de positionnements (par défaut `#signature#` et `#cachet#`) sont utilisés
+- Les tags de positionnements numérotés `#xxx_%n#` sont supportés, à paramétrer sur le serveur
+- Les délégations et délégations par dates dans la console d'administration
+- Les délégations auto-gérées par chaque utilisateur
+- Tests de prévention de doublon dans les noms/clé des circuits
+- Dupliquer un circuit
+- Date limite d'un dossier
+- Charte graphique sur la visualisation d'un dossier
+- Interdiction de création d'une étape externe parallèle
+- Vérifications des types de documents principaux ajoutés selon le type de signature
+- Transformation des documents bureautique en PDF
+- Masquage du bouton des commentaires PDF lorsque le sous-type l'interdit
+- Fond blanc et bordure sur la signature par défaut
+- Masquage du bouton de positionnement de signature lorsqu'il n'y a pas de signature à venir dans le circuit
+- Masquage du bouton de positionnement de signature lorsque ce n'est pas cohérent avec le format de signature
+- Bouton suppression sur un dossier en fin de circuit
+- Verrouillage des points d'entrée API admin aux seuls administrateurs
+- Annotations publiques/privées
+- Paramètres serveurs à la personnalisation de l'UI
+- Signature XAdES détachée sur tous les types de documents
+- Compatibilité GetDoc & PushDoc
+- Reconnexion automatique à la BDD. Le crash existant est toujours là, mais dorénavant on devrait avoir une récupération automatique, plus souple
+- Mails en doublons
+- Format de signature Auto
+- Métadonnée obligatoire à une étape
+- Page "À propos"
+- Auto-diagnostic d'installation de Libersign
+- Compatibilité Pushdoc
+- Compatibilité Pastell
+- Renforcement des permissions sur le `FolderController` (API uniquement, devrait être transparent depuis le Web)
+- Renforcement des permissions sur le `DocumentController` (API uniquement, devrait être transparent depuis le Web)
+- Message d'alerte sur un enchaînement non-compatible
+- Métadonnée obligatoire à une étape de validation
+- Métadonnée obligatoire à une étape de rejet
+- Pastell multi-doc et métadonnées
+- Contrôles d'intégrité sur les circuits des sous-types
+- Filtres par banette
+- Alertes sur les contrôles d'intégrité des circuits la popup de sous-type
+- Filtre "Dossier en retard" et "Dossier récupérable"
+- Transfert depuis l'administration des dossiers
+- Filtre des espaces sur un formulaire de mail
+- Possibilité de surcharger la signature par défaut en créant un fichier `/default_signature.yml`
+- Positionnement de la signature externe
+- Suppression d'un brouillon
+- Conversion des fichiers RTF
+- Position de signature via YouSign
+- Position de signature détachée
+- Label sur les étapes parallèles
+- Envoyer par mail
+- Signature XAdES détachée
+- Multi-doc à la signature externe
+- Gestion des doublons dans les noms des dossiers extraits
+- Message d'erreur lors d'un envoi de fichier trop gros
+- Message d'erreur en cas de PDF protégé
+- Affichage de la liste vide des certificats
+- Auto-selection d'un sous-type unique
+- Contrôles de validité sur le formulaire d'admin de signature externe
+- Icônes d'administrateurs
+- Message d'erreur en français
+- Pastell-connector, External-signature-connector et Workflow dans le monitoring
+- Nom générique sur une action automatique
+- Annotations sur les transferts/Avis complémentaires
+- Actions secondaires sur une étape de cachet
+- Action "Lu" dans l'historique du dossier
+- Traduction partielle des messages d'erreurs retournés par les signatures externes
+- Récupération des signatures détachées par les webservices
+- Enregistrement de la visibilité
+- Bureaux favoris
+- Popup des bureaux à notifier
+- Popup RGPD de première connexion
+- Évènement "lu" dans l'historique SOAP
+- No-MTOM sur les requêtes SOAP
+- Modification des documents pendant le circuit de création
+- Notifications d'erreur manquantes
+- Icône dédiée pour l'avis complémentaire
+- Troncage des noms longs
+- tri par nom sur la page des bureaux
+- Valeurs par défaut du tag de signature
+- Remplacement du document principal en création
+- Footer sur la page de login
+- Super-Administrateurs sans entités
+- Conversion des images en PDF
+- Récupération des signatures détachées dans PASTELL
+- Script de sélection de circuit
+- Affichage des annexes non-PDF
+- Label "En l'absence de..." dans la cartouche de circuit
+- Tooltips
+- Cachet automatique
+- Formulaires IPNG
+- Administrateur fonctionnel
+- Absences : séparation de la liste des dossiers à traiter pour cause de remplacement et ajout du filtre correspondant
+- Transfert/second opinion depuis la liste
+- Date limite d'un dossier modifiable
+- Librairie générée par IP-core
+- PDF d'impression dans le zip envoyé à la corbeille
+- Bordereau d'impression dans les templates modifiables
+- Augmentation de la limite de caractère des noms de sous-types
+- Affichage du type parent dans la recherche de sous-type
+- Gestion des circuits avec un bureau sans acteur
+- Bordereau dans les modèles éditables
+- Métadonnées dans le bordereau
+- Enregistrement décalé des formulaires
+- Infos du certificat dans le bordereau d'impression, sur les nouvelles signatures
+- Contrôle de l'unicité des noms courts de bureau
+- Valeurs négatives de la page de tampon (`-1` pour la dernière page, `-2` pour l'avant-dernière, `-3` pour l'avant-avant dernière...)
+- Fonctionnement du formulaire mot de passe oublié
+- Préremplir le champ sign externe
+- Calques : Métadonnées internes
+- Inclure les pièces jointes par défaut
+- Vérification des informations saisies pour la signature externe en cours
+- Ajout de signature externe à la page de création
+- Indexes négatifs de page de signature
+- Redirection sur le dossier après le recyclage
+- Page négatives sur la signature externe, pour les opérateurs le supportant
+- Alerte de certificat expiré
+- Mail de dossier en retard, tous les lundi matin
+- Délégation par type/sous-type
+- Signature détachées à la création
+- Bordereau dans le mail
+- Utilisation des indexes des métadonnées
+- Notifications de l'émetteur
+
+### Corrections
+
+- Reporting avec Sentry
+- Édition d'un sous-type
+- Nombre de documents principaux
+- Charte graphique sur l'administration des dossiers
+- Charte graphique sur l'administration des connecteurs de signature externe
+- Charte graphique sur l'administration des métadonnées
+- Charte graphique sur la création d'un nouveau dossier
+- Reporting avec Sentry
+- Enregistrement de tous les champs à la création d'un utilisateur
+- Charte graphique sur les popups de création/suppression d'un utilisateur
+- Charte graphique sur la popup d'édition d'un sous-type
+- Enregistrer et envoyer dans le circuit
+- Suppression des entités
+- Type de signature automatique
+- Scripts de sélection de circuit trop courts
+- Charte graphique sur l'administration des entités
+- Charte graphique sur l'administration de tous les utilisateurs
+- Charte graphique sur l'administration des délégations
+- Charte graphique sur l'administration des typologies
+- Replier les entités dans la vue principale
+- Récupération de tous les bureaux de l'arborescence
+- Charte graphique sur l'administration des circuits
+- Charte graphique à la navigation
+- Charte graphique à la création d'un dossier
+- Charte graphique à la création d'un dossier
+- Modifications des habilitation des bureaux
+- Signature externes qui remplacent le document original
+- Nommage des signatures détachées
+- Bug occasionnel sur la visualisation des circuits
+- Suppression d'un dossier rejeté
+- Signature valide après un positionnement manuel
+- Positionnement de signature
+- Charte graphique à l'administration des dossiers
+- Signature de multi-docs principaux
+- Petites retouches de performances
+- Retours sur la page de création
+- Retours sur la page d'administration de dossiers
+- Transformation de documents
+- Augmentation de la RAM par défaut pour Crypto
+- Les nouveaux dossiers sans typologie sont mono-doc par défaut
+- Limite du nombre de doc principaux
+- Affichage du circuit en cours
+- Charte graphique sur les dossiers en cours
+- Charte graphique sur les archives
+- Utilisation des bureau finaux sur les circuits de validation
+- Assez gros refactor de PES-Viewer, résolutions de vulnérabilités
+- Transferts/Visa complémentaires dans l'aperçu des circuits
+- Crash à la récupération des bureaux favoris
+- Enchaîner un circuit
+- Design global
+- Aperçu des circuits
+- Contrôle sur les métadonnées dans l'admin
+- Charte graphique sur les métadonnées
+- Charte graphique sur les enchaînement
+- Charte graphique sur les circuits
+- Imprimer un dossier
+- Fil d'Ariane dans l'admin
+- Erreur 502 au rechargement
+- Enregistrement des bureaux associés
+- Liste de typologie
+- Charte graphique sur les listes de tâches
+- Création d'un bureau
+- Création d'un sous-type
+- Associations sous-type/métadonnées et sous-type/calques
+- Création d'une métadonnée
+- Signature/Cachet en mode AUTO
+- Signature avec métadonnée obligatoire
+- Charte graphique à la création de métadonnée
+- Colonne émetteurs/bureau courant dans les bannettes Fin de circuit/Brouillons
+- Mail sécurisé
+- Tri par nom
+- Diagnostic Libersign
+- Faille de sécurité Spring4Shell sur nos briques internes
+- Archives
+- Position de signature manuelle
+- Administration des mails sécurisés
+- Impression de dossier
+- Édition d'une configuration de mail sécurisé
+- Édition d'une configuration de signature externe
+- Rejet d'une tâche externe
+- Signature externe - Docage
+- Signature externe - Yousign
+- Signature externe - Universign
+- Renommage des archives en corbeille
+- Contrôles sur les circuits dans l'administration des sous-types
+- Annotations sur les étapes externes
+- Charte graphique sur le header
+- Charte graphique sur le tableau de bord
+- Paramètre de signature externe dans un sous-type
+- Cachet automatique
+- Métadonnées obligatoires à une étape
+- Affichage du circuit de création
+- Taille des popups de signature
+- Charte graphique à l'aperçu d'un brouillon
+- Aperçu des circuits
+- Nom dans le header
+- Label du visa complémentaire
+- Récupération d'un dossier par webservices
+- Affichage des étapes à venir
+- Pagination incorrecte
+- Journal des évènements
+- Valeur par défaut des booléens
+- Affichage de la visionneuse PES
+- Tri par défaut dans les préférences
+- Sauvegarde d'un sous-type
+- Mise en page des mails de signature externe
+- Icône de placement de signature
+- Traduction des tooltips de la visionneuse PDF
+- Administration - Utilisateurs
+- Administration - Tous les utilisateurs
+- Métadonnées à une étape
+- Charte sur le menu d'administration
+- Éditeur de script de sélection
+- Extraction des dossiers contenant un `/`
+- Icônes dans la visionneuse PDF
+- Commentaires dans la visionneuse PDF
+- Préférences d'utilisateur
+- Enregistrement d'une métadonnée à un sous-type
+- Charte graphique à l'écran rejeté
+- Affichage de l'image de signature
+- Affichage des étapes collaboratives
+- Envoi par mail
+- Rejet des dossiers en cas de refus de signature externe
+- Conformité des status et des liste renvoyée lors des recherche pour l'api SOAP
+- Meilleure gestion de charge lors de la création du document d'impression
+- Gestion de gros volumes de ressources et de permissions sur Keycloak
+- Émetteur d'un dossier
+- Enchaîner un circuit
+- Recherche de dossiers par l'API SOAP
+- Message d'erreur dans l'API SOAP
+- Message d'erreur sur le login de la signature externe
+- Titre du filtre par défaut
+- Retirer le filtre par défaut
+- Historique après un rejet
+- Blocage de l'application après plusieurs impressions de dossiers
+- Charte graphique sur le panneau de certificat de cachet serveur
+- Augmentation de la mémoire tampon de la signature externe
+- Charte graphique sur le header
+- Erreur à l'enregistrement des préférences
+- Bureaux inaccessibles
+- Erreur 502 au rafraichissement de la page
+- Affichage des images de signatures
+- Enregistrement des paramètres de notifications
+- Affichage du statut d'admin
+- Signature externe enchainées
+- Messages d'erreur à l'enregistrement de la signature externe
+- Formulaire d'envoi par mail
+- Augmentation du timeout
+- Conversions de documents
+- Valeurs incorrectes dans les sélecteurs
+- Optimisation de la mémoire à la récupération des signatures externes
+- Charte graphique sur les droits
+- Enregistrement des droits
+- Conversion des fichiers depuis Pastell
+- Messages explicites pour les cachets serveur
+- Création de dossiers
+- Préférences d'utilisateur
+- Envoi depuis Pastell
+- Charte graphique sur les métadonnées
+- Charte graphique sur les listes de dossiers
+- Info-bulle sur un bureau variable
+- Labels
+- Info-bulles
+- Charte graphique sur l'admin des bureaux
+- Liens cliquables
+- Message d'alerte à l'enchaînement de circuit
+- Conversion DOC/DOCX
+- Compatibilité SOAP
+- Avis complémentaire
+- Nommage des circuits
+- Impression d'un dossier avec le bordereau
+- Surcharge des métadonnées de la signature
+- Envoi à la corbeille
+- Dissociation d'un utilisateur d'une entité
+- Charte sur le header
+- Charte graphique sur la liste des dossiers
+- Info-bulles
+- Positionnement de signature externe
+- Charte sur la signature externe
+- Injection par Pastell
+- Renommage de la partie "Profil/Administration" en "Profil/Débogage"
+- Envoi à la corbeille
+- Envoi avec Docage
+- Charte graphique sur le header
+- Supervision
+- Informations du serveur
+- Modification des étapes
+- Pagination des dossiers
+- Gestion des super-admins
+- Supervisions
+- Délégations
+- Visa complémentaire
+- Noms longs de bureaux
+- Transfers de dossiers depuis l'administration
+- État des dossiers dans l'administration
+- Actions manquantes
+- Supprimer un brouillon
+- Contrôle des métadonnées
+- Signature papier
+- Charte sur les boutons de création de dossier
+- Infobulles sur les actions
+- Signatures détachées et Pastell
+- Titre de la page de login
+- Erreur d'association des utilisateurs
+- Modèles de mail dans l'administration
+- Modèle du mail envoyé
+- Envoi à la corbeille
+- Recyclage
+- Avis complémentaire
+- Affichage des étapes concurrentes, collaboratives
+- Banettes non-cliquables
+- Labels sur les filtres
+- Affichage des métadonnées
+- Étapes de lecture bloquées en "En cours"
+- Ajout d'un connecteur mail-sec
+- Extraction par le Feeder
+- Création par PASTELL
+- Suppression d'un circuit
+- Erreur d'enregistrement en cas de métadonnée obligatoire
+- No-MTOM sur l'API REST
+- Super-admins
+- Listes vides
+- Récupération via Pastell
+- Extraction via Feeder
+- Fichiers non-PDF via Pastell
+- Icône lu/non-lu dans les tâches en cours
+- Conversions des Docs depuis une VM Win10/Google Chrome
+- Tests de mails depuis un admin de tenant
+- Journal des évènements sur les transferts
+- Supprimer une absence
+- Visibilité des sous-types
+- Labels
+- Bureaux associés
+- Visibilité des dossiers
+- Archiver un dossier
+- Icônes
+- Vérifications de formulaires
+- Actions en doublon
+- Labels
+- Sélections des types dans l'administration des dossiers
+- Interdiction de la suppression d'une conf utilisée
+- Fermeture de la popup de signature externe pour éviter les doubles-actions
+- Envoi à la corbeille
+- Sélection de tenant dans la corbeille
+- Historique d'un dossier
+- Droits de remord sur un dossier
+- Visibilité d'une popup
+- Colonnes manquantes
+- Bureaux favoris
+- Enchaînement de circuits
+- Affichage plus propre d'un bureau supprimé
+- Échanges avec Pastell
+- Tag `#signature#` reconnu comme un `#signature0#`
+- Signature par lot
+- Déclarations des absences
+- Déclaration des superviseurs
+- Supervision multi-collectivités
+- Suppression d'une supervision
+- Contourner une étape externe
+- Transfert depuis l'administration
+- Suppression d'une absence
+- Bordereau d'impression
+- Affichage de la cartouche de circuit
+- Journal des évènements
+- Labels
+- Message d'erreur
+- Envoi à la corbeille
+- Webservices
+- Accents dans les mails
+- Création de dossier et UUID
+- Extraction de dossier
+- Recherche par état
+- Récupération des signatures détachées dans Pastell
+- Signature détachée d'un fichier primo-signé
+- ACTE générique et automatique vers ACTE CAdES et CAdES sans protocole
+- Namespace SOAP
+- Nom du doc d'impression
+- Fil d'Ariane super-admin
+- Redirection après démarrage d'un dossier
+- Logo et nom "iparapheur"
+- Footer de la page de login
+- Téléchargement de signatures détachées depuis l'UI
+- Tampon PAdES par défaut
+- Corrections de Label et de disposition
+- Affichages des étapes d'un dossier en cours
+- Recherche de dossier (non-admin)
+- Les compteurs de dossiers en retard ne comptent que les dossiers en cours
+- Étapes externes bloquées
+- Dossiers avec métadonnée obligatoire bloqués
+- Configuration d'une étape externe
+- Paramètre d'un sous-type
+- Message d'erreur sur le mail-sec
+- Impression du fichier
+- Messages d'erreur
+- Création de circuit
+- Recherche depuis le header
+- Création d'un admin fonctionnel
+- Bordereau de signature
+- Enchaînement de circuits
+- Calques
+- Enregistrement des métadonnées
+- Cachet automatique
+- Retour direct, sans écriture disque, lors d'un appel à PDF-Stamp
+- URL et hash par défaut du PES-Policy de la signature PES
+- Inversions des valeurs de page de calque `-1/0`. La valeur `0` devient `Toutes les pages` et `-1` devient `Dernière page`.
+- Minimum 2 caractères contre 3 en V4
+- Paramètre Permissions de création et Visibilité en filtre restent en 'Public
+- Renommer un fichier à l'étape brouillon
+- Calques
+- Droit de remords
+- Lecture obligatoire dans le sous-type
+- Feeder : échec de l'extraction
+- Modifier du sous-type d'un brouillon avec métadonnées
+- Signature externe - configuration
+- MailSec - avec case "Envoyer le bordereau"
+- Journal des évènements - étapes externes
+- Signature externe - Afficher le bon message d'erreur
+- Utilisation de la surcharge des sous-types des infos de signature
+- Police automatique dans le macaron de signature
+- Injection d'un flux Helios via Pastell
+- Enregistrement des fréquences de notifications
+- Tests des templates
+- Accents et labels dans les mails de notifications unitaires
+- Affichage des actions groupées
+- Suppression d'un dossier malgré un sous-type supprimé
+- Retour de rejet Universign
+- Extraction via Feeder
+- Infos du formulaire de signature externe
+- Recherche de dossiers via l'API SOAP
+- Script de sélection de circuit et métadonnée
+- Bureaux à notifier
+- Notifications unitaires
+- Notifications groupées
+- Envoi par mail
+- Affichage des éléments partiellement supprimés
+- Script de sélection avec métadonnée
+- Affichage de la corbeille
+- Appels SOAP
+- Connexion Pastell
+- Fréquence de notifications
+- Lien dans le mail
+- Surcharge des infos de signature
+- Aperçu du circuit
+- Journal des évènements
+- Messages d'erreur sur la signature détachée
+- Modification de "En cours" en "À traiter"
+- Redirection après une erreur
+
+### Suppressions
+
+- Login par l'adresse mail (conséquence de l'autorisation des doublons)
+- Modification du MdP par l'administrateur (Selon le RGPD, seul l'utilisateur doit pouvoir le faire)
+- Formulaires PDF
+- Métadonnées dans l'envoi par mail simple
+- Champs inutilisés dans le formulaire de signature externe
+- Gestion des notifications par l'admin à la création de l'utilisateur, non-RGPD
+- Service Docage, le temps de trancher le cas de la primo-signature
+- Affichage des menu d'admin aux non-admins
+- Signature enveloppée et/ou externe sur un fichier avec une signature détachée
+- Exécuter plusieurs fois la même action
+- Affichage des menu d'admin aux non-admins
+- Cohérence de l'icône lu/non-lu dans la liste des tâches
+- Réglage de super-admin dans l'administration de tenant
+- Vue grille pour un utilisateur à plus de 15 bureaux
+- Positionnement de signature sur un dossier sans signature à venir
+- Popup d'erreur au chargement d'un dossier
+- Accès à un bureau non autorisé
+- Onglets de stats
+- Bouton rejet en cas d'attente d'étape externe
+- Redirection vers le dossier lors de l'envoi
+- Lien vers les statistiques
+- Option d'emplacement de signature quand il n'y a plus de signature dans le circuit
+- Absences sans date de début
+- Possibilité de supprimer les utilisateurs internes
+- Possibilité d'ajouter une signature détachée sur un format enveloppé
+- Mots de passe par défaut
+- Colonne inutile dans le dashboard
