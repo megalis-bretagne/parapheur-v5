@@ -88,7 +88,6 @@ variables:
       "README.md"
       "src/main/resources/nginx/iparapheur.conf.template"
       "src/main/resources/nginx/iparapheur.init.conf.template"
-      "src/main/resources/content"
       "src/main/resources/postgres/docker-entrypoint-initdb.d"
       "src/main/resources/keycloak"
       "src/main/resources/prometheus/alert.rules"
