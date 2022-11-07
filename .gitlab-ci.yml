@@ -170,7 +170,7 @@ publish:
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
   - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${IPARAPHEUR_DOCKER_ELEMENTS_PATH}/.env"; fi
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphan"
+  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_DOCKER_ELEMENTS_PATH} && docker-compose down --volumes --remove-orphans"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
   - for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do DOCKER_COMPOSE_FILES+=(" -f ${OVERRIDE_DOCKER_COMPOSE_FILE}"); done
