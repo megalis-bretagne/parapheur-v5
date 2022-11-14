@@ -43,8 +43,8 @@ Feature: GET /api/v1/admin/tenant (List tenants)
 
 		Examples:
 			| searchTerm   | sort | direction | total | field | value!                                                                       |
-			|              | NAME | ASC       | 3     | name  | [ 'Default tenant', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
-			|              | NAME | DESC      | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Default tenant' ] |
+			|              | NAME | ASC       | 3     | name  | [ 'Entité initiale', 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ] |
+			|              | NAME | DESC      | 3     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP', 'Entité initiale' ] |
 			| foo          |      |           | 0     | name  | []                                                                           |
 			| el           | NAME | ASC       | 2     | name  | [ 'Libriciel SCOP', 'Montpellier Méditerranée Métropole' ]                   |
 			| el           | NAME | DESC      | 2     | name  | [ 'Montpellier Méditerranée Métropole', 'Libriciel SCOP' ]                   |

@@ -10,7 +10,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in an existing tenant', status)}
         # Create a temporary seal certificate
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'
             And header Accept = 'application/json'
@@ -46,7 +46,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in an existing tenant', status)}
         # Get informations
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingSealCertificateId = ip5.api.v1.sealCertificate.getNonExistingId()
 
         # Try to delete it
@@ -76,7 +76,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete an existing seal certificate in a non-existing tenant', status)}
         # Create a temporary seal certificate
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 
         Given url baseUrl
@@ -113,7 +113,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/sealCertificate/{sealCertificate
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'delete a non-existing seal certificate in a non-existing tenant', status)}
         # Create a seal certificate
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingSealCertificateId = ip5.api.v1.sealCertificate.getNonExistingId()
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
 

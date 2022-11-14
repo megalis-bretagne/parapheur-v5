@@ -9,7 +9,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a "PADES" type with no protocol and associate it to an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def name = 'tmp-' + ip.utils.getUUID()
 
         * ip5.api.v1.auth.login('<username>', '<password>')
@@ -80,7 +80,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a type with no protocol and associate it to a non-existing tenant', status, data)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def name = 'tmp-' + ip.utils.getUUID()
         * def requestData =
 """

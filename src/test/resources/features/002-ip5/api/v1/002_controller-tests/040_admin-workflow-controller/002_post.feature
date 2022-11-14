@@ -9,7 +9,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
         * ip5.api.v1.auth.login('<username>', '<password>')
@@ -61,7 +61,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a one-step "VISA" workflow and associate it to an existing desk in a non-existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
@@ -112,7 +112,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a one-step "VISA" workflow and associate it to an existing desk in an existing tenant', status, data)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
         * ip5.api.v1.auth.login('cnoir', 'a123456')
@@ -181,7 +181,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 #    @data-validation @666
 #    Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a workflow and associate it to a desk in an existing tenant', status, path)}
 #        * ip5.api.v1.auth.login('user', adminUserPwd)
-#        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+#        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
 #        * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 #
 #        * def requestData = karate.read('classpath:fixtures/ip-core/v1/admin-workflow-controller/post/data-validation/' + path + '.js')

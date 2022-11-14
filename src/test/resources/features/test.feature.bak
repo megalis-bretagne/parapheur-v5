@@ -18,7 +18,7 @@ function (max) {
 """
 
     Scenario: Create
-        # @info: 20220117 9h30 (à la connexion Mozilla Firefox 96.0 (64 bits), + 1 (Default tenant))
+        # @info: 20220117 9h30 (à la connexion Mozilla Firefox 96.0 (64 bits), + 1 (Entité initiale))
         # 31 -> OK
         # 32 -> 400 Bad Request Request Header Or Cookie Too Large
         * def names = createTmpNumberedTenants(30)

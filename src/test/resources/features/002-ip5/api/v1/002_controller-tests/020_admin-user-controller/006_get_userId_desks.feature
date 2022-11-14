@@ -6,7 +6,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
