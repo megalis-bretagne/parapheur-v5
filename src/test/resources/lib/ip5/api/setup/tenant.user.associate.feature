@@ -3,7 +3,7 @@ Feature: Tenant user associate setup lib
 
     Scenario: Associate user with tenant
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
-        * def defaultTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def defaultTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def userId = ip5.api.v1.user.getIdByEmail(defaultTenantId, email)
 
         Given url baseUrl

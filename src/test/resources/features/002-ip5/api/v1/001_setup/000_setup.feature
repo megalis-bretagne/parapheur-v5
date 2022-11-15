@@ -16,18 +16,18 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
-			| Default tenant | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            | disabled                   |
-			| Default tenant | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |
-			| Default tenant | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   |
-			| Default tenant | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |
-			| Default tenant | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |
+			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            | disabled                   |
+			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |
+			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   |
+			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |
+			| Entité initiale | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |
 
 	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/tenant.user.associate.feature') __row
 
 		Examples:
 			| email           | tenant                             |
-			| cnoir@dom.local | Default tenant                     |
+			| cnoir@dom.local | Entité initiale                     |
 			| cnoir@dom.local | Libriciel SCOP                     |
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
@@ -36,15 +36,15 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | name        | owners!                    | parent! | associated! | permissions!                                       |
-			| Default tenant | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
-			| Default tenant | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
+			| Entité initiale | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+			| Entité initiale | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
 	Scenario Outline: Create a seal certificate from file "${path}" in "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/seal-certificate.create.feature') __row
 
 		Examples:
 			| tenant         | path                                                  | password                        | image! |
-			| Default tenant | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
+			| Entité initiale | classpath:files/Entité initiale - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured
@@ -54,12 +54,12 @@ Feature: Basic setup
 		Examples:
 			| tenant         | name                            | deskName    | type               | mandatoryValidationMetadata! |
 			# @fixme: API (+UI)
-#			| Default tenant | Transparent - Mail              | Transparent | MAIL               | []                 |
+#			| Entité initiale | Transparent - Mail              | Transparent | MAIL               | []                 |
 			# @todo: setup first -> check via API, via Web = 400
-			| Default tenant | Transparent - Cachet Serveur    | Transparent | SEAL               | []                           |
-			| Default tenant | Transparent - Signature         | Transparent | SIGNATURE          | []                           |
-			| Default tenant | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE | []                           |
-			| Default tenant | Transparent - Visa              | Transparent | VISA               | []                           |
+			| Entité initiale | Transparent - Cachet Serveur    | Transparent | SEAL               | []                           |
+			| Entité initiale | Transparent - Signature         | Transparent | SIGNATURE          | []                           |
+			| Entité initiale | Transparent - Signature externe | Transparent | EXTERNAL_SIGNATURE | []                           |
+			| Entité initiale | Transparent - Visa              | Transparent | VISA               | []                           |
 
 	@todo-karate @signature-format
 	# @see ip-core/src/main/java/coop/libriciel/ipcore/model/crypto/SignatureFormat.java
@@ -69,12 +69,12 @@ Feature: Basic setup
 		# @fixme: remplir les colonnes signatureLocation | signatureZipCode | signaturePosition
 		Examples:
 			| tenant         | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
-			| Default tenant | CACHET      | Cachet serveur    |          | PADES           |                   |                  | false             |                          |
-			| Default tenant | SIGN_EXT    | Signature externe |          | PADES           |                   |                  | false             |                          |
-			| Default tenant | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  | false             |                          |
-			| Default tenant | SIGN_PES_V2 | Signature PES_V2  |          | PES_V2          |                   |                  | false             |                          |
-			| Default tenant | SIGN_PKCS7  | Signature PKCS7   |          | PKCS7           |                   |                  | false             |                          |
-			| Default tenant | VISA        | Visa              |          | PADES           |                   |                  | false             |                          |
+			| Entité initiale | CACHET      | Cachet serveur    |          | PADES           |                   |                  | false             |                          |
+			| Entité initiale | SIGN_EXT    | Signature externe |          | PADES           |                   |                  | false             |                          |
+			| Entité initiale | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  | false             |                          |
+			| Entité initiale | SIGN_PES_V2 | Signature PES_V2  |          | PES_V2          |                   |                  | false             |                          |
+			| Entité initiale | SIGN_PKCS7  | Signature PKCS7   |          | PKCS7           |                   |                  | false             |                          |
+			| Entité initiale | VISA        | Visa              |          | PADES           |                   |                  | false             |                          |
 
 	@todo-karate @signature-format
 	Scenario Outline: Create subtype "${name}" for type "${type}" and "${validationWorkflowId}" workflow in "${tenant}"
@@ -82,17 +82,17 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataList! |
-			| Default tenant | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                   |
-			| Default tenant | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                   |
-			| Default tenant | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Default tenant | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Default tenant | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Default tenant | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
+			| Entité initiale | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Entité initiale - Cachet serveur | ''                       | []                   |
+			| Entité initiale | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                   |
+			| Entité initiale | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Entité initiale | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Entité initiale | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
+			| Entité initiale | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
 
 	Scenario Outline: Set the signature image for user "${email}"
 		* call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
 
 		Examples:
 			| tenant         | email                  | path                                                |
-			| Default tenant | ltransparent@dom.local | classpath:files/images/signature - ltransparent.png |
-			| Default tenant | stranslucide@dom.local | classpath:files/images/signature - stranslucide.png |
+			| Entité initiale | ltransparent@dom.local | classpath:files/images/signature - ltransparent.png |
+			| Entité initiale | stranslucide@dom.local | classpath:files/images/signature - stranslucide.png |

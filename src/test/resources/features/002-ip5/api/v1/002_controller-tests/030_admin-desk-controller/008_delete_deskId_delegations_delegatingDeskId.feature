@@ -6,7 +6,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/desk/{deskId}/delegations/{deleg
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
         * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
         * def nonExistingDeskId = ip5.api.v1.desk.getNonExistingId()

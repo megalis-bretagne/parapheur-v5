@@ -9,7 +9,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 	@permissions
 	Scenario Outline: ${ip5.scenario.title.permissions(role, 'get the user list from an existing tenant', status)}
 		* ip5.api.v1.auth.login('user', adminUserPwd)
-		* def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+		* def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
 
 		* ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -54,7 +54,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
 	@searching
 	Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the user list', 200, total, searchTerm, sort, direction)}
 		* ip5.api.v1.auth.login('user', adminUserPwd)
-		* def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+		* def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
 		* ip5.api.v1.auth.login('cnoir', 'a123456')
 
 		Given url baseUrl
