@@ -40,10 +40,10 @@ services:
       - MONGO_DB_USR
       - MONGO_DB_PWD
     volumes:
-      - ./data/ipng/wallet:/wallet
-      - ./data/ipng/ca-certs:/crypto-config
+      - ${DATA_ROOT_DIR}/ipng/wallet:/wallet
+      - ${DATA_ROOT_DIR}/ipng/ca-certs:/crypto-config
       - ./src/main/resources/ipng/application.properties:/application.properties
-      - ./data/ipng/connection-profile.yml:/connection-profile.yml
+      - ${DATA_ROOT_DIR}/ipng/connection-profile.yml:/connection-profile.yml
     restart: unless-stopped
 
   mongo:
@@ -52,7 +52,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USR}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PWD}
     volumes:
-      - ./data/ipng/cache-db:/data/db:rw
+      - ${DATA_ROOT_DIR}/ipng/cache-db:/data/db:rw
     ports:
       - 27017:27017
 
@@ -71,8 +71,7 @@ services:
     restart: unless-stopped
     command: --provider local --basedir /data/ --temp-path /tmp/
     volumes:
-      - ./data/transfer/data:/data/
-      - ./data/transfer/tmp:/tmp/
+      - ${DATA_ROOT_DIR}/transfer/data:/data/
+      - ${DATA_ROOT_DIR}/transfer/tmp:/tmp/
     environment:
       - RANDOM_TOKEN_LENGTH=0
-
