@@ -248,7 +248,7 @@ services:
 
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:2.6.0
+    image: hubdocker.libriciel.fr/alfresco/alfresco-transform-core-aio:2.6.0
     restart: unless-stopped
     tty: true
     mem_limit: 1280M
@@ -275,7 +275,7 @@ services:
 
 
   activemq:
-    image: alfresco/alfresco-activemq:5.16.5-jre11-centos7
+    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-centos7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -284,7 +284,7 @@ services:
 
 
   postgres:
-    image: postgres:10.1
+    image: hubdocker.libriciel.fr/postgres:10.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -315,7 +315,7 @@ services:
 
 
   redis:
-    image: redis:6.2.1-alpine
+    image: hubdocker.libriciel.fr/redis:6.2.1-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 128M
@@ -324,7 +324,7 @@ services:
 
 
   keycloak:
-    image: quay.io/keycloak/keycloak:16.1.1
+    image: hubquayio.libriciel.fr/keycloak/keycloak:16.1.1
     restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
@@ -375,7 +375,7 @@ services:
 
 
   matomo:
-    image: matomo:4.2.1-fpm
+    image: hubdocker.libriciel.fr/matomo:4.2.1-fpm
     restart: unless-stopped
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
@@ -398,7 +398,7 @@ services:
       timeout: 5s
       retries: 5
   matomo-db:
-    image: mariadb:10.3.36
+    image: hubdocker.libriciel.fr/mariadb:10.3.36
     restart: unless-stopped
     tty: true
     mem_limit: 256M
@@ -412,7 +412,7 @@ services:
 
 
   vault:
-    image: vault:1.6.7
+    image: hubdocker.libriciel.fr/vault:1.6.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -429,7 +429,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.34.0
+    image: hubdocker.libriciel.fr/prom/prometheus:v2.34.0
     mem_limit: 256M
     extra_hosts:
       - "host.docker.internal:host-gateway"
