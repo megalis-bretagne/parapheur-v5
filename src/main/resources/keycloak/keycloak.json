@@ -447,7 +447,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "admin"
+          "value": "${env.KEYCLOAK_RESTADMIN_PASSWORD}"
         }
       ],
       "email": "rest-admin@dom.local",
@@ -478,7 +478,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "admin"
+          "value": "${env.KEYCLOAK_SOAPUI_PASSWORD}"
         }
       ],
       "email": "soapui@dom.local",
