@@ -43,8 +43,8 @@ services:
       - KEYCLOAK_HOST
     volumes:
       - matomo_internal_files:/var/www/html
-      - ./data/matomo/config/:/var/www/html/config/
-      - ./data/matomo/plugins/:/var/www/html/plugins/
+      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
+      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
       - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
@@ -144,7 +144,7 @@ services:
     tty: true
     mem_limit: 1536M
     volumes:
-      - ./data/pes-viewer/pesPJ:/pesPJ/
+      - ${DATA_ROOT_DIR}/pes-viewer/pesPJ:/pesPJ/
 
 
   libersign:
@@ -219,7 +219,7 @@ services:
     environment:
       - PARAPHEUR_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
     volumes:
-      - ./data/feeder/data:/opt/iParapheur-feeder
+      - ${DATA_ROOT_DIR}/feeder/data:/opt/iParapheur-feeder
       - ./src/main/resources/feeder/application.properties:/config/application.properties
 
 
@@ -244,7 +244,7 @@ services:
       activemq:
         condition: service_started
     volumes:
-      - ./data/alfresco:/usr/local/tomcat/alf_data
+      - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
 
 
   transform-core-aio:
@@ -310,7 +310,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ${DATA_ROOT_DIR}/postgres:/var/lib/postgresql/data
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
 
 
@@ -320,7 +320,7 @@ services:
     tty: true
     mem_limit: 128M
     volumes:
-      - ./data/redis:/data
+      - ${DATA_ROOT_DIR}/redis:/data
 
 
   keycloak:
@@ -383,8 +383,8 @@ services:
     mem_limit: 1024M
     volumes:
       - matomo_internal_files:/var/www/html
-      - ./data/matomo/config/:/var/www/html/config/
-      - ./data/matomo/plugins/:/var/www/html/plugins/
+      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
+      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
     depends_on:
       - matomo-db
     environment:
@@ -403,7 +403,7 @@ services:
     tty: true
     mem_limit: 256M
     volumes:
-      - ./data/matomo-db:/var/lib/mysql
+      - ${DATA_ROOT_DIR}/matomo-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
@@ -425,7 +425,7 @@ services:
     volumes:
       - ./src/main/resources/vault/config:/vault/config
       - ./src/main/resources/vault/policies:/vault/policies
-      - ./data/vault/data:/vault/data
+      - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
   prometheus:
