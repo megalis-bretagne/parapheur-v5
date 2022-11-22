@@ -7,6 +7,35 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.2] - 2022-11-08
+[5.0.2]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.2.tar.gz
+
+### Ajouts
+
+- Fallback v4 sur le Legacy Bridge
+- Spinners dans les listes
+- Heure dans le bordereau d'impression par défaut
+- Affichage prévisionnel du circuit en cas de script de sélection
+- Bordereau dans le mail sécurisé
+
+### Corrections
+
+- Nom de l'entité par défaut, sur les nouvelles installs
+- Enchaîner un circuit (effectif sur les nouveaux dossiers créés)
+- Script de sélection avec bureau variable
+- Nom de l'action automatique dans les mails
+- Permission de création des sous-types
+- Titre de popup
+- Connecteur Pastell
+- Messages d'erreur en anglais
+- Signature, visa et cachet multiples
+
+### Suppressions
+
+- Visibilités non autorisées par l'admin dans création d'un dossier
+- Visuel du circuit après une dé-selection de typologie
+
+
 ## [5.0.1] - 2022-10-20
 [5.0.1]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.1.tar.gz
 

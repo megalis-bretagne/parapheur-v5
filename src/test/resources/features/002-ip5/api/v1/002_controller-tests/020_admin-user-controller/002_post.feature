@@ -6,7 +6,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
         * def list = ip5.api.v1.entity.getListByPartialName('tmp-')
         * call read('classpath:lib/ip5/api/setup/tenant.delete.feature') list
 
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def unique = 'tmp-' + ip.utils.getUUID()
         * def email = unique + '@dom.local'
         * def uniqueRequestData =

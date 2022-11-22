@@ -255,7 +255,7 @@ version_compare() {
 }
 
 __check_commands__() {
-    required_commands=(bash curl docker docker-compose grep python3 sed)
+    required_commands=(bash curl docker grep python3 sed)
     missing_commands=()
 
     for required_command in "${required_commands[@]}";do
@@ -279,7 +279,6 @@ __check_versions__() {
     expected['bash']="4.4"
     expected['curl']="7.58"
     expected['docker']="20.10"
-    expected['docker-compose']="1.27"
     expected['grep']="3.1"
     expected['python3']="3.6"
     expected['sed']="4.4"
@@ -288,7 +287,6 @@ __check_versions__() {
     versions['bash']="`bash --version | grep --color=never "bash" -m 1 | sed "s/^.* ${regexp}.*$/\1/g"`"
     versions['curl']="`curl --version | grep --color=never "curl" -m 1 | sed "s/^.*curl ${regexp}.*$/\1/g"`"
     versions['docker']="`docker --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
-    versions['docker-compose']="`docker-compose --version | sed "s/^.*version ${regexp}.*$/\1/g"`"
     versions['grep']="`grep --version | grep --color=never -m 1 "grep" | sed "s/^.* ${regexp}.*$/\1/g"`"
     versions['python3']="`python3 --version 2>&1 | sed "s/^.* ${regexp}.*$/\1/g"`"
     versions['sed']="`sed --version | grep --color=never -m 1 "sed" | sed "s/^.* ${regexp}.*$/\1/g"`"
@@ -347,7 +345,7 @@ __reset__()
       log_hr
       echo "Resetting..."
       log_hr
-      docker-compose \
+      docker compose \
           -f docker-compose.yml \
           down \
           --remove-orphans \
@@ -367,18 +365,18 @@ __setup_vault__()
       echo "Vault - setup..."
       log_hr
 
-      docker-compose \
+      docker compose \
           --file docker-compose.yml \
           up -d vault
       sleep ${SLEEP_VALUE}
-      VAULT_OUTPUT="`docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator init -key-shares=1 -key-threshold=1`"
+      VAULT_OUTPUT="`docker exec -it ${COMPOSE_PROJECT_NAME}-vault-1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       export VAULT_TOKEN="`echo "${VAULT_OUTPUT}" | grep --color=never "Initial Root Token:" | sed "s/Initial Root Token: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
       sed -i "s#VAULT_UNSEAL_KEY=.*#VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY}#g" .env
       sed -i "s#VAULT_TOKEN=.*#VAULT_TOKEN=${VAULT_TOKEN}#g" .env
-      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault operator unseal ${VAULT_UNSEAL_KEY}
-      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault login token=${VAULT_TOKEN}
-      docker exec -it ${COMPOSE_PROJECT_NAME}_vault_1 vault secrets enable -version=2 -path=secret kv
+      docker exec -it ${COMPOSE_PROJECT_NAME}-vault-1 vault operator unseal ${VAULT_UNSEAL_KEY}
+      docker exec -it ${COMPOSE_PROJECT_NAME}-vault-1 vault login token=${VAULT_TOKEN}
+      docker exec -it ${COMPOSE_PROJECT_NAME}-vault-1 vault secrets enable -version=2 -path=secret kv
 
       log_success "... Vault - setup completed\n" "OK"
 }
@@ -417,7 +415,7 @@ __setup_matomo__()
     echo "Matomo - setup..."
     log_hr
 
-    docker-compose \
+    docker compose \
         --file docker-compose.yml \
         --file docker-compose.override.init.yml \
         up -d matomo nginx
@@ -538,16 +536,16 @@ __main__()
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
-                  docker-compose down --volumes --remove-orphan
+                  docker compose down --volumes --remove-orphans
                   chmod -R 0777 ./data
                   if [ "${START_APP}" == "1" ] ; then
                     if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
-                      docker-compose \
+                      docker compose \
                       --file docker-compose.yml \
                       --file docker-compose.override.dev-`accepted_arch`.yml \
                       up
                     else
-                      docker-compose \
+                      docker compose \
                       --file docker-compose.yml \
                       up
                     fi

@@ -29,7 +29,7 @@ function() {
 """
 function() {
     var payload = getEmptyPayload();
-    var existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant');
+    var existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale');
 
     payload.annotationsAllowed = true
     payload.name = 'tmp-' + ip.utils.getUUID()
@@ -42,7 +42,7 @@ function() {
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingTypeId = ip5.api.v1.type.getIdByName(existingTenantId, 'tmp-', true)
 
         * def payload = getCleanPayload()
@@ -74,7 +74,7 @@ function() {
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to an existing type in a non-existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
-        * def existingTypeId = ip5.api.v1.type.getIdByName(ip5.api.v1.entity.getIdByName('Default tenant'), 'tmp-', true)
+        * def existingTypeId = ip5.api.v1.type.getIdByName(ip5.api.v1.entity.getIdByName('Entité initiale'), 'tmp-', true)
 
         * def payload = getCleanPayload()
 
@@ -103,7 +103,7 @@ function() {
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'create a subtype and associate it to a non-existing type in an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTypeId = ip5.api.v1.type.getNonExistingId()
 
         * def payload = getCleanPayload()
@@ -163,7 +163,7 @@ function() {
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a subtype and associate it to an existing type in an existing tenant', status, data)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingTypeId = ip5.api.v1.type.getIdByName(existingTenantId, 'tmp-', true)
 
         * def payload = getCleanPayload()

@@ -9,7 +9,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ltransparent@dom.local')
         * ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -33,7 +33,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for a non-existing user in an existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
         * ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -60,7 +60,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'replace a signature image for an existing user in a non-existing tenant', status)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'stranslucide@dom.local')
         * ip5.api.v1.auth.login('<username>', '<password>')
 
@@ -106,7 +106,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Repla
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'replace a signature image for an existing user in an existing tenant', status, data)}
         * ip5.api.v1.auth.login('user', adminUserPwd)
-        * def existingTenantId = ip5.api.v1.entity.getIdByName('Default tenant')
+        * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingUserId = email == null ? ip5.api.v1.user.createTemporary(existingTenantId) : ip5.api.v1.user.getIdByEmail(existingTenantId, '<email>')
 
         * ip5.api.v1.auth.login('cnoir', 'a123456')

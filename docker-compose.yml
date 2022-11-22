@@ -43,8 +43,8 @@ services:
       - KEYCLOAK_HOST
     volumes:
       - matomo_internal_files:/var/www/html
-      - ./data/matomo/config/:/var/www/html/config/
-      - ./data/matomo/plugins/:/var/www/html/plugins/
+      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
+      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
       - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
@@ -56,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.6
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.7
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -111,7 +111,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.4
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.5
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -126,7 +126,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.4
+    image: registry.libriciel.fr/public/signature/workflow:1.6.5
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -139,23 +139,23 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:1.5.1
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:1.5.2
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
     volumes:
-      - ./data/pes-viewer/pesPJ:/pesPJ/
+      - ${DATA_ROOT_DIR}/pes-viewer/pesPJ:/pesPJ/
 
 
   libersign:
-    image: registry.libriciel.fr/public/signature/libersign:1.11.4
+    image: registry.libriciel.fr/public/signature/libersign:1.12.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.0
+    image: registry.libriciel.fr/public/signature/crypto:3.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -169,7 +169,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.7
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.8
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -182,14 +182,14 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.5
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.2.6
     restart: unless-stopped
     tty: true
     mem_limit: 1G
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.0
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -206,6 +206,7 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_WEB_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
+      - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
 
 
@@ -219,12 +220,12 @@ services:
     environment:
       - PARAPHEUR_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
     volumes:
-      - ./data/feeder/data:/opt/iParapheur-feeder
+      - ${DATA_ROOT_DIR}/feeder/data:/opt/iParapheur-feeder
       - ./src/main/resources/feeder/application.properties:/config/application.properties
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.2.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.2.1.1
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -244,11 +245,11 @@ services:
       activemq:
         condition: service_started
     volumes:
-      - ./data/alfresco:/usr/local/tomcat/alf_data
+      - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
 
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:2.6.0
+    image: hubdocker.libriciel.fr/alfresco/alfresco-transform-core-aio:2.6.0
     restart: unless-stopped
     tty: true
     mem_limit: 1280M
@@ -275,7 +276,7 @@ services:
 
 
   activemq:
-    image: alfresco/alfresco-activemq:5.16.5-jre11-centos7
+    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-centos7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -284,7 +285,7 @@ services:
 
 
   postgres:
-    image: postgres:10.1
+    image: hubdocker.libriciel.fr/postgres:10.1
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -310,21 +311,21 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ${DATA_ROOT_DIR}/postgres:/var/lib/postgresql/data
       - ./src/main/resources/postgres/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
 
 
   redis:
-    image: redis:6.2.1-alpine
+    image: hubdocker.libriciel.fr/redis:6.2.1-alpine
     restart: unless-stopped
     tty: true
     mem_limit: 128M
     volumes:
-      - ./data/redis:/data
+      - ${DATA_ROOT_DIR}/redis:/data
 
 
   keycloak:
-    image: quay.io/keycloak/keycloak:16.1.1
+    image: hubquayio.libriciel.fr/keycloak/keycloak:16.1.1
     restart: unless-stopped
     tty: true
     # https://www.keycloak.org/docs/latest/server_installation/
@@ -338,6 +339,8 @@ services:
       - INITIAL_KEYCLOAK_ADMIN_PASSWORD
       - INITIAL_IPARAPHEUR_ADMIN_USER
       - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
+      - KEYCLOAK_RESTADMIN_PASSWORD
+      - KEYCLOAK_SOAPUI_PASSWORD
       - SMTP_HOST
       - SMTP_PORT
       - SMTP_USER
@@ -375,7 +378,7 @@ services:
 
 
   matomo:
-    image: matomo:4.2.1-fpm
+    image: hubdocker.libriciel.fr/matomo:4.2.1-fpm
     restart: unless-stopped
     tty: true
     # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
@@ -383,8 +386,8 @@ services:
     mem_limit: 1024M
     volumes:
       - matomo_internal_files:/var/www/html
-      - ./data/matomo/config/:/var/www/html/config/
-      - ./data/matomo/plugins/:/var/www/html/plugins/
+      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
+      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
     depends_on:
       - matomo-db
     environment:
@@ -398,12 +401,12 @@ services:
       timeout: 5s
       retries: 5
   matomo-db:
-    image: mariadb:10.3.36
+    image: hubdocker.libriciel.fr/mariadb:10.3.36
     restart: unless-stopped
     tty: true
     mem_limit: 256M
     volumes:
-      - ./data/matomo-db:/var/lib/mysql
+      - ${DATA_ROOT_DIR}/matomo-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
@@ -412,7 +415,7 @@ services:
 
 
   vault:
-    image: vault:1.6.7
+    image: hubdocker.libriciel.fr/vault:1.6.7
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -425,11 +428,11 @@ services:
     volumes:
       - ./src/main/resources/vault/config:/vault/config
       - ./src/main/resources/vault/policies:/vault/policies
-      - ./data/vault/data:/vault/data
+      - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
   prometheus:
-    image: prom/prometheus:v2.34.0
+    image: hubdocker.libriciel.fr/prom/prometheus:v2.34.0
     mem_limit: 256M
     extra_hosts:
       - "host.docker.internal:host-gateway"

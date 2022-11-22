@@ -31,7 +31,7 @@ Install latest packages
 
 ```bash
 sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
 ### System settings
