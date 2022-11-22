@@ -331,34 +331,34 @@ services:
     tty: true
     mem_limit: 1536M
     environment:
-      - KEYCLOAK_REALM
-      - KEYCLOAK_CLIENT_ID
-      - KEYCLOAK_WEB_CLIENT_ID
-      - KEYCLOAK_CLIENT_SECRET
+     - KEYCLOAK_REALM
+     - KEYCLOAK_CLIENT_ID
+     - KEYCLOAK_WEB_CLIENT_ID
+     - KEYCLOAK_CLIENT_SECRET
      - KEYCLOAK_ADMIN=$INITIAL_KEYCLOAK_ADMIN_USER
      - KEYCLOAK_ADMIN_PASSWORD=$INITIAL_KEYCLOAK_ADMIN_PASSWORD
-      - INITIAL_IPARAPHEUR_ADMIN_USER
-      - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
+     - INITIAL_IPARAPHEUR_ADMIN_USER
+     - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
      - KEYCLOAK_RESTADMIN_PASSWORD
      - KEYCLOAK_SOAPUI_PASSWORD
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USER
-      - SMTP_PASSWORD
-      - SMTP_ENABLE_AUTH
-      - SMTP_MAIL_FROM
-      - SMTP_ENABLE_SSL
-      - SMTP_ENABLE_START_TLS
+     - SMTP_HOST
+     - SMTP_PORT
+     - SMTP_USER
+     - SMTP_PASSWORD
+     - SMTP_ENABLE_AUTH
+     - SMTP_MAIL_FROM
+     - SMTP_ENABLE_SSL
+     - SMTP_ENABLE_START_TLS
 #     - DB_DATABASE=keycloak
      - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
      - KC_HOSTNAME=${APPLICATION_HOST}
      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
     volumes:
-      # Resources to retrieve from iparapheur-theme pipeline artifact,
-      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
-      - ./src/main/resources/keycloak/themes/libriciel:/opt/jboss/keycloak/themes/libriciel
-      - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
+     # Resources to retrieve from iparapheur-theme pipeline artifact,
+     # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
+     - ./src/main/resources/keycloak/themes/libriciel:/opt/keycloak/themes/libriciel
+     - ./src/main/resources/keycloak/themes/iparapheur:/opt/keycloak/themes/iparapheur
 
 
   matomo:
