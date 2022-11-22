@@ -21,40 +21,40 @@
 cp /tmp/keycloak.json /tmp/keycloak_env_var_patched.json
 
 echo 'Patching keycloak.json file, replacing values :'
-echo '    ${env.KEYCLOAK_REALM}         : '${KEYCLOAK_REALM}
-echo '    ${env.KEYCLOAK_CLIENT_ID}     : '${KEYCLOAK_CLIENT_ID}
-echo '    ${env.KEYCLOAK_WEB_CLIENT_ID} : '${KEYCLOAK_WEB_CLIENT_ID}
-echo '    ${env.KEYCLOAK_CLIENT_SECRET} : '$( [[ ${#KEYCLOAK_CLIENT_SECRET} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.INITIAL_KEYCLOAK_ADMIN_USER}          : '${INITIAL_KEYCLOAK_ADMIN_USER}
-echo '    ${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}      : '$( [[ ${#INITIAL_KEYCLOAK_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_USER}          : '${INITIAL_IPARAPHEUR_ADMIN_USER}
-echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}      : '$( [[ ${#INITIAL_IPARAPHEUR_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.KEYCLOAK_RESTADMIN_PASSWORD}      : '$( [[ ${#KEYCLOAK_RESTADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.KEYCLOAK_SOAPUI_PASSWORD}      : '$( [[ ${#KEYCLOAK_SOAPUI_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
-echo '    ${env.SMTP_HOST}              : '${SMTP_HOST}
-echo '    ${env.SMTP_PORT}              : '${SMTP_PORT}
-echo '    ${env.SMTP_ENABLE_AUTH}       : '${SMTP_ENABLE_AUTH}
-echo '    ${env.SMTP_USER}              : '${SMTP_USER}
-echo '    ${env.SMTP_PASSWORD}          : '${SMTP_PASSWORD}
-echo '    ${env.SMTP_MAIL_FROM}         : '${MAIL_FROM}
-echo '    ${env.SMTP_ENABLE_SSL}        : '${SMTP_ENABLE_SSL}
-echo '    ${env.SMTP_ENABLE_START_TLS}  : '${SMTP_ENABLE_START_TLS}
+echo '    ${env.KEYCLOAK_REALM}                    : '${KEYCLOAK_REALM}
+echo '    ${env.KEYCLOAK_CLIENT_ID}                : '${KEYCLOAK_CLIENT_ID}
+echo '    ${env.KEYCLOAK_WEB_CLIENT_ID}            : '${KEYCLOAK_WEB_CLIENT_ID}
+echo '    ${env.KEYCLOAK_CLIENT_SECRET}            : '$( [[ ${#KEYCLOAK_CLIENT_SECRET} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.INITIAL_KEYCLOAK_ADMIN_USER}       : '${INITIAL_KEYCLOAK_ADMIN_USER}
+echo '    ${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}   : '$( [[ ${#INITIAL_KEYCLOAK_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_USER}     : '${INITIAL_IPARAPHEUR_ADMIN_USER}
+echo '    ${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD} : '$( [[ ${#INITIAL_IPARAPHEUR_ADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.KEYCLOAK_RESTADMIN_PASSWORD}       : '$( [[ ${#KEYCLOAK_RESTADMIN_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.KEYCLOAK_SOAPUI_PASSWORD}          : '$( [[ ${#KEYCLOAK_SOAPUI_PASSWORD} = 0 ]] && echo 'NO VALUE !!!' || echo '*****' )
+echo '    ${env.SMTP_HOST}                         : '${SMTP_HOST}
+echo '    ${env.SMTP_PORT}                         : '${SMTP_PORT}
+echo '    ${env.SMTP_ENABLE_AUTH}                  : '${SMTP_ENABLE_AUTH}
+echo '    ${env.SMTP_USER}                         : '${SMTP_USER}
+echo '    ${env.SMTP_PASSWORD}                     : '${SMTP_PASSWORD}
+echo '    ${env.SMTP_MAIL_FROM}                    : '${MAIL_FROM}
+echo '    ${env.SMTP_ENABLE_SSL}                   : '${SMTP_ENABLE_SSL}
+echo '    ${env.SMTP_ENABLE_START_TLS}             : '${SMTP_ENABLE_START_TLS}
 
-sed -i "s/\${env.KEYCLOAK_REALM}/${KEYCLOAK_REALM}/g"                 /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.KEYCLOAK_CLIENT_ID}/${KEYCLOAK_CLIENT_ID}/g"         /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.KEYCLOAK_WEB_CLIENT_ID}/${KEYCLOAK_WEB_CLIENT_ID}/g" /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.KEYCLOAK_CLIENT_SECRET}/${KEYCLOAK_CLIENT_SECRET}/g" /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_USER}/${INITIAL_KEYCLOAK_ADMIN_USER}/g"                   /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}/${INITIAL_KEYCLOAK_ADMIN_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_USER}/${INITIAL_IPARAPHEUR_ADMIN_USER}/g"                   /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/${INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.KEYCLOAK_RESTADMIN_PASSWORD}/${KEYCLOAK_RESTADMIN_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.KEYCLOAK_SOAPUI_PASSWORD}/${KEYCLOAK_SOAPUI_PASSWORD}/g"           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_HOST}/${SMTP_HOST}/g"                           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_PORT}/${SMTP_PORT}/g"                           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_ENABLE_AUTH}/${SMTP_ENABLE_AUTH}/g"             /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_USER}/${SMTP_USER}/g"                           /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_PASSWORD}/${SMTP_PASSWORD}/g"                   /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_MAIL_FROM}/${SMTP_MAIL_FROM}/g"                 /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_ENABLE_SSL}/${SMTP_ENABLE_SSL}/g"               /tmp/keycloak_env_var_patched.json
-sed -i "s/\${env.SMTP_ENABLE_START_TLS}/${SMTP_ENABLE_START_TLS}/g"   /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_REALM}/${KEYCLOAK_REALM}/g"                                       /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_CLIENT_ID}/${KEYCLOAK_CLIENT_ID}/g"                               /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_WEB_CLIENT_ID}/${KEYCLOAK_WEB_CLIENT_ID}/g"                       /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_CLIENT_SECRET}/${KEYCLOAK_CLIENT_SECRET}/g"                       /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_USER}/${INITIAL_KEYCLOAK_ADMIN_USER}/g"             /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_KEYCLOAK_ADMIN_PASSWORD}/${INITIAL_KEYCLOAK_ADMIN_PASSWORD}/g"     /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_USER}/${INITIAL_IPARAPHEUR_ADMIN_USER}/g"         /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/${INITIAL_IPARAPHEUR_ADMIN_PASSWORD}/g" /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_RESTADMIN_PASSWORD}/${KEYCLOAK_RESTADMIN_PASSWORD}/g"             /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.KEYCLOAK_SOAPUI_PASSWORD}/${KEYCLOAK_SOAPUI_PASSWORD}/g"                   /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_HOST}/${SMTP_HOST}/g"                                                 /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_PORT}/${SMTP_PORT}/g"                                                 /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_AUTH}/${SMTP_ENABLE_AUTH}/g"                                   /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_USER}/${SMTP_USER}/g"                                                 /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_PASSWORD}/${SMTP_PASSWORD}/g"                                         /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_MAIL_FROM}/${SMTP_MAIL_FROM}/g"                                       /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_SSL}/${SMTP_ENABLE_SSL}/g"                                     /tmp/keycloak_env_var_patched.json
+sed -i "s/\${env.SMTP_ENABLE_START_TLS}/${SMTP_ENABLE_START_TLS}/g"                         /tmp/keycloak_env_var_patched.json
