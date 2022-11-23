@@ -37,7 +37,7 @@ services:
     image: nginx:1.22.1
     restart: unless-stopped
     tty: true
-    mem_limit: 64M
+    mem_limit: 256M
     environment:
       - APPLICATION_HOST
       - KEYCLOAK_HOST
