@@ -107,8 +107,8 @@ Attention, il faudra faire le ménage après et supprimer tous les dossiers nomm
 - [ ] Utilisation
     - [ ] Tester un flux .doc avec tag + un fichier .odt depuis bureau ws -> signataire -> Fin de circuit
     - [ ] Saisir des annotations publiques et privées
-    - [ ] Imprimer
-    - [ ] Télécharger le documet original
+    - [ ] Générer le bordereau d'impression
+    - [ ] Télécharger le document original
     - [ ] Visualiser le journal des évènements
     - [ ] Envoi par mail
     - [ ] Demande d’avis complémentaire sur l’étape de signature

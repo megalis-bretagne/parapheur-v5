@@ -247,7 +247,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Charte graphique sur les métadonnées
 - Charte graphique sur les enchaînement
 - Charte graphique sur les circuits
-- Imprimer un dossier
+- Générer le bordereau d'impression
 - Fil d'Ariane dans l'admin
 - Erreur 502 au rechargement
 - Enregistrement des bureaux associés
