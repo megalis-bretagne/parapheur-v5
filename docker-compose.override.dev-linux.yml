@@ -146,10 +146,17 @@ services:
 
 
   keycloak:
+    command: start  --import-realm
     mem_limit: 768M
     memswap_limit: 768M
     ports:
       - "9090:8080"
+    environment:
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+    # - KC_LOG_LEVEL=TRACE
 
 
   matomo:
