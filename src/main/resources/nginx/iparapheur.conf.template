@@ -54,6 +54,17 @@ upstream up_web {
     server web:80;
 }
 
+
+server {
+    listen 80;
+    server_name ${APPLICATION_HOST};
+
+    return 301 https://$host$request_uri;
+}
+
+
+
+
 server {
 
   listen 443 ssl;
