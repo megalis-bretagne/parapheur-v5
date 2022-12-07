@@ -56,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.1.8
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.0
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -111,7 +111,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.5
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.6
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -126,7 +126,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.5
+    image: registry.libriciel.fr/public/signature/workflow:1.6.6
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -189,7 +189,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.1
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.2
     restart: unless-stopped
     tty: true
     mem_limit: 512M
@@ -325,56 +325,40 @@ services:
 
 
   keycloak:
-    image: hubquayio.libriciel.fr/keycloak/keycloak:16.1.1
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:1.0.0
+    command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
-    # https://www.keycloak.org/docs/latest/server_installation/
     mem_limit: 1536M
     environment:
-      - KEYCLOAK_REALM
-      - KEYCLOAK_CLIENT_ID
-      - KEYCLOAK_WEB_CLIENT_ID
-      - KEYCLOAK_CLIENT_SECRET
-      - INITIAL_KEYCLOAK_ADMIN_USER
-      - INITIAL_KEYCLOAK_ADMIN_PASSWORD
-      - INITIAL_IPARAPHEUR_ADMIN_USER
-      - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
-      - KEYCLOAK_RESTADMIN_PASSWORD
-      - KEYCLOAK_SOAPUI_PASSWORD
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USER
-      - SMTP_PASSWORD
-      - SMTP_ENABLE_AUTH
-      - SMTP_MAIL_FROM
-      - SMTP_ENABLE_SSL
-      - SMTP_ENABLE_START_TLS
-      - DB_VENDOR=postgres
-      - DB_ADDR=postgres
-      - DB_DATABASE=keycloak
-      # ${KEYCLOAK_DB_DATABASE}
-      - DB_USER=${KEYCLOAK_DB_USER}
-      - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
-      # - KEYCLOAK_LOGLEVEL=TRACE
-      # This file will be generated from the given JSON, by the script file
-      - KEYCLOAK_IMPORT=/tmp/keycloak_env_var_patched.json
-      - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
-      # Here we replace the whole options, copying the defaults normally provided by KC, otherwise memory options are overriden at run time
-      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
-      - PROXY_ADDRESS_FORWARDING=true
-      - KEYCLOAK_FRONTEND_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/auth
+     - KEYCLOAK_REALM
+     - KEYCLOAK_CLIENT_ID
+     - KEYCLOAK_WEB_CLIENT_ID
+     - KEYCLOAK_CLIENT_SECRET
+     - KEYCLOAK_ADMIN=$INITIAL_KEYCLOAK_ADMIN_USER
+     - KEYCLOAK_ADMIN_PASSWORD=$INITIAL_KEYCLOAK_ADMIN_PASSWORD
+     - INITIAL_IPARAPHEUR_ADMIN_USER
+     - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
+     - KEYCLOAK_RESTADMIN_PASSWORD
+     - KEYCLOAK_SOAPUI_PASSWORD
+     - SMTP_HOST
+     - SMTP_PORT
+     - SMTP_USER
+     - SMTP_PASSWORD
+     - SMTP_ENABLE_AUTH
+     - SMTP_MAIL_FROM
+     - SMTP_ENABLE_SSL
+     - SMTP_ENABLE_START_TLS
+#     - DB_DATABASE=keycloak
+     - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
+     - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+     - KC_HOSTNAME=${APPLICATION_HOST}
+     - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
     volumes:
-      - ./src/main/resources/keycloak/startup-scripts:/opt/jboss/startup-scripts
-      - ./src/main/resources/keycloak/keycloak.json:/tmp/keycloak.json
-      # Resources to retrieve from iparapheur-theme pipeline artifact,
-      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
-      - ./src/main/resources/keycloak/themes/libriciel:/opt/jboss/keycloak/themes/libriciel
-      - ./src/main/resources/keycloak/themes/iparapheur:/opt/jboss/keycloak/themes/iparapheur
-      # Fixing this bug, temporally : https://issues.redhat.com/browse/KEYCLOAK-12896
-      #     WARNING : The issue was closed, but the issue was not actually fixed, to date.
-      #     The bug is easy to reproduce : On the first launch, the INITIAL_KEYCLOAK_ADMIN_USER/INITIAL_KEYCLOAK_ADMIN_PASSWORD variables will create the default user.
-      #     On the second launch, Keycloak will crash, because the user already exist. The problematic line (l.2) was just commented out.
-      - ./src/main/resources/keycloak/docker-entrypoint.sh:/opt/jboss/tools/docker-entrypoint.sh
+     # Resources to retrieve from iparapheur-theme pipeline artifact,
+     # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
+     - ./src/main/resources/keycloak/themes/libriciel:/opt/keycloak/themes/libriciel
+     - ./src/main/resources/keycloak/themes/iparapheur:/opt/keycloak/themes/iparapheur
 
 
   matomo:

@@ -7,6 +7,32 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.3] - 2022-11-29
+[5.0.3]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.3.tar.gz
+
+### Ajouts
+
+- Action "Enchaîner" dans l'historique des évènements
+- Variable d'environnement pour l'emplacement des données
+
+### Corrections
+
+- Possibilité de modifier les préférences d'un utilisateur LDAP
+- Label "Imprimer" en "Générer le PDF d'impression"
+- Labels mal nommés
+- Utilisation du docker compose natif
+- Noms des processus sur le serveur
+- Suppressions des annexes ajoutées à l'étape courante
+
+### Suppressions
+
+- Permission d'ajouter des annexes pour un superviseur
+- Permission de supprimer des annexes dans le circuit de validation
+- Permission de modifier les champs LDAP d'un utilisateur
+- Champs ID
+- Bouton "Supprimer" en fin de circuit, et permissions associées à la suppression
+
+
 ## [5.0.2] - 2022-11-08
 [5.0.2]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.2.tar.gz
 
