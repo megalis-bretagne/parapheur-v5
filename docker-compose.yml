@@ -354,6 +354,7 @@ services:
      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
      - KC_HOSTNAME=${APPLICATION_HOST}
      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
+     - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     volumes:
      # Resources to retrieve from iparapheur-theme pipeline artifact,
      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
