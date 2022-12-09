@@ -351,3 +351,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         Examples:
             | badge           | title             | name                          | action | state  |
             | .badge-finished | en fin de circuit | Délibération DOC 1            | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération DOC 2            | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération ODT 1            | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération ODT 2            | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération PDF 1            | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération PDF 2            | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Délibération RTF 1            | Visa   |        |
+            | .badge-rejected | rejetés           | Délibération RTF 2            | Visa   | Rejeté |
+            | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
+            | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
