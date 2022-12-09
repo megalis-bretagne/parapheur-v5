@@ -321,6 +321,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
             | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
 
+    @aaa
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ip5.ui.user.login("ws@demo-simple", "a123456")
@@ -337,11 +338,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
-        * waitFor("{^}Générer le PDf d'impression").click()
+        * waitFor("//span[contains(normalize-space(text()), 'Générer le PDf')]").click()
         * waitFor("{^}Imprimer le bordereau de signature").click()
-        * waitFor("//button[contains(normalize-space(.),'Générer le PDf d'impression')]").click()
+        * waitFor("//button[contains(normalize-space(.),'Générer le PDf')]").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Générer le PDf d'impression')]", 0)
+        * waitForResultCount("//button[contains(normalize-space(text()),'Générer le PDf')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
@@ -350,12 +351,3 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         Examples:
             | badge           | title             | name                          | action | state  |
             | .badge-finished | en fin de circuit | Délibération DOC 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération DOC 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération ODT 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération ODT 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération PDF 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération PDF 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération RTF 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération RTF 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
-            | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
