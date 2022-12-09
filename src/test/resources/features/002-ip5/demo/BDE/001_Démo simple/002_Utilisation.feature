@@ -300,10 +300,10 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # 1. Avec le borderau de signature (case cochée par défaut)
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
-        * waitFor("{^}Imprimer").click()
-        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("{^}Générer le PDf d'impression").click()
+        * waitFor("//button[contains(normalize-space(.),'Générer le PDf d'impression')]").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
+        * waitForResultCount("//button[contains(normalize-space(.),'Générer le PDf d'impression')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
@@ -337,11 +337,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
         * mouse().move("{^button}Actions").go()
         * click("{^button}Actions")
-        * waitFor("{^}Imprimer").click()
+        * waitFor("{^}Générer le PDf d'impression").click()
         * waitFor("{^}Imprimer le bordereau de signature").click()
-        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("//button[contains(normalize-space(.),'Générer le PDf d'impression')]").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
+        * waitForResultCount("//button[contains(normalize-space(.),'Générer le PDf d'impression')]", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
