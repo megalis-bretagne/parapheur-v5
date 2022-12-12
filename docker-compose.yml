@@ -111,7 +111,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.7
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:print-pdf-label-fix-and-names
     restart: unless-stopped
     tty: true
     mem_limit: 64M
