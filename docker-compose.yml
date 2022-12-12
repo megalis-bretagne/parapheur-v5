@@ -56,7 +56,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.1
     restart: unless-stopped
     tty: true
     mem_limit: 1G
@@ -111,7 +111,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.6
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.7
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -353,6 +353,7 @@ services:
       - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
+      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     volumes:
       # Resources to retrieve from iparapheur-theme pipeline artifact,
       # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak

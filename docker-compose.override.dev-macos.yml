@@ -111,10 +111,15 @@ services:
 
 
   keycloak:
+    command: start --import-realm
     ports:
       - "9090:8080"
-    # environment:
-    #   - KEYCLOAK_LOGLEVEL=DEBUG
+    environment:
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+    # - KC_LOG_LEVEL=TRACE
 
 
   feeder:
