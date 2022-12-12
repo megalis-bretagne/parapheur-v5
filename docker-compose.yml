@@ -250,7 +250,7 @@ services:
 
 
   transform-core-aio:
-    image: registry.libriciel.fr:443/public/signature/alfresco-transform-core-aio:3.0.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.0
     restart: unless-stopped
     tty: true
     mem_limit: 1280M
@@ -348,7 +348,7 @@ services:
       - SMTP_MAIL_FROM
       - SMTP_ENABLE_SSL
       - SMTP_ENABLE_START_TLS
-      #     - DB_DATABASE=keycloak
+      # - DB_DATABASE=keycloak
       - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
       - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KC_HOSTNAME=${APPLICATION_HOST}
