@@ -298,12 +298,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # Vérifications des impressions
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
         # 1. Avec le borderau de signature (case cochée par défaut)
-        * mouse().move("{^button}Actions").go()
-        * click("{^button}Actions")
-        * waitFor("{^}Imprimer").click()
-        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("//button[@name='secondary_actions_button']").click()
+        * waitFor("//a[@name='secondary_actions_menu_link_print']").click()
+        * waitFor("//button[@name='perform_action_print']").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
+        * waitForResultCount("//button[@name='perform_action_print']", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
@@ -335,13 +334,12 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         # 2. Sans le bordereau de signature (case cochée par défaut)
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
-        * mouse().move("{^button}Actions").go()
-        * click("{^button}Actions")
-        * waitFor("{^}Imprimer").click()
+        * waitFor("//button[@name='secondary_actions_button']").click()
+        * waitFor("//a[@name='secondary_actions_menu_link_print']").click()
         * waitFor("{^}Imprimer le bordereau de signature").click()
-        * waitFor("//button[contains(normalize-space(.),'Imprimer')]").click()
+        * waitFor("//button[@name='perform_action_print']").click()
         * waitFor("{^}Annuler").click()
-        * waitForResultCount("//button[contains(normalize-space(.),'Imprimer')]", 0)
+        * waitForResultCount("//button[@name='perform_action_print']", 0)
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
