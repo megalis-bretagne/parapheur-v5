@@ -320,7 +320,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
             | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
 
-    @aaa
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ip5.ui.user.login("ws@demo-simple", "a123456")
