@@ -34,7 +34,8 @@ services:
 
 
   nginx:
-    image: nginx:1.22.1
+    # FIXME replace by appropriate version once it is tagged
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
     restart: unless-stopped
     tty: true
     mem_limit: 256M
@@ -45,7 +46,6 @@ services:
       - matomo_internal_files:/var/www/html
       - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
       - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
-      - ./src/main/resources/nginx/iparapheur.conf.template:/etc/nginx/templates/iparapheur.conf.template
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
@@ -383,6 +383,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   matomo-db:
     image: hubdocker.libriciel.fr/mariadb:10.3.36
     restart: unless-stopped
