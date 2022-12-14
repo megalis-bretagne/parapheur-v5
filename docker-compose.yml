@@ -34,8 +34,7 @@ services:
 
 
   nginx:
-    # FIXME replace by appropriate version once it is tagged
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.0
     restart: unless-stopped
     tty: true
     mem_limit: 256M
