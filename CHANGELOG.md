@@ -7,6 +7,36 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.4] - 2022-12-08
+[5.0.4]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.4.tar.gz
+
+### Ajouts
+
+- Purge automatique
+- Changement de version majeure  (et de socle technologique) de Keycloak
+- Redirection automatique HTTP -> HTTPS
+- Vérification de la présence de dossiers en cours avant de supprimer un bureau
+- Limite mémoire adaptée sur la nouvelle version de keycloak
+
+### Corrections
+
+- Signature de dossiers multi-documents
+- Absences déclarées le jour même
+- Inversion des métadonnées de validation/ de rejet à l'enregistrement des définitions de circuit
+- Autorisation d'action principale (ajout d'annexe par le superviseur possible)
+- Gestion des noms de dossiers long sur TDB
+- Stabilisation de la sélection de bureaux associés (bureau variable)
+- Affichage de la liste déroulante d'entités
+- Menu initial pour l'administrateur d'entité
+- Association d'entité à la création d'un utilisateur
+- Réparation des popup de création de type et sous-type
+
+### Suppressions
+
+- Options de sous-type en protocole HELIOS
+- Permission d'ajouter des annexes en protocole HELIOS
+
+
 ## [5.0.3] - 2022-11-29
 [5.0.3]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.3.tar.gz
 
