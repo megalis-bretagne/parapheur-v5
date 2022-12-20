@@ -34,6 +34,7 @@ variables:
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
   IPARAPHEUR_CURRENT_ELEMENTS_PATH: "/opt/iparapheur/current"
+  IPARAPHEUR_DIST_SYMLINK_PATH: "/opt/iparapheur/dist"
   IPARAPHEUR_DIST_ELEMENTS_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
   INIT_SCRIPT: "ip5-compose-dev.sh"
   DOCKER_COMPOSE_OVERRIDES_DEV: "docker-compose.override.dev.yml"
@@ -166,6 +167,8 @@ publish:
   - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}
   - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
+  - ${APPLY_COMMAND} "unlink ${IPARAPHEUR_DIST_SYMLINK_PATH}"
+  - ${APPLY_COMMAND} "ln -s ${IPARAPHEUR_DIST_ELEMENTS_PATH} ${IPARAPHEUR_DIST_SYMLINK_PATH}"
   # TODO : Remove this, it infringe the standard deploy.
   #  Each "override" files should be set on the server, and not distributed anymore
   - |
