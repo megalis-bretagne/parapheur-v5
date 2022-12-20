@@ -33,9 +33,9 @@ variables:
     description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-  IPARAPHEUR_CURRENT_ELEMENTS_PATH: "/opt/iparapheur/current"
-  IPARAPHEUR_DIST_SYMLINK_PATH: "/opt/iparapheur/dist"
-  IPARAPHEUR_DIST_ELEMENTS_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
+  SERVER_CURRENT_PATH: "/opt/iparapheur/current"
+  SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
+  SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
   INIT_SCRIPT: "ip5-compose-dev.sh"
   DOCKER_COMPOSE_OVERRIDES_TAG: ""
 
@@ -49,9 +49,9 @@ variables:
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
     OVERRIDE_DOCKER_COMPOSE_FILES: "docker-compose.override.dev.yml"
     # FIXME
-    IPARAPHEUR_DIST_SYMLINK_PATH: ""
-    IPARAPHEUR_CURRENT_ELEMENTS_PATH: "/opt/iParapheur"
-    IPARAPHEUR_DIST_ELEMENTS_PATH: "/opt/iParapheur"
+    SERVER_SIMLINK_PATH: ""
+    SERVER_CURRENT_PATH: "/opt/iParapheur"
+    SERVER_DIST_PATH: "/opt/iParapheur"
   environment: &e2e-test-environment
     name: Charge/Tests e2e
     url: https://${E2E_TESTS_TARGET_SERVER_URL}
@@ -72,7 +72,7 @@ variables:
     TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "FALSE"
-    IPARAPHEUR_DIST_ELEMENTS_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
   environment: &dev-environment
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
@@ -157,33 +157,33 @@ publish:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 .copying-deployment-files: &copying-deployment-files
-  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILES} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DIST_ELEMENTS_PATH}/\e[0m 📤"
-  - ${APPLY_COMMAND} "mkdir -p ${IPARAPHEUR_DIST_ELEMENTS_PATH}/"
-  - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DIST_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-  - ${APPLY_COMMAND} "sudo tar -xf ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${IPARAPHEUR_DIST_ELEMENTS_PATH}"
-  - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}
-  - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
-  - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
-  - ${APPLY_COMMAND} "unlink ${IPARAPHEUR_DIST_SYMLINK_PATH}"
-  - ${APPLY_COMMAND} "ln -s --relative ${IPARAPHEUR_DIST_ELEMENTS_PATH} ${IPARAPHEUR_DIST_SYMLINK_PATH}"
+  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILES} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/\e[0m 📤"
+  - ${APPLY_COMMAND} "mkdir -p ${SERVER_DIST_PATH}/"
+  - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+  - ${APPLY_COMMAND} "sudo tar -xf ${SERVER_DIST_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${SERVER_DIST_PATH}"
+  - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/${INIT_SCRIPT}
+  - ${APPLY_COMMAND} "sudo chmod 770 ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
+  - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
+  - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
+  - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
   # TODO : Remove this, it infringe the standard deploy.
   #  Each "override" files should be set on the server, and not distributed anymore
   - |
     for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do
-      scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_CURRENT_ELEMENTS_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
+      scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
     done
 
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
-  - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${IPARAPHEUR_CURRENT_ELEMENTS_PATH}/.env"; fi
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_CURRENT_ELEMENTS_PATH} && docker compose down --volumes --remove-orphans"
+  - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
+  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
   - for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do DOCKER_COMPOSE_FILES+=(" -f ${OVERRIDE_DOCKER_COMPOSE_FILE}"); done
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_CURRENT_ELEMENTS_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull"
-  - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${IPARAPHEUR_CURRENT_ELEMENTS_PATH} && sudo ${IPARAPHEUR_CURRENT_ELEMENTS_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-  - ${APPLY_COMMAND} "cd ${IPARAPHEUR_CURRENT_ELEMENTS_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
+  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull"
+  - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && sudo ${SERVER_CURRENT_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
+  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
   - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
   - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
