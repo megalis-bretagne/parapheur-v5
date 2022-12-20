@@ -171,9 +171,8 @@ publish:
   - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}
   - ${APPLY_COMMAND} "sudo chmod 770 ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "sudo chgrp deployment ${IPARAPHEUR_DIST_ELEMENTS_PATH}/${INIT_SCRIPT}"
-  # TODO : remove the simlink test once every other server will be standardized
-  - if [ -z "$IPARAPHEUR_DIST_SYMLINK_PATH" ] then ${APPLY_COMMAND} "unlink ${IPARAPHEUR_DIST_SYMLINK_PATH}" fi
-  - if [ -z "$IPARAPHEUR_DIST_SYMLINK_PATH" ] then ${APPLY_COMMAND} "ln -s --relative ${IPARAPHEUR_DIST_ELEMENTS_PATH} ${IPARAPHEUR_DIST_SYMLINK_PATH}" fi
+  - ${APPLY_COMMAND} "unlink ${IPARAPHEUR_DIST_SYMLINK_PATH}"
+  - ${APPLY_COMMAND} "ln -s --relative ${IPARAPHEUR_DIST_ELEMENTS_PATH} ${IPARAPHEUR_DIST_SYMLINK_PATH}"
   # TODO : Remove this, it infringe the standard deploy.
   #  Each "override" files should be set on the server, and not distributed anymore
   - |
