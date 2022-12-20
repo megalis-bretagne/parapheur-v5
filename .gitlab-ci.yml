@@ -79,21 +79,19 @@ variables:
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
+    # "docker-compose.ipng.yml"
     - packageFiles=(
-      "docker-compose.yml"
-      "docker-compose.ipng.yml"
-      "docker-compose.override.init.yml"
-      ".env.dist"
-      "LICENSE.md"
-      "README.md"
-      "src/main/resources/nginx/iparapheur.conf.template"
-      "src/main/resources/nginx/iparapheur.init.conf.template"
-      "src/main/resources/postgres/docker-entrypoint-initdb.d"
-      "src/main/resources/keycloak"
-      "src/main/resources/prometheus/alert.rules"
-      "src/main/resources/prometheus/prometheus.yml"
-      "src/main/resources/rgpd/rgpd-template.json"
-      "src/main/resources/vault"
+        "docker-compose.yml"
+        "docker-compose.override.init.yml"
+        ".env.dist"
+        "LICENSE.md"
+        "README.md"
+        "src/main/resources/postgres/docker-entrypoint-initdb.d"
+        "src/main/resources/keycloak"
+        "src/main/resources/prometheus/alert.rules"
+        "src/main/resources/prometheus/prometheus.yml"
+        "src/main/resources/rgpd/rgpd-template.json"
+        "src/main/resources/vault"
       )
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
 
