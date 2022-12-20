@@ -69,7 +69,7 @@ variables:
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "FALSE"
     OVERRIDE_DOCKER_COMPOSE_FILES: ""
-    IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
+    IPARAPHEUR_DOCKER_ELEMENTS_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
   environment: &dev-environment
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
