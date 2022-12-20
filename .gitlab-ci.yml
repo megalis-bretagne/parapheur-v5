@@ -81,37 +81,34 @@ variables:
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     # "docker-compose.ipng.yml"
     - packageFiles=(
-        "docker-compose.yml"
-        "docker-compose.override.init.yml"
-        ".env.dist"
-        "LICENSE.md"
-        "README.md"
-        "src/main/resources/postgres/docker-entrypoint-initdb.d"
-        "src/main/resources/keycloak"
-        "src/main/resources/prometheus/alert.rules"
-        "src/main/resources/prometheus/prometheus.yml"
-        "src/main/resources/rgpd/rgpd-template.json"
-        "src/main/resources/vault"
+      "docker-compose.yml"
+      "docker-compose.override.init.yml"
+      ".env.dist"
+      "LICENSE.md"
+      "README.md"
+      "src/main/resources/postgres/docker-entrypoint-initdb.d"
+      "src/main/resources/keycloak"
+      "src/main/resources/prometheus/alert.rules"
+      "src/main/resources/prometheus/prometheus.yml"
+      "src/main/resources/rgpd/rgpd-template.json"
+      "src/main/resources/vault"
       )
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
+  artifacts:
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 package_prod:
   stage: package
   only: [ tags ]
   <<: *prepare-package
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 package:
   stage: package
   except: [ tags ]
   <<: *prepare-package
   artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
     # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
 
