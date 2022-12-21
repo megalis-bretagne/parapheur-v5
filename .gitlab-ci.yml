@@ -77,6 +77,16 @@ variables:
     name: Dev
     url: https://${DEV_TARGET_SERVER_URL}
 
+.formation-config:
+  variables: &formation-config
+    TARGETED_ENVIRONNEMENT_URL: ${FORMATION_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${FORMATION_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment: &formation-environment
+    name: Formation
+    url: https://${FORMATION_TARGET_SERVER_URL}
+
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
@@ -268,6 +278,18 @@ dev-deploy:
     - when: manual
   variables: *dev-config
   environment: *dev-environment
+
+formation-deploy:
+  extends: [ .deploy-job ]
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: manual
+    - when: manual
+  variables: *formation-config
+  environment: *formation-environment
 
 # </editor-fold desc="Deploy">
 
