@@ -87,6 +87,16 @@ variables:
     name: Formation
     url: https://${FORMATION_TARGET_SERVER_URL}
 
+.test-config:
+  variables: &test-config
+    TARGETED_ENVIRONNEMENT_URL: ${TEST_TARGET_SERVER_URL}
+    TARGETED_ENVIRONNEMENT_USER: ${TEST_TARGET_SERVER_USER}
+    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment: &test-environment
+    name: TEST
+    url: https://${TEST_TARGET_SERVER_URL}
+
 # <editor-fold desc="Package">
 
 .prepare-package: &prepare-package
@@ -290,6 +300,18 @@ formation-deploy:
     - when: manual
   variables: *formation-config
   environment: *formation-environment
+
+test-deploy:
+  extends: [ .deploy-job ]
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: manual
+    - when: manual
+  variables: *test-config
+  environment: *test-environment
 
 # </editor-fold desc="Deploy">
 
