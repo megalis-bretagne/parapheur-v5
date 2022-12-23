@@ -34,7 +34,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.1
     restart: unless-stopped
     tty: true
     mem_limit: 256M
@@ -207,21 +207,6 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
-
-
-  feeder:
-    image: registry.libriciel.fr/public/signature/feeder:1.0.3
-    restart: unless-stopped
-    tty: true
-    mem_limit: 1G
-    extra_hosts:
-      - "${APPLICATION_HOST}:host-gateway"
-    environment:
-      - PARAPHEUR_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}/ws-iparapheur
-    volumes:
-      - ${DATA_ROOT_DIR}/feeder/data:/opt/iParapheur-feeder
-      - ./src/main/resources/feeder/application.properties:/config/application.properties
-
 
   alfresco:
     image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.0

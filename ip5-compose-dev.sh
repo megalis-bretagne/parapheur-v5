@@ -351,10 +351,9 @@ __reset__()
           --remove-orphans \
           --volumes
       rm -rf /data/iparapheur
-      mkdir -m 777 -p /data/iparapheur/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
+      mkdir -m 777 -p /data/iparapheur/{alfresco,matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
       touch /data/iparapheur/{alfresco,matomo/{config,plugins},pes-viewer/pesPJ,transfer}/.gitkeep
       chmod -R 0777 /data/iparapheur
-      chown -R 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
 }

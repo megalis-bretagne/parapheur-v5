@@ -26,9 +26,4 @@ mkdir -p data/matomo/plugins
 mkdir -p data/pes-viewer/pesPJ
 mkdir -p data/transfer/data
 mkdir -p data/vault/data
-mkdir -p data/feeder/data
-mkdir -p data/feeder/data/in
-mkdir -p data/feeder/data/out
-mkdir -p data/feeder/data/logs/eventLogs
 
-sudo chown 6789:6789 data/feeder/data
