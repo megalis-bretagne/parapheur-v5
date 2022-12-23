@@ -50,10 +50,6 @@ upstream up_filetransfer {
   server filetransfer:8080;
 }
 
-upstream up_feeder {
-  server feeder:8003;
-}
-
 upstream up_ipng {
   server ipng:8081;
 }
@@ -149,17 +145,6 @@ server {
 
   location /filetransfer/ {
     proxy_pass http://up_filetransfer/;
-  }
-
-  location /feeder/ {
-      proxy_pass http://up_feeder/;
-  }
-
-  location /feeder/socket {
-      proxy_pass http://up_feeder/socket;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
   }
 
   location ^~ / {
