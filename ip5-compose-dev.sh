@@ -173,7 +173,7 @@ __usage__()
     printf "  karate-tags\tList all tags used in karate fixture files path (default: %s)\n"  "${KARATE_DEFAULT_TAGS_PATH}"
     printf "  setup\t\tCheck the prerequisites, setup and launch a working i-parapheur 5 installation\n"
     printf "  \t\t${warning} Destroys and re-creates a working i-Parapheur v. 5 development environment\n"
-    printf "  \t\t${warning} Uses sudo to destroy and recreate ./data dir.\n"
+    printf "  \t\t${warning} Uses sudo to destroy and recreate /data/iparapheur dir.\n"
     printf "  \t\t${warning} Reads and exports values from the .env file\n"
     printf "  \t\t${warning} Replaces values (MATOMO_TOKEN, VAULT_TOKEN, VAULT_UNSEAL_KEY) in the .env file and exports them\n"
     printf "\nOPTIONS\n"
@@ -350,10 +350,10 @@ __reset__()
           down \
           --remove-orphans \
           --volumes
-      rm -rf ./data
-      mkdir -m 777 -p ./data/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
-      touch ./data/{alfresco,matomo/{config,plugins},pes-viewer/pesPJ,transfer}/.gitkeep
-      chmod -R 0777 ./data
+      rm -rf /data/iparapheur
+      mkdir -m 777 -p /data/iparapheur/{alfresco,feeder/data/{in,out,logs/eventLogs},matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
+      touch /data/iparapheur/{alfresco,matomo/{config,plugins},pes-viewer/pesPJ,transfer}/.gitkeep
+      chmod -R 0777 /data/iparapheur
       chown -R 6789:6789 data/feeder/data
 
       log_success "... resetting completed\n" "OK"
@@ -537,7 +537,7 @@ __main__()
                   __setup_matomo__
                   export_dot_env
                   docker compose down --volumes --remove-orphans
-                  chmod -R 0777 ./data
+                  chmod -R 0777 /data/iparapheur
                   if [ "${START_APP}" == "1" ] ; then
                     if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
                       docker compose \
