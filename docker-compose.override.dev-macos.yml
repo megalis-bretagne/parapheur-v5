@@ -122,12 +122,6 @@ services:
     # - KC_LOG_LEVEL=TRACE
 
 
-  feeder:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
-    ports:
-      - "8003:8003"
-
-
   smtp:
     image: tophfr/mailcatcher:0.7.1
     ports:

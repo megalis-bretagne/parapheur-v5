@@ -60,7 +60,3 @@ services:
 
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
-
-
-  feeder:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-feeder:develop
