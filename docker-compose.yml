@@ -308,7 +308,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:1.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.1
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -337,11 +337,6 @@ services:
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
-    volumes:
-      # Resources to retrieve from iparapheur-theme pipeline artifact,
-      # on https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak
-      - ./src/main/resources/keycloak/themes/libriciel:/opt/keycloak/themes/libriciel
-      - ./src/main/resources/keycloak/themes/iparapheur:/opt/keycloak/themes/iparapheur
 
 
   matomo:
