@@ -21,7 +21,7 @@ services:
 
 
   nginx:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.1
     extra_hosts:
       - "host.docker.internal:host-gateway"
     mem_limit: 64M
@@ -34,8 +34,10 @@ services:
       - "${APPLICATION_HOST}:host-gateway"
     volumes:
       - ./src/main/resources/core/application-dev.yml:/application.yml
+      - ./ssl/truststore.jks:/truststore.jks
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev-container
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=password
     mem_limit: 2G
     memswap_limit: 2G
     ports:
@@ -46,8 +48,6 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     mem_limit: 64M
     memswap_limit: 64M
-    environment:
-      - VERSION=5.0.4-develop
     ports:
       - "4200:80"
 
@@ -76,6 +76,10 @@ services:
 
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    volumes:
+      - ./ssl/truststore.jks:/truststore.jks
+    environment:
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=password
     ports:
       - "2758:8080"
 
