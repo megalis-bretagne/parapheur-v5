@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:db-conneection-pool-limit
     mem_limit: 1536M
     memswap_limit: 1536M
     volumes:
@@ -43,7 +43,7 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+    image: registry.libriciel.fr/public/signature/workflow:develop
 
 
   libersign:
