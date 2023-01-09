@@ -30,6 +30,10 @@ services:
 
   core:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    mem_limit: 1536M
+    memswap_limit: 1536M
+    volumes:
+      - ./application-core.yml:/application.yml
 
 
   web:
@@ -60,6 +64,12 @@ services:
 
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    mem_limit: 768M
+    memswap_limit: 768M
+
+  postgres:
+    mem_limit: 768M
+    memswap_limit: 768M
 
 
   smtp:
