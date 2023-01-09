@@ -47,7 +47,7 @@ variables:
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "TRUE"
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
-    OVERRIDE_DOCKER_COMPOSE_FILES: "docker-compose.override.dev.yml"
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
   environment: &e2e-test-environment
     name: Charge/Tests e2e
@@ -183,7 +183,7 @@ publish:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 .copying-deployment-files: &copying-deployment-files
-  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILES} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/\e[0m 📤"
+  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/\e[0m 📤"
   - ${APPLY_COMMAND} "mkdir -p ${SERVER_DIST_PATH}/"
   - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
   - ${APPLY_COMMAND} "sudo tar -xf ${SERVER_DIST_PATH}/${PACKAGE_NAME_WITH_EXTENSION} --directory ${SERVER_DIST_PATH}"
@@ -192,11 +192,11 @@ publish:
   - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
   - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
-  - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILES} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
+  - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILE} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
 
 
 .deploying-app: &deploying-app
-  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
+  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
   - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
   - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
@@ -237,7 +237,7 @@ strict-e2e-tests-deploy:
     - if: $CI_COMMIT_TAG != null
       when: always
       variables:
-        OVERRIDE_DOCKER_COMPOSE_FILES: ${DOCKER_COMPOSE_OVERRIDES_TAG}
+        OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDES_TAG}
     - when: manual
   allow_failure: false
   variables: *e2e-test-config
