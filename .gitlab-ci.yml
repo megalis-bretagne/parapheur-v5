@@ -192,7 +192,7 @@ publish:
   - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
   - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
-  - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILES} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml
+  - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILES} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
 
 
 .deploying-app: &deploying-app
