@@ -192,16 +192,8 @@ publish:
   - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
   - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
   - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
-  # TODO : Remove this, it infringe the standard deploy.
-  #  Each "override" files should be set on the server, and not distributed anymore
-  # - |
-  #   for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do
-  #     scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/${OVERRIDE_DOCKER_COMPOSE_FILE}
-  #   done
-  - |
-    for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do
-      scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml
-    done
+  - [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILES} ]] && scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml
+
 
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILES}\e[0m 🚀"
@@ -209,8 +201,6 @@ publish:
   - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
   - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-  # - DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
-  # - for OVERRIDE_DOCKER_COMPOSE_FILE in ${OVERRIDE_DOCKER_COMPOSE_FILES}; do DOCKER_COMPOSE_FILES+=(" -f ${OVERRIDE_DOCKER_COMPOSE_FILE}"); done
   - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && sudo ${SERVER_CURRENT_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
   - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
