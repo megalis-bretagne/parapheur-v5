@@ -37,7 +37,7 @@ variables:
   SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
   SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  DOCKER_COMPOSE_OVERRIDES_TAG: ""
+  DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG: ""
 
 
 .e2e-test-config:
@@ -237,7 +237,7 @@ strict-e2e-tests-deploy:
     - if: $CI_COMMIT_TAG != null
       when: always
       variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDES_TAG}
+        OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG}
     - when: manual
   allow_failure: false
   variables: *e2e-test-config
