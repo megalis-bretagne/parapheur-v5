@@ -37,7 +37,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:e2e-tests-fix
     environment:
       - VERSION=5.0.4-develop
 
