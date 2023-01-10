@@ -10,7 +10,6 @@ Feature: UI user lib
             And click("{^}Utilisateurs")
         Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Utilisateurs"))
 
-        @parallel=false
         When click("{^}Créer un utilisateur")
             And input("#editInfoUserNameInput", [username, Key.ENTER], 300)
             And waitForText("#editInfoUserNameInput", username)
