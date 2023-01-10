@@ -209,7 +209,7 @@ services:
       - MAIL_FROM
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
