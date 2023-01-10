@@ -60,3 +60,12 @@ services:
 
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+
+
+  smtp:
+    image: tophfr/mailcatcher:0.7.1
+    mem_limit: 64M
+    memswap_limit: 64M
+    ports:
+      - "1025:25"
+      - "1080:80"
