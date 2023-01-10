@@ -4,6 +4,8 @@ Feature: 002 - Scénario de démo simple, partie utilisation
     Background:
         * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
+          And ip.pause(1)
+        Then click('#kc-logout')
 
     Scenario Outline: Envoi de ${count} dossier(s) "${nameTemplate}" dans le circuit pour le sous-type ${type} / ${subtype}
         * def params =
@@ -343,7 +345,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         # On vérifie que l'on soit toujours bien sur la page de visualisation du dossier après les actions d'impression
         * exists(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / <name>"))
-        * ip.pause(15)
+        * ip.pause(1)
 
         Examples:
             | badge           | title             | name                          | action | state  |
