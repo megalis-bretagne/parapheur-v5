@@ -48,7 +48,7 @@ dossier une numérotation.
 
 Tests les plus basiques uniquement :
 ```bash
-./gradlew test --info -Dkarate.options="--tags @basic" -Dkarate.headless=true
+./gradlew test --info -Dkarate.options="--tags @basic" -Dkarate.headless=true -Dkarate.adminUserPwd="${ADMIN_PWD}"
 ```
 
 
