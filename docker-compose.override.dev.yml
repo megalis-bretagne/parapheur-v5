@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:fix-connections-leaks
     mem_limit: 1536M
     memswap_limit: 1536M
     volumes:
@@ -69,11 +69,11 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:develop
+    image: registry.libriciel.fr/public/signature/ip-alfresco:develop
 
   postgres:
-    mem_limit: 768M
-    memswap_limit: 768M
+    mem_limit: 1G
+    memswap_limit: 1G
 
 
   smtp:
