@@ -67,6 +67,10 @@ services:
     mem_limit: 768M
     memswap_limit: 768M
 
+
+  alfresco:
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:develop
+
   postgres:
     mem_limit: 768M
     memswap_limit: 768M
