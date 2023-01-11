@@ -313,13 +313,13 @@ function fn(config) {
         count = (typeof count === "undefined") ? 3 : count;
         if (count === 1) {
             return {
-                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im1.png")
+                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/v5/" + username + "/Im1.png")
             };
         } else {
             return {
-                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im1.png"),
-                "/Im2": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im2.png"),
-                "/Im3": karate.toAbsolutePath("classpath:files/images/grigris/" + username + "/Im3.png")
+                "/Im1": karate.toAbsolutePath("classpath:files/images/grigris/v5/" + username + "/Im1.png"),
+                "/Im2": karate.toAbsolutePath("classpath:files/images/grigris/v5/" + username + "/Im2.png"),
+                "/Im3": karate.toAbsolutePath("classpath:files/images/grigris/v5/" + username + "/Im3.png")
             };
         }
     };

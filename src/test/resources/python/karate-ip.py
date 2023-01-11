@@ -6,6 +6,7 @@ import json
 import os
 import PyPDF2
 import re
+import subprocess
 import sys
 import traceback
 
@@ -140,6 +141,7 @@ class Pdf():
                     obj = annot.get_object()
                     if Dict.exists(obj, ["/AP", "/N", "/Resources", "/XObject"]):
                         for imgKey in obj["/AP"]["/N"]["/Resources"]["/XObject"]:
+                            # @fixme: ne fonctionne pas pour le cachet IP 4
                             if Dict.get(obj, ["/AP", "/N", "/Resources", "/XObject", imgKey, "/Subtype"]) == "/Image":
                                 if keyPage not in result:
                                     result[keyPage] = {}
@@ -150,6 +152,28 @@ class Pdf():
                                     result[keyPage][str(keyAnnot)] = {}
                                 imgPath = base + "/" + keyPage + "/" + keyAnnot + imgKey
                                 result[keyPage][keyAnnot][imgKey] = PdfImage.export(obj["/AP"]["/N"]["/Resources"]["/XObject"][imgKey], imgPath)
+        return result
+
+    @classmethod
+    def _pdf_signer(cls, path: str, idx: int) -> str:
+        result = ""
+        process = subprocess.Popen([ "pdfsig", "-nocert", path ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        lines = stdout.decode('utf-8').splitlines()
+        re_signature = re.compile(u"^Signature #[0-9]+:")
+        re_signer = re.compile(u"^\s+- Signer Certificate Common Name: (.*)$")
+        in_sig = False
+        for line in lines:
+            match_signature = re.match(re_signature, line)
+            if match_signature is not None:
+                if line == "Signature #" + str(idx) + ":":
+                    in_sig = True
+                else:
+                    in_sig = False
+            elif in_sig == True:
+                match_signer = re.match(re_signer, line)
+                if match_signer is not None:
+                    result = match_signer[1]
         return result
 
     @classmethod
@@ -169,9 +193,13 @@ class Pdf():
                             and Dict.get(reference, ["/TransformMethod"]) == "/DocMDP" \
                             and Dict.get(reference, ["/TransformParams", "/P"]) == 1:
                             signKey = "certifiedBy"
+                signedOrCertifiedBy = re.sub(' .{40}$', '', Dict.get(fields, [key, "/V", "/Name"], ""))
+                if(signedOrCertifiedBy == ""):
+                    idx = len(result) + 1
+                    signedOrCertifiedBy = cls._pdf_signer(path, idx)
                 result.append(
                     {
-                        signKey: re.sub(' .{40}$', '', Dict.get(fields, [key, "/V", "/Name"], "")),
+                        signKey: signedOrCertifiedBy,
                         "reason": Dict.get(fields, [key, "/V", "/Reason"], ""),
                         "location": Dict.get(fields, [key, "/V", "/Location"], "")
                     }

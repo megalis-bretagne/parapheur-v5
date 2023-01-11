@@ -13,7 +13,10 @@ Feature: IP v.4 REST folder lib
         * def target = ip4.business.api.folder.getByName(desktop.id, "a-traiter", __arg.folder)
         * def folder = ip4.business.api.folder.getById(desktop.id, target.id)
 
-        # 3.1. Signature du dossier - récupération des hashes des documents à signer du dossier
+        # 3. Repositionnement signature (le cas échéant)
+        * if (typeof __arg.positions !== "undefined") ip4.business.api.folder.customSignature( desktop, folder, __arg.positions)
+
+        # 4.1. Signature du dossier - récupération des hashes des documents à signer du dossier
         * url baseUrl
         * def certBase64 = ip.utils.certificate.base64Public("file://" + karate.toAbsolutePath(__arg.certificate.public))
         * path "/iparapheur/proxy/alfresco/parapheur/signature/" + desktop.id + "/" + folder.id
@@ -22,9 +25,12 @@ Feature: IP v.4 REST folder lib
         * method POST
 
         # 3.2. Signature du dossier - signature des hashes
+        * karate.log("----------------------------")
+        * karate.log(response)
+        * karate.log("----------------------------")
         * def signatures = ip4.utils.folder.signatures(__arg.certificate.private, response)
 
-        # 3.2. Signature du dossier - envoi des hashes signés
+        # 4.2. Signature du dossier - envoi des hashes signés
         * path "/iparapheur/proxy/alfresco/parapheur/dossiers/" + folder.id + "/signature"
         * header Accept = "application/json"
         * def payload =

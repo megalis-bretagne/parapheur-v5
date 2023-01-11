@@ -5,26 +5,28 @@ Feature: IP v.4 REST subtype lib
         * def payload =
 """
 {
-  "isNew": true,
-  "parent": "#(__arg.type)",
-  "parapheurs": [],
-  "parapheursFilters": [],
-  "groupsFilters": [],
-  "groups": [],
   "calques": [],
   "calquesAnnexes": [],
-  "metadatas": #(__arg.metadatas),
+  "circuit": "#(__arg.workflow)",
+  "desc": "#(__arg.description)",
+  "digitalSignatureMandatory": "true",
+  "groups": [],
+  "groupsFilters": [],
+  "id": "#(__arg.name)",
+  "isNew": true,
+  "metadatas": [],
+  "multiDocument": "#(__arg.multidoc)",
+  "parapheurs": [],
+  "parapheursFilters": [],
+  "parent": "#(__arg.type)",
   "visibility": "public",
   "visibilityFilter": "public",
-  "digitalSignatureMandatory": "true",
-  "id": "#(__arg.name)",
-  "desc": "#(__arg.description)",
-  "circuit": "#(__arg.workflow)",
-  "multiDocument": "#(__arg.multidoc)",
 }
 """
-      * if (__arg.cachet !== null) payload["cachetCertificate"] = (ip4.business.api.seal.getByName(__arg.cachet)).id
-      * if (__arg.mailsec !== null) payload["pastellMailsec"] = (ip4.business.api.pastellConnector.getByName(__arg.mailsec)).id
+      * if (__arg.hasOwnProperty('cachet') && __arg.cachet !== null) payload["cachetCertificate"] = (ip4.business.api.seal.getByName(__arg.cachet)).id
+      * if (__arg.hasOwnProperty('isCachetAuto') && __arg.isCachetAuto !== null) payload["isCachetAuto"] = __arg.isCachetAuto
+      * if (__arg.hasOwnProperty('mailsec') && __arg.mailsec !== null) payload["pastellMailsec"] = (ip4.business.api.pastellConnector.getByName(__arg.mailsec)).id
+      * if (__arg.hasOwnProperty('metadatas') && __arg.metadatas !== null) payload["metadatas"] = __arg.metadatas
 
       * if (__arg.parapheurs !== []) payload["parapheurs"] = ip4.business.api.desktop.getAllIdsByName(__arg.parapheurs)
       * if (__arg.parapheurs !== []) payload["visibility"] = "private"

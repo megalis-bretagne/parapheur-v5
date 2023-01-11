@@ -26,28 +26,29 @@
         </ds:X509Data>
     </ds:KeyInfo>
     <ds:Object>
-        <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#string">
-            <xades:SignedProperties Id="#string">
-                <xades:SignedSignatureProperties>
-                    <xades:SigningTime>#(matchers.signingTime)</xades:SigningTime>
-                    <xades:SigningCertificateV2>
-                        <xades:Cert>
-                            <xades:CertDigest>
+        <xades132:QualifyingProperties xmlns:xades132="http://uri.etsi.org/01903/v1.3.2#" Target="#string">
+            <xades132:SignedProperties Id="#string">
+                <xades132:SignedSignatureProperties>
+                    <xades132:SigningTime>#(matchers.signingTime)</xades132:SigningTime>
+                    <xades132:SigningCertificateV2>
+                        <xades132:Cert>
+                            <xades132:CertDigest>
                                 <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
                                 <ds:DigestValue>#string</ds:DigestValue>
-                            </xades:CertDigest>
-                            <xades:IssuerSerialV2>
+                            </xades132:CertDigest>
+                            <xades132:IssuerSerialV2>
                                 #string
-                            </xades:IssuerSerialV2>
-                        </xades:Cert>
-                    </xades:SigningCertificateV2>
-                </xades:SignedSignatureProperties>
-                <xades:SignedDataObjectProperties>
-                    <xades:DataObjectFormat ObjectReference="#string">
-                        <xades:MimeType>application/octet-stream</xades:MimeType>
-                    </xades:DataObjectFormat>
-                </xades:SignedDataObjectProperties>
-            </xades:SignedProperties>
-        </xades:QualifyingProperties>
+                            </xades132:IssuerSerialV2>
+                        </xades132:Cert>
+                    </xades132:SigningCertificateV2>
+                    <xades132:SignerRoleV2/>
+                </xades132:SignedSignatureProperties>
+                <xades132:SignedDataObjectProperties>
+                    <xades132:DataObjectFormat ObjectReference="#string">
+                        <xades132:MimeType>application/octet-stream</xades132:MimeType>
+                    </xades132:DataObjectFormat>
+                </xades132:SignedDataObjectProperties>
+            </xades132:SignedProperties>
+        </xades132:QualifyingProperties>
     </ds:Object>
 </ds:Signature>

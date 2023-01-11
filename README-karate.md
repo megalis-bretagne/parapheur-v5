@@ -36,6 +36,11 @@ dossier une numérotation.
 ./gradlew test --info -Dkarate.options="--tags @legacy-bridge --tags @ip4 --tags ~@setup" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur47.test.libriciel.fr -Dkarate.soapBaseUrl=https://secure-iparapheur47.test.libriciel.fr
 ```
 
+```bash
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @setup --tags @formats-de-signature --tags @tenant-create" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local
+```
+
 ## Lancement des tests
 
 ### Forme générale

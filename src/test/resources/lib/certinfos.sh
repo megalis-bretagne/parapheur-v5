@@ -21,20 +21,20 @@ password="${3}"
 
 case "${1:-}" in
     alias)
-        openssl pkcs12 -in "${certificate}" -nodes -passin pass:"${password}" | openssl x509 -noout -subject | sed 's/^.*CN *= *\([^,]\+\), .*$/\1/g'
+        openssl pkcs12 -in "${certificate}" -legacy -nodes -passin pass:"${password}" | openssl x509 -noout -subject | sed 's/^.*CN *= *\([^,]\+\), .*$/\1/g'
         exit 0
     ;;
     enddate)
-        notAfter=$(openssl pkcs12 -in "${certificate}" -nodes -passin pass:"${password}" | openssl x509 -noout -enddate | sed 's/notAfter=//g')
+        notAfter=$(openssl pkcs12 -in "${certificate}" -legacy -nodes -passin pass:"${password}" | openssl x509 -noout -enddate | sed 's/notAfter=//g')
         date -d"${notAfter}" +%s000
         exit 0
     ;;
     issuer)
-        openssl pkcs12 -in "${certificate}" -nodes -passin pass:"${password}" | openssl x509 -noout -issuer | sed 's/issuer=//g'
+        openssl pkcs12 -in "${certificate}" -legacy -nodes -passin pass:"${password}" | openssl x509 -noout -issuer | sed 's/issuer=//g'
         exit 0
     ;;
     subject)
-        openssl pkcs12 -in "${certificate}" -nodes -passin pass:"${password}" | openssl x509 -noout -subject
+        openssl pkcs12 -in "${certificate}" -legacy -nodes -passin pass:"${password}" | openssl x509 -noout -subject
         exit 0
     ;;
     --)

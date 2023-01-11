@@ -1,5 +1,5 @@
-@mhuetter @ip4 @setup @tenant-create
-Feature: Création de l'entité "mhuetter" (IP 4)
+@business @ip4 @formats-de-signature @setup @tenant-create
+Feature: Création de l'entité "Formats de signature" (IP 4)
 
     Scenario Outline: Création de la collectivité "${tenantDomain}"
         # @see https://stackoverflow.com/questions/52392614/how-to-skip-ssl-certificate-verification-with-karate
@@ -11,5 +11,5 @@ Feature: Création de l'entité "mhuetter" (IP 4)
         * call read('classpath:lib/ip4/business/api/tenant/create.feature') __row
 
         Examples:
-            | tenantDomain | password | title    | description |
-            | mhuetter     | a123456  | mhuetter | mhuetter    |
+            | tenantDomain | password | title                | description             |
+            | fds          | a123456  | Formats de signature | Formats de signature    |

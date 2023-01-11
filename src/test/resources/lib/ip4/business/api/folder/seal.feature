@@ -11,7 +11,10 @@ Feature: IP v.4 REST folder lib
         * def target = ip4.business.api.folder.getByName(desktop.id, "a-traiter", __arg.folder)
         * def folder = ip4.business.api.folder.getById(desktop.id, target.id)
 
-        # 3. Visa sur le dossier
+        # 3. Repositionnement signature (le cas échéant)
+        * if (typeof __arg.positions !== "undefined") ip4.business.api.folder.customSignature( desktop, folder, __arg.positions)
+
+        # 4. Cachet sur le dossier
         * url baseUrl
         * path "/iparapheur/proxy/alfresco/parapheur/dossiers/" + folder.id + "/seal"
         * header Accept = "application/json"

@@ -49,11 +49,15 @@ function (metadatas) {
         * def addDocuments =
 """
 function(dossierId, files) {
-    var idx, result = [], rv;
+    var idx, file, result = [], rv;
     for (idx=0;idx<files.length;idx++) {
-        rv = karate.call('classpath:lib/ip4/business/api/folder/create-addDocument.feature', { dossierId: dossierId, file: files[idx] });
+        file = files[idx];
+        if(typeof file === 'object' && file.hasOwnProperty('file')) {
+            file = file['file'];
+        }
+        rv = karate.call('classpath:lib/ip4/business/api/folder/create-addDocument.feature', { dossierId: dossierId, file: file });
         result.push({
-            "name": ip.utils.file.basename(files[idx]),
+            "name": ip.utils.file.basename(file),
             "isMainDocument": true,
             "state": "",
             "canDelete": true,
@@ -67,6 +71,7 @@ function(dossierId, files) {
     return result;
 }
 """
+        * karate.log({dossierId: dossierId, files: files})
         * def documents = addDocuments(dossierId, files)
 
         # 3. Ajout des données du dossier

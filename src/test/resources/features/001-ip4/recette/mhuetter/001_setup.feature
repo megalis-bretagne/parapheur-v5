@@ -1,4 +1,4 @@
-@recette @ip4 @mhuetter @setup @wip
+@recette @ip4 @mhuetter @setup
 Feature: Paramétrage IP 4 pour l'entité mhuetter
 
     Background:
@@ -49,3 +49,19 @@ Feature: Paramétrage IP 4 pour l'entité mhuetter
             | type  | name             | description | parapheurs!    | workflow         | multidoc | cachet | mailsec | metadatas! |
             | PAdES | Signature simple | Description | ['WebService'] | Signature simple | false    |        |         | []         |
             | PAdES | Visa simple      | Description | ['WebService'] | Visa simple      | false    |        |         | []         |
+
+    # @wip
+#    Scenario Outline: Set the signature image for user '${email}'
+#        * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
+#
+#        Examples:
+#            | tenant   | email                                          | path                                                       |
+#            | mhuetter | signature1-mhuetter@mailcatchall.libriciel.net | classpath:files/images/signature - signature1-mhuetter.png |
+
+    # POST https://ip4.dom.local/iparapheur/base64encode -> 200 ({"encodedFile":""...})
+    # -----------------------------430056560186523711463732595
+    # Content-Disposition: form-data; name="file"; filename="signature - signature1-mhuetter.png"
+    # Content-Type: image/png
+    # PUT https://ip4.dom.local/iparapheur/proxy/alfresco/parapheur/utilisateurs/94e4f455-c989-4960-b4c4-8ef6c3398141
+    # {"isAdmin":false,"isAdminFonctionnel":false,"bureauxAdministres":[],"signatureData":"..."}
+    # -> 200
