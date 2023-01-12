@@ -64,7 +64,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags
 """
 {
   "page 1": {
-    "1": #(ip.signature.pades.images.expected('cachet'))
+    "1": #(ip4.signature.pades.images.expected('cachet'))
   }
 }
 """

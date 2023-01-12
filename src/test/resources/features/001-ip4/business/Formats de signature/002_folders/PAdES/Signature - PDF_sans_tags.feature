@@ -1,4 +1,4 @@
-@business @ip4 @formats-de-signature @folder @ignore
+@business @ip4 @formats-de-signature @folder
 Feature: PAdES - Signature - PDF_sans_tags
 
     Background:
@@ -6,7 +6,7 @@ Feature: PAdES - Signature - PDF_sans_tags
         * def type = "PAdES"
         * def subtype = "Signature"
         * def name = "PAdES - Signature - PDF_sans_tags"
-        * def files = [ { file: "PDF_sans_tags.pdf" } ]
+        * def files = [ { file: "classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
@@ -30,16 +30,15 @@ Feature: PAdES - Signature - PDF_sans_tags
             | normal    |
             | surcharge |
 
-    @fixme-ip4 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
-            | key       | signedBy            | reason                    | location    |
-            | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | key       | signedBy            | reason                   | location    |
+            | normal    | Prenom Nom - Usages | Nacarat                  | Montpellier |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
         * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
@@ -47,32 +46,16 @@ Feature: PAdES - Signature - PDF_sans_tags
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
+        "1": "#(ip4.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     }
 }
 """
         * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
 
         Examples:
-            | key       | position!       | line1            | line2                    |
-            | normal    | [0, 0, 200, 70] | Florence Garance | Nacarat                  |
-
-    @fixme-ip4 @issue-compose-579
-    Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/PDF_sans_tags.pdf") == expected
-
-        Examples:
-            | key       | position!       | line1            | line2                    |
-            | surcharge | [0, 0, 200, 70] | Gilles Nacarat   | Responsable des méthodes |
+            | key       | position!        | line1            | line2                    |
+            | normal    | [0, 0, 100, 100] | Florence Garance | Nacarat                  |
+            | surcharge | [0, 0, 100, 100] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
@@ -81,7 +64,7 @@ Feature: PAdES - Signature - PDF_sans_tags
 """
 {
   "page 1": {
-    "1": "#(ip.signature.pades.images.expected('<username>'))"
+    "1": "#(ip4.signature.pades.images.expected('<username>'))"
   }
 }
 """

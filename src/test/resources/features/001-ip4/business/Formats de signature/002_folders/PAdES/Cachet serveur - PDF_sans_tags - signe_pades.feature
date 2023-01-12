@@ -79,10 +79,10 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - signe_pades
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.images.expected('cachet'))"
+        "1": "#(ip4.signature.pades.images.expected('cachet'))"
     },
     "page 2": {
-        "1": "#(ip.signature.pades.images.expected('cnoir', 1))"
+        "1": "#(ip4.signature.pades.images.expected('cnoir', 1))"
     }
 }
 """

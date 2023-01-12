@@ -41,7 +41,7 @@ Feature: ACTES - PAdES - Signature - DOCX
         Examples:
             | key       | reason                    | location    |
             | normal    | Nacarat                   | Montpellier |
-            | surcharge | Responsable des méthodes  | Agde        |
+            | surcharge | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
         * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
@@ -49,7 +49,7 @@ Feature: ACTES - PAdES - Signature - DOCX
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
+        "1": "#(ip4.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
     }
 }
 """
@@ -66,7 +66,7 @@ Feature: ACTES - PAdES - Signature - DOCX
 """
 {
     "page 1": {
-        "1": "#(ip.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
+        "1": "#(ip4.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
     }
 }
 """
@@ -83,7 +83,7 @@ Feature: ACTES - PAdES - Signature - DOCX
 """
 {
   "page 1": {
-    "1": "#(ip.signature.pades.images.expected('<username>'))"
+    "1": "#(ip4.signature.pades.images.expected('<username>'))"
   }
 }
 """
