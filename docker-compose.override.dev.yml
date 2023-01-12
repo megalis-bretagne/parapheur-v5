@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:fix-connections-leaks
+    image: registry.libriciel.fr/public/signature/ip-core:develop
     mem_limit: 1536M
     memswap_limit: 1536M
     volumes:
