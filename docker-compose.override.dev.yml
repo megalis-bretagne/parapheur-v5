@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:fix-connections-leaks
+    image: registry.libriciel.fr/public/signature/ip-core:develop
     mem_limit: 1536M
     memswap_limit: 1536M
     volumes:
@@ -39,7 +39,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:e2e-tests-fix
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
       - VERSION=5.0.4-develop
 
@@ -73,9 +73,12 @@ services:
   alfresco:
     image: registry.libriciel.fr/public/signature/ip-alfresco:develop
 
-  postgres:
-    mem_limit: 1G
-    memswap_limit: 1G
+  keycloak:
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
+
+  nginx:
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+
 
 
   smtp:
