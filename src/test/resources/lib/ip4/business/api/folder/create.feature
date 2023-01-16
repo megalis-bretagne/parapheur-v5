@@ -67,6 +67,12 @@ function(dossierId, files) {
             "isProtected": rv.document.isProtected,
             "visuelPdfUrl": null
         });
+        if(typeof files[idx] === 'object' && files[idx].hasOwnProperty('detached')) {
+            karate.call(
+                'classpath:lib/ip4/business/api/folder/create-addDetachedSignature.feature',
+                { documentId: rv.document.success, file: files[idx]['detached'] }
+            );
+        }
     }
     return result;
 }

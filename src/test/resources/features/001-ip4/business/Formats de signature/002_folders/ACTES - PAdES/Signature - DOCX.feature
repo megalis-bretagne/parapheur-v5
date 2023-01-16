@@ -14,7 +14,7 @@ Feature: ACTES - PAdES - Signature - DOCX
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * match download.files == [ "document_ooxml.pdf" ]
 
         Examples:
@@ -23,7 +23,7 @@ Feature: ACTES - PAdES - Signature - DOCX
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/document_ooxml.pdf") == expected
 
@@ -34,7 +34,7 @@ Feature: ACTES - PAdES - Signature - DOCX
 
     @fixme-ip4 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('Prenom Nom - Usages', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/document_ooxml.pdf") == expected
 
@@ -44,7 +44,7 @@ Feature: ACTES - PAdES - Signature - DOCX
             | surcharge | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 {
@@ -61,7 +61,7 @@ Feature: ACTES - PAdES - Signature - DOCX
 
     @fixme-ip4 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 {
@@ -77,7 +77,7 @@ Feature: ACTES - PAdES - Signature - DOCX
             | surcharge | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/document_ooxml.pdf")
         * def expected =
 """

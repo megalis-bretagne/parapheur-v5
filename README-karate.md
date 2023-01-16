@@ -37,9 +37,19 @@ dossier une numérotation.
 ```
 
 ```bash
-./gradlew test --info -Dkarate.options="--tags @ip4 --tags @setup --tags @formats-de-signature --tags @tenant-create" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local
-./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @legacy-bridge" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @setup --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags ~@ignore --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 ```
+
+### @todo
+
+- SOAP getDossier (sans paramètre, seul moyen de récupérer la primo-signature)
+- `conf/alfresco-global.properties`
+  - `parapheur.document.openxml.accept=true`
+  - `parapheur.filename.signature.detachee=%d-%o-%50s`
 
 ## Lancement des tests
 

@@ -11,8 +11,8 @@ Feature: CAdES - Signature - PDF_avec_tags
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
-        * match download.files == [ "PDF_avec_tags.pdf", "PDF_avec_tags-1-<user>.p7s" ]
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
+        * match download.files == [ "PDF_avec_tags.pdf", "PDF_avec_tags.pdf-1-<user>.p7s" ]
 
         Examples:
             | key       | user             |
@@ -20,7 +20,7 @@ Feature: CAdES - Signature - PDF_avec_tags
             | surcharge | Gilles Nacarat   |
 
     Scenario Outline: Vérifications des fichiers non signés (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * match karate.read("file://" + download.base + "/PDF_avec_tags.pdf") == ip.commonpath.read("PDF_avec_tags.pdf")
 
         Examples:
@@ -29,8 +29,8 @@ Feature: CAdES - Signature - PDF_avec_tags
             | surcharge |
 
     Scenario Outline: Vérifications des signatures détachées (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
-        * ip.signature.cades.check(download.base + "/PDF_avec_tags.pdf", download.base + "/PDF_avec_tags-1-<user>.p7s")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
+        * ip.signature.cades.check(download.base + "/PDF_avec_tags.pdf", download.base + "/PDF_avec_tags.pdf-1-<user>.p7s")
 
         Examples:
             | key       | user             |

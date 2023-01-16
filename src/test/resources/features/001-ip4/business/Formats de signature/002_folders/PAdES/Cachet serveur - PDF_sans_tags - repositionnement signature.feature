@@ -13,7 +13,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
         * ip4.business.formatsDeSignature.seal(type, subtype, name, files, positions)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * match download.files == [ "PDF_sans_tags.pdf" ]
 
         Examples:
@@ -22,7 +22,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('seal'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/PDF_sans_tags.pdf") == expected
 
@@ -32,7 +32,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
             | surcharge |
 
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/PDF_sans_tags.pdf") == expected
 
@@ -42,7 +42,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
             | surcharge | Christian Buffin - Default tenant - Cachet serveur |        |          |
 
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 {
@@ -59,7 +59,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
             | surcharge | [200, 700, 300, 800] |
     @ignore @fixme-karate
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags.pdf")
         * def expected =
 """

@@ -1,4 +1,4 @@
-@business @ip4 @formats-de-signature @folder
+@business @ip4 @formats-de-signature @folder @wip
 Feature: PAdES - Signature - PDF_avec_tags-signature_pades
 
     Background:
@@ -12,7 +12,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * match download.files == [ "PDF_avec_tags-signature_pades.pdf" ]
 
         Examples:
@@ -21,7 +21,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 [
@@ -37,7 +37,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
             | surcharge |
 
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 [
@@ -53,7 +53,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
             | surcharge | Prenom Nom - Usages | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 {
@@ -73,7 +73,7 @@ Feature: PAdES - Signature - PDF_avec_tags-signature_pades
             | surcharge | [120, 323, 220, 423] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags-signature_pades.pdf")
         * def expected =
 """

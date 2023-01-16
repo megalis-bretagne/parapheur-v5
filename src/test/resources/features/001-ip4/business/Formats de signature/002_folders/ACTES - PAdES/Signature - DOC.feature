@@ -13,7 +13,7 @@ Feature: ACTES - PAdES - Signature - DOC
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * match download.files == [ "document_office.pdf" ]
 
         Examples:
@@ -22,7 +22,7 @@ Feature: ACTES - PAdES - Signature - DOC
             | surcharge |
 
     Scenario Outline: Vérifications des signatures électroniques (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
         * match ip.signature.pades.certificates.read(download.base + "/document_office.pdf") == expected
 
@@ -32,7 +32,7 @@ Feature: ACTES - PAdES - Signature - DOC
             | surcharge |
 
     Scenario Outline: Vérifications des propriétés des signatures (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
         * match ip.signature.pades.fields.read(download.base + "/document_office.pdf") == expected
 
@@ -42,7 +42,7 @@ Feature: ACTES - PAdES - Signature - DOC
             | surcharge | Prenom Nom - Usages | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected =
 """
 {
@@ -59,7 +59,7 @@ Feature: ACTES - PAdES - Signature - DOC
             | surcharge | [0, 0, 200, 70]      | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
-        * def download = ip4.business.formatsDeSignature.download("a-archiver", name + " - <key>")
+        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/document_office.pdf")
         * def expected =
 """

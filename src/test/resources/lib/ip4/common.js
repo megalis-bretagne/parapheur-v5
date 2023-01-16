@@ -112,6 +112,120 @@ function fn(config) {
         }
         return ip4.business.api.folder.download(desktop, state, name);
     };
+    config.ip4.business.formatsDeSignature['downloadSoap'] = function(username, password, type, subtype, state, name) {
+        var cmd, base, Base64, currentName, decoded, document, fileName, files = [], id, params, root, rv, signatures;
+
+        // Via l'administrateur et le WS REST
+        ip4.business.api.user.login("admin@fds", "a123456");
+        rv = karate.call('classpath:lib/ip4/business/api/folder/admin-getByName.feature', { type: type, subtype: subtype, name: name });
+        // karate.log(rv.folder);
+        rv = karate.call('classpath:lib/ip4/business/api/folder/admin-getProperties.feature', { dossierId: rv.folder.id });
+        // karate.log(rv.response.properties);
+        // id SOAP: karate.log(rv.response.properties["{http:\/\/www.alfresco.org\/model\/content\/1.0}name"]);
+        // id REST: karate.log(rv.response.properties["{http:\/\/www.alfresco.org\/model\/system\/1.0}node-uuid"]);
+        currentName = rv.response.properties["{http:\/\/www.alfresco.org\/model\/content\/1.0}title"];
+
+        params = { dossierId: rv.response.properties["{http:\/\/www.alfresco.org\/model\/content\/1.0}name"], username: username, password: password };
+        rv = karate.call('classpath:lib/ip/api/soap/requests/GetDossier/simple.feature', params);
+        // karate.log(rv.response);
+        id = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DossierID');
+        root = karate.toAbsolutePath("classpath:.").replace(/build\/classes\/java\/test$/, 'build') + "/";
+        base = "ip4-folders/" + currentName.replace(/(:|\/)/, '_') + " - " + id + "/";
+        Base64 = Java.type('java.util.Base64');
+
+        // Document principal
+        fileName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/NomDocPrincipal');
+        document = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DocPrincipal');
+        decoded = Base64.getDecoder().decode(document);
+        karate.write(decoded, base + fileName);
+        files.push(fileName);
+
+        // Signatures détachées
+        signatures = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/SignatureDocPrincipal');
+        if(signatures !== "#notpresent") {
+            decoded = Base64.getDecoder().decode(signatures);
+            karate.write(decoded, base + "signatures.zip");
+            cmd = [
+                "/bin/sh",
+                "-c",
+                "unzip -o \"" + root + "/" + base + "signatures.zip\" -d \"" + root + "/" + base + "\""
+            ];
+            ip.utils.safeExec(cmd);
+            cmd = [
+                "/bin/sh",
+                "-c",
+                "unzip -l \"" + root + "/" + base + "signatures.zip\" | grep --color=none \"^\\s\\+[0-9]\\+\\s\\+[0-9]\\+-\" | sed \"s/^\\s\\+[0-9]\\+\\s\\+.\\{16\\}\\s\\+//g\""
+            ];
+            files = files.concat(ip.utils.safeExec(cmd).split(/\r?\n/));
+            cmd = [
+                "/bin/sh",
+                "-c",
+                "rm \"" + root + "/" + base + "signatures.zip\""
+            ];
+            ip.utils.safeExec(cmd);
+        }
+        return {base: root + base, files: files};
+        //-------------------------------------------------------------------------------------------------------------
+        // @info: apparemment, il y a une limite à 12...
+        //-------------------------------------------------------------------------------------------------------------
+        /*var cmd, base, Base64, currentName, decoded, document, fileName, files = [], found, id, ids, idx, params, root, rv, signatures;
+        params = { username: username, password: password, type: type, sousType: subtype, status: state };
+
+        rv = karate.call('classpath:lib/ip/api/soap/requests/RechercherDossiers/simple.feature', params);
+        ids = karate.xmlPath(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom');
+        if(Array.isArray(ids) === false) {
+            ids = [ids];
+        }
+
+        found = false;
+        for(idx=0;idx<ids.length;idx++) {
+            if(found === false) {
+                params = { dossierId: ids[idx], username: username, password: password };
+                rv = karate.call('classpath:lib/ip/api/soap/requests/GetDossier/simple.feature', params);
+                currentName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/MetaDonnees/MetaDonnee/nom[.="ph:dossierTitre"]/ancestor::MetaDonnee/valeur');
+                if(currentName === name) {
+                    found = true;
+                    id = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DossierID');
+                    root = karate.toAbsolutePath("classpath:.").replace(/build\/classes\/java\/test$/, 'build') + "/";
+                    base = "ip4-folders/" + currentName.replace(/(:|\/)/, '_') + " - " + id + "/";
+                    Base64 = Java.type('java.util.Base64');
+
+                    // Document principal
+                    fileName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/NomDocPrincipal');
+                    document = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DocPrincipal');
+                    decoded = Base64.getDecoder().decode(document);
+                    karate.write(decoded, base + fileName);
+                    files.push(fileName);
+
+                    // Signatures détachées
+                    signatures = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/SignatureDocPrincipal');
+                    if(signatures !== "#notpresent") {
+                        decoded = Base64.getDecoder().decode(signatures);
+                        karate.write(decoded, base + "signatures.zip");
+                        cmd = [
+                            "/bin/sh",
+                            "-c",
+                            "unzip -o \"" + root + "/" + base + "signatures.zip\" -d \"" + root + "/" + base + "\""
+                        ];
+                        ip.utils.safeExec(cmd);
+                        cmd = [
+                            "/bin/sh",
+                            "-c",
+                            "unzip -l \"" + root + "/" + base + "signatures.zip\" | grep --color=none \"^\\s\\+[0-9]\\+\\s\\+[0-9]\\+-\" | sed \"s/^\\s\\+[0-9]\\+\\s\\+.\\{16\\}\\s\\+//g\""
+                        ];
+                        files = files.concat(ip.utils.safeExec(cmd).split(/\r?\n/));
+                        cmd = [
+                            "/bin/sh",
+                            "-c",
+                            "rm \"" + root + "/" + base + "signatures.zip\""
+                        ];
+                        ip.utils.safeExec(cmd);
+                    }
+                }
+            }
+        }
+        return {base: root + base, files: files};*/
+    };
     config.ip4.business.formatsDeSignature['seal'] = function(type, subtype, name, files, positions) {
         var params = {
             mainFiles: files,
@@ -275,11 +389,12 @@ function fn(config) {
             for(idxStep=0;idxStep<rv.response.circuit.etapes.length;idxStep++) {
                 step = rv.response.circuit.etapes[idxStep];
                 if(step.signed === true) {
-                    //ids.push(rv.response.circuit.etapes[idxStep].id);
-                    decoded = Base64.getDecoder().decode(step.signatureEtape);
-                    path = document.name.replace(/\.[^\.]+$/, "") + "-" + idxStep + "-" + step.signataire + "." + ext;
-                    karate.write(decoded, basePath + "/" + path);
-                    result.push(path);
+                    if(step.signatureEtape !== null) { // @todo: se servir du WS SOAP pour récupérer la primo-signarture aussi
+                        decoded = Base64.getDecoder().decode(step.signatureEtape);
+                        path = document.name.replace(/\.[^\.]+$/, "") + "-" + idxStep + "-" + step.signataire + "." + ext;
+                        karate.write(decoded, basePath + "/" + path);
+                        result.push(path);
+                    }
                 }
             }
         }
