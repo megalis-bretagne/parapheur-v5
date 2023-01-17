@@ -55,10 +55,10 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.2
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.3
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 2G
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
@@ -110,7 +110,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.8
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.9
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -125,7 +125,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.6
+    image: registry.libriciel.fr/public/signature/workflow:1.6.7
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -157,14 +157,14 @@ services:
     image: registry.libriciel.fr/public/signature/crypto:3.0.1
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1536M
 
 
   pdf-stamp:
     image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.0
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
 
 
   pastell-connector:
@@ -191,7 +191,7 @@ services:
     image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.2
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1536M
     depends_on:
       - core
     external_links:
@@ -209,7 +209,7 @@ services:
       - MAIL_FROM
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.1
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -271,7 +271,7 @@ services:
     image: hubdocker.libriciel.fr/postgres:10.1
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -287,7 +287,7 @@ services:
       - WORKFLOW_DB_PASSWORD
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
-    command: postgres -c max_connections=500 -c log_min_messages=LOG
+    command: postgres -c max_connections=1000 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -404,3 +404,4 @@ services:
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
