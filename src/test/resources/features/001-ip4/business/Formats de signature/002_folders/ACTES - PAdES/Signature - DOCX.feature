@@ -4,7 +4,7 @@
 Feature: ACTES - PAdES - Signature - DOCX
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "ACTES - PAdES"
         * def subtype = "Signature"
         * def name = "ACTES - PAdES - Signature - DOCX"

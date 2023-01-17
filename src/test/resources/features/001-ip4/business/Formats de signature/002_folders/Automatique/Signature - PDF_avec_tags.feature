@@ -2,7 +2,7 @@
 Feature: Automatique - Signature - PDF_avec_tags
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "Automatique"
         * def subtype = "Signature"
         * def name = "Automatique - Signature - PDF_avec_tags"

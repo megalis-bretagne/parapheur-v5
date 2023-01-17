@@ -2,7 +2,7 @@
 Feature: PAdES - Signature - PDF_sans_tags-signature_pades - signe_pades
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "PAdES"
         * def subtype = "Signature"
         * def name = "PAdES - Signature - PDF_sans_tags-signature_pades"

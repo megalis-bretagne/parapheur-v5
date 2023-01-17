@@ -92,7 +92,7 @@ Feature: Paramétrage IP 4 métier pour l'entité "fds ("Formats de signature")
     Scenario Outline: Création du type "${name}"
         * call read('classpath:lib/ip4/business/api/type/create.feature') __row
         # @info: permet d'éviter la 503
-        * ip.pause(1)
+        * ip.pause(2)
 
         Examples:
             | name               | description        | protocol | format          | location    | postalCode |
@@ -107,7 +107,7 @@ Feature: Paramétrage IP 4 métier pour l'entité "fds ("Formats de signature")
     Scenario Outline: Position de la signature pour le type "${id}"
          * call read('classpath:lib/ip4/business/api/type/overridePades.feature') __row
         # @info: permet d'éviter la 503
-        * ip.pause(1)
+        * ip.pause(2)
 
         Examples:
             | id            | active! | stamp!                            |
@@ -118,7 +118,7 @@ Feature: Paramétrage IP 4 métier pour l'entité "fds ("Formats de signature")
     Scenario Outline: Création du sous-type "${type} / ${name}"
         * call read('classpath:lib/ip4/business/api/subtype/create.feature') __row
         # @info: permet d'éviter la 503
-        * ip.pause(1)
+        * ip.pause(2)
 
         Examples:
             | type               | name                         | description                  | parapheurs!    | multidoc | cachet | workflow  | isCachetAuto |

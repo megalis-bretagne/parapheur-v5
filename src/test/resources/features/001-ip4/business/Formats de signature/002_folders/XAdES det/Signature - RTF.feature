@@ -2,7 +2,7 @@
 Feature: XAdES det - Signature - RTF
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "XAdES det"
         * def subtype = "Signature"
         * def name = "XAdES det - Signature - RTF"

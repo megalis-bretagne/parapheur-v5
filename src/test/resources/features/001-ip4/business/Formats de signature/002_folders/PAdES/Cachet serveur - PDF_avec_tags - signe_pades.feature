@@ -2,7 +2,7 @@
 Feature: PAdES - Cachet serveur - PDF_avec_tags - signe_pades
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "PAdES"
         * def subtype = "Cachet serveur"
         * def name = "PAdES - Cachet serveur - PDF_avec_tags - signe_pades"

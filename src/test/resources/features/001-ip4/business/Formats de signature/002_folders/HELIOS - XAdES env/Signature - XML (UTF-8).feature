@@ -2,7 +2,7 @@
 Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
 
     Background:
-        * ip.pause(1)
+        * ip.pause(2)
         * def type = "HELIOS - XAdES env"
         * def subtype = "Signature"
         * def name = "HELIOS - XAdES env - Signature - XML (UTF-8)"

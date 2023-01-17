@@ -1,20 +1,20 @@
-@business @ip4 @formats-de-signature @folder @ignore
-# @fixme: en local, le visuel PDF ne se génère pas, même après avoir ajouté le dossier manuellement
-Feature: ACTES - PAdES - Signature - DOC
+@business @ip4 @formats-de-signature @folder
+Feature: Automatique - Signature - PDF_avec_tags - repositionnement signature
 
     Background:
         * ip.pause(2)
-        * def type = "ACTES - PAdES"
+        * def type = "Automatique"
         * def subtype = "Signature"
-        * def name = "ACTES - PAdES - Signature - DOC"
-        * def files = [ { file: "classpath:files/formats/document_office/document_office.doc" } ]
+        * def name = "Automatique - Signature - PDF_avec_tags - repositionnement signature"
+        * def files = [ { file: "classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf" } ]
+        * def positions = { "page":1,"x":200,"y":700, "width": 100, "height": 100 }
 
     Scenario: Création et signature des dossiers (normal et surcharge)
-        * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
+        * ip4.business.formatsDeSignature.sign(type, subtype, name, files, positions)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * match download.files == [ "document_office.pdf" ]
+        * match download.files == [ "PDF_avec_tags.pdf" ]
 
         Examples:
             | key       |
@@ -24,7 +24,7 @@ Feature: ACTES - PAdES - Signature - DOC
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
-        * match ip.signature.pades.certificates.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.certificates.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
             | key       |
@@ -34,7 +34,7 @@ Feature: ACTES - PAdES - Signature - DOC
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
-        * match ip.signature.pades.fields.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.fields.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
             | key       | signedBy            | reason                   | location    |
@@ -51,22 +51,22 @@ Feature: ACTES - PAdES - Signature - DOC
     }
 }
 """
-        * match ip.signature.pades.annotations.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.annotations.read(download.base + "/PDF_avec_tags.pdf") == expected
 
         Examples:
             | key       | position!            | line1            | line2                    |
-            | normal    | [0, 0, 200, 70]      | Florence Garance | Nacarat                  |
-            | surcharge | [0, 0, 200, 70]      | Gilles Nacarat   | Responsable des méthodes |
+            | normal    | [200, 700, 300, 800] | Florence Garance | Nacarat                  |
+            | surcharge | [200, 700, 300, 800] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * def actual = ip.signature.pades.images.export(download.base + "/document_office.pdf")
+        * def actual = ip.signature.pades.images.export(download.base + "/PDF_avec_tags.pdf")
         * def expected =
 """
 {
-  "page 1": {
-    "1": "#(ip4.signature.pades.images.expected('<username>'))"
-  }
+    "page 1": {
+        "1": "#(ip4.signature.pades.images.expected('<username>'))"
+    }
 }
 """
         * ip.signature.pades.images.compare(actual, expected)
