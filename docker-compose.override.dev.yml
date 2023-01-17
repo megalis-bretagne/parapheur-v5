@@ -39,7 +39,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    image: registry.libriciel.fr/public/signature/ip-web:develop
     environment:
       - VERSION=5.0.4-develop
 
@@ -65,7 +65,7 @@ services:
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    image: registry.libriciel.fr/public/signature/legacy-bridge:develop
     mem_limit: 768M
     memswap_limit: 768M
 
