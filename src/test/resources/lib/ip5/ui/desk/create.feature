@@ -70,7 +70,7 @@ function (associatedDesks) {
             # @todo: metadonnées
             And click("{^}Bureaux associés")
             And selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
-            * ip.pause(15)
+            * ip.pause(1)
             And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
         Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
             And waitFor(ip5.ui.toast.success("Le bureau " + title + " a été créé avec succès"))

@@ -29,17 +29,23 @@
 services:
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:develop
+    mem_limit: 1536M
+    memswap_limit: 1536M
+    volumes:
+      - ./application-core.yml:/application.yml
+    ports:
+      - "8080:8080"
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    image: registry.libriciel.fr/public/signature/ip-web:develop
     environment:
       - VERSION=5.0.4-develop
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+    image: registry.libriciel.fr/public/signature/workflow:develop
 
 
   libersign:
@@ -59,7 +65,20 @@ services:
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    image: registry.libriciel.fr/public/signature/legacy-bridge:develop
+    mem_limit: 768M
+    memswap_limit: 768M
+
+
+  alfresco:
+    image: registry.libriciel.fr/public/signature/ip-alfresco:develop
+
+  keycloak:
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
+
+  nginx:
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+
 
 
   smtp:

@@ -58,7 +58,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/ip-core:1.2.2
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 2G
     environment:
       - POSTGRES_HOST
       - POSTGRES_PORT
@@ -191,7 +191,7 @@ services:
     image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.2
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
     depends_on:
       - core
     external_links:
@@ -271,7 +271,7 @@ services:
     image: hubdocker.libriciel.fr/postgres:10.1
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -287,7 +287,7 @@ services:
       - WORKFLOW_DB_PASSWORD
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
-    command: postgres -c max_connections=500 -c log_min_messages=LOG
+    command: postgres -c max_connections=1000 -c log_min_messages=LOG
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
