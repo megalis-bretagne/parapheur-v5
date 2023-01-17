@@ -105,6 +105,10 @@ function fn(config) {
         return result;
     };
     config.ip.utils.certificate['signHash'] = function(path, hash) {
+        karate.log({path: path, hash: hash});
+        if(hash === null) {
+            return karate.fail("The value of the hash parameter given to ip.utils.certificate.signHash is null");
+        }
         var cmd = [
             "/bin/sh",
             "-c",

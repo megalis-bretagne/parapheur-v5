@@ -57,7 +57,7 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
             | key       | position!            |
             | normal    | [200, 700, 300, 800] |
             | surcharge | [200, 700, 300, 800] |
-    @ignore @fixme-karate
+
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def actual = ip.signature.pades.images.export(download.base + "/PDF_sans_tags.pdf")

@@ -1,4 +1,4 @@
-@business @ip4 @formats-de-signature @folder @ignore
+@business @ip4 @formats-de-signature @folder
 Feature: XAdES det - Signature - RTF - signe_cades
 
     Background:

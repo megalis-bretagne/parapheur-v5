@@ -1,4 +1,4 @@
-@business @ip4 @formats-de-signature @folder @wip
+@business @ip4 @formats-de-signature @folder
 Feature: PAdES - Signature - PDF_avec_tags-signature_pades
 
     Background:

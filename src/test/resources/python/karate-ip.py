@@ -134,6 +134,30 @@ class Pdf():
             indirect = []
             keyAnnot = 0
 
+            # Cachet IP 4 - @fixme: mélange de signatures et de cachet pour IP 4 -> @todo: paramètre ?
+            if "/Annots" in page:
+                keyPage = "page " + str(idxPage+1)
+                for idxAnnot in range(len(page["/Annots"])):
+                    annot = page["/Annots"][idxAnnot]
+                    obj = annot.get_object()
+                    if Dict.exists(obj, ["/AP", "/N", "/Resources", "/XObject", "/FRM", "/Resources", "/XObject"]):
+                        for formKey in obj["/AP"]["/N"]["/Resources"]["/XObject"]["/FRM"]["/Resources"]["/XObject"]:
+                            images = Dict.get(obj, ["/AP", "/N", "/Resources", "/XObject", "/FRM", "/Resources", "/XObject", formKey, "/Resources", "/XObject"])
+                            if images is not None:
+                                for imgKey in images:
+                                    if Dict.exists(images, [imgKey, "/SMask"]):
+                                        if keyPage not in result:
+                                            result[keyPage] = {}
+                                        if repr(annot) not in indirect:
+                                            indirect.append(repr(annot))
+                                        keyAnnot = str(indirect.index(repr(annot)) + 1)
+                                        if keyAnnot not in result[keyPage]:
+                                            result[keyPage][str(keyAnnot)] = {}
+                                        normalizedImgKey = re.sub("^/img", "/Im", imgKey)
+                                        imgPath = base + "/" + keyPage + "/" + keyAnnot + normalizedImgKey
+                                        result[keyPage][keyAnnot][normalizedImgKey] = PdfImage.export(images[imgKey], imgPath)
+
+            # Cachet IP 5, signature IP 4 et IP 5
             if "/Annots" in page:
                 keyPage = "page " + str(idxPage+1)
                 for idxAnnot in range(len(page["/Annots"])):
