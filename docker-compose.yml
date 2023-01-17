@@ -55,7 +55,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.2
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.3
     restart: unless-stopped
     tty: true
     mem_limit: 2G
@@ -110,7 +110,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.8
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.9
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -404,3 +404,4 @@ services:
     volumes:
       - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
