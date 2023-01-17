@@ -157,14 +157,14 @@ services:
     image: registry.libriciel.fr/public/signature/crypto:3.0.1
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1536M
 
 
   pdf-stamp:
     image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.0
     restart: unless-stopped
     tty: true
-    mem_limit: 512M
+    mem_limit: 1G
 
 
   pastell-connector:
@@ -191,7 +191,7 @@ services:
     image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.2
     restart: unless-stopped
     tty: true
-    mem_limit: 1G
+    mem_limit: 1536M
     depends_on:
       - core
     external_links:
