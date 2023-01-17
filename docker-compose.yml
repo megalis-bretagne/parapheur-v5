@@ -125,7 +125,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.6
+    image: registry.libriciel.fr/public/signature/workflow:1.6.7
     restart: unless-stopped
     tty: true
     mem_limit: 768M
