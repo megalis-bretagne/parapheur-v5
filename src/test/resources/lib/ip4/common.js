@@ -132,38 +132,47 @@ function fn(config) {
         root = karate.toAbsolutePath("classpath:.").replace(/build\/classes\/java\/test$/, 'build') + "/";
         base = "ip4-folders/" + currentName.replace(/(:|\/)/, '_') + " - " + id + "/";
         Base64 = Java.type('java.util.Base64');
+        if(karate.xmlPath(rv.response, 'count(/Envelope/Body/GetDossierResponse/FichierPES)') > 0) {
+            // Document principal
+            fileName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/NomDocPrincipal');
+            document = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/FichierPES');
+            decoded = Base64.getDecoder().decode(document);
+            karate.write(decoded, base + fileName);
+            files.push(fileName);
+        } else {
+            // Document principal
+            fileName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/NomDocPrincipal');
+            document = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DocPrincipal');
+            decoded = Base64.getDecoder().decode(document);
+            karate.write(decoded, base + fileName);
+            files.push(fileName);
 
-        // Document principal
-        fileName = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/NomDocPrincipal');
-        document = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/DocPrincipal');
-        decoded = Base64.getDecoder().decode(document);
-        karate.write(decoded, base + fileName);
-        files.push(fileName);
-
-        // Signatures détachées
-        signatures = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/SignatureDocPrincipal');
-        if(signatures !== "#notpresent") {
-            decoded = Base64.getDecoder().decode(signatures);
-            karate.write(decoded, base + "signatures.zip");
-            cmd = [
-                "/bin/sh",
-                "-c",
-                "unzip -o \"" + root + "/" + base + "signatures.zip\" -d \"" + root + "/" + base + "\""
-            ];
-            ip.utils.safeExec(cmd);
-            cmd = [
-                "/bin/sh",
-                "-c",
-                "unzip -l \"" + root + "/" + base + "signatures.zip\" | grep --color=none \"^\\s\\+[0-9]\\+\\s\\+[0-9]\\+-\" | sed \"s/^\\s\\+[0-9]\\+\\s\\+.\\{16\\}\\s\\+//g\""
-            ];
-            files = files.concat(ip.utils.safeExec(cmd).split(/\r?\n/));
-            cmd = [
-                "/bin/sh",
-                "-c",
-                "rm \"" + root + "/" + base + "signatures.zip\""
-            ];
-            ip.utils.safeExec(cmd);
+            // Signatures détachées
+            signatures = karate.xmlPath(rv.response, '/Envelope/Body/GetDossierResponse/SignatureDocPrincipal');
+            if(signatures !== "#notpresent") {
+                decoded = Base64.getDecoder().decode(signatures);
+                karate.write(decoded, base + "signatures.zip");
+                cmd = [
+                    "/bin/sh",
+                    "-c",
+                    "unzip -o \"" + root + "/" + base + "signatures.zip\" -d \"" + root + "/" + base + "\""
+                ];
+                ip.utils.safeExec(cmd);
+                cmd = [
+                    "/bin/sh",
+                    "-c",
+                    "unzip -l \"" + root + "/" + base + "signatures.zip\" | grep --color=none \"^\\s\\+[0-9]\\+\\s\\+[0-9]\\+-\" | sed \"s/^\\s\\+[0-9]\\+\\s\\+.\\{16\\}\\s\\+//g\""
+                ];
+                files = files.concat(ip.utils.safeExec(cmd).split(/\r?\n/));
+                cmd = [
+                    "/bin/sh",
+                    "-c",
+                    "rm \"" + root + "/" + base + "signatures.zip\""
+                ];
+                ip.utils.safeExec(cmd);
+            }
         }
+
         return {base: root + base, files: files};
         //-------------------------------------------------------------------------------------------------------------
         // @info: apparemment, il y a une limite à 12...

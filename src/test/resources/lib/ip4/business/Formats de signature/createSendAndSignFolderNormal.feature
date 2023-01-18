@@ -7,5 +7,6 @@ Feature: ...
         * ip4.business.api.user.login("ws@fds", "a123456")
         * call read("classpath:lib/ip4/business/api/folder/create.feature") params
 
+        * ip.pause(1)
         * ip4.business.api.user.login("fgarance@fds", "a123456")
         * call read("classpath:lib/ip4/business/api/folder/sign.feature") karate.merge(defaults, { annotation: "signature", username: "fgarance@fds", desktop: "Nacarat", certificate: "signature", folder: __arg.name + " - normal" }, __arg)

@@ -48,7 +48,7 @@ function fn(config) {
         var cmd = [
             "/bin/sh",
             "-c",
-            "xmllint --schema \"" + schema + "\" \"" + document + "\" --noout"
+            "xmllint --huge --schema \"" + schema + "\" \"" + document + "\" --noout --nowarning"
         ];
         output = ip.utils.safeExec(cmd);
         if (output.match(/.xml validates$/) === null) {

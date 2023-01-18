@@ -56,6 +56,7 @@ function(dossierId, files) {
             file = file['file'];
         }
         rv = karate.call('classpath:lib/ip4/business/api/folder/create-addDocument.feature', { dossierId: dossierId, file: file });
+        karate.log(rv.response);
         result.push({
             "name": ip.utils.file.basename(file),
             "isMainDocument": true,
@@ -71,6 +72,12 @@ function(dossierId, files) {
             karate.call(
                 'classpath:lib/ip4/business/api/folder/create-addDetachedSignature.feature',
                 { documentId: rv.document.success, file: files[idx]['detached'] }
+            );
+        }
+        if(typeof files[idx] === 'object' && files[idx].hasOwnProperty('display')) {
+            karate.call(
+                'classpath:lib/ip4/business/api/folder/create-addDisplay.feature',
+                { dossierId: dossierId, documentId: rv.document.success, file: files[idx]['display'] }
             );
         }
     }

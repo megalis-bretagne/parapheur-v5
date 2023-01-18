@@ -26,6 +26,8 @@ dossier une numérotation.
 
 à partir du projet [i-Parapheur-4/iparapheur-core](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-4/iparapheur-core).
 
+Dans le fichier `gradlew`, `DEFAULT_JVM_OPTS='"-Xmx4096m" "-Xms4096m"'`, sinon `java.lang.OutOfMemoryError: Java heap space` avec `ip.signature.helios.validateSchema` (?)
+
 ```bash
 # /etc/hosts
 #127.0.0.1       ip4.dom.local
@@ -41,7 +43,33 @@ dossier une numérotation.
 ./gradlew test --info -Dkarate.options="--tags @ip4 --tags @setup --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 ./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 
+# 20230118 - 10h00 - succès pour les tests de 110 dossiers (55 normal et 55 surcharge) en 34m 13s
 ./gradlew test --info -Dkarate.options="--tags @ip4 --tags ~@ignore --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+```
+
+```
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+```
+
+```bash
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @setup --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur-4-7-10.recette.libriciel.org -Dkarate.soapBaseUrl=https://secure-iparapheur-4-7-10.recette.libriciel.org
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://iparapheur-4-7-10.recette.libriciel.org -Dkarate.soapBaseUrl=https://secure-iparapheur-4-7-10.recette.libriciel.org
+```
+
+### @fixme
+
+```
+* What went wrong:
+Execution failed for task ':test'.
+> Multiple build operations failed.
+      Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Cachet serveur - PDF_avec_tags - repositionnement signature] ACTES - PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fCachet#20serveur#20-#20PDF_avec_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Cachet#20serveur#20-#20PDF_avec_tags#20-#20repositionnement#20signature.xml.
+      Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Cachet serveur - PDF_sans_tags - repositionnement signature] ACTES - PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fCachet#20serveur#20-#20PDF_sans_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Cachet#20serveur#20-#20PDF_sans_tags#20-#20repositionnement#20signature.xml.
+      Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Signature - PDF_avec_tags - repositionnement signature] ACTES - PAdES - Signature - PDF_avec_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fSignature#20-#20PDF_avec_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Signature#20-#20PDF_avec_tags#20-#20repositionnement#20signature.xml.
+      Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Signature - PDF_sans_tags - repositionnement signature] ACTES - PAdES - Signature - PDF_sans_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fSignature#20-#20PDF_sans_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Signature#20-#20PDF_sans_tags#20-#20repositionnement#20signature.xml.
+   > Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Cachet serveur - PDF_avec_tags - repositionnement signature] ACTES - PAdES - Cachet serveur - PDF_avec_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fCachet#20serveur#20-#20PDF_avec_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Cachet#20serveur#20-#20PDF_avec_tags#20-#20repositionnement#20signature.xml.
+   > Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Cachet serveur - PDF_sans_tags - repositionnement signature] ACTES - PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fCachet#20serveur#20-#20PDF_sans_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Cachet#20serveur#20-#20PDF_sans_tags#20-#20repositionnement#20signature.xml.
+   > Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Signature - PDF_avec_tags - repositionnement signature] ACTES - PAdES - Signature - PDF_avec_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fSignature#20-#20PDF_avec_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Signature#20-#20PDF_avec_tags#20-#20repositionnement#20signature.xml.
+   > Could not write XML test results for [features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Signature - PDF_sans_tags - repositionnement signature] ACTES - PAdES - Signature - PDF_sans_tags - repositionnement signature to file /home/cbuffin/Documents/gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/compose/build/test-results/test/TEST-#5bfeatures#2f001-ip4#2fbusiness#2fFormats#20de#20signature#2f002_folders#2fACTES#20-#20PAdES#2fSignature#20-#20PDF_sans_tags#20-#20repositionnement#20signature#5d#20ACTES#20-#20PAdES#20-#20Signature#20-#20PDF_sans_tags#20-#20repositionnement#20signature.xml.
 ```
 
 ### @todo
