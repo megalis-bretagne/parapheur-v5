@@ -1,5 +1,5 @@
-@business @ip4 @formats-de-signature @folder @ignore
-# @fixme: en local, le visuel PDF ne se génère pas, même après avoir ajouté le dossier manuellement
+@business @ip4 @formats-de-signature @folder @not-dom-local
+# @info: en local, le visuel PDF ne se génère pas, d'où le tag @not-dom-local
 Feature: ACTES - PAdES - Signature - DOC
 
     Background:
@@ -14,7 +14,7 @@ Feature: ACTES - PAdES - Signature - DOC
 
     Scenario Outline: Vérifications de la liste des documents (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * match download.files == [ "document_office.pdf" ]
+        * match download.files == [ "document_office.doc.pdf" ]
 
         Examples:
             | key       |
@@ -24,7 +24,7 @@ Feature: ACTES - PAdES - Signature - DOC
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
-        * match ip.signature.pades.certificates.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.certificates.read(download.base + "/document_office.doc.pdf") == expected
 
         Examples:
             | key       |
@@ -34,7 +34,7 @@ Feature: ACTES - PAdES - Signature - DOC
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('<signedBy>', '<reason>', '<location>'))" ]
-        * match ip.signature.pades.fields.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.fields.read(download.base + "/document_office.doc.pdf") == expected
 
         Examples:
             | key       | signedBy            | reason                   | location    |
@@ -51,16 +51,16 @@ Feature: ACTES - PAdES - Signature - DOC
     }
 }
 """
-        * match ip.signature.pades.annotations.read(download.base + "/document_office.pdf") == expected
+        * match ip.signature.pades.annotations.read(download.base + "/document_office.doc.pdf") == expected
 
         Examples:
-            | key       | position!            | line1            | line2                    |
-            | normal    | [0, 0, 200, 70]      | Florence Garance | Nacarat                  |
-            | surcharge | [0, 0, 200, 70]      | Gilles Nacarat   | Responsable des méthodes |
+            | key       | position!        | line1            | line2                    |
+            | normal    | [0, 0, 100, 100] | Florence Garance | Nacarat                  |
+            | surcharge | [0, 0, 100, 100] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * def actual = ip.signature.pades.images.export(download.base + "/document_office.pdf")
+        * def actual = ip.signature.pades.images.export(download.base + "/document_office.doc.pdf")
         * def expected =
 """
 {

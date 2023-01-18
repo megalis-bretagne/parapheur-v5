@@ -1,6 +1,6 @@
-@business @ip4 @formats-de-signature @folder @ignore
-# @fixme: en v4, la conversion ne fonctionne qu'avec le protocole ACTES
-# parapheur.document.openxml.accept=true dans alfresco-global.properties
+@business @ip4 @formats-de-signature @folder @not-dom-local @wip
+# @info: en local, le visuel PDF ne se génère pas, d'où le tag @not-dom-local
+# @info: pour pouvoir traiter des fichiers docx: parapheur.document.openxml.accept=true dans alfresco-global.properties
 Feature: ACTES - PAdES - Signature - DOCX
 
     Background:
@@ -8,14 +8,14 @@ Feature: ACTES - PAdES - Signature - DOCX
         * def type = "ACTES - PAdES"
         * def subtype = "Signature"
         * def name = "ACTES - PAdES - Signature - DOCX"
-        * def files = [ { file: "document_ooxml.docx" } ]
+        * def files = [ { file: "classpath:files/formats/document_ooxml/document_ooxml.docx" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
         * ip4.business.formatsDeSignature.sign(type, subtype, name, files)
 
     Scenario Outline: Vérifications de la liste des documents (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * match download.files == [ "document_ooxml.pdf" ]
+        * match download.files == [ "document_ooxml.docx.pdf" ]
 
         Examples:
             | key       |
@@ -25,22 +25,21 @@ Feature: ACTES - PAdES - Signature - DOCX
     Scenario Outline: Vérifications des signatures électroniques (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.certificates.default('signature-user'))" ]
-        * match ip.signature.pades.certificates.read(download.base + "/document_ooxml.pdf") == expected
+        * match ip.signature.pades.certificates.read(download.base + "/document_ooxml.docx.pdf") == expected
 
         Examples:
             | key       |
             | normal    |
             | surcharge |
 
-    @fixme-ip4 @issue-compose-579
     Scenario Outline: Vérifications des propriétés des signatures (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
         * def expected = [ "#(ip.signature.pades.fields.default('Prenom Nom - Usages', '<reason>', '<location>'))" ]
-        * match ip.signature.pades.fields.read(download.base + "/document_ooxml.pdf") == expected
+        * match ip.signature.pades.fields.read(download.base + "/document_ooxml.docx.pdf") == expected
 
         Examples:
-            | key       | reason                    | location    |
-            | normal    | Nacarat                   | Montpellier |
+            | key       | reason                   | location    |
+            | normal    | Nacarat                  | Montpellier |
             | surcharge | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
@@ -49,36 +48,20 @@ Feature: ACTES - PAdES - Signature - DOCX
 """
 {
     "page 1": {
-        "1": "#(ip4.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
+        "1": "#(ip4.signature.pades.annotations.default(<position>, '<line1>', '<line2>'))"
     }
 }
 """
-        * match ip.signature.pades.annotations.read(download.base + "/document_ooxml.pdf") == expected
+        * match ip.signature.pades.annotations.read(download.base + "/document_ooxml.docx.pdf") == expected
 
         Examples:
-            | key       | line1            | line2                    |
-            | normal    | Florence Garance | Nacarat                  |
-
-    @fixme-ip4 @issue-compose-579
-    Scenario Outline: Vérifications des annotations (${key})
-        * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * def expected =
-"""
-{
-    "page 1": {
-        "1": "#(ip4.signature.pades.annotations.default([0, 0, 200, 70], '<line1>', '<line2>'))"
-    }
-}
-"""
-        * match ip.signature.pades.annotations.read(download.base + "/document_ooxml.pdf") == expected
-
-        Examples:
-            | key       | line1            | line2                    |
-            | surcharge | Gilles Nacarat   | Responsable des méthodes |
+            | key       | position!        | line1            | line2                    |
+            | normal    | [0, 0, 100, 100] | Florence Garance | Nacarat                  |
+            | surcharge | [0, 0, 100, 100] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip4.business.formatsDeSignature.downloadSoap("ws@fds", "a123456", type, subtype, "Archive", name + " - <key>")
-        * def actual = ip.signature.pades.images.export(download.base + "/document_ooxml.pdf")
+        * def actual = ip.signature.pades.images.export(download.base + "/document_ooxml.docx.pdf")
         * def expected =
 """
 {

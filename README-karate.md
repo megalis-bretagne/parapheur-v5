@@ -26,6 +26,24 @@ dossier une numérotation.
 
 à partir du projet [i-Parapheur-4/iparapheur-core](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-4/iparapheur-core).
 
+Si on exécute en docker / local, il faudra exclure les _features_ ayant le tag `@not-dom-local` (en ajoutant `--tags ~@not-dom-local`).
+
+- `parapheur.document.openxml.accept=true dans alfresco-global.properties`
+
+Si on exécute sur une autre plate-forme
+
+- __Fichier de config:__ `/opt/iParapheur/tomcat/shared/classes/alfresco-global.properties`
+- __Redémarrer IP:__ `/etc/init.d/alfresco stop && /etc/init.d/alfresco start`
+- __Remise à zéro des données__
+  - voir les valeurs de `dir.root`, `db.username`, `db.password` et `db.name` dans `/opt/iParapheur/tomcat/shared/classes/alfresco-global.properties` 
+  - `/etc/init.d/alfresco stop`
+  - `rm -rf /opt/iParapheur/alf_data` (`dir.root`)
+  - `mysql -u alfresco -p` (`db.username` et `db.password`)
+    - `drop database alfresco;` (`db.name`)
+    - `create database alfresco;` (`db.name`)
+  - `/etc/init.d/alfresco start`
+  - `tail -f /opt/iParapheur/tomcat/logs/catalina.out`
+
 Dans le fichier `gradlew`, `DEFAULT_JVM_OPTS='"-Xmx4096m" "-Xms4096m"'`, sinon `java.lang.OutOfMemoryError: Java heap space` avec `ip.signature.helios.validateSchema` (?)
 
 ```bash
@@ -44,7 +62,8 @@ Dans le fichier `gradlew`, `DEFAULT_JVM_OPTS='"-Xmx4096m" "-Xms4096m"'`, sinon `
 ./gradlew test --info -Dkarate.options="--tags @ip4 --tags @wip" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 
 # 20230118 - 10h00 - succès pour les tests de 110 dossiers (55 normal et 55 surcharge) en 34m 13s
-./gradlew test --info -Dkarate.options="--tags @ip4 --tags ~@ignore --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
+# 20230118 - 16h30 - 7 erreurs en 21m 11s (à cause de features/001-ip4/business/Formats de signature/002_folders/ACTES - PAdES/Cachet serveur - PDF_sans_tags - signe_pades.feature)
+./gradlew test --info -Dkarate.options="--tags @ip4 --tags ~@not-dom-local --tags @formats-de-signature" -Dkarate.headless=true  -Dkarate.baseUrl=https://ip4.dom.local -Dkarate.soapBaseUrl=https://secure-ip4.dom.local
 ```
 
 ```
