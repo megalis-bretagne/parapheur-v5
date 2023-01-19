@@ -1,13 +1,13 @@
 @business @ip4 @formats-de-signature @folder @not-dom-local @wip
 # @info: en local, le visuel PDF ne se génère pas, d'où le tag @not-dom-local
 # @info: pour pouvoir traiter des fichiers docx: parapheur.document.openxml.accept=true dans alfresco-global.properties
-Feature: ACTES - PAdES - Signature - DOCX
+Feature: ACTES-PAdES - Signature - DOCX
 
     Background:
         * ip.pause(2)
         * def type = "ACTES - PAdES"
         * def subtype = "Signature"
-        * def name = "ACTES - PAdES - Signature - DOCX"
+        * def name = "ACTES-PAdES - Signature - DOCX"
         * def files = [ { file: "classpath:files/formats/document_ooxml/document_ooxml.docx" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
