@@ -1,11 +1,11 @@
 @business @ip4 @formats-de-signature @folder
-Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
+Feature: HELIOS-XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
 
     Background:
         * ip.pause(2)
         * def type = "HELIOS - XAdES env"
         * def subtype = "Signature"
-        * def name = "HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)"
+        * def name = "HELIOS-XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)"
         * def files = [ { file: "classpath:files/formats/pesWithASAP_unsigned.xml", display: "classpath:files/pdf/visuel.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
@@ -27,8 +27,8 @@ Feature: HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses)
         * ip.signature.helios.validate(download.base + "/pesWithASAP_unsigned.xml")
         # @fixme: ClaimedRole -> Responsable des mï¿½thodes
         # @info
-        # encguess "build/ip4-folders/HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses) - surcharge - 97734f03-1614-4a4f-a6f2-ca5a9406475d/pesWithASAP_unsigned.xml"
-        # build/ip4-folders/HELIOS - XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses) - surcharge - 97734f03-1614-4a4f-a6f2-ca5a9406475d/pesWithASAP_unsigned.xml        unknown
+        # encguess "build/ip4-folders/HELIOS-XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses) - surcharge - 97734f03-1614-4a4f-a6f2-ca5a9406475d/pesWithASAP_unsigned.xml"
+        # build/ip4-folders/HELIOS-XAdES env - Signature - XML (ISO-8859-1, PJ PDF incluses) - surcharge - 97734f03-1614-4a4f-a6f2-ca5a9406475d/pesWithASAP_unsigned.xml        unknown
         # encguess "src/test/resources/files/formats/pesWithASAP_unsigned.xml"
         # src/test/resources/files/formats/pesWithASAP_unsigned.xml       US-ASCII
         * def expected = { "City": "<City>", "PostalCode": "<PostalCode>", "CountryName": "France", "ClaimedRole": "<ClaimedRole>" }

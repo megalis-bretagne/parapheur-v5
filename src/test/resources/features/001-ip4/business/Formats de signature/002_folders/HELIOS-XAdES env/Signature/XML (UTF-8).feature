@@ -1,11 +1,11 @@
 @business @ip4 @formats-de-signature @folder
-Feature: HELIOS - XAdES env - Signature - XML (UTF-8)
+Feature: HELIOS-XAdES env - Signature - XML (UTF-8)
 
     Background:
         * ip.pause(2)
         * def type = "HELIOS - XAdES env"
         * def subtype = "Signature"
-        * def name = "HELIOS - XAdES env - Signature - XML (UTF-8)"
+        * def name = "HELIOS-XAdES env - Signature - XML (UTF-8)"
         * def files = [ { file: "classpath:files/formats/PESALR1_unsigned.xml", display: "classpath:files/pdf/visuel.pdf" } ]
 
     Scenario: Création et signature des dossiers (normal et surcharge)
