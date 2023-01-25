@@ -25,6 +25,8 @@
 # That will contain every overridden parameter.
 #
 
+name: iparapheur
+
 
 volumes:
   matomo_internal_files: { }
