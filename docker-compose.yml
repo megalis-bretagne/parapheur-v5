@@ -25,6 +25,8 @@
 # That will contain every overridden parameter.
 #
 
+name: iparapheur
+
 
 volumes:
   matomo_internal_files: { }
@@ -98,6 +100,7 @@ services:
       - SMTP_MAIL_FROM
       - SMTP_ENABLE_SSL
       - SMTP_ENABLE_START_TLS
+      - APP_VERSION=%CI_COMMIT_REF_NAME%
     depends_on:
       postgres:
         condition: service_healthy
