@@ -43,6 +43,10 @@ DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 DATA_ROOT_DIR=${DATA_ROOT_DIR:-/data/iparapheur}
 BACKUPS_ROOT_DIR=${BACKUPS_ROOT_DIR:-/data/iparapheur_backups}
 
+# The tar command poorly manages the double slashes in paths.
+# We remove the trailing ones.
+DATA_ROOT_DIR=${DATA_ROOT_DIR%%+(/)}
+
 __main__() {
 
   mkdir -p "${BACKUPS_ROOT_DIR}"
