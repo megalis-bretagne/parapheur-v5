@@ -33,7 +33,7 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-CURRENT_DATE=$(date '+%Y%m%d-%H%M')
+CURRENT_DATE=$(date '+%Y-%m-%d_%H-%M')
 CURRENT_DATE=${CURRENT_DATE//:/-}
 CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
@@ -100,12 +100,11 @@ __main__() {
 
   printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"
 
-  printf "Clean up temp files -\n"
+  printf "Clean up temp & old files -\n"
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
-
-  # TODO : some kind of logrotate on 2 files.
-  #  We'll bow, for what we can to the 3-2-1 backup strategy
-  #  Note that we should skip saturday and sunday backups in the crontab
+  # Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
+  # Note that we should skip saturday and sunday backups in the crontab
+  ls -1 /root/backup_* | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
 
   printf "Starting up -\n"
   docker compose up -d
