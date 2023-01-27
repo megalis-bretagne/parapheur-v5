@@ -114,6 +114,7 @@ variables:
     - packageFiles=(
       "docker-compose.yml"
       "docker-compose.override.init.yml"
+      "backup.sh"
       ".env.dist"
       "LICENSE.md"
       "README.md"
