@@ -5,7 +5,7 @@
 ### Dump all data:
 
 ```bash
-set -a && source .env && set +a && sudo -E ./backup.sh
+set -a && source /opt/iparapheur/current/.env && set +a && sudo -E /opt/iparapheur/dist/backup.sh
 ```
 
 ### Restore dump :
