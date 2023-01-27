@@ -33,9 +33,9 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
+CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 CURRENT_DATE=$(date '+%Y%m%d-%H%M')
 CURRENT_DATE=${CURRENT_DATE//:/-}
-DUMP_PATH="backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
 __main__() {
@@ -50,12 +50,12 @@ __main__() {
   sleep 10s
 
   printf "Dumping MatomoDB databases -\n"
-  docker compose exec matomo-db /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${DUMP_PATH}_matomo_backup.sql"
+  docker compose exec matomo-db /usr/bin/mysqldump -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" >"/tmp/${CURRENT_SAVE_FOLDER_NAME}_matomo_backup.sql"
 
   printf "Dumping PostgreSQL databases -\n"
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s -\n" "${DB_NAME}"
-    docker compose exec postgres /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${DUMP_PATH}_${DB_NAME}.sql"
+    docker compose exec postgres /bin/bash -c "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump -U ${POSTGRES_USER} ${DB_NAME}" >"/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
   done
 
   # The first --transform renames the /data directory to /backup_<current date>_data
@@ -77,9 +77,9 @@ __main__() {
   printf "Shutting down databases -\n"
   docker compose down -v
 
-  tar --transform="flags=r;s|data|${DUMP_PATH}_data|" --transform="flags=r;s|.env|.env_${DUMP_PATH}|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${DUMP_PATH}".tar.gz .env data /tmp/${DUMP_PATH}*
+  tar --transform="flags=r;s|data|${CURRENT_SAVE_FOLDER_NAME}_data|" --transform="flags=r;s|.env|.env_${CURRENT_SAVE_FOLDER_NAME}|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${CURRENT_SAVE_FOLDER_NAME}".tar.gz .env data /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
-  printf "DUMP complete -> %s -\n" "${DUMP_PATH}"
+  printf "DUMP complete -> %s -\n" "${CURRENT_SAVE_FOLDER_NAME}"
 }
 
 __main__ "${@}"
