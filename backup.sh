@@ -38,6 +38,8 @@ CURRENT_DATE=${CURRENT_DATE//:/-}
 CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
+# TODO : Simply crash if one of these values is not set.
+#  We actually should not use any default values
 DATA_ROOT_DIR=${DATA_ROOT_DIR:-/data/iparapheur}
 BACKUPS_ROOT_DIR=${BACKUPS_ROOT_DIR:-/data/iparapheur_backups}
 
@@ -93,6 +95,9 @@ __main__() {
   printf "Clean up temp files -\n"
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
+  # TODO : some kind of logrotate on 2 files.
+  #  We'll bow, for what we can to the 3-2-1 backup strategy
+  #  Note that we should skip saturday and sunday backups in the crontab
 
   printf "Starting up -\n"
   docker compose up -d
