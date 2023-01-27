@@ -76,6 +76,8 @@ __main__() {
         "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump --username ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
   done
 
+  cp /opt/iparapheur/current/.env /tmp/${CURRENT_SAVE_FOLDER_NAME}.env
+
   # The first --transform renames the /data directory to /backup_<current date>_data
   # The second --transform removes the /tmp directory that contains all the .sql dumps so they are at the same level at the /backup_<current date>_data directory
   #
@@ -93,14 +95,13 @@ __main__() {
   #   | backup-2022-01-02_data/
 
   tar --transform="flags=r;s|data|${CURRENT_SAVE_FOLDER_NAME}_data|" \
-      --transform="flags=r;s|.env|.env_${CURRENT_SAVE_FOLDER_NAME}|" \
       --transform="flags=r;s|tmp||" \
       --exclude=${DATA_ROOT_DIR}/alfresco/contentstore.deleted \
       --exclude=${DATA_ROOT_DIR}/pes-viewer \
       --exclude=${DATA_ROOT_DIR}/nginx \
       --exclude=${DATA_ROOT_DIR}/matomo-db \
       --exclude=${DATA_ROOT_DIR}/postgres \
-      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}".tar.gz /opt/iparapheur/current/.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
+      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}".tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
   printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"
 
