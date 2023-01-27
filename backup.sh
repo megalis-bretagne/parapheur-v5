@@ -91,12 +91,12 @@ __main__() {
   tar --transform="flags=r;s|data|${CURRENT_SAVE_FOLDER_NAME}_data|" \
       --transform="flags=r;s|.env|.env_${CURRENT_SAVE_FOLDER_NAME}|" \
       --transform="flags=r;s|tmp||" \
-      --exclude=data/alfresco/contentstore.deleted \
-      --exclude=data/pes-viewer \
-      --exclude=data/nginx \
-      --exclude=data/matomo-db \
-      --exclude=data/postgres \
-      -cf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}".tar.gz /opt/iparapheur/current/.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
+      --exclude=${DATA_ROOT_DIR}/alfresco/contentstore.deleted \
+      --exclude=${DATA_ROOT_DIR}/pes-viewer \
+      --exclude=${DATA_ROOT_DIR}/nginx \
+      --exclude=${DATA_ROOT_DIR}/matomo-db \
+      --exclude=${DATA_ROOT_DIR}/postgres \
+      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}".tar.gz /opt/iparapheur/current/.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
   printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"
 
