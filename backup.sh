@@ -33,12 +33,13 @@ if [ "$(getopt --longoptions xtrace -- x "$@" 2>/dev/null | grep --color=none "\
   set -o xtrace
 fi
 
-CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 CURRENT_DATE=$(date '+%Y%m%d-%H%M')
 CURRENT_DATE=${CURRENT_DATE//:/-}
+CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
 __main__() {
+
   printf "Shutting down iparapheur -\n"
   docker compose down -v
 
@@ -74,12 +75,12 @@ __main__() {
   #   | backup-2022-01-02_alfresco.sql
   #   | backup-2022-01-02_data/
 
-  printf "Shutting down databases -\n"
-  docker compose down -v
 
   tar --transform="flags=r;s|data|${CURRENT_SAVE_FOLDER_NAME}_data|" --transform="flags=r;s|.env|.env_${CURRENT_SAVE_FOLDER_NAME}|" --transform="flags=r;s|tmp||" --exclude=data/alfresco/contentstore.deleted --exclude=data/pes-viewer --exclude=data/nginx --exclude=data/matomo-db --exclude=data/postgres -cf "${CURRENT_SAVE_FOLDER_NAME}".tar.gz .env data /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
   printf "DUMP complete -> %s -\n" "${CURRENT_SAVE_FOLDER_NAME}"
+  printf "Starting up -\n"
+  docker compose up -d
 }
 
 __main__ "${@}"
