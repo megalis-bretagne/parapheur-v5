@@ -272,6 +272,9 @@ function fn(config) {
                         content = parseFloat(content);
                     } else if (inputType === "INTEGER") {
                         content = parseInt(content, 10);
+                    } else if (inputType === "DATE") {
+                        // FIXME : this is because of the locale in chrome (not ff), maybe there is a cleaner conf for this
+                        content = content.replace(/^(....)-(..)-(..)$/, "$1-$3-$2");
                     }
                 }
             } else {
