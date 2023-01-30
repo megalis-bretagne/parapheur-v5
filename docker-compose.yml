@@ -1,6 +1,6 @@
 #
 # iparapheur
-# Copyright (C) 2019-2022 Libriciel-SCOP
+# Copyright (C) 2019-2023 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,12 +18,14 @@
 
 
 #
-# Do not modify this file, it will be reset on every update.
-# Any modification will be lost
+# DO NOT MODIFY THIS FILE, IT WILL BE RESET ON EVERY UPDATE!
+# ANY MODIFICATION WILL BE LOST!
 #
-# To modify anything from here, you should use the separate `docker-compose.override.instance.yml` file,
+# To modify any parameter available here, you should use a separate `docker-compose.override.yml` file,
 # That will contain every overridden parameter.
 #
+
+name: iparapheur
 
 
 volumes:
@@ -34,7 +36,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.1
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.2
     restart: unless-stopped
     tty: true
     mem_limit: 256M
@@ -55,7 +57,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.2.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.1
     restart: unless-stopped
     tty: true
     mem_limit: 2G
@@ -98,6 +100,7 @@ services:
       - SMTP_MAIL_FROM
       - SMTP_ENABLE_SSL
       - SMTP_ENABLE_START_TLS
+      - APP_VERSION=%CI_COMMIT_REF_NAME%
     depends_on:
       postgres:
         condition: service_healthy
@@ -110,7 +113,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.2.9
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.0
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -125,7 +128,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.7
+    image: registry.libriciel.fr/public/signature/workflow:1.6.8
     restart: unless-stopped
     tty: true
     mem_limit: 768M
@@ -154,7 +157,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.1
+    image: registry.libriciel.fr/public/signature/crypto:3.0.3
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -188,7 +191,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.2
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.4.3
     restart: unless-stopped
     tty: true
     mem_limit: 1536M

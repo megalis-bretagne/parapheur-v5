@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #  iparapheur
-#  Copyright (C) 2019-2022 Libriciel SCOP
+#  Copyright (C) 2019-2023 Libriciel SCOP
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by

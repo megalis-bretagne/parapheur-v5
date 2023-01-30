@@ -8,6 +8,6 @@ Feature: IP v.5 REST desktop lib
         * param size = 250
         * method GET
         * status 200
-        * def jsonPath = "$.data[?(@.tenantId=='" + __arg.tenantId + "')][?(@.name=='" + __arg.name + "')]"
+        * def jsonPath = "$.content[?(@.tenantId=='" + __arg.tenantId + "')][?(@.name=='" + __arg.name + "')]"
         * match karate.jsonPath(response, jsonPath).length != 0
         * def desktop = karate.jsonPath(response, jsonPath)[0]

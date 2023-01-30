@@ -1,6 +1,6 @@
 /*
  * iparapheur
- * Copyright (C) 2019-2022 Libriciel SCOP
+ * Copyright (C) 2019-2023 Libriciel SCOP
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -272,6 +272,9 @@ function fn(config) {
                         content = parseFloat(content);
                     } else if (inputType === "INTEGER") {
                         content = parseInt(content, 10);
+                    } else if (inputType === "DATE") {
+                        // FIXME : this is because of the locale in chrome (not ff), maybe there is a cleaner conf for this
+                        content = content.replace(/^(....)-(..)-(..)$/, "$1-$3-$2");
                     }
                 }
             } else {
