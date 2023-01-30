@@ -16,7 +16,7 @@ set -a && source /opt/iparapheur/current/.env && set +a && sudo -E /opt/iparaphe
    ```
 2. Unzip the archived dump.
    ```bash
-      mkdir backup && sudo tar -xf <path-to-backup>.tar -C backup
+      mkdir backup && sudo tar -zxf <path-to-backup>.tar.gz -C backup
    ```
 
 3. Replace .env file
@@ -26,8 +26,8 @@ set -a && source /opt/iparapheur/current/.env && set +a && sudo -E /opt/iparaphe
 
 4. Replace the ./data folder with the data_<date of the dump> folder in the unzipped dump.
    ```bash
-      sudo rm -r ./data
-      sudo mv backup/backup_<date of the dump>_data data
+      sudo mv /data/iparapheur /data/iparapheur.bak 
+      sudo mv backup/backup_<date of the dump>_data /data/iparapheur
    ```
 
 5. Load the databases dumps
