@@ -18,7 +18,7 @@ Feature: IP v.5 REST draft lib
 
         # @todo: defaults + merge des champs nécessaires
         #* def defaults = { dueDate: null, metadata: {}, paperSignable: false, variableDesksIds: {}, visibility: "CONFIDENTIAL" }
-        * def draftFolderParams =
+        * def createFolderRequest =
 """
 {
     "dueDate": null,

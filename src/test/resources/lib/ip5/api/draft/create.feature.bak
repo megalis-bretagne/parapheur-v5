@@ -4,7 +4,7 @@ Feature:
         Given url baseUrl
             And path path
             And header Accept = 'application/json'
-            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
+            And multipart file createFolderRequest = { 'value': '#(createFolderRequest)', 'contentType': 'application/json' }
 
             # Monodoc PDF
 #            And multipart file mainFiles = {  read: '#(mainFilePath)' }

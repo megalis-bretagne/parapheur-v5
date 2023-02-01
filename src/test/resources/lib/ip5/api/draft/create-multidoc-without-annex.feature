@@ -9,7 +9,7 @@ Feature:
         Given url baseUrl
             And path path
             And header Accept = 'application/json'
-            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
+            And multipart file createFolderRequest = { 'value': '#(createFolderRequest)', 'contentType': 'application/json' }
             # @fixme
             And multipart file mainFiles = {  read: '#(mainFilesPaths[0])', contentType: #(mainFilesContentTypes[0]) }
             And multipart file mainFiles = {  read: '#(mainFilesPaths[1])', contentType: #(mainFilesContentTypes[1]) }
