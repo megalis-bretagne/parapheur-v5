@@ -3,12 +3,12 @@ Feature:
     Scenario:
         * def mainFileContentType = ip.utils.file.mime(mainFilePath)
         # @todo: à mettre ailleurs + dans les autres create-...
-#        * karate.log(draftFolderParams)
+#        * karate.log(createFolderRequest)
 
         Given url baseUrl
             And path path
             And header Accept = 'application/json'
-            And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json', 'filename': 'blob' }
+            And multipart file createFolderRequest = { 'value': '#(createFolderRequest)', 'contentType': 'application/json', 'filename': 'blob' }
             And multipart file mainFiles = {  read: '#(mainFilePath)', contentType: #(mainFileContentType) }
         When method POST
         Then status 201

@@ -7,7 +7,7 @@ Feature:
         Given url baseUrl
           And path path
           And header Accept = 'application/json'
-          And multipart file draftFolderParams = { 'value': '#(draftFolderParams)', 'contentType': 'application/json' }
+          And multipart file createFolderRequest = { 'value': '#(createFolderRequest)', 'contentType': 'application/json' }
           And multipart file mainFiles = {  read: '#(mainFilePath)', contentType: #(mainFileContentType) }
           And multipart file annexeFiles = {  read: '#(annexFilePath)', contentType: #(annexFileContentType) }
         When method POST

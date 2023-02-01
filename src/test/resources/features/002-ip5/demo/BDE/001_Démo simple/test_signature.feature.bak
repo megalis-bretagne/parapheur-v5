@@ -42,7 +42,7 @@ Feature: Test signatures IP 5
         Given url baseUrl
             And path params.path
             And header Accept = "application/json"
-            And multipart file draftFolderParams = { "value": "#(params.draftFolderParams)", "contentType": "application/json" }
+            And multipart file createFolderRequest = { "value": "#(params.createFolderRequest)", "contentType": "application/json" }
             And multipart file mainFiles = { read: "#(mainFiles[0])", contentType: "#(ip.utils.file.mime(mainFiles[0]))" }
             And multipart file annexeFiles = { read: "#(annexes[0])", contentType: "#(ip.utils.file.mime(annexes[0]))" }
             And multipart file annexeFiles = { read: "#(annexes[1])", contentType: "#(ip.utils.file.mime(annexes[1]))" }

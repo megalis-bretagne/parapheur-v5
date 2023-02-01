@@ -118,7 +118,7 @@ function fn(config) {
         }
 
         for (var i=start;i<=max;i++) {
-            var draftFolderParams = {
+            var createFolderRequest = {
                 dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
                 name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
@@ -131,12 +131,12 @@ function fn(config) {
             result.push({
                 tenantId: tenantId,
                 deskId: deskId,
-                draftFolderParams: draftFolderParams,
+                createFolderRequest: createFolderRequest,
                 annexFilePath: annexFilePath,
                 mainFilePath: mainFilePath['file'],
                 mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
-                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
         }
@@ -165,7 +165,7 @@ function fn(config) {
         ;
 
         for (var i=start;i<=max;i++) {
-            var draftFolderParams = {
+            var createFolderRequest = {
                 dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
                 name: nameTemplate.replace('%counter%', i.toString().padStart(length, "0")),
@@ -176,12 +176,12 @@ function fn(config) {
                 visibility: extra.visibility === undefined ? 'CONFIDENTIAL' : extra.visibility,
             };
             result.push({
-                draftFolderParams: draftFolderParams,
+                createFolderRequest: createFolderRequest,
                 annexFilePath: annexFilePath,
                 // mainFilePath: mainFilePath,
                 mainFilesPaths: mainFilesPaths,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
-                annotation: annotation === '' ? '' : annotation + ' du dossier ' + draftFolderParams.name,
+                annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
         }

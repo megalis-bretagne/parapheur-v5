@@ -57,7 +57,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.1
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.2
     restart: unless-stopped
     tty: true
     mem_limit: 2G
@@ -113,7 +113,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.1
     restart: unless-stopped
     tty: true
     mem_limit: 64M
@@ -157,7 +157,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.3
+    image: registry.libriciel.fr/public/signature/crypto:3.0.4
     restart: unless-stopped
     tty: true
     mem_limit: 1536M
@@ -184,7 +184,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.3.0
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.3.1
     restart: unless-stopped
     tty: true
     mem_limit: 1G
