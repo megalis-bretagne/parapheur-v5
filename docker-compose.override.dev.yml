@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:thread-bottleneck
     volumes:
       - ./application-core.yml:/application.yml
     ports:
