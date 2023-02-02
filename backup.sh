@@ -109,7 +109,7 @@ __main__() {
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
   # Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
   # Note that we should skip saturday and sunday backups in the crontab
-  ls -1t ${BACKUPS_ROOT_DIR}/* | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
+  ls -1t ${BACKUPS_ROOT_DIR}/*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
 
   printf "Starting up -\n"
   docker compose up -d
