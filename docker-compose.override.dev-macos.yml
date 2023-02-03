@@ -50,7 +50,7 @@ services:
   pes-viewer:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer:develop
     ports:
-      - "8888:8080"
+      - "8888:8888"
 
 
   workflow:
