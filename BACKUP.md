@@ -2,41 +2,58 @@
 
 ## Docker volumes save
 
-### Dump all data:
+### Dump all data
 
 ```bash
-set -a && source .env && set +a && sudo -E ./backup.sh
+cd /opt/iparapheur/current/
+set -a && source .env && set +a
+sudo -E /opt/iparapheur/dist/backup.sh
 ```
 
-### Restore dump :
+### Restore dump
 
-1. Shutdown all containers.
-   ```bash
-      sudo docker compose down -v
-   ```
-2. Unzip the archived dump.
-   ```bash
-      mkdir backup && sudo tar -xf <path-to-backup>.tar -C backup
-   ```
+_Note: This example assumes the default backup and data folders._
 
-3. Replace .env file
-   ```bash
-      cp backup/.env_backup_<date of the dump> .env
-   ```
+Move the previous data away, if needed
+```bash
+# Remove the .env file
+cd /opt/iparapheur/current
+sudo docker compose down -v
+mv .env .env_$(date '+%Y-%m-%d_%H-%M').bak
 
-4. Replace the ./data folder with the data_<date of the dump> folder in the unzipped dump.
-   ```bash
-      sudo rm -r ./data
-      sudo mv backup/backup_<date of the dump>_data data
-   ```
+# Remove the data folder
+mv /data/iparapheur /data/iparapheur_$(date '+%Y-%m-%d_%H-%M').bak
+```
 
-5. Load the databases dumps
+Restore the new-old data
+```bash
+# Unzip the archived dump
+cd /data/iparapheur_backups
+BACKUP_NAME=backup_20XX-XX-XX_XX-XX
+mkdir ${BACKUP_NAME}
+sudo tar -xzf ${BACKUP_NAME}.tar.gz -C ${BACKUP_NAME}
 
-   ```bash
-      sudo ./load-backup.sh <path-to-backup-folder> <date_of_the_dump>
-   ```
+# Restore the data folder
+mv /data/iparapheur /data/iparapheur.$(date '+%Y-%m-%d_%H-%M').bak
+mkdir /data/iparapheur
+mv /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_data/iparapheur/* /data/iparapheur/
 
-6. Restart all containers
-   ```bash
-      sudo docker-compose up -d
-   ```
+# Restore the .env file
+cd /opt/iparapheur/current
+mv /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}.env .env
+
+# Restore databases
+set -a && source .env && set +a
+sudo docker compose up -d postgres matomo-db
+docker compose exec -T matomo-db /usr/bin/mysql -u "${MATOMO_DB_USER}" --password="${MATOMO_DB_PASSWORD}" "${MATOMO_DB_DATABASE}" < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_matomo_backup.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} alfresco"         < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_alfresco.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} flowable"         < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_flowable.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} keycloak"         < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_keycloak.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} ipcore"           < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_ipcore.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} quartz"           < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_quartz.sql
+docker compose exec -T postgres /bin/bash -c "PGPASSWORD=${POSTGRES_PASSWORD} psql --username ${POSTGRES_USER} pastellconnector" < /data/iparapheur_backups/${BACKUP_NAME}/${BACKUP_NAME}_pastellconnector.sql
+
+# Restart all containers
+cd /opt/iparapheur/current
+sudo docker compose up -d
+```
