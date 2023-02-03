@@ -12,7 +12,7 @@ sudo -E /opt/iparapheur/dist/backup.sh
 
 ### Restore dump
 
-_Note: This example assumes that the default backup folder and iparapaheur data._
+_Note: This example assumes the default backup and data folders._
 
 Move the previous data away, if needed
 ```bash
