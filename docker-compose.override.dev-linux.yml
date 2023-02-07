@@ -24,8 +24,8 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    mem_limit: 64M
-    memswap_limit: 64M
+    #mem_limit: 64M
+    #memswap_limit: 64M
 
 
   core:
@@ -36,16 +36,16 @@ services:
       - ./src/main/resources/core/application-dev.yml:/application.yml
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev-container
-    mem_limit: 2G
-    memswap_limit: 2G
+    #mem_limit: 2G
+    #memswap_limit: 2G
     ports:
       - "8080:8080"
 
 
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
-    mem_limit: 64M
-    memswap_limit: 64M
+    #mem_limit: 64M
+    #memswap_limit: 64M
     environment:
       - VERSION=5.0.6-develop
     ports:
@@ -54,8 +54,8 @@ services:
 
   workflow:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
-    mem_limit: 1G
-    memswap_limit: 1G
+    #mem_limit: 1G
+    #memswap_limit: 1G
     volumes:
       - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
     ports:
@@ -82,8 +82,8 @@ services:
 
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
-    mem_limit: 256M
-    memswap_limit: 256M
+    #mem_limit: 256M
+    #memswap_limit: 256M
     ports:
       - "8085:8080"
 
@@ -95,15 +95,15 @@ services:
 
 
   pes-viewer:
-    mem_limit: 256M
-    memswap_limit: 256M
+    #mem_limit: 256M
+    #memswap_limit: 256M
     ports:
       - "8888:8888"
 
 
   pdf-stamp:
-    mem_limit: 256M
-    memswap_limit: 256M
+    #mem_limit: 256M
+    #memswap_limit: 256M
     ports:
       - "8889:8080"
 
@@ -112,8 +112,8 @@ services:
 
 
   alfresco:
-    mem_limit: 1024M
-    memswap_limit: 1024M
+    #mem_limit: 1024M
+    #memswap_limit: 1024M
     ports:
       - "9009:8080"
 
@@ -124,23 +124,24 @@ services:
 
 
   #solr6:
-  #  mem_limit: 1536M
-  #  memswap_limit: 1536M
+  #  #mem_limit: 1536M
+  #  #memswap_limit: 1536M
   #  ports:
   #    - 8983:8983
 
 
   postgres:
-    mem_limit: 512M
-    memswap_limit: 512M
+    #mem_limit: 512M
+    #memswap_limit: 512M
     ports:
       - "5432:5432"
 
 
   keycloak:
+    image: ip-keycloak:dev-2
     command: start  --import-realm
-    mem_limit: 768M
-    memswap_limit: 768M
+    #mem_limit: 768M
+    #memswap_limit: 768M
     ports:
       - "9090:8080"
     environment:
@@ -151,15 +152,15 @@ services:
     # - KC_LOG_LEVEL=TRACE
 
 
-  matomo:
-    mem_limit: 512M
-    memswap_limit: 512M
+  # matomo:
+    #mem_limit: 512M
+    #memswap_limit: 512M
 
 
   redis:
     image: redis:6.0-alpine
-    mem_limit: 64M
-    memswap_limit: 64M
+    #mem_limit: 64M
+    #memswap_limit: 64M
     ports:
       - "6379:6379"
 
