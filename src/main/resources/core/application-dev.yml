@@ -22,3 +22,7 @@ spring:
   mail:
     host: smtp
     port: 25
+
+
+management:
+  health.mail.enabled: false
