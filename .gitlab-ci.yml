@@ -118,7 +118,6 @@ variables:
       ".env.dist"
       "LICENSE.md"
       "README.md"
-      "src/main/resources/postgres/docker-entrypoint-initdb.d"
       "src/main/resources/prometheus/alert.rules"
       "src/main/resources/prometheus/prometheus.yml"
       "src/main/resources/rgpd/rgpd-template.json"
