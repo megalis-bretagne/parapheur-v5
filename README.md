@@ -143,33 +143,6 @@ To access it on a Linux machine, you may add this resolution in your `/etc/hosts
 
 And open the URL : http://iparapheur.dom.local
 
-### Defining a custom truststore
-
-On a custom CA-covered URL, some Keycloak calls will be broken.  
-We need to create a specific truststore to allow the connexion:
-
-```bash
-keytool -import -file data/nginx/ssl/fullchain.pem -alias iparapheur.dom.local -keystore truststore.jks
-```
-
-And link it to some specific elements, through the `docker-compose.override.instance.yml` file :
-
-```yml
-services:
-
-  core:
-    environment:
-      - JAVA_OPTS=-Djavax.net.ssl.trustStoreType=PKCS12 -Djavax.net.ssl.trustStore=truststore.p12 -Djavax.net.ssl.trustStorePassword=trusttrust
-    volumes:
-      - ./truststore.p12:/truststore.p12
-
-  legacy-bridge:
-    environment:
-      - JAVA_OPTS=-Djavax.net.ssl.trustStoreType=PKCS12 -Djavax.net.ssl.trustStore=truststore.p12 -Djavax.net.ssl.trustStorePassword=trusttrust
-    volumes:
-      - ./truststore.p12:/truststore.p12
-```
-
 
 ## IPNG
 

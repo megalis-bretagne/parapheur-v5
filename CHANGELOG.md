@@ -7,6 +7,73 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.6] - 2023-01-17
+[5.0.6]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.6.tar.gz
+
+### Ajouts
+
+- Bouton "Télécharger" à toutes les étapes d'un dossier
+- Option de débridage de la taille des scripts de sélection (paramétrable sur le serveur uniquement)
+- Placeholder "heure-minute-seconde" dans le tampon de signature
+- Règles de sécurité Nginx
+- Crash (volontaire) lors d'une tentative de signature de PES non valide
+- Point d'entrée de version
+- Nouveau logos Libriciel/iparapheur
+
+
+### Corrections
+- Changement de page dans la visionneuse
+- Espaces dans les champs recherche
+- Supprimer une annexe dans les étapes de création
+- Filtre par type/sous-type
+- Déclaration d'une absence par type/sous-type
+- Xpath automatique
+- Fonction isBureau sur les noms courts dans les scripts de sélections
+- Métadonnées à virgules dans les scripts de sélections
+- Logs dans les scripts de sélection
+- Message d'erreur explicite à la création d'un dossier
+- Nom de filtre tronqué
+- Labels des cartouches
+- Signature multi-documents
+- Message d'erreur lors d'un doublon
+- Signature en XAdES détaché
+- Format de signature AUTO
+- Affichage de l'absence par sous-types
+- Affichage des dossiers délégués
+- Permission de création en public
+- Affichage de la liste des tenants
+- Téléchargement des dossiers à toutes les étapes
+- Liens depuis la recherche du header
+- Tri par colonne "date de création"
+- Évènement "lu" dans le bordereau
+- Signature PKCS7
+- Visionneuse PES
+
+### Suppressions
+
+- Lien (inutile) sur un envoi par mail direct
+- Création d'un dossier avec circuit de création par webservices
+
+
+## [5.0.5] - 2023-01-17
+[5.0.5]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.5.tar.gz
+
+### Ajouts
+
+- Bouton download à toutes les étapes
+
+### Corrections
+
+- Performances
+- Erreur sur le tri par date
+- Création de plusieurs absences
+- Affichage de métadonnées à valeurs restreintes
+
+### Suppressions
+
+- Feeder
+
+
 ## [5.0.4] - 2022-12-08
 [5.0.4]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.4.tar.gz
 

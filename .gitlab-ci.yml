@@ -91,7 +91,7 @@ variables:
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "FALSE"
   environment: &test-environment
-    name: TEST
+    name: Test
     url: https://${TEST_TARGET_SERVER_URL}
 
 .partner-config:
@@ -101,8 +101,8 @@ variables:
     SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
     RESET_DATA: "FALSE"
   environment: &partner-environment
-    name: TEST
-    url: https://${TEST_TARGET_SERVER_URL}
+    name: Partenaires
+    url: https://${PARTNER_TARGET_SERVER_URL}
 
 # <editor-fold desc="Package">
 
@@ -118,7 +118,6 @@ variables:
       ".env.dist"
       "LICENSE.md"
       "README.md"
-      "src/main/resources/postgres/docker-entrypoint-initdb.d"
       "src/main/resources/prometheus/alert.rules"
       "src/main/resources/prometheus/prometheus.yml"
       "src/main/resources/rgpd/rgpd-template.json"
