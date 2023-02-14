@@ -9,8 +9,7 @@ Feature: Traitement des dossiers
         * ip5.ui.user.login("lvermillon@legacy-bridge", "a123456")
         #* match ip5.ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
-        * click("{a}Vermillon")
-        #* waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
         * waitFor("{a}" + name).click()
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
@@ -26,7 +25,7 @@ Feature: Traitement des dossiers
         * if (action != 'Mail sécurisé') ip5.ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
         * if (action != 'Mail sécurisé') click("{^}Valider")
 
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
         * if (action != 'Mail sécurisé') waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:

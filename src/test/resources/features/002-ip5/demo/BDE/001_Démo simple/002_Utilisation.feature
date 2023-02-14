@@ -50,7 +50,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * click("{^}Valider")
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
@@ -81,7 +81,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", "demande d'avis complémentaire", name)
         # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
         * click("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button")
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         #* waitFor(ip5.ui.toast.success("avis complémentaire a été effectuée avec succès"))
         * ip5.ui.user.logout()
 
@@ -100,7 +100,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
 
         * click("{^}Valider")
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
         * ip5.ui.user.logout()
 
@@ -119,7 +119,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * click("{^}Valider")
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:

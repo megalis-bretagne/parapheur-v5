@@ -43,4 +43,4 @@ Feature: ...
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))

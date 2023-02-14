@@ -53,6 +53,6 @@ function(obj, start) {
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
         # @fixme: ne fonctionne pas tout le temps, alors que le toaster apparaît bien sur l'image
         #* waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))
