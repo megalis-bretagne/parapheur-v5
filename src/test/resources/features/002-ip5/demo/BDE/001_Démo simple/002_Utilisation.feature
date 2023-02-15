@@ -40,7 +40,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("flosserand@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
-        * click("{a}Président")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
@@ -69,7 +68,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("flosserand@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
-        * click("{a}Président")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
@@ -109,7 +107,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("flosserand@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
-        * click("{a}Président")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * click("{a}" + name)
 
@@ -131,7 +128,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
@@ -171,7 +167,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
@@ -207,7 +202,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
@@ -250,7 +244,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
@@ -290,7 +283,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
@@ -327,7 +319,6 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.user.login("ws@demo-simple", "a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
-        * click("{a}WebService")
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
         * waitFor("<badge>").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers <title>"))
