@@ -1,19 +1,20 @@
 @karate-function
 Feature: UI tenant lib
 
-    Scenario: Suppression d'une entité
-        Given assert exists("//app-header") == true
-            And click(ip5.ui.locator.header['Administration'])
-        #Then waitFor(ip5.ui.element.breadcrumb("Administration / Informations serveur"))
+  Scenario: Suppression d'une entité
+    # Move to Admin / tenants
+    * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * waitFor("{^}Entités").click()
+    * waitFor("{^}Gestion des entités")
 
-        When click("{^}Entités")
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
+    # Delete tenant
+    * input("//input[@placeholder='Rechercher une entité']", tenant)
+    * waitFor("//td//*[contains(text(),'" + tenant + "')]//ancestor::tr//button[@title='Supprimer']").click()
+    * waitFor("//input[@id='confirmTenantNameInput']")
+    * input("//input[@id='confirmTenantNameInput']", tenant)
+    * waitFor("//button[contains(@title, 'Supprimer définitivement')]").click()
+    * waitForEnabled(ip5.ui.locator.button("Fermer")).click()
+    * waitFor("{^}Gestion des entités")
 
-        When input("//input[@placeholder='Rechercher une entité']", tenant)
-            And click("//td//*[contains(text(),'" + tenant + "')]//ancestor::tr//button[@title='Supprimer']")
-            And waitFor("//input[@id='confirmTenantNameInput']")
-            And input("//input[@id='confirmTenantNameInput']", tenant)
-            And click("//button[contains(@title, 'Supprimer définitivement')]")
-            And waitForEnabled(ip5.ui.locator.button("Fermer")).click()
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
-            And waitForResultCount("//tbody//td//*[contains(text(),'" + tenant + "')]", 0)
+    # Check delete
+    * waitForResultCount("//tbody//td//*[contains(text(),'" + tenant + "')]", 0)
