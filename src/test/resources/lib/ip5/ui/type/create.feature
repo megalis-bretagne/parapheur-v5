@@ -2,32 +2,28 @@
 Feature: UI type lib
 
   Scenario: Ajout d'un type
+    # Move to Admin / tenants / Typology
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * ip5.ui.admin.selectTenant(tenant)
+    * waitFor("//*[text() = 'Typologie des dossiers']").click()
 
-    When ip5.ui.admin.selectTenant(tenant)
-    And click("{^}Typologie des dossiers")
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    # Create type
+    * waitFor("//*[text() = 'Créer un type']").click()
+    * input(ip5.ui.locator.input("Nom"), name)
+    * input(ip5.ui.locator.input("Description"), description)
+    * waitFor("//*[text() = 'Protocole et format de signature']").click()
+    * ip.pause(5)
+    * input("#protocolInput input", protocol)
+    * waitFor("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]").click()
+    * input("#popupSigningFormatInput input", format)
+    * waitFor("//*[@id='popupSigningFormatInput']//*[contains(@class, 'ng-option ')]").click()
+    * input("//*[text() = 'Ville de signature']", ville)
+    * waitFor("//*[text() = 'PTampon de signature']").click()
+    * eval if (stamp === true) waitFor("//*[text()='Afficher']").click()
 
-    When click("{^}Créer un type")
-    And input(ip5.ui.locator.input("Nom"), name)
-    And input(ip5.ui.locator.input("Description"), description)
-
-    When click("{^}Protocole et format de signature")
-            # @todo: wait for element
-    And ip.pause(5)
-            # Protocole
-    And input("#protocolInput input", protocol)
-    And click("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]")
-            # Format de signature
-    And input("#popupSigningFormatInput input", format)
-    And click("//*[@id='popupSigningFormatInput']//*[contains(@class, 'ng-option ')]")
-    And input("{^}Ville de signature", ville)
-
-    When click("{^}Tampon de signature")
-    And if (stamp === true) click("//*[text()='Afficher']")
-
-    When waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-    And waitFor(ip5.ui.toast.success("Le type " + name + " a été créé avec succès"))
-    And input("//input[contains(@placeholder, 'Rechercher des types')]", name)
-    And waitFor("//tbody//td[contains(text(),'" + name + "')]")
+    # Check creation
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    * waitFor(ip5.ui.toast.success("Le type " + name + " a été créé avec succès"))
+    * input("//input[contains(@placeholder, 'Rechercher des types')]", name)
+    * waitFor("//tbody//td[contains(text(),'" + name + "')]")

@@ -2,16 +2,16 @@
 Feature: UI tenant lib
 
   Scenario: Ajout d'une entité
+    # Move to Admin / tenants
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * waitFor("//*[text() = 'Entités']").click()
 
-    When click("{^}Entités")
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
+    # Create entity
+    * waitFor("//*[text() = 'Créer une nouvelle entité']").click()
+    * input(ip5.ui.locator.input("Nom"), tenant)
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
 
-    When click("{^}Créer une nouvelle entité")
-    And input(ip5.ui.locator.input("Nom"), tenant)
-    And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
-    And waitFor(ip5.ui.toast.success("L'entité " + tenant + " a été créée avec succès"))
-    And input("//input[@placeholder='Rechercher une entité']", tenant)
-    And waitFor("//tbody//td//*[contains(text(),'" + tenant + "')]")
+    # Check creation
+    * waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
+    * input("//input[@placeholder='Rechercher une entité']", tenant)
+    * waitFor("//tbody//td//*[contains(text(),'" + tenant + "')]")

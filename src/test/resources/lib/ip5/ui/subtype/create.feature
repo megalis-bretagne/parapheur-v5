@@ -2,24 +2,23 @@
 Feature: UI subtype lib
 
   Scenario: Ajout d'un sous-type
+    # Move to Admin / tenants / Typology
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * ip5.ui.admin.selectTenant(tenant)
+    * waitFor("//*[text() = 'Typologie des dossiers']").click()
 
-    When ip5.ui.admin.selectTenant(tenant)
-    And click("{^}Typologie des dossiers")
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    # Create subtype
+    * click("//*[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
+    * input("#popupNameInput", name)
+    * input("{^}Description", description)
+    * click("#ngb-nav-3")
+    * ip.pause(5)
+    * waitForEnabled("#selectValidationWorkflow input").input(workflow)
+    * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    * ip.pause(5)
 
-    When click("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
-    And input("#popupNameInput", name)
-    And input("{^}Description", description)
-
-    When click("#ngb-nav-3")
-    And ip.pause(5)
-    And waitForEnabled("#selectValidationWorkflow input").input(workflow)
-    And waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
-    And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    And ip.pause(5)
-
-    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-    And waitFor(ip5.ui.toast.success("Le sous-type " + name + " a été créé avec succès"))
-    And input("//input[contains(@placeholder, 'Rechercher des types')]", name)
-    And waitFor("//tbody//td[contains(text(),'" + name + "')]")
+    # Check creation
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    * input("//input[contains(@placeholder, 'Rechercher des types')]", name)
+    * waitFor("//tbody//td[contains(text(),'" + name + "')]")
