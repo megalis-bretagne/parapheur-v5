@@ -24,7 +24,6 @@ Feature: ...
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
-        * click("{a}" + params.desktop)
         * click("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]")
 
         # Filtre sur le nom du dossier

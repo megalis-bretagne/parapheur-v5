@@ -13,6 +13,6 @@ Feature: UI tenant lib
             And input(ip5.ui.locator.input("Nom"), tenant)
             And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
         Then waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
-            And waitFor(ip5.ui.toast.success("entité " + tenant + " a été créée avec succès"))
+            And waitFor(ip5.ui.toast.success("L'entité " + tenant + " a été créée avec succès"))
             And input("//input[@placeholder='Rechercher une entité']", tenant)
             And waitFor("//tbody//td//*[contains(text(),'" + tenant + "')]")
