@@ -22,6 +22,9 @@
 # "Bootstrap"
 # ----------------------------------------------------------------------------------------------------------------------
 
+cd /opt/iparapheur/current/
+set -a && source .env && set +a
+
 set -o errexit
 set -o errtrace
 set -o functrace
@@ -109,7 +112,15 @@ __main__() {
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
   # Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
   # Note that we should skip saturday and sunday backups in the crontab
-  ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
+
+  # number of backups
+  backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
+
+  # Check if at least 2 backups are present
+  if [ $backup_count -gt 1 ]; then
+    # deleting all backups exept the last 2 
+    ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
+  fi
 
   printf "Starting up -\n"
   docker compose up -d
