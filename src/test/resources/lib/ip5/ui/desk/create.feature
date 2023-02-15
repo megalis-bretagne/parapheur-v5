@@ -55,17 +55,17 @@ Feature: UI desk lib
     # Move to Admin / tenants / Desks
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
-    * waitFor("//*[text() = 'Bureaux']").click()
+    * waitFor("{^}Bureaux").click()
 
     # Create desk
-    * waitFor("//*[text() = 'Créer un Bureau']").click()
+    * waitFor("{^}Créer un Bureau").click()
     * input(ip5.ui.locator.input("Titre"), title)
     * input(ip5.ui.locator.input("Nom court"), shortName)
-    * waitFor("//*[text() = 'Acteurs']").click()
+    * waitFor("{^}Acteurs").click()
     * selectOwners(owners)
-    * waitFor("//*[text() = 'Habilitations']").click()
+    * waitFor("{^}Habilitations").click()
     * selectPermissions(permissions)
-    * waitFor("//*[text() = 'Bureaux associés']").click()
+    * waitFor("{^}Bureaux associés").click()
     * selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
     * ip.pause(1)
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()

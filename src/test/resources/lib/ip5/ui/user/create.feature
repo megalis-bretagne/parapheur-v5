@@ -5,7 +5,7 @@ Feature: UI user lib
     # Move to Admin / tenants / Users
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
-    * waitFor("//*[text() = 'Utilisateurs']").click()
+    * waitFor("{^}Utilisateurs").click()
 
     # Create user
     * waitFor("{^}Créer un utilisateur").click()

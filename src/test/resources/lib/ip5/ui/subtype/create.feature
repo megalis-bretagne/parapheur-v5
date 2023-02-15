@@ -5,7 +5,7 @@ Feature: UI subtype lib
     # Move to Admin / tenants / Typology
     * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
-    * waitFor("//*[text() = 'Typologie des dossiers']").click()
+    * waitFor("{^}Typologie des dossiers").click()
 
     # Create subtype
     * click("//*[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
