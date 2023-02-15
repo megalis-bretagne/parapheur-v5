@@ -33,7 +33,7 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | path                                                  | password                        | image!                                                     |
-            | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
+            | Formats de signature | classpath:files/Entité initiale - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
@@ -60,24 +60,24 @@ Feature: Paramétrage métier "Formats de signature"
         * call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
         Examples:
-            | tenant               | type               | name                         | multiDocuments! | validationWorkflowId | sealAutomatic! | sealCertificateId                                  | secureMailServerId |
-            | Formats de signature | ACTES - CAdES      | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | ACTES - PAdES      | Cachet serveur               | false           | Cachet serveur       | false          | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | ACTES - PAdES      | Cachet serveur auto          | false           | Cachet serveur       | true           | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | ACTES - PAdES      | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | Automatique        | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | Automatique        | Signature multidoc           | true            | Signature            | null           |                                                    |                    |
-            | Formats de signature | CAdES              | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | CAdES              | Signature multidoc           | true            | Signature            | null           |                                                    |                    |
-            | Formats de signature | HELIOS - XAdES env | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | PAdES              | Cachet serveur               | false           | Cachet serveur       | false          | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | PAdES              | Cachet serveur auto          | false           | Cachet serveur       | true           | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | PAdES              | Cachet serveur multidoc      | true            | Cachet serveur       | false          | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | PAdES              | Cachet serveur multidoc auto | true            | Cachet serveur       | true           | Christian Buffin - Default tenant - Cachet serveur |                    |
-            | Formats de signature | PAdES              | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | PAdES              | Signature multidoc           | true            | Signature            | null           |                                                    |                    |
-            | Formats de signature | XAdES det          | Signature                    | false           | Signature            | null           |                                                    |                    |
-            | Formats de signature | XAdES det          | Signature multidoc           | true            | Signature            | null           |                                                    |                    |
+            | tenant               | type               | name                         | multiDocuments! | validationWorkflowId | sealAutomatic! | sealCertificateId                                   | secureMailServerId |
+            | Formats de signature | ACTES - CAdES      | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | ACTES - PAdES      | Cachet serveur               | false           | Cachet serveur       | false          | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | ACTES - PAdES      | Cachet serveur auto          | false           | Cachet serveur       | true           | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | ACTES - PAdES      | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | Automatique        | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | Automatique        | Signature multidoc           | true            | Signature            | null           |                                                     |                    |
+            | Formats de signature | CAdES              | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | CAdES              | Signature multidoc           | true            | Signature            | null           |                                                     |                    |
+            | Formats de signature | HELIOS - XAdES env | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | PAdES              | Cachet serveur               | false           | Cachet serveur       | false          | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | PAdES              | Cachet serveur auto          | false           | Cachet serveur       | true           | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | PAdES              | Cachet serveur multidoc      | true            | Cachet serveur       | false          | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | PAdES              | Cachet serveur multidoc auto | true            | Cachet serveur       | true           | Christian Buffin - Entité initiale - Cachet serveur |                    |
+            | Formats de signature | PAdES              | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | PAdES              | Signature multidoc           | true            | Signature            | null           |                                                     |                    |
+            | Formats de signature | XAdES det          | Signature                    | false           | Signature            | null           |                                                     |                    |
+            | Formats de signature | XAdES det          | Signature multidoc           | true            | Signature            | null           |                                                     |                    |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row

@@ -17,7 +17,7 @@ Feature: Connexion
             And match html('body') contains 'Se connecter'
 
     @permissions
-    Scenario: Connexion réussie pour un utilisateur "ADMIN"
+    Scenario: Connexion réussie pour un utilisateur "SUPER_ADMIN"
         Given driver baseUrl
             And waitFor('form')
             And input(ip5.ui.locator.input('Identifiant ou courriel'), 'cnoir')

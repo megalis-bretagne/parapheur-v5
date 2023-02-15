@@ -11,12 +11,19 @@ Feature: Basic setup
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
+	Scenario Outline: Create desk "${name}" in "${tenant}"
+		* call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
+
+		Examples:
+			| tenant          | name      | owners! | parent! | associated! | permissions!                                       |
+			| Entité initiale | null_desk | []      | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
 		Examples:
-			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
-			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            | disabled                   |
+			| tenant          | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
+			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | SUPER_ADMIN      | disabled                   |
 			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |
 			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   |
 			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |
@@ -27,7 +34,7 @@ Feature: Basic setup
 
 		Examples:
 			| email           | tenant                             |
-			| cnoir@dom.local | Entité initiale                     |
+			| cnoir@dom.local | Entité initiale                    |
 			| cnoir@dom.local | Libriciel SCOP                     |
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
@@ -35,7 +42,7 @@ Feature: Basic setup
 		* call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
 
 		Examples:
-			| tenant         | name        | owners!                    | parent! | associated! | permissions!                                       |
+			| tenant          | name        | owners!                    | parent! | associated! | permissions!                                       |
 			| Entité initiale | Transparent | ['ltransparent@dom.local'] | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
 			| Entité initiale | Translucide | ['stranslucide@dom.local'] | ''      | []          | {'action': true, 'creation': true}                 |
 
@@ -43,7 +50,7 @@ Feature: Basic setup
 		* call read('classpath:lib/ip5/api/setup/seal-certificate.create.feature') __row
 
 		Examples:
-			| tenant         | path                                                  | password                        | image! |
+			| tenant          | path                                                   | password                        | image! |
 			| Entité initiale | classpath:files/Entité initiale - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
 
 	@todo-karate
@@ -52,9 +59,9 @@ Feature: Basic setup
 		* call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
 		Examples:
-			| tenant         | name                            | deskName    | type               | mandatoryValidationMetadata! |
+			| tenant          | name                            | deskName    | type               | mandatoryValidationMetadata! |
 			# @fixme: API (+UI)
-#			| Entité initiale | Transparent - Mail              | Transparent | MAIL               | []                 |
+#			| Entité initiale | Transparent - Mail              | Transparent | MAIL               | []                           |
 			# @todo: setup first -> check via API, via Web = 400
 			| Entité initiale | Transparent - Cachet Serveur    | Transparent | SEAL               | []                           |
 			| Entité initiale | Transparent - Signature         | Transparent | SIGNATURE          | []                           |
@@ -68,7 +75,7 @@ Feature: Basic setup
 
 		# @fixme: remplir les colonnes signatureLocation | signatureZipCode | signaturePosition
 		Examples:
-			| tenant         | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
+			| tenant          | name        | description       | protocol | signatureFormat | signatureLocation | signatureZipCode | signatureVisible! | signaturePosition!       |
 			| Entité initiale | CACHET      | Cachet serveur    |          | PADES           |                   |                  | false             |                          |
 			| Entité initiale | SIGN_EXT    | Signature externe |          | PADES           |                   |                  | false             |                          |
 			| Entité initiale | SIGN_PADES  | Signature PADES   |          | PADES           |                   |                  | false             |                          |
@@ -81,13 +88,13 @@ Feature: Basic setup
 		* call read('classpath:lib/ip5/api/setup/subtype.create.feature') __row
 
 		Examples:
-			| tenant         | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                  | workflowSelectionScript! | subtypeMetadataList! |
+			| tenant          | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                                   | workflowSelectionScript! | subtypeMetadataList! |
 			| Entité initiale | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Entité initiale - Cachet serveur | ''                       | []                   |
-			| Entité initiale | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                    | ''                       | []                   |
-			| Entité initiale | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Entité initiale | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Entité initiale | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                    | ''                       | []                   |
-			| Entité initiale | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                    | ''                       | []                   |
+			| Entité initiale | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                                     | ''                       | []                   |
+			| Entité initiale | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                                     | ''                       | []                   |
+			| Entité initiale | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                                     | ''                       | []                   |
+			| Entité initiale | SIGN_PKCS7  | SIGN_PKCS7_MONODOC    | Signature PKCS7 monodoc       | Transparent - Signature         |                    |                                                     | ''                       | []                   |
+			| Entité initiale | VISA        | VISA_MONODOC          | Visa monodoc                  | Transparent - Visa              |                    |                                                     | ''                       | []                   |
 
 	Scenario Outline: Set the signature image for user "${email}"
 		* call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
