@@ -90,7 +90,7 @@ Feature: Basic setup
 
     Examples:
       | tenant          | type        | name                  | description                   | validationWorkflowId            | secureMailServerId | sealCertificateId                  | workflowSelectionScript! | subtypeMetadataList! |
-      | Entité initiale | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Entité initiale - Seal Certificate | ''                       | []                   |
+      | Entité initiale | CACHET      | CACHET_MANUEL_MONODOC | Cachet serveur manuel monodoc | Transparent - Cachet Serveur    |                    | Christian Buffin - Default tenant - Cachet serveur | ''                       | []                   |
       | Entité initiale | SIGN_EXT    | SIGN_EXT_MONODOC      | Signature externe monodoc     | Transparent - Signature externe |                    |                                    | ''                       | []                   |
       | Entité initiale | SIGN_PADES  | SIGN_PADES_MONODOC    | Signature PADES monodoc       | Transparent - Signature         |                    |                                    | ''                       | []                   |
       | Entité initiale | SIGN_PES_V2 | SIGN_PES_V2_MONODOC   | Signature PES_V2 monodoc      | Transparent - Signature         |                    |                                    | ''                       | []                   |

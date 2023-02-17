@@ -87,7 +87,7 @@ Feature: Paramétrage métier "Circuits unitaires"
       | Circuits unitaires | ACTES - CAdES      | Mail securise           | false           | Mail securise        |                                    | Mail securise Pastell cbuffin |
       | Circuits unitaires | ACTES - CAdES      | Signature               | false           | Signature            |                                    |                               |
       | Circuits unitaires | ACTES - CAdES      | Visa                    | false           | Visa                 |                                    |                               |
-      | Circuits unitaires | ACTES - PAdES      | Cachet serveur          | false           | Cachet serveur       | Entité initiale - Seal Certificate |                               |
+      | Circuits unitaires | ACTES - PAdES      | Cachet serveur          | false           | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
       | Circuits unitaires | ACTES - PAdES      | Mail securise           | false           | Mail securise        |                                    | Mail securise Pastell cbuffin |
       | Circuits unitaires | ACTES - PAdES      | Signature               | false           | Signature            |                                    |                               |
       | Circuits unitaires | ACTES - PAdES      | Visa                    | false           | Visa                 |                                    |                               |
@@ -106,8 +106,8 @@ Feature: Paramétrage métier "Circuits unitaires"
       | Circuits unitaires | HELIOS - XAdES env | Mail securise           | false           | Mail securise        |                                    | Mail securise Pastell cbuffin |
       | Circuits unitaires | HELIOS - XAdES env | Signature               | false           | Signature            |                                    |                               |
       | Circuits unitaires | HELIOS - XAdES env | Visa                    | false           | Visa                 |                                    |                               |
-      | Circuits unitaires | PAdES              | Cachet serveur          | false           | Cachet serveur       | Entité initiale - Seal Certificate |                               |
-      | Circuits unitaires | PAdES              | Cachet serveur multidoc | true            | Cachet serveur       | Entité initiale - Seal Certificate |                               |
+      | Circuits unitaires | PAdES              | Cachet serveur          | false           | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
+      | Circuits unitaires | PAdES              | Cachet serveur multidoc | true            | Cachet serveur       | Christian Buffin - Default tenant - Cachet serveur |                               |
       | Circuits unitaires | PAdES              | Mail securise           | false           | Mail securise        |                                    | Mail securise Pastell cbuffin |
       | Circuits unitaires | PAdES              | Mail securise multidoc  | true            | Mail securise        |                                    | Mail securise Pastell cbuffin |
       | Circuits unitaires | PAdES              | Signature               | false           | Signature            |                                    |                               |
