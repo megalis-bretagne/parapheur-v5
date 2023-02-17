@@ -15,13 +15,13 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant           | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Bons de commande | lfuchsia | lfuchsia@dom.local | Laëtitia  | Fuchsia  | a123456  | NONE      | disabled                   |
-            | Bons de commande | findigo  | findigo@dom.local  | Françoise | Indigo   | a123456  | NONE      | disabled                   |
-            | Bons de commande | opeche   | opeche@dom.local   | Olivier   | Pêche    | a123456  | NONE      | disabled                   |
-            | Bons de commande | dpourpre | dpourpre@dom.local | Delphine  | Pourpre  | a123456  | NONE      | disabled                   |
-            | Bons de commande | mrose    | mrose@dom.local    | Michèle   | Rose     | a123456  | NONE      | disabled                   |
-            | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant           | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
+            | Bons de commande | lfuchsia | lfuchsia@dom.local | Laëtitia  | Fuchsia  | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | findigo  | findigo@dom.local  | Françoise | Indigo   | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | opeche   | opeche@dom.local   | Olivier   | Pêche    | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | dpourpre | dpourpre@dom.local | Delphine  | Pourpre  | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | mrose    | mrose@dom.local    | Michèle   | Rose     | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/ip5/api/setup/metadata.create.feature') __row
@@ -47,8 +47,8 @@ Feature: Paramétrage métier "Bons de commande"
         * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row
 
         Examples:
-            | tenant           | name      | deskName          | type      | mandatoryValidationMetadata! |
-            | Bons de commande | Signature | ##VARIABLE_DESK## | SIGNATURE | ['montant']                  |
+            | tenant           | name      | deskName           | type      | mandatoryValidationMetadata! |
+            | Bons de commande | Signature | \##VARIABLE_DESK## | SIGNATURE | ['montant']                  |
 
     Scenario Outline: Create type "${name}" with "${signatureFormat}" signature format in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/type.create.feature') __row

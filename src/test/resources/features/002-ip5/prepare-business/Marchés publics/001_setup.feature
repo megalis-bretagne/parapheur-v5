@@ -14,12 +14,12 @@ Feature: Paramétrage métier "Marchés publics"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant          | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency |
-            | Marchés publics | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | a123456  | NONE      | disabled                   |
-            | Marchés publics | sorange    | sorange@dom.local    | Stéphanie | Orange    | a123456  | NONE      | disabled                   |
-            | Marchés publics | smandarine | smandarine@dom.local | Sabrina   | Mandarine | a123456  | NONE      | disabled                   |
-            | Marchés publics | vsafran    | vsafran@dom.local    | Vincent   | Safran    | a123456  | NONE      | disabled                   |
-            | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456  | NONE      | disabled                   |
+            | tenant          | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency | administeredDesk |
+            | Marchés publics | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | a123456  | NONE      | disabled                   |                  |
+            | Marchés publics | sorange    | sorange@dom.local    | Stéphanie | Orange    | a123456  | NONE      | disabled                   |                  |
+            | Marchés publics | smandarine | smandarine@dom.local | Sabrina   | Mandarine | a123456  | NONE      | disabled                   |                  |
+            | Marchés publics | vsafran    | vsafran@dom.local    | Vincent   | Safran    | a123456  | NONE      | disabled                   |                  |
+            | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

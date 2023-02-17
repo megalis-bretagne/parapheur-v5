@@ -14,11 +14,11 @@ Feature: Paramétrage métier "Factures"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant   | userName    | email                 | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Factures | icyan       | icyan@dom.local       | Isabelle  | Cyan     | a123456  | NONE      | disabled                   |
-            | Factures | pmagenta    | pmagenta@dom.local    | Pierre    | Magenta  | a123456  | NONE      | disabled                   |
-            | Factures | rjaune      | rjaune@dom.local      | Rébecca   | Jaune    | a123456  | NONE      | disabled                   |
-            | Factures | ws-factures | ws-factures@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant   | userName    | email                 | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
+            | Factures | icyan       | icyan@dom.local       | Isabelle  | Cyan     | a123456  | NONE      | disabled                   |                  |
+            | Factures | pmagenta    | pmagenta@dom.local    | Pierre    | Magenta  | a123456  | NONE      | disabled                   |                  |
+            | Factures | rjaune      | rjaune@dom.local      | Rébecca   | Jaune    | a123456  | NONE      | disabled                   |                  |
+            | Factures | ws-factures | ws-factures@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

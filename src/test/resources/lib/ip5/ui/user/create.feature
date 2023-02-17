@@ -3,7 +3,7 @@ Feature: UI user lib
 
   Scenario: Ajout d'un utilisateur
     # Move to Admin / tenants / Users
-    * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * eval if (exists("//app-header") == true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
     * waitFor("{^}Utilisateurs").click()
 

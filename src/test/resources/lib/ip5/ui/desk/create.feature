@@ -53,7 +53,7 @@ Feature: UI desk lib
     """
 
     # Move to Admin / tenants / Desks
-    * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * eval if (exists("//app-header") == true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
     * waitFor("{^}Bureaux").click()
 

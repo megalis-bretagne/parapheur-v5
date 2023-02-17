@@ -3,7 +3,7 @@ Feature: UI type lib
 
   Scenario: Ajout d'un type
     # Move to Admin / tenants / Typology
-    * eval if (exists("//app-header") === true) click(ip5.ui.locator.header['Administration'])
+    * eval if (exists("//app-header") == true) click(ip5.ui.locator.header['Administration'])
     * ip5.ui.admin.selectTenant(tenant)
     * waitFor("{^}Typologie des dossiers").click()
 

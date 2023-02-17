@@ -76,27 +76,27 @@ Feature: Paramétrage métier "Benoit XVI"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant     | userName                         | email                                                  | firstName   | lastName           | password | privilege    | notificationsCronFrequency | complementaryField |
-            | Benoit XVI | admin@demortain-benoit-xvi       | benoit.demortain+admin50+benoit-xvi@libriciel.coop     | Demortain   | Benoît             | a123456  | TENANT_ADMIN | single_notifications       |                    |
-            | Benoit XVI | nboulier@demortain-benoit-xvi    | benoit.demortain+boulier+benoit-xvi@libriciel.coop     | Natacha     | Boulier            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | mcaprano@demortain-benoit-xvi    | benoit.demortain+caprano+benoit-xvi@libriciel.coop     | Marissa     | Caprano            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | fcarignon@demortain-benoit-xvi   | benoit.demortain+carignon+benoit-xvi@libriciel.coop    | Francine    | Carignon           | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | dcrouton@demortain-benoit-xvi    | benoit.demortain+crouton+benoit-xvi@libriciel.coop     | David       | Crouton            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | aelaissa@demortain-benoit-xvi    | benoit.demortain+elaissa+benoit-xvi@libriciel.coop     | Aline       | El Aissa           | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | wsgenerique@demortain-benoit-xvi | benoit.demortain+generique+benoit-xvi@libriciel.coop   | User        | Générique          | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | wsgestionfi@demortain-benoit-xvi | benoit.demortain+gf+benoit-xvi@libriciel.coop          | User        | Gestion Financière | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | egiscard@demortain-benoit-xvi    | benoit.demortain+giscard+benoit-xvi@libriciel.coop     | Emilie      | Giscard            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | fmarlin@demortain-benoit-xvi     | benoit.demortain+marlin+benoit-xvi@libriciel.coop      | François    | Marlin             | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | rmorbier@demortain-benoit-xvi    | benoit.demortain+morbier+benoit-xvi@libriciel.coop     | Richard     | Morbier            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | aparisi@demortain-benoit-xvi     | benoit.demortain+parisi+benoit-xvi@libriciel.coop      | Alicia      | Parisi             | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | wspastell@demortain-benoit-xvi   | benoit.demortain+pastell+benoit-xvi@libriciel.coop     | User        | Pastell            | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | pperez@demortain-benoit-xvi      | benoit.demortain+perez+benoit-xvi@libriciel.coop       | Philippe    | Perez              | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | dprimo@demortain-benoit-xvi      | benoit.demortain+primo+benoit-xvi@libriciel.coop       | David       | Primo              | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | superadmin@demortain-benoit-xvi  | benoit.demortain+test190+benoit-xvi@libriciel.coop     | Toto        | Superadmin         | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | superviseur@demortain-benoit-xvi | benoit.demortain+superviseur+benoit-xvi@libriciel.coop | Utilisateur | Superviseur        | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | rtarpex@demortain-benoit-xvi     | benoit.demortain+tarpex+benoit-xvi@libriciel.coop      | Richard     | Tarpex             | a123456  | NONE         | single_notifications       |                    |
-            | Benoit XVI | wswebdelib@demortain-benoit-xvi  | benoit.demortain+webdelib+benoit-xvi@libriciel.coop    | User        | Webdelib           | a123456  | NONE         | disabled                   |                    |
-            | Benoit XVI | wswebgfc@demortain-benoit-xvi    | benoit.demortain+webgfc+benoit-xvi@libriciel.coop      | User        | Webgfc             | a123456  | NONE         | disabled                   |                    |
+            | tenant     | userName                         | email                                                  | firstName   | lastName           | password | privilege    | notificationsCronFrequency | complementaryField | administeredDesk |
+            | Benoit XVI | admin@demortain-benoit-xvi       | benoit.demortain+admin50+benoit-xvi@libriciel.coop     | Demortain   | Benoît             | a123456  | TENANT_ADMIN | single_notifications       |                    |                  |
+            | Benoit XVI | nboulier@demortain-benoit-xvi    | benoit.demortain+boulier+benoit-xvi@libriciel.coop     | Natacha     | Boulier            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | mcaprano@demortain-benoit-xvi    | benoit.demortain+caprano+benoit-xvi@libriciel.coop     | Marissa     | Caprano            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | fcarignon@demortain-benoit-xvi   | benoit.demortain+carignon+benoit-xvi@libriciel.coop    | Francine    | Carignon           | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | dcrouton@demortain-benoit-xvi    | benoit.demortain+crouton+benoit-xvi@libriciel.coop     | David       | Crouton            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | aelaissa@demortain-benoit-xvi    | benoit.demortain+elaissa+benoit-xvi@libriciel.coop     | Aline       | El Aissa           | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | wsgenerique@demortain-benoit-xvi | benoit.demortain+generique+benoit-xvi@libriciel.coop   | User        | Générique          | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | wsgestionfi@demortain-benoit-xvi | benoit.demortain+gf+benoit-xvi@libriciel.coop          | User        | Gestion Financière | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | egiscard@demortain-benoit-xvi    | benoit.demortain+giscard+benoit-xvi@libriciel.coop     | Emilie      | Giscard            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | fmarlin@demortain-benoit-xvi     | benoit.demortain+marlin+benoit-xvi@libriciel.coop      | François    | Marlin             | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | rmorbier@demortain-benoit-xvi    | benoit.demortain+morbier+benoit-xvi@libriciel.coop     | Richard     | Morbier            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | aparisi@demortain-benoit-xvi     | benoit.demortain+parisi+benoit-xvi@libriciel.coop      | Alicia      | Parisi             | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | wspastell@demortain-benoit-xvi   | benoit.demortain+pastell+benoit-xvi@libriciel.coop     | User        | Pastell            | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | pperez@demortain-benoit-xvi      | benoit.demortain+perez+benoit-xvi@libriciel.coop       | Philippe    | Perez              | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | dprimo@demortain-benoit-xvi      | benoit.demortain+primo+benoit-xvi@libriciel.coop       | David       | Primo              | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | superadmin@demortain-benoit-xvi  | benoit.demortain+test190+benoit-xvi@libriciel.coop     | Toto        | Superadmin         | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | superviseur@demortain-benoit-xvi | benoit.demortain+superviseur+benoit-xvi@libriciel.coop | Utilisateur | Superviseur        | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | rtarpex@demortain-benoit-xvi     | benoit.demortain+tarpex+benoit-xvi@libriciel.coop      | Richard     | Tarpex             | a123456  | NONE         | single_notifications       |                    |                  |
+            | Benoit XVI | wswebdelib@demortain-benoit-xvi  | benoit.demortain+webdelib+benoit-xvi@libriciel.coop    | User        | Webdelib           | a123456  | NONE         | disabled                   |                    |                  |
+            | Benoit XVI | wswebgfc@demortain-benoit-xvi    | benoit.demortain+webgfc+benoit-xvi@libriciel.coop      | User        | Webgfc             | a123456  | NONE         | disabled                   |                    |                  |
 
     Scenario Outline: Set the signature image for user "${email}"
         * call read('classpath:lib/ip5/api/setup/user.signatureImage.create.feature') __row
@@ -147,14 +147,14 @@ Feature: Paramétrage métier "Benoit XVI"
             | tenant     | name            | deskName                              | type               | mandatoryValidationMetadata! | mandatoryRejectionMetadata! |
 #            | Benoit XVI | CS_Dir_MP       | Directeur des Marchés Publics         | SEAL               | []                           | []                          |
             | Benoit XVI | CS_Pres         | Président du département              | SEAL               | []                           | []                          |
-            | Benoit XVI | S_BurVar_script | ##VARIABLE_DESK##                     | SIGNATURE          | []                           | []                          |
+            | Benoit XVI | S_BurVar_script | \##VARIABLE_DESK##                    | SIGNATURE          | []                           | []                          |
             | Benoit XVI | S_Consultant    | Consultant Fonctionnel Libriciel SCOP | SIGNATURE          | []                           | []                          |
 #            | Benoit XVI | Se_Dir_MP       | Directeur des Marchés Publics         | EXTERNAL_SIGNATURE | []                           | []                          |
             | Benoit XVI | S_Pres          | Président du département              | SIGNATURE          | []                           | []                          |
-            | Benoit XVI | V_Chefde        | ##BOSS_OF##                           | VISA               | []                           | []                          |
+            | Benoit XVI | V_Chefde        | \##BOSS_OF##                          | VISA               | []                           | []                          |
             | Benoit XVI | V_DGS           | Directrice Générale des Services      | VISA               | []                           | []                          |
             | Benoit XVI | V_Pres          | Président du département              | VISA               | []                           | []                          |
-            | Benoit XVI | V_Var_SF        | ##VARIABLE_DESK##                     | VISA               | ['date_service_fait']        | []                          |
+            | Benoit XVI | V_Var_SF        | \##VARIABLE_DESK##                    | VISA               | ['date_service_fait']        | []                          |
 
     Scenario: Create "S_CS_Pres" workflow in "Benoit XVI"
         * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
