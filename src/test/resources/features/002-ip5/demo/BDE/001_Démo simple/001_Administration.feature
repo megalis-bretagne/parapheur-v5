@@ -2,13 +2,12 @@
 Feature: 001 - Scénario de démo simple, partie administration
 
   Background:
-    * def userUtils = ip5.ui.user
     * configure driver = ip.ui.driver.configure
     * driver baseUrl + ip5.ui.url.logout
 
   @basic
   Scenario: Connexion avec un superadmin
-    * userUtils.login("user", adminUserPwd)
+    * ip5.ui.user.login("user", adminUserPwd)
 
   @basic
   Scenario: Créer une entité

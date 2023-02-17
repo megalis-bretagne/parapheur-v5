@@ -16,14 +16,14 @@ Feature: ...
     * configure driver = ip.ui.driver.configure
     * driver baseUrl + ip5.ui.url.logout
     * ip5.ui.user.login(params.username, params.password)
+    * karate.log(exists("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]"))
     * eval if(exists("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]")) click("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]")
 
     # Filtre sur le nom du dossier
-    * click(ip5.ui.locator.tray.filter.toggle)
+    * waitFor(ip5.ui.locator.tray.filter.toggle).click()
     * input(ip5.ui.locator.input('Titre'), params.folder)
-    * click(ip5.ui.locator.tray.filter.apply)
-
-    * click("{a}" + params.folder)
+    * waitFor(ip5.ui.locator.tray.filter.apply).click()
+    * waitFor("{a}" + params.folder).click()
 
     * waitFor(ip5.ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 
