@@ -7,6 +7,26 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.7] - 2023-02-17
+[5.0.7]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.7.tar.gz
+
+### Ajouts
+
+- Backup interne, avec roulement sur 2 jours
+- Redirection en cas de bureau unique
+
+### Corrections
+
+- Notifications groupées
+- Rejet depuis le tableau de bord
+- Historique lors d'un rejet de signature externe
+- Transfert de fichier
+
+### Suppressions
+
+- Possibilité de supprimer la dernière entité d'un utilisateur non-admin
+
+
 ## [5.0.6] - 2023-01-17
 [5.0.6]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.6.tar.gz
 
