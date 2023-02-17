@@ -220,8 +220,8 @@ function fn(config) {
 
         if (alias === "seal") {
             return {
-                "commonName": "Christian Buffin - Default tenant - Cachet serveur",
-                "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Christian Buffin - Default tenant - Cachet serveur,OU=Default tenant - Cachet serveur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
+                "commonName": "Entité initiale - Seal Certificate",
+                "distinguishedName": "E=christian.buffin@libriciel.coop,CN=Entité initiale - Seal Certificate,OU=Default tenant - Cachet serveur,O=Libriciel SCOP,L=Montpellier,ST=34 - Herault,C=FR",
                 "algorithm": "SHA-256",
                 "type": "ETSI.CAdES.detached",
                 "wholeDocumentSigned": wholeDocumentSigned,

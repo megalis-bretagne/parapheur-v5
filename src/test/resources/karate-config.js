@@ -17,7 +17,7 @@
  */
 
 function fn() {
-    var env = karate.env; // get system property 'karate.env'
+    let env = karate.env; // get system property 'karate.env'
     karate.log('karate.env system property was:', env);
 
     if (!env) {
@@ -31,7 +31,7 @@ function fn() {
     // Skip SSL certificate validation
     karate.configure("ssl", true);
 
-    var config = {
+    let config = {
         env: env,
         //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
         //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
