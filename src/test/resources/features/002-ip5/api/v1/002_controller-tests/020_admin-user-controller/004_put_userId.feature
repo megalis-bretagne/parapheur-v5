@@ -145,7 +145,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId} (Update user)
             | 400    | email                        | ' '                                                      | a space as email                                    |
             | 400    | email                        | 'foo'                                                    | a value that is not an email                        |
             | 400    | email                        | eval(ip.utils.string.getRandom(246, 'tmp-') + '@dom.local') | an email that is 256 characters long                |
-            | 409    | email                        | 'sample-user@dom.local'                                  | an email that already exists                        |
+            | 409    | email                        | 'ne-pas-repondre@dom.local'                                  | an email that already exists                        |
             | 400    | password                     | ''                                                       | an empty password                                   |
             | 400    | password                     | ' '                                                      | a space as password                                 |
             | 400    | notificationsCronFrequency   | ''                                                       | an empty frequency                                  |

@@ -97,7 +97,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
             | 201    | lastName                     | 't'                                                      | a last name that is 1 character long                |
             | 201    | lastName                     | eval(ip.utils.string.getRandom(255, 'tmp-'))                | a last name that is 255 characters long             |
             | 201    | email                        | eval(ip.utils.string.getRandom(245, 'tmp-') + '@dom.local') | an email that is 255 characters long                |
-            | 409    | email                        | 'sample-user@dom.local'                                  | an email that already exists                        |
+            | 409    | email                        | 'ne-pas-repondre@dom.local'                                  | an email that already exists                        |
             | 201    | privilege                    | 'TENANT_ADMIN'                                           | "TENANT_ADMIN" privilege                                   |
             | 201    | privilege                    | 'FUNCTIONAL_ADMIN'                                       | "FUNCTIONAL_ADMIN" privilege                        |
             | 201    | privilege                    | 'NONE'                                                   | "NONE" privilege                                    |

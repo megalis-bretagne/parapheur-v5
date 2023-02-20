@@ -1,4 +1,4 @@
-@api @ip5 @setup @ok
+@api @ip5 @setup
 Feature: Basic setup
 	Background:
 		* ip5.api.v1.auth.login('user', adminUserPwd)
