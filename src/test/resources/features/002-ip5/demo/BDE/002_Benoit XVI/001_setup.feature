@@ -185,12 +185,13 @@ Feature: Paramétrage métier "Benoit XVI"
         * def tenantId = ip5.api.v1.entity.getIdByName('Benoit XVI')
         * def presDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Président du département')
         * def finServDeskId = ip5.api.v1.desk.getIdByName(tenantId, 'Service Finances')
+        * def metadataId = ip5.api.v1.metadata.getIdByKey(tenantId, 'montant')
         * def id = 's_pres_ms_servfin'
         * def payload =
 """
 {
     "steps":[
-        {"validatingDeskIds":["#(presDeskId)"],"type":"SIGNATURE","parallelType":"OR","mandatoryValidationMetadata":['montant']},
+        {"validatingDeskIds":["#(presDeskId)"],"type":"SIGNATURE","parallelType":"OR","mandatoryValidationMetadataIds":['#(metadataId)']},
         {"validatingDeskIds":["#(finServDeskId)"],"type":"SECURE_MAIL","parallelType":"OR"}
     ],
     "name":"S_Pres_MS_ServFin",

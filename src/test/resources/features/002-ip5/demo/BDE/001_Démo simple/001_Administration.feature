@@ -1,4 +1,4 @@
-@ip5 @ip-web @l10n @demo-simple-bde @setup
+@ip5 @ip-web @l10n @demo-simple-bde @setup @current
 Feature: 001 - Scénario de démo simple, partie administration
 
     Background:
