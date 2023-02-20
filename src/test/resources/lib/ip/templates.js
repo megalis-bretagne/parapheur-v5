@@ -19,7 +19,9 @@
 function fn(config) {
     config['ip'] = config['ip'] || {};
     config.ip['templates'] = config.ip['templates'] || (function (config) {
-        var templates = {};
+        karate.log(config)
+
+        let templates = {};
 
         templates['annotations'] = {};
         templates.annotations['getPrivate'] = function (username, action, folder) {

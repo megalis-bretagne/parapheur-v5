@@ -5,17 +5,17 @@ Feature: UI desk lib
     * def selectOwners =
     """
     (owners) => {
-        let idx, selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
-        // @todo: attendre un élément particulier ?
-        ip.pause(5);
-        for(idx = 0;idx < owners.length;idx++) {
-            value(selector, '');
-            input(selector, owners[idx]);
-            //@info: timeout
-            //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
-            click("//tr//td[contains(normalize-space(text()), '" + owners[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
+    let idx, selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
+    // @todo: attendre un élément particulier ?
+    ip.pause(5);
+    for(idx = 0;idx < owners.length;idx++) {
+        value(selector, '');
+        input(selector, owners[idx]);
+        //@info: timeout
+        //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
+        click("//tr//td[contains(normalize-space(text()), '" + owners[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
         }
-    }
+        }
     """
     * def selectPermissions =
     """
@@ -52,24 +52,22 @@ Feature: UI desk lib
     }
     """
 
-    # Move to Admin / tenants / Desks
-    * eval if (exists("//app-header") == true) click(ip5.ui.locator.header['Administration'])
-    * ip5.ui.admin.selectTenant(tenant)
-    * waitFor("{^}Bureaux").click()
-
-    # Create desk
-    * waitFor("{^}Créer un Bureau").click()
-    * input(ip5.ui.locator.input("Titre"), title)
-    * input(ip5.ui.locator.input("Nom court"), shortName)
-    * waitFor("{^}Acteurs").click()
-    * selectOwners(owners)
-    * waitFor("{^}Habilitations").click()
-    * selectPermissions(permissions)
-    * waitFor("{^}Bureaux associés").click()
-    * selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
+    Given assert exists("//app-header") == true
+    And click(ip5.ui.locator.header['Administration'])
+    When ip5.ui.admin.selectTenant(tenant)
+    And click("{^}Bureaux")
+    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+    When click("{^}Créer un Bureau")
+    And input(ip5.ui.locator.input("Titre"), title)
+    And input(ip5.ui.locator.input("Nom court"), shortName)
+    And click("{^}Acteurs")
+    And selectOwners(owners)
+    And click("{^}Habilitations")
+    And selectPermissions(permissions)
+    And click("{^}Bureaux associés")
+    And selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
     * ip.pause(1)
-    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-
-    # Check creation
-    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
-    * waitFor("//tbody//td[contains(text(),'" + title + "')]")
+    And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+    And waitFor(ip5.ui.toast.success("Le bureau " + title + " a été créé avec succès"))
+    And waitFor("//tbody//td[contains(text(),'" + title + "')]")

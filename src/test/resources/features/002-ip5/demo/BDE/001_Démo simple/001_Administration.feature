@@ -40,7 +40,7 @@ Feature: 001 - Scénario de démo simple, partie administration
       | Démo simple | ws@demo-simple           | Service   | Web       | ws-demo@dom.local        | a123456  | Aucun privilège         |
 
 
-  @issue-ip-compose-537 @basic @cur
+  @issue-ip-compose-537 @basic
   Scenario Outline: Créer un user sans droit avec notif unitaire et image de signature
     * ip5.ui.user.login("admin-entite@demo-simple", "a123456")
     * call read('classpath:lib/ip5/ui/user/create.feature') __row

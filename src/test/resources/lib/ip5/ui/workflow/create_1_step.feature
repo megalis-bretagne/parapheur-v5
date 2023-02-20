@@ -2,23 +2,22 @@
 Feature: UI workflow lib
 
   Scenario: Ajout d'un circuit à 1 étape
-    # Move to Admin / tenants / Workflows
-    * eval if (exists("//app-header") == true) click(ip5.ui.locator.header['Administration'])
-    * ip5.ui.admin.selectTenant(tenant)
-    * click("{^}Circuits")
+    Given assert exists("//app-header") == true
+    And click(ip5.ui.locator.header['Administration'])
+    When ip5.ui.admin.selectTenant(tenant)
+    And click("{^}Circuits")
+    Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Circuits"))
 
-    # Create workflow
-    * waitFor("{^}Créer un circuit").click()
-    * input(ip5.ui.locator.input("Nom du circuit"), name)
-    * waitFor("{^}Ajouter une étape").click()
-    * waitFor("{^}Nouvelle étape iparapheur")
-    * waitFor("{^}" + type).click()
-    * waitFor("{^}Simple").click()
-    * input("//*[@id='validatorDeskList']//input[@type='text']", desk)
-    * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]".click())
-    * waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
-    * waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
+    When click("{^}Créer un circuit")
+    And input(ip5.ui.locator.input("Nom du circuit"), name)
+    And click("{^}Ajouter une étape")
+    And waitFor("{^}Nouvelle étape iparapheur")
+    And click("{^}" + type)
+    And click("{^}Simple")
+    And input("//*[@id='validatorDeskList']//input[@type='text']", desk)
+    And click("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]")
+    And waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
+    And waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
 
-    # Check creation
-    * input("//input[contains(@placeholder, 'Rechercher des circuits')]", name)
-    * waitFor("//tbody//td[normalize-space(.)='" + type + "']")
+    And input("//input[contains(@placeholder, 'Rechercher des circuits')]", name)
+    And waitFor("//tbody//td[normalize-space(.)='" + type + "']")
