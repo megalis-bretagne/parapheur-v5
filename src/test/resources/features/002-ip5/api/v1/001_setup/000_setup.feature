@@ -1,4 +1,4 @@
-@api @ip5 @setup
+@api @ip5 @setup @ok
 Feature: Basic setup
 	Background:
 		* ip5.api.v1.auth.login('user', adminUserPwd)
@@ -11,23 +11,30 @@ Feature: Basic setup
 			| Libriciel SCOP                     |
 			| Montpellier Méditerranée Métropole |
 
+	Scenario Outline: Create desk "${name}" in "${tenant}"
+		* call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
+
+		Examples:
+			| tenant          | name      | owners! | parent! | associated! | permissions!                                       |
+			| Entité initiale | null_desk | []      | ''      | []          | {'action': true, 'archiving': true, 'chain': true} |
+
 	Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
 		Examples:
-			| tenant         | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency |
-			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | ADMIN            | disabled                   |
-			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |
-			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   |
-			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |
-			| Entité initiale | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |
+			| tenant          | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency | administeredDesk |
+			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456  | SUPER_ADMIN      | disabled                   | 				  |
+			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456  | TENANT_ADMIN     | disabled                   |                  |
+			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456  | FUNCTIONAL_ADMIN | disabled                   | null_desk        |
+			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456  | NONE             | disabled                   |                  |
+			| Entité initiale | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456  | NONE             | disabled                   |                  |
 
 	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/tenant.user.associate.feature') __row
 
 		Examples:
 			| email           | tenant                             |
-			| cnoir@dom.local | Entité initiale                     |
+			| cnoir@dom.local | Entité initiale                    |
 			| cnoir@dom.local | Libriciel SCOP                     |
 			| cnoir@dom.local | Montpellier Méditerranée Métropole |
 
@@ -44,7 +51,7 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | path                                                  | password                        | image! |
-			| Entité initiale | classpath:files/Entité initiale - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
+			| Entité initiale | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured

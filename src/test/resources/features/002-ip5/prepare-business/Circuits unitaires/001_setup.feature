@@ -15,9 +15,9 @@ Feature: Paramétrage métier "Circuits unitaires"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant             | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | Circuits unitaires | nmarron  | nmarron@dom.local | Nadine    | Marron   | a123456  | NONE      | disabled                   |
-            | Circuits unitaires | ws-cu    | ws-cu@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant             | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
+            | Circuits unitaires | nmarron  | nmarron@dom.local | Nadine    | Marron   | a123456  | NONE      | disabled                   |  |
+            | Circuits unitaires | ws-cu    | ws-cu@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

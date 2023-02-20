@@ -14,11 +14,11 @@ Feature: Paramétrage métier "ACTES HELIOS - grandes collectivités"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | ACTES HELIOS - grandes collectivités | arouge   | arouge@dom.local  | Alain     | Rouge    | a123456  | NONE      | disabled                   |
-            | ACTES HELIOS - grandes collectivités | cvert    | cvert@dom.local   | Céline    | Vert     | a123456  | NONE      | disabled                   |
-            | ACTES HELIOS - grandes collectivités | ibleu    | ibleu@dom.local   | Inès      | Bleu     | a123456  | NONE      | disabled                   |
-            | ACTES HELIOS - grandes collectivités | ws-ahgc  | ws-ahgc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
+            | ACTES HELIOS - grandes collectivités | arouge   | arouge@dom.local  | Alain     | Rouge    | a123456  | NONE      | disabled                   |  |
+            | ACTES HELIOS - grandes collectivités | cvert    | cvert@dom.local   | Céline    | Vert     | a123456  | NONE      | disabled                   |  |
+            | ACTES HELIOS - grandes collectivités | ibleu    | ibleu@dom.local   | Inès      | Bleu     | a123456  | NONE      | disabled                   |  |
+            | ACTES HELIOS - grandes collectivités | ws-ahgc  | ws-ahgc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

@@ -14,9 +14,9 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency |
-            | ACTES HELIOS - petites collectivités | kmauve   | kmauve@dom.local  | Karima    | Mauve    | a123456  | NONE      | disabled                   |
-            | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |
+            | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
+            | ACTES HELIOS - petites collectivités | kmauve   | kmauve@dom.local  | Karima    | Mauve    | a123456  | NONE      | disabled                   |                  |
+            | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

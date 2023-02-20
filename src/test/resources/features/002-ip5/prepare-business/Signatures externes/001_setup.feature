@@ -15,9 +15,9 @@ Feature: Paramétrage métier 'Signatures externes'
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
 
         Examples:
-            | tenant              | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               |
-            | Signatures externes | anankin  | anankin@dom.local | Amélie    | Nankin   | a123456  | NONE      | disabled                   | TITRE='Responsable des méthodes',VILLE='Agde',CODEPOSTAL='34300' |
-            | Signatures externes | ws-se    | ws-se@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |
+            | tenant              | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               | administeredDesk |
+            | Signatures externes | anankin  | anankin@dom.local | Amélie    | Nankin   | a123456  | NONE      | disabled                   | TITRE='Responsable des méthodes',VILLE='Agde',CODEPOSTAL='34300' |  |
+            | Signatures externes | ws-se    | ws-se@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                                                                  |  |
 
     Scenario Outline: Create desk '${name}' in '${tenant}'
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

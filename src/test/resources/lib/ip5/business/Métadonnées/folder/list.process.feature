@@ -19,8 +19,6 @@ Feature: ...
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
-        * click("{a}" + params.desktop)
-
         # Filtre sur le type, sous-type et nom du dossier
         * click(ip5.ui.locator.tray.filter.toggle)
         * ip5.ui.ngSelect("//app-type-selector//ng-select", params.type)
