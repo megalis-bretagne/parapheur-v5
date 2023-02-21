@@ -1,26 +1,28 @@
 @karate-function
 Feature: UI subtype lib
 
-    Scenario: Ajout d'un sous-type
-        Given assert exists("//app-header") == true
-            And click(ip5.ui.locator.header['Administration'])
-        #Then waitFor(ip5.ui.element.breadcrumb("Administration / Informations serveur"))
+  Scenario: Ajout d'un sous-type
+    # Move to Admin / {tenant} / Users
+    * waitFor("//app-header")
+    * waitFor(ip5.ui.locator.header['Administration']).click()
+    * ip5.ui.admin.selectTenant(tenant)
+    * waitFor("{^}Typologie des dossiers").click()
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
 
-        When ip5.ui.admin.selectTenant(tenant)
-            And click("{^}Typologie des dossiers")
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    # Create subtype
+    * waitFor("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']").click()
+    * input("#popupNameInput", name)
+    * input("{^}Description", description)
+    * waitFor("#ngb-nav-3").click()
+    * waitForEnabled("#selectValidationWorkflow input").input(workflow)
+    * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    * ip.pause(1)
+    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    * ip.pause(1)
 
-        When click("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']")
-            And input("#popupNameInput", name)
-            And input("{^}Description", description)
-
-        When click("#ngb-nav-3")
-            And ip.pause(5)
-            And waitForEnabled("#selectValidationWorkflow input").input(workflow)
-            And waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
-            And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-            And ip.pause(5)
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-            And waitFor(ip5.ui.toast.success("Le sous-type " + name + " a été créé avec succès"))
-            And input("//input[contains(@placeholder, 'Rechercher des types')]", name)
-            And waitFor("//tbody//td[contains(text(),'" + name + "')]")
+    # Check user creation
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
+    * waitFor(ip5.ui.toast.success("Le sous-type " + name + " a été créé avec succès"))
+    * input("//input[contains(@placeholder, 'Rechercher des types')]", name)
+    * waitFor("//tbody//td[contains(text(),'" + name + "')]")
