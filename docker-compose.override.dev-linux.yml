@@ -141,7 +141,7 @@ services:
     # - KC_LOG_LEVEL=TRACE
 
 
-  # matomo:
+    # matomo:
     #mem_limit: 512M
     #memswap_limit: 512M
 
@@ -171,7 +171,6 @@ services:
     ports:
       - "9091:9090"
     volumes:
-      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
 
