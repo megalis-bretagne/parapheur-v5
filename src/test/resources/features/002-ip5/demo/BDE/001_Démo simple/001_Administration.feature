@@ -1,4 +1,4 @@
-@ip5 @ip-web @l10n @demo-simple-bde @setup @current
+@ip5 @ip-web @l10n @demo-simple-bde @setup
 Feature: 001 - Scénario de démo simple, partie administration
 
     Background:
@@ -12,7 +12,7 @@ Feature: 001 - Scénario de démo simple, partie administration
     @basic
     Scenario: Créer une entité
         * ip5.ui.user.login("user", adminUserPwd)
-        * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
+        * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Test" }
 
     @basic
     Scenario: Supprimer une entité
