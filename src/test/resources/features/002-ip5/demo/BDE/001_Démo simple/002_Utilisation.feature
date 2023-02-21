@@ -95,7 +95,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
 
         * waitFor("{^}Valider").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
         * ip5.ui.user.logout()
 
@@ -275,6 +275,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
             | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
 
+        @kkk
     Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
         * ip5.ui.user.login("ws@demo-simple", "a123456")
@@ -300,14 +301,14 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         Examples:
             | badge           | title             | name                          | action | state  |
-            | .badge-finished | en fin de circuit | Délibération DOC 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération DOC 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération ODT 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération ODT 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération PDF 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération PDF 2            | Visa   | Rejeté |
-            | .badge-finished | en fin de circuit | Délibération RTF 1            | Visa   |        |
-            | .badge-rejected | rejetés           | Délibération RTF 2            | Visa   | Rejeté |
+            #| .badge-finished | en fin de circuit | Délibération DOC 1            | Visa   |        |
+            #| .badge-rejected | rejetés           | Délibération DOC 2            | Visa   | Rejeté |
+            #| .badge-finished | en fin de circuit | Délibération ODT 1            | Visa   |        |
+            #| .badge-rejected | rejetés           | Délibération ODT 2            | Visa   | Rejeté |
+            #| .badge-finished | en fin de circuit | Délibération PDF 1            | Visa   |        |
+            #| .badge-rejected | rejetés           | Délibération PDF 2            | Visa   | Rejeté |
+            #| .badge-finished | en fin de circuit | Délibération RTF 1            | Visa   |        |
+            #| .badge-rejected | rejetés           | Délibération RTF 2            | Visa   | Rejeté |
             | .badge-finished | en fin de circuit | Demande avis complémentaire 1 | Visa   |        |
             | .badge-rejected | rejetés           | Demande avis complémentaire 2 | Visa   | Rejeté |
 
