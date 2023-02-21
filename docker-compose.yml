@@ -455,7 +455,7 @@ services:
 
 
   prometheus:
-    image: hubdocker.libriciel.fr/prom/prometheus:v2.34.0
+    image: registry.libriciel.fr/public/signature/ip-prometheus:2.42.0.0
     deploy:
       resources:
         limits:
