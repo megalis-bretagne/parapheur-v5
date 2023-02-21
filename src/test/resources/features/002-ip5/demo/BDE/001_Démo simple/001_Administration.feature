@@ -91,7 +91,6 @@ Feature: 001 - Scénario de démo simple, partie administration
       | Démo simple | Signature | Signature | Président |
       | Démo simple | Visa      | Visa      | Président |
 
-
   Scenario Outline: Créer un type ACTES/PAdES
     * ip5.ui.user.login("admin-entite@demo-simple", "a123456")
     * call read('classpath:lib/ip5/ui/type/create.feature') __row
