@@ -134,21 +134,11 @@ variables:
 prepare-package:
   except: [ tags ]
   variables:
-    ARCHIVE_CONTENTS: "docker-compose.yml"
-                        "docker-compose.override.init.yml"
-                        "backup.sh"
-                        ".env.dist"
-                        "LICENSE.md"
-                        "README.md"
-                        "src/main/resources/nginx/iparapheur.init.conf.template"
-                        "src/main/resources/prometheus/alert.rules"
-                        "src/main/resources/prometheus/prometheus.yml"
-                        "src/main/resources/rgpd/rgpd-template.json"
-                        "src/main/resources/vault"
+    ARCHIVE_CONTENTS: docker-compose.yml docker-compose.override.init.yml backup.sh .env.dist LICENSE.md README.md "src/main/resources/nginx/iparapheur.init.conf.template" "src/main/resources/prometheus/alert.rules" "src/main/resources/prometheus/prometheus.yml" "src/main/resources/rgpd/rgpd-template.json"   "src/main/resources/vault"
   artifacts:
     name: ${PACKAGE_NAME}
     paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
+      - ${PACKAGE_NAME}
     # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
 
