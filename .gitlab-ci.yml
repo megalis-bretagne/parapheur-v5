@@ -36,6 +36,8 @@ variables:
   FORCE_RESET_DATA:
     value: "FALSE"
     description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
+  PACKAGE_NAME_G: iparapheur-${CI_COMMIT_REF_NAME}.tgz
+  PACKAGE_NAME: ${PACKAGE_NAME_G}
   SERVER_CURRENT_PATH: "/opt/iparapheur/current"
   SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
   SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
@@ -123,7 +125,7 @@ prepare-package:
       src/main/resources/prometheus/prometheus.yml
       src/main/resources/rgpd/rgpd-template.json
       src/main/resources/vault
-    PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}.tgz
+    PACKAGE_NAME: ${PACKAGE_NAME_G}
   artifacts:
     name: ${PACKAGE_NAME}
     paths:
