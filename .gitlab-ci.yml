@@ -111,7 +111,6 @@ variables:
 
 # <editor-fold desc="Package">
 
-
 prepare-package:
   variables:
     ARCHIVE_CONTENT: |
@@ -126,32 +125,10 @@ prepare-package:
       src/main/resources/prometheus/prometheus.yml
       src/main/resources/rgpd/rgpd-template.json
       src/main/resources/vault
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: always
-      artifacts:
-        name: ${PACKAGE_NAME}
-        paths:
-          - ${PACKAGE_NAME}
-        # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
-    - when: always
-      artifacts:
-        name: ${PACKAGE_NAME}
-        paths:
-          - ${PACKAGE_NAME}
-        # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
-        expire_in: 30 days
-
-#package_prod:
-#  stage: package
-#  only: [ tags ]
-#  <<: *prepare-package
-#  artifacts:
-#    name: ${PACKAGE_NAME}
-#    paths:
-#      - ${PACKAGE_NAME_WITH_EXTENSION}
+  artifacts:
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME}
 
 # </editor-fold desc="Package">
 
@@ -161,9 +138,6 @@ publish:
   stage: publish
   needs:
     - job: prepare-package
-      optional: true
-  #    - job: package_prod
-  #      optional: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -221,9 +195,6 @@ publish:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs:
     - job: prepare-package
-      optional: true
-  #    - job: package_prod
-  #      optional: true
   before_script:
     - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
     - *preparing-ssh
@@ -264,10 +235,7 @@ strict-e2e-tests-deploy:
 #    - when: manual
 #  needs:
 #    #    must repeat package here because extends overwrites instead of merge properties
-#    - job: package
-#      optional: true
-#    - job: package_prod
-#      optional: true
+#    - job: prepare-package
 #    - strict-e2e-tests-test
 #  allow_failure: false
 #  variables: *e2e-test-config
