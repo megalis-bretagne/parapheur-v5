@@ -455,7 +455,7 @@ services:
 
 
   prometheus:
-    image: registry.libriciel.fr/public/signature/ip-prometheus:2.42.0.0
+    image: registry.libriciel.fr/public/signature/ip-prometheus:2.42.0.1
     deploy:
       resources:
         limits:
