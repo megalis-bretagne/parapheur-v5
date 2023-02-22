@@ -111,25 +111,6 @@ variables:
 
 # <editor-fold desc="Package">
 
-.prepare-package: &prepare-package
-  script:
-    - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
-    - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
-    # "docker-compose.ipng.yml"
-    - packageFiles=(
-      "docker-compose.yml"
-      "docker-compose.override.init.yml"
-      "backup.sh"
-      ".env.dist"
-      "LICENSE.md"
-      "README.md"
-      "src/main/resources/nginx/iparapheur.init.conf.template"
-      "src/main/resources/prometheus/alert.rules"
-      "src/main/resources/prometheus/prometheus.yml"
-      "src/main/resources/rgpd/rgpd-template.json"
-      "src/main/resources/vault"
-      )
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
 
 prepare-package:
   except: [ tags ]
@@ -146,21 +127,30 @@ prepare-package:
       src/main/resources/prometheus/prometheus.yml
       src/main/resources/rgpd/rgpd-template.json
       src/main/resources/vault
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME}
-    # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
-    expire_in: 30 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      artifacts:
+        name: ${PACKAGE_NAME}
+        paths:
+          - ${PACKAGE_NAME}
+        # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
+    - artifacts:
+        name: ${PACKAGE_NAME}
+        paths:
+          - ${PACKAGE_NAME}
+        # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
+        expire_in: 30 days
 
-package_prod:
-  stage: package
-  only: [ tags ]
-  <<: *prepare-package
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
+#package_prod:
+#  stage: package
+#  only: [ tags ]
+#  <<: *prepare-package
+#  artifacts:
+#    name: ${PACKAGE_NAME}
+#    paths:
+#      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 # </editor-fold desc="Package">
 
@@ -171,8 +161,8 @@ publish:
   needs:
     - job: prepare-package
       optional: true
-    - job: package_prod
-      optional: true
+#    - job: package_prod
+#      optional: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -231,8 +221,8 @@ publish:
   needs:
     - job: prepare-package
       optional: true
-    - job: package_prod
-      optional: true
+#    - job: package_prod
+#      optional: true
   before_script:
     - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
     - *preparing-ssh
