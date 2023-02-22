@@ -158,7 +158,7 @@ package_prod:
 publish:
   stage: publish
   needs:
-    - job: package
+    - job: prepare-package
       optional: true
     - job: package_prod
       optional: true
