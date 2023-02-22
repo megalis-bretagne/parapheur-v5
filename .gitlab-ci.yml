@@ -134,7 +134,7 @@ variables:
 prepare-package:
   except: [ tags ]
   variables:
-    ARCHIVE_CONTENT: docker-compose.yml docker-compose.override.init.yml backup.sh .env.dist LICENSE.md README.md src/main/resources/nginx/iparapheur.init.conf.template
+    ARCHIVE_CONTENT: docker-compose.yml docker-compose.override.init.yml backup.sh .env.dist LICENSE.md README.md src/main/resources/nginx/iparapheur.init.conf.template src/main/resources/prometheus/alert.rules src/main/resources/prometheus/prometheus.yml src/main/resources/rgpd/rgpd-template.json src/main/resources/vault
   artifacts:
     name: ${PACKAGE_NAME}
     paths:
