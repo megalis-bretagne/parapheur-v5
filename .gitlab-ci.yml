@@ -113,7 +113,6 @@ variables:
 
 
 prepare-package:
-  except: [ tags ]
   variables:
     ARCHIVE_CONTENT: |
       docker-compose.yml
