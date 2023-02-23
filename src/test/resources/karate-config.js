@@ -17,12 +17,11 @@
  */
 
 function fn() {
-    var env = karate.env; // get system property 'karate.env'
+    let env = karate.env; // get system property 'karate.env'
     karate.log('karate.env system property was:', env);
 
-    if (!env) {
-        env = 'dev';
-    }
+    if (!env) env = 'dev';
+
     const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
     const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
@@ -31,44 +30,39 @@ function fn() {
     // Skip SSL certificate validation
     karate.configure("ssl", true);
 
-    var config = {
+    let config = {
         env: env,
-        //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
-        //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
+        // FIXME APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
+        // baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
         baseUrl: baseUrl,
         buildDir: karate.toAbsolutePath("classpath:karate-config.js").replace(/^(.*\/build\/).*$/, '$1'),
         soapBaseUrl: soapBaseUrl,
-        adminUserPwd:  adminUserPwd,
+        adminUserPwd: adminUserPwd,
         // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
         CHROME_BIN: chromeBin,
-        headless: (function () {
-            var headless = String(karate.properties['karate.headless']).toLowerCase();
-            if (headless === '' || headless === 'true') {
-                return true;
-            } else if (headless === 'false') {
-                return false;
-            } else {
-                karate.fail(
-                    'Invalid value for karate.headless ('
-                    + String(karate.properties['karate.headless'])
-                    + '), please use one of: false, true'
-                );
-            }
+        headless: (() => {
+            const headless = String(karate.properties['karate.headless']).toLowerCase();
+
+            if (headless === '' || headless === 'true') return true;
+            if (headless === 'false') return false;
+
+            karate.fail(`Invalid value for karate.headless (${String(karate.properties['karate.headless'])}), please use one of: false, true'`);
+
         })()
     };
 
-    if (env === 'dev') {
-        // customize
-        // e.g. config.foo = 'bar';
-    } else if (env === 'e2e') {
-        // customize
-    } else if (env === 'ci') {
-        karate.configure('driverTarget', {docker: 'ptrthomas/karate-chrome'});
+    switch (env) {
+        // TODO add 'e2e' and 'ci' env
+        case 'ci':
+            karate.configure('driverTarget', {docker: 'ptrthomas/karate-chrome'});
+            break;
+        default:  // Nothing for now...
     }
 
     karate.configure('headers', {Accept: 'application/json'});
+    karate.configure('retry', {count: 10, interval: 5000});
 
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     // Common code
