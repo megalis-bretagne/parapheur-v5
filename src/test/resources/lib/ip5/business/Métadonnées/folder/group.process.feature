@@ -19,11 +19,11 @@ Feature: ...
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
-        * click("{a}" + params.desktop)
+        * waitFor("{a}" + params.desktop).click()
 
         # Filtre sur le nom du dossier
         * click(ip5.ui.locator.tray.filter.toggle)
-        * input(ip5.ui.locator.input('Titre'), params.folder)
+        * input(ip5.ui.locator.input('Titre'), [params.folder, Key.ENTER], 200)
         * click(ip5.ui.locator.tray.filter.apply)
 
         * def checkboxXpath = "//table//th//input[@type='checkbox']"
@@ -53,6 +53,6 @@ function(obj, start) {
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
         # @fixme: ne fonctionne pas tout le temps, alors que le toaster apparaît bien sur l'image
         #* waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))

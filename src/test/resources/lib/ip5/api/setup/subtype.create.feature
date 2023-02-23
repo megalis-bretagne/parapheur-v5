@@ -73,7 +73,6 @@ function(payload, defaults) {
     "subtypeLayerList": [],
     "subtypeLayerRequestList": [],
     "subtypeMetadataList": [],
-    "subtypeMetadataList": [],
     "validationWorkflowId": "",
     "workflowSelectionScript": ""
 }

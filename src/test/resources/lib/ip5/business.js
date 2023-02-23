@@ -45,28 +45,28 @@ function fn(config) {
     };
     config.ip5.business.api.draft['createAndSendSimple'] = function(args) {
         // @todo: annexes
-        var idx,
-            params = karate.call('classpath:lib/ip5/business/api/draft/params.feature', args)
-            draft = ip5.business.api.draft.createSimple(params, args.mainFiles), rv;
+        let params = karate.call('classpath:lib/ip5/business/api/draft/params.feature', args);
+        let draft = ip5.business.api.draft.createSimple(params, args.mainFiles);
+
         if (typeof args.mainFiles[0].detached !== "undefined") {
             ip5.business.api.draft.addDetachedSignature(draft, params, ip.commonpath.get(args.mainFiles[0].file), ip.commonpath.get(args.mainFiles[0].detached));
         }
 
-        if (args.mainFiles.length > 1) {
-            for(idx=1;idx<args.mainFiles.length;idx++) {
+        if (args.mainFiles !== undefined && args.mainFiles != null && args.mainFiles.length > 1) {
+            for(let i = 1; i < args.mainFiles.length; i++) {
                 karate.call(
                     'classpath:lib/ip5/business/api/draft/addMainDocument.feature',
-                    { tenant: params.tenant, draft: draft, file: ip.commonpath.get(args.mainFiles[idx].file) }
+                    { tenant: params.tenant, draft: draft, file: ip.commonpath.get(args.mainFiles[i].file) }
                 );
             }
-            rv = karate.call(
+            let rv = karate.call(
                 'classpath:lib/ip5/business/api/draft/getById.feature',
                 { tenant: params.tenant, draft: draft, desktop: params.desktop }
             );
             draft = rv.response;
-            for(idx=1;idx<args.mainFiles.length;idx++) {
-                if (typeof args.mainFiles[idx].detached !== "undefined") {
-                    ip5.business.api.draft.addDetachedSignature(draft, params, ip.commonpath.get(args.mainFiles[idx].file), ip.commonpath.get(args.mainFiles[idx].detached));
+            for(let i = 1; i < args.mainFiles.length; i++) {
+                if (typeof args.mainFiles[i].detached !== "undefined") {
+                    ip5.business.api.draft.addDetachedSignature(draft, params, ip.commonpath.get(args.mainFiles[i].file), ip.commonpath.get(args.mainFiles[i].detached));
                 }
             }
         }
@@ -132,7 +132,7 @@ function fn(config) {
         karate.call("classpath:lib/ip5/business/Formats de signature/createSendAndSealFolderSurcharge.feature", params);
     };
     config.ip5.business.formatsDeSignature['sign'] = function(type, subtype, name, files, positions) {
-        var params = {
+        let params = {
                 mainFiles: files,
                 type: type,
                 subtype: subtype,

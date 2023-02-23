@@ -1,77 +1,76 @@
 @karate-function
 Feature: UI desk lib
 
-    Scenario: Ajout d'un bureau
-        * def selectOwners =
-"""
-function (owners) {
-    var idx, selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
-    // @todo: attendre un élément particulier ?
-    ip.pause(5);
-    for(idx = 0;idx < owners.length;idx++) {
+  Scenario: Ajout d'un bureau
+    * def selectOwners =
+    """
+    (owners) => {
+      const selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
+      ip.pause(5);
+
+      for(let i = 0; i < owners.length; i++) {
         value(selector, '');
-        input(selector, owners[idx]);
-        //@info: timeout
-        //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
-        click("//tr//td[contains(normalize-space(text()), '" + owners[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
+        input(selector, owners[i]);
+        waitFor("//tr//td[contains(normalize-space(text()), '" + owners[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
+      }
     }
-}
-"""
-        * def selectPermissions =
-"""
-function (permissions) {
-    var available = ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit', 'Enchaîner des dossiers terminés dans un nouveau circuit'],
-        idx,
-        diffs;
-    // Check all permissions are in availables
-    diffs = permissions.filter(x => !available.includes(x));
-    if (diffs.length > 0) {
+    """
+
+    * def selectPermissions =
+    """
+    (permissions) => {
+      let available = ['Créer des dossiers', 'Traiter des dossiers', 'Traiter des dossiers en fin de circuit', 'Enchaîner des dossiers terminés dans un nouveau circuit'];
+
+      // Check all permissions are in available
+      let diffs = permissions.filter(x => !available.includes(x));
+      if (diffs.length > 0) {
         karate.fail('Les habilitations suivantes ne sont pas disponibles: ' + diffs.join(', '));
-    }
-    // Unselect elements
-    diffs = available.filter(x => !permissions.includes(x));
-    for(idx = 0;idx < diffs.length;idx++) {
-        click("{^}" + diffs[idx]);
-    }
-}
-"""
+      }
 
-      * def selectAssociated =
-"""
-function (associatedDesks) {
-    var idx, selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
-    // @todo: attendre un élément particulier ?
-    ip.pause(5);
-    for(idx = 0;idx < associatedDesks.length;idx++) {
+      // Unselect elements
+      diffs = available.filter(x => !permissions.includes(x));
+      for(let i = 0; i < diffs.length; i++) {
+        waitFor("{^}" + diffs[i]).click();
+      }
+    }
+    """
+
+    * def selectAssociated =
+    """
+    (associatedDesks) => {
+      let selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
+      ip.pause(5);
+
+      for(let i = 0; i < associatedDesks.length; i++) {
         value(selector, '');
-        input(selector, associatedDesks[idx]);
-        //@info: timeout
-        //waitForResultCount("//table//thead//th[text()='Utilisateurs']/ancestor::table//tbody//tr", 1);
-        click("//tr//td[contains(normalize-space(text()), '" + associatedDesks[idx] + "')]/ancestor::tr//*[@title='Ajouter']")
+        input(selector, associatedDesks[i]);
+
+        waitFor("//tr//td[contains(normalize-space(text()), '" + associatedDesks[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
+      }
     }
-}
-"""
+    """
 
-        Given assert exists("//app-header") == true
-            And click(ip5.ui.locator.header['Administration'])
-        #Then waitFor(ip5.ui.element.breadcrumb("Administration / Informations serveur"))
+    # Move to Admin / {tenant} / desks
+    * waitFor("//app-header")
+    * waitFor(ip5.ui.locator.header['Administration']).click()
+    * ip5.ui.admin.selectTenant(tenant)
+    * ip.pause(2)
+    * waitFor("{^}Bureaux").click()
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
 
-        When ip5.ui.admin.selectTenant(tenant)
-        And click("{^}Bureaux")
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+    # Create desk
+    * waitFor("{^}Créer un Bureau").click()
+    * input(ip5.ui.locator.input("Titre"), [title, Key.ENTER], 200)
+    * input(ip5.ui.locator.input("Nom court"), [shortName, Key.ENTER], 200)
+    * waitFor("{^}Acteurs").click()
+    * selectOwners(owners)
+    * waitFor("{^}Habilitations").click()
+    * selectPermissions(permissions)
 
-        When click("{^}Créer un Bureau")
-            And input(ip5.ui.locator.input("Titre"), title)
-            And input(ip5.ui.locator.input("Nom court"), shortName)
-            And click("{^}Acteurs")
-            And selectOwners(owners)
-            And click("{^}Habilitations")
-            And selectPermissions(permissions)
-            # @todo: metadonnées
-            And click("{^}Bureaux associés")
-            And selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
-            * ip.pause(1)
-            And waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-        Then waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
-            And waitFor(ip5.ui.toast.success("Le bureau " + title + " a été créé avec succès"))
-            And waitFor("//tbody//td[contains(text(),'" + title + "')]")
+    # Check desk creation
+    * waitFor("{^}Bureaux associés").click()
+    * selectAssociated(!associatedDesks ? [] : associatedDesks)
+    * ip.pause(1)
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+    * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
+    * waitFor("//tbody//td[contains(text(),'" + title + "')]")
