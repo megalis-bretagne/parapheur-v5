@@ -457,7 +457,7 @@ services:
 
 
   prometheus:
-    image: hubdocker.libriciel.fr/prom/prometheus:v2.34.0
+    image: registry.libriciel.fr/public/signature/ip-prometheus:2.42.0.1
     deploy:
       resources:
         limits:
@@ -465,7 +465,3 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
-    volumes:
-      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
-      - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
