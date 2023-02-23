@@ -24,14 +24,14 @@ Feature: ...
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
-        * click("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]")
+        * waitFor("//span[contains(@class, 'badge badge-" + params.state + " desk-badge')]").click()
 
         # Filtre sur le nom du dossier
         * click(ip5.ui.locator.tray.filter.toggle)
-        * input(ip5.ui.locator.input('Titre'), params.folder)
+        * input(ip5.ui.locator.input('Titre'), [params.folder, Key.ENTER], 200)
         * click(ip5.ui.locator.tray.filter.apply)
 
-        * click("{a}" + params.folder)
+        * waitFor("{a}" + params.folder).click()
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 

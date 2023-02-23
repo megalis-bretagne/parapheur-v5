@@ -211,6 +211,7 @@ function fn(config) {
     };
     config.ip5.ui.user['menu'] = function(locator) {
         mouse().move("//div[contains(@class, 'header-menu ')]").go();
+        waitFor(locator)
         click(locator);
         // @todo: move somewhere else
     };

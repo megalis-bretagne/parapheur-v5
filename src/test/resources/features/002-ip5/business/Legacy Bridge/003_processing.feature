@@ -14,7 +14,7 @@ Feature: Traitement des dossiers
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / " + name))
 
-        * click("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button")
+        * waitFor("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button").click()
 
         * if (action == 'Mail sécurisé') waitFor("//*[@id='mailTo']//input").input("cbuffin+lvermillon-legacy-bridge@libriciel.net")
         * if (action == 'Mail sécurisé') waitFor("//input[@id='mailObject']").input("Mail sécurisé par lvermillon@legacy-bridge (" + name + ")")
@@ -23,7 +23,7 @@ Feature: Traitement des dossiers
         * if (action == 'Mail sécurisé') waitFor("//app-send-by-mail-popup//*[contains(normalize-space(text()), 'Mail sécurisé')]/parent::button").click()
 
         * if (action != 'Mail sécurisé') ip5.ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
-        * if (action != 'Mail sécurisé') click("{^}Valider")
+        * if (action != 'Mail sécurisé') waitFor("{^}Valider").click()
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
         * if (action != 'Mail sécurisé') waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))

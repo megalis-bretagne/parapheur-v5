@@ -11,12 +11,12 @@ Feature: UI workflow lib
 
     # Create workflow
     * waitFor("{^}Créer un circuit").click()
-    * input(ip5.ui.locator.input("Nom du circuit"), name)
+    * input(ip5.ui.locator.input("Nom du circuit"), [name, Key.ENTER], 200)
     * waitFor("{^}Ajouter une étape").click()
     * waitFor("{^}Nouvelle étape iparapheur")
     * waitFor("{^}" + type).click()
     * waitFor("{^}Simple").click()
-    * input("//*[@id='validatorDeskList']//input[@type='text']", desk)
+    * input("//*[@id='validatorDeskList']//input[@type='text']", [desk, Key.ENTER], 200)
     * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
     * waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
     * waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
@@ -25,5 +25,5 @@ Feature: UI workflow lib
     * ip.pause(1)
 
     # Check workflow creation
-    * input("//input[contains(@placeholder, 'Rechercher des circuits')]", name)
+    * input("//input[contains(@placeholder, 'Rechercher des circuits')]", [name, Key.ENTER], 200)
     * waitFor("//tbody//td[normalize-space(.)='" + type + "']")
