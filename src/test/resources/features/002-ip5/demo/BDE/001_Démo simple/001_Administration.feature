@@ -63,6 +63,7 @@ Feature: 001 - Scénario de démo simple, partie administration
     * ip5.ui.user.menu("{^}Profil")
     * waitFor(ip5.ui.element.breadcrumb("Accueil / Profil"))
     * waitFor("{^}Notifications").click()
+    # thead .slider is the "activate all notifications" slider
     * waitFor("thead .slider").click()
     * waitFor("{^}Unitaire").click()
     * waitFor(ip5.ui.locator.button("Valider")).click()
