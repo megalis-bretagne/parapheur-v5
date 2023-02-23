@@ -69,7 +69,7 @@ Feature: UI desk lib
 
     # Check desk creation
     * waitFor("{^}Bureaux associés").click()
-    * selectAssociated(typeof associatedDesks === 'undefined' ? [] : associatedDesks)
+    * selectAssociated(!associatedDesks ? [] : associatedDesks)
     * ip.pause(1)
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
