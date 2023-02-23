@@ -73,7 +73,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:cipher-suites
 
 
 
