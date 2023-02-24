@@ -17,9 +17,7 @@
 #
 
 include:
-  - project: 'libriciel/integration-continue/templates'
-    ref: 14-template-de-deploiement
-    file: 'jobs/prepare-package/prepare-package.yml'
+  - remote: 'https://api.r2devops.dev.libriciel.net/job/r/gitlab/libriciel/integration-continue/templates/prepare-package@latest.yaml?token=r2-8cda26e37b.yml'
 
 stages:
   - package
