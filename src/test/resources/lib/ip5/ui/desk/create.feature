@@ -60,8 +60,8 @@ Feature: UI desk lib
 
     # Create desk
     * waitFor("{^}Créer un Bureau").click()
-    * input(ip5.ui.locator.input("Titre"), [title, Key.ENTER], 200)
-    * input(ip5.ui.locator.input("Nom court"), [shortName, Key.ENTER], 200)
+    * input(ip5.ui.locator.input("Titre"), [title, Key.ENTER], 300)
+    * input(ip5.ui.locator.input("Nom court"), [shortName, Key.ENTER], 300)
     * waitFor("{^}Acteurs").click()
     * selectOwners(owners)
     * waitFor("{^}Habilitations").click()
