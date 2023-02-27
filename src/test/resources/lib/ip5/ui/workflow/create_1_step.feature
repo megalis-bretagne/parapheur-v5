@@ -16,7 +16,7 @@ Feature: UI workflow lib
     * waitFor("{^}Nouvelle étape iparapheur")
     * waitFor("{^}" + type).click()
     * waitFor("{^}Simple").click()
-    * input("//*[@id='validatorDeskList']//input[@type='text']", [desk, Key.ENTER], 200)
+    * input("//*[@id='validatorDeskList']//input[@type='text']", desk)
     * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
     * waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
     * waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
