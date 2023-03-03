@@ -107,6 +107,23 @@ services:
       - SMTP_ENABLE_SSL
       - SMTP_ENABLE_START_TLS
       - APP_VERSION=%CI_COMMIT_REF_NAME%
+      - GDPR_DECLARING_ENTITY_NAME
+      - GDPR_DECLARING_ENTITY_ADDRESS
+      - GDPR_DECLARING_ENTITY_SIRET
+      - GDPR_DECLARING_ENTITY_APE_CODE
+      - GDPR_DECLARING_ENTITY_PHONE_NUMBER
+      - GDPR_DECLARING_ENTITY_MAIL
+      - GDPR_DECLARING_ENTITY_DPO_NAME
+      - GDPR_DECLARING_ENTITY_DPO_MAIL
+      - GDPR_DECLARING_ENTITY_RESPONSIBLE_NAME
+      - GDPR_DECLARING_ENTITY_RESPONSIBLE_TITLE
+      - GDPR_HOSTING_ENTITY_NAME
+      - GDPR_HOSTING_ENTITY_ADDRESS
+      - GDPR_HOSTING_ENTITY_SIRET
+      - GDPR_HOSTING_ENTITY_COMMENT
+      - GDPR_MAINTENANCE_ENTITY_NAME
+      - GDPR_MAINTENANCE_ENTITY_ADDRESS
+      - GDPR_MAINTENANCE_ENTITY_SIRET
     depends_on:
       postgres:
         condition: service_healthy
@@ -134,8 +151,6 @@ services:
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
-    volumes:
-      - ${RGPD_DATA}:/usr/share/nginx/html/assets/rgpd.json
 
 
   workflow:
@@ -451,8 +466,8 @@ services:
       - IPC_LOCK
     command: vault server -config=/vault/config/vault.json
     volumes:
-      - ./src/main/resources/vault/config:/vault/config
-      - ./src/main/resources/vault/policies:/vault/policies
+      - /opt/iparapheur/dist/src/main/resources/vault/config:/vault/config
+      - /opt/iparapheur/dist/src/main/resources/vault/policies:/vault/policies
       - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
