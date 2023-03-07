@@ -4,8 +4,8 @@ Feature: UI draft lib
     Scenario: Ajout d'un brouillon et envoi du dossier
         # @fixme: je n'arrive pas à utiliser les ng-select
         * ip5.ui.user.login(username, password)
-        * click("{^}" + desk)
-        * click("{^}Créer un dossier")
+        * waitFor("{^}" + desk).click()
+        * waitFor("{^}Créer un dossier").click()
         * waitFor("#fileInput")
         * driver.inputFile('#fileInput', document)
 
@@ -21,12 +21,12 @@ Feature: UI draft lib
 #        * click(".ng-option")
 #        * ip.pause(5)
 
-        * click("//*[@id='typeSelector']//*[@class='ng-input']")
+        * waitFor("//*[@id='typeSelector']//*[@class='ng-input']").click()
         * mouse().move("#typeSelector").go();
-        * click("#typeSelector .ng-select-clearable .ng-input")
+        * waitFor("#typeSelector .ng-select-clearable .ng-input").click()
         * ip.pause(5)
-        * click("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + type + "']/ancestor::*[contains(@class, 'ng-option')]")
+        * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + type + "']/ancestor::*[contains(@class, 'ng-option')]").click()
         * ip.pause(5)
-        * click("//*[@id='subtypeSelector']")
-        * click("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + subtype + "']/ancestor::*[contains(@class, 'ng-option')]")
+        * waitFor("//*[@id='subtypeSelector']").click()
+        * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + subtype + "']/ancestor::*[contains(@class, 'ng-option')]").click()
         * ip.pause(5)

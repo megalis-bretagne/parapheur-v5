@@ -17,12 +17,13 @@
  */
 
 function fn() {
-    var env = karate.env; // get system property 'karate.env'
+    let env = karate.env; // get system property 'karate.env'
     karate.log('karate.env system property was:', env);
 
     if (!env) {
         env = 'dev';
     }
+
     const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
     const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
@@ -31,20 +32,21 @@ function fn() {
     // Skip SSL certificate validation
     karate.configure("ssl", true);
 
-    var config = {
+    let config = {
         env: env,
         //@fixme: APPLICATION_HOST, APPLICATION_PROTOCOL and CHROME_BIN -> null ?
         //baseUrl: java.lang.System.getenv('APPLICATION_PROTOCOL') + '://' + java.lang.System.getenv('APPLICATION_HOST'),
         baseUrl: baseUrl,
         buildDir: karate.toAbsolutePath("classpath:karate-config.js").replace(/^(.*\/build\/).*$/, '$1'),
         soapBaseUrl: soapBaseUrl,
-        adminUserPwd:  adminUserPwd,
+        adminUserPwd: adminUserPwd,
         // baseUrl: 'https://iparapheur-5-0.dev.libriciel.net/',
         // baseUrl: 'https://iparapheur-5-0.recette.libriciel.net/',
         // CHROME_BIN: java.lang.System.getenv('CHROME_BIN'),
         CHROME_BIN: chromeBin,
         headless: (function () {
-            var headless = String(karate.properties['karate.headless']).toLowerCase();
+            let headless = String(karate.properties['karate.headless']).toLowerCase();
+
             if (headless === '' || headless === 'true') {
                 return true;
             } else if (headless === 'false') {

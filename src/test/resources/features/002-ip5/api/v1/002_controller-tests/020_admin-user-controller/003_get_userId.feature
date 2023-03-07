@@ -8,7 +8,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
 
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def nonExistingTenantId = ip5.api.v1.entity.getNonExistingId()
-        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ne-pas-repondre@dom.local')
         * def nonExistingUserId = ip5.api.v1.user.getNonExistingId()
 
     @permissions
@@ -21,7 +21,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId} (Get a single user)
         When method GET
         Then status <status>
             And if (<status> === 200) ip.utils.assert("$ == schemas.user.element")
-            And if (<status> === 200) ip.utils.assert("$ contains { 'email': 'sample-user@dom.local' }")
+            And if (<status> === 200) ip.utils.assert("$ contains { 'email': 'ne-pas-repondre@dom.local' }")
             And if (<status> !== 200) ip.utils.assert("$ == schemas.error")
 
         Examples:

@@ -3,10 +3,11 @@
 
     Scenario: Create user
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
-#        * karate.log(__row)
-#        * def complementaryField = ip.utils.isEmpty(complementaryField) === true ? null : complementaryField
         * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
-#        * karate.log(complementaryField)
+        * def administeredDeskName = __row['administeredDesk'];
+        * def administeredDeskId = ip.utils.isNullOrEmpty(administeredDeskName) ? null : ip5.api.v1.desk.getIdByName(tenantId, administeredDeskName);
+        * def administeredDesks = administeredDeskId === null ? [] : [{id: administeredDeskId, name: administeredDeskName}]
+        * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', tenantId, '/user'
@@ -21,7 +22,8 @@
     password: '#(password)',
     complementaryField: '#(complementaryField)',
     privilege: '#(privilege)',
-    notificationsCronFrequency: '#(notificationsCronFrequency)'
+    notificationsCronFrequency: '#(notificationsCronFrequency)',
+    administeredDesks: '#(administeredDesks)'
 }
 """
             When method POST
@@ -43,7 +45,8 @@
     password: '#(password)',
     complementaryField: '#(complementaryField)',
     privilege: '#(privilege)',
-    notificationsCronFrequency: '#(notificationsCronFrequency)'
+    notificationsCronFrequency: '#(notificationsCronFrequency)',
+    administeredDesks: '#(administeredDesks)'
 }
 """
         When method PUT

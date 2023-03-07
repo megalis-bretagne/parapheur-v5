@@ -36,7 +36,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.2
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.22.1.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -60,7 +60,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.6
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -107,19 +107,38 @@ services:
       - SMTP_ENABLE_SSL
       - SMTP_ENABLE_START_TLS
       - APP_VERSION=%CI_COMMIT_REF_NAME%
+      - GDPR_DECLARING_ENTITY_NAME
+      - GDPR_DECLARING_ENTITY_ADDRESS
+      - GDPR_DECLARING_ENTITY_SIRET
+      - GDPR_DECLARING_ENTITY_APE_CODE
+      - GDPR_DECLARING_ENTITY_PHONE_NUMBER
+      - GDPR_DECLARING_ENTITY_MAIL
+      - GDPR_DECLARING_ENTITY_DPO_NAME
+      - GDPR_DECLARING_ENTITY_DPO_MAIL
+      - GDPR_DECLARING_ENTITY_RESPONSIBLE_NAME
+      - GDPR_DECLARING_ENTITY_RESPONSIBLE_TITLE
+      - GDPR_HOSTING_ENTITY_NAME
+      - GDPR_HOSTING_ENTITY_ADDRESS
+      - GDPR_HOSTING_ENTITY_SIRET
+      - GDPR_HOSTING_ENTITY_COMMENT
+      - GDPR_MAINTENANCE_ENTITY_NAME
+      - GDPR_MAINTENANCE_ENTITY_ADDRESS
+      - GDPR_MAINTENANCE_ENTITY_SIRET
     depends_on:
       postgres:
         condition: service_healthy
       alfresco:
-        condition: service_started
+        condition: service_healthy
       workflow:
+        condition: service_healthy
+      keycloak:
         condition: service_started
     external_links:
       - nginx:${APPLICATION_HOST}
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.5
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -132,12 +151,10 @@ services:
       - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
       - KEYCLOAK_REALM
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
-    volumes:
-      - ${RGPD_DATA}:/usr/share/nginx/html/assets/rgpd.json
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.6.8
+    image: registry.libriciel.fr/public/signature/workflow:1.7.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -153,7 +170,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:1.5.3
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -243,6 +260,7 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
+
 
   alfresco:
     image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.1
@@ -355,7 +373,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.2
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.3
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -449,13 +467,13 @@ services:
       - IPC_LOCK
     command: vault server -config=/vault/config/vault.json
     volumes:
-      - ./src/main/resources/vault/config:/vault/config
-      - ./src/main/resources/vault/policies:/vault/policies
+      - /opt/iparapheur/dist/src/main/resources/vault/config:/vault/config
+      - /opt/iparapheur/dist/src/main/resources/vault/policies:/vault/policies
       - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
   prometheus:
-    image: hubdocker.libriciel.fr/prom/prometheus:v2.34.0
+    image: registry.libriciel.fr/public/signature/ip-prometheus:2.42.0.1
     deploy:
       resources:
         limits:
@@ -463,7 +481,3 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
-    volumes:
-      - ./src/main/resources/prometheus/alert.rules:/etc/prometheus/alert.rules
-      - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-

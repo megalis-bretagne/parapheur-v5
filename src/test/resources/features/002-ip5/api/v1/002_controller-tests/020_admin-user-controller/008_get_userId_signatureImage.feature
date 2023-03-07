@@ -70,7 +70,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Get u
 
         Examples:
             | role             | username     | password | email                  | status |
-            | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 404    |
+            | ADMIN            | cnoir        | a123456  | ne-pas-repondre@dom.local  | 404    |
             | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 404    |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 404    |
             | NONE             | ltransparent | a123456  | ltransparent@dom.local | 404    |

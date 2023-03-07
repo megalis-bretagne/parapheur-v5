@@ -25,7 +25,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | email                  | status | name!             |
-            | ADMIN            | cnoir        | a123456  | sample-user@dom.local  | 200    | []                |
+            | ADMIN            | cnoir        | a123456  | ne-pas-repondre@dom.local  | 200    | []                |
             | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
             | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
             | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                   |
@@ -56,7 +56,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
     @permissions @fixme-ip5
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'get an existing single user\'s desks from a non-existing tenant', status)}
-        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'sample-user@dom.local')
+        * def existingUserId = ip5.api.v1.user.getIdByEmail(existingTenantId, 'ne-pas-repondre@dom.local')
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl

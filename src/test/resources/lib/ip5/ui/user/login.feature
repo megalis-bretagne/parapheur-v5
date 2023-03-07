@@ -8,13 +8,11 @@ Feature: UI user lib
         Given driver baseUrl
             And waitFor("{^}Veuillez saisir vos identifiants de connexion")
             And waitFor("form")
-            And input(ip5.ui.locator.input("Identifiant"), username)
-            And input(ip5.ui.locator.input("Mot de passe"), password)
+            And input(ip5.ui.locator.input("Identifiant"), [username, Key.ENTER], 200)
+            And input(ip5.ui.locator.input("Mot de passe"), [password, Key.ENTER], 200)
         When submit().click(ip5.ui.locator.button("Se connecter"))
-        Then waitFor(ip5.ui.element.breadcrumb("Accueil / Bureaux"))
-            And waitFor("{^}Bienvenue sur le iparapheur")
-            And match html("body") contains "Sélectionnez un bureau pour parcourir ses dossiers"
+        Then waitFor("{^}iparapheur")
 
         * def firstConnection = exists("//*[text()='Première connexion sur le iparapheur']")
-        * eval if (firstConnection === true) click("//div[contains(concat(' ', @class, ' '), ' modal-content ')]" + ip5.ui.locator.button("Enregistrer"))
+        * eval if (firstConnection === true) waitFor("//div[contains(concat(' ', @class, ' '), ' modal-content ')]" + ip5.ui.locator.button("Enregistrer")).click()
         * eval if (firstConnection === true) waitFor(ip5.ui.toast.success("Vos préférences de notification ont été modifiées avec succès.")).click()

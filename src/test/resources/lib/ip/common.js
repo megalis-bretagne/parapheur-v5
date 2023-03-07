@@ -213,6 +213,11 @@ function fn(config) {
         }
         return false;
     };
+    config.ip.utils['isNullOrEmpty'] = function (value) {
+        let isEmptyObject = value && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype;
+        let isEmptyArray = Array.isArray(value) && value.length === 0;
+        return value === undefined || value == null || value === "" || isEmptyObject || isEmptyArray || value === [];
+    };
     config.ip.utils['safeExec'] = function(command) {
         var proc = karate.fork(command);
         proc.waitSync();
