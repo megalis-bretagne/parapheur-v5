@@ -119,7 +119,6 @@ variables:
       "LICENSE.md"
       "README.md"
       "src/main/resources/nginx/iparapheur.init.conf.template"
-      "src/main/resources/vault"
       )
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
 
