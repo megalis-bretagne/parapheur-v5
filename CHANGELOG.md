@@ -238,7 +238,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Métadonnée obligatoire à une étape
 - Page "À propos"
 - Auto-diagnostic d'installation de Libersign
-- Compatibilité Pushdoc
+- Compatibilité PushDoc
 - Compatibilité Pastell
 - Renforcement des permissions sur le `FolderController` (API uniquement, devrait être transparent depuis le Web)
 - Renforcement des permissions sur le `DocumentController` (API uniquement, devrait être transparent depuis le Web)

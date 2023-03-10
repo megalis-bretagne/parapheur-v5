@@ -453,7 +453,7 @@ services:
 
 
   vault:
-    image: hubdocker.libriciel.fr/vault:1.6.7
+    image: registry.libriciel.fr/public/signature/ip-vault:1.6.7.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -465,10 +465,7 @@ services:
       - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
     cap_add:
       - IPC_LOCK
-    command: vault server -config=/vault/config/vault.json
     volumes:
-      - /opt/iparapheur/dist/src/main/resources/vault/config:/vault/config
-      - /opt/iparapheur/dist/src/main/resources/vault/policies:/vault/policies
       - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
