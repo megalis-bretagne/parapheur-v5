@@ -111,7 +111,6 @@ services:
 
 
   keycloak:
-    command: start --import-realm
     ports:
       - "9090:8080"
     environment:

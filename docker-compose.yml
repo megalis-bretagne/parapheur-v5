@@ -60,7 +60,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.8
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.3.9
     restart: unless-stopped
     tty: true
     deploy:
@@ -138,7 +138,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.6
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.3.7
     restart: unless-stopped
     tty: true
     deploy:
@@ -154,7 +154,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.7.0
+    image: registry.libriciel.fr/public/signature/workflow:1.7.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -373,7 +373,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.3
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.4
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -453,7 +453,7 @@ services:
 
 
   vault:
-    image: hubdocker.libriciel.fr/vault:1.6.7
+    image: registry.libriciel.fr/public/signature/ip-vault:1.6.7.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -465,10 +465,7 @@ services:
       - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
     cap_add:
       - IPC_LOCK
-    command: vault server -config=/vault/config/vault.json
     volumes:
-      - /opt/iparapheur/dist/src/main/resources/vault/config:/vault/config
-      - /opt/iparapheur/dist/src/main/resources/vault/policies:/vault/policies
       - ${DATA_ROOT_DIR}/vault/data:/vault/data
 
 
