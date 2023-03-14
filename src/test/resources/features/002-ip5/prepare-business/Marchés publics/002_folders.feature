@@ -24,4 +24,4 @@ Feature: Création de dossiers pour le paramétrage métier "Marchés publics"
     # @todo: mainFiles n'est pas utilisé dans la préparation du payload
     Examples:
         | tenant          | username | password | desktop    | type          | subtype      | mainFiles!                           | nameTemplate            | start! | count! | withOrWithout | extra! | annotation |
-        | Marchés publics | ws-mp    | a123456  | WebService | Marché public | Service fait | ['classpath:files/pdf/main-1_1.pdf'] | Marché public %counter% | 1      | 10     | without       | {}     | démarrage  |
+        | Marchés publics | ws-mp    | a123456a123456  | WebService | Marché public | Service fait | ['classpath:files/pdf/main-1_1.pdf'] | Marché public %counter% | 1      | 10     | without       | {}     | démarrage  |

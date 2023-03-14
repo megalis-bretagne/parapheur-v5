@@ -4,7 +4,7 @@ Feature: CreerDossier
     # @fixme: ip4, je peux créer des dossiers multidoc dans une typologie monodoc
 
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
-        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/CreerDossier/simple_success.feature') params
         Then match rv.response == karate.read('classpath:lib/ip/api/soap/schemas/CreerDossierResponse/OK.xml')
 
@@ -24,7 +24,7 @@ Feature: CreerDossier
     dossierId: "J'aime développer",
     visibilite: "PUBLIC",
     dateLimite: "",
-    password: "a123456",
+    password: "a123456a123456",
     username: "ws@legacy-bridge"
 }
 """
@@ -43,7 +43,7 @@ Feature: CreerDossier
     dossierId: "",
     visibilite: "PUBLIC",
     dateLimite: "",
-    password: "a123456",
+    password: "a123456a123456",
     username: "ws@legacy-bridge"
 }
 """
@@ -61,7 +61,7 @@ Feature: CreerDossier
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}"
         Given configure cookies = null
             And url ip.api.soap.url()
-            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456a123456")
 
             And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
             And def annotationPublique = "Annotation publique (" + nom + ")"
@@ -110,7 +110,7 @@ Feature: CreerDossier
     Scenario Outline: Création du dossier "${nom}" pour le type "${type} / ${sousType}" avec une annexe PDF
         Given configure cookies = null
             And url ip.api.soap.url()
-            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456a123456")
 
             And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
             And def annexe = ip.api.soap.file.encode('classpath:files/pdf/annex-1_1.pdf')
@@ -162,7 +162,7 @@ Feature: CreerDossier
     Scenario Outline: Création d'un dossier monodoc "${nom}" pour le type "${type} / ${sousType}", avec une signature détachée XAdES
         Given configure cookies = null
             And url ip.api.soap.url()
-            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456a123456")
 
             And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
             And def signature = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')
@@ -210,7 +210,7 @@ Feature: CreerDossier
     Scenario Outline: Création d'un dossier multidoc "${nom}" pour le type "${type} / ${sousType}", dont un avec une signature détachée XAdES et des annexes
         Given configure cookies = null
             And url ip.api.soap.url()
-            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456")
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456a123456")
 
             And def documentPrincipal = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf')
             And def signature = ip.api.soap.file.encode('classpath:files/formats/PDF_avec_tags/signature_xades.xml')

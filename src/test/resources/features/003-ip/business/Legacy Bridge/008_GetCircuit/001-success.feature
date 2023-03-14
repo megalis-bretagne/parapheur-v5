@@ -2,7 +2,7 @@
 Feature: GetCircuit
 
     Scenario Outline: Récupération du circuit du sous-types "${type} / ${sousType}"
-        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/GetCircuit/simple.feature') params
             And match rv.response /Envelope/Body/GetCircuitResponse/EtapeCircuit/Parapheur == Parapheurs
             And match rv.response /Envelope/Body/GetCircuitResponse/EtapeCircuit/Prenom == Prenoms

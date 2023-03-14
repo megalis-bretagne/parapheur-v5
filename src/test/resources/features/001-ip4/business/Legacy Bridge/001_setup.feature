@@ -4,14 +4,14 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
     Background:
         * configure ssl = true
         * configure readTimeout = 100000
-        * ip4.business.api.user.login("admin@legacy-bridge", "a123456")
+        * ip4.business.api.user.login("admin@legacy-bridge", "a123456a123456")
 
     Scenario Outline: Création du connecteur Pastell mail-sécurisé "${title}"
         * call read('classpath:lib/ip4/business/api/pastellConnector/create.feature') __row
 
         Examples:
             | title           | url                                      | login                                 | password | entity |
-            | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456  | 116    |
+            | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456a123456  | 116    |
 
     Scenario Outline: Création du cachet serveur "${title}"
         * call read('classpath:lib/ip4/business/api/seal/create.feature') __row
@@ -33,8 +33,8 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
         Examples:
             | username   | password | lastName  | firstName | email                                                |
-            | lvermillon | a123456  | Vermillon | Lukas     | cbuffin+lvermillon-legacy-bridge@libriciel.net       |
-            | ws         | a123456  | Web       | Service   | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net |
+            | lvermillon | a123456a123456  | Vermillon | Lukas     | cbuffin+lvermillon-legacy-bridge@libriciel.net       |
+            | ws         | a123456a123456  | Web       | Service   | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net |
 
     Scenario Outline: Création du bureau "${name}"
         * call read('classpath:lib/ip4/business/api/desktop/create.feature') __row

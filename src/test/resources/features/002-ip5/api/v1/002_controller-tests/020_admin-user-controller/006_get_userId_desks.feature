@@ -25,11 +25,11 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | email                  | status | name!             |
-            | ADMIN            | cnoir        | a123456  | ne-pas-repondre@dom.local  | 200    | []                |
-            | ADMIN            | cnoir        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
-            | TENANT_ADMIN     | vgris        | a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | ltransparent@dom.local | 403    |                   |
-            | NONE             | ltransparent | a123456  | ltransparent@dom.local | 403    |                   |
+            | ADMIN            | cnoir        | a123456a123456  | ne-pas-repondre@dom.local  | 200    | []                |
+            | ADMIN            | cnoir        | a123456a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | ltransparent@dom.local | 200    | [ 'Transparent' ] |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | ltransparent@dom.local | 403    |                   |
+            | NONE             | ltransparent | a123456a123456  | ltransparent@dom.local | 403    |                   |
             |                  |              |          | ltransparent@dom.local | 401    |                   |
 
     @permissions @fixme-ip5
@@ -46,12 +46,12 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
         @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
@@ -68,10 +68,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
@@ -87,8 +87,8 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single u
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
