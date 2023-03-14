@@ -21,7 +21,7 @@ Feature: Connexion
         Given driver baseUrl
             And waitFor('form')
             And input(ip5.ui.locator.input('Identifiant ou courriel'), 'cnoir')
-            And input(ip5.ui.locator.input('Mot de passe'), 'a123456')
+            And input(ip5.ui.locator.input('Mot de passe'), 'a123456a123456')
         When submit().click(ip5.ui.locator.button('Se connecter'))
             And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
@@ -38,7 +38,7 @@ Feature: Connexion
         Given driver baseUrl
             And waitFor('form')
             And input(ip5.ui.locator.input('Identifiant ou courriel'), 'ablanc')
-            And input(ip5.ui.locator.input('Mot de passe'), 'a123456')
+            And input(ip5.ui.locator.input('Mot de passe'), 'a123456a123456')
         When submit().click(ip5.ui.locator.button('Se connecter'))
             And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'
@@ -56,7 +56,7 @@ Feature: Connexion
         Given driver baseUrl
             And waitFor('form')
             And input(ip5.ui.locator.input('Identifiant ou courriel'), 'ltransparent')
-            And input(ip5.ui.locator.input('Mot de passe'), 'a123456')
+            And input(ip5.ui.locator.input('Mot de passe'), 'a123456a123456')
         When submit().click(ip5.ui.locator.button('Se connecter'))
             And waitFor('{^}Bienvenue sur le iparapheur')
         Then match html('body') contains 'Sélectionnez un bureau pour parcourir ses dossiers'

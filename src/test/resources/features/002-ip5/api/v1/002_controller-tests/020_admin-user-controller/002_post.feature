@@ -16,7 +16,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
     email: '#(email)',
     firstName: 'tmp',
     lastName: 'tmp',
-    password: 'a123456',
+    password: 'a123456a123456',
     privilege: 'NONE',
     notificationsCronFrequency: '0 7 * * 1',
     notificationsRedirectionMail: '#(email)'
@@ -39,10 +39,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
-            | TENANT_ADMIN     | vgris        | a123456  | 201    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 201    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -63,15 +63,15 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/user (Create a new user)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a user in an existing tenant', status, data)}
-        * ip5.api.v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
         * def requestData = uniqueRequestData
         * requestData[field] = ip.utils.eval(value)
 

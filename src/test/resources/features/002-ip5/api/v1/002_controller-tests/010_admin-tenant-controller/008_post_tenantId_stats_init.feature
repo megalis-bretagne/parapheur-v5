@@ -22,10 +22,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -44,8 +44,8 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/stats/init (Create or recreate a s
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |

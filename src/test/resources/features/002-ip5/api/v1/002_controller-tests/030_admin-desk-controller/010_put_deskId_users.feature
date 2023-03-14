@@ -58,10 +58,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
-            | TENANT_ADMIN     | vgris        | a123456  | 200    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:
             | role             | username     | password | status |
@@ -115,13 +115,13 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 400    |
-            | TENANT_ADMIN     | vgris        | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 400    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 403    |
             |                  |              |          | 401    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'associate a non-existing desk to an existing user in an existing tenant', status)}
@@ -144,12 +144,12 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -172,10 +172,10 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId}/users (Add user to de
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |

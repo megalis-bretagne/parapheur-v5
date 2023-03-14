@@ -23,10 +23,10 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 200    |
-            | TENANT_ADMIN     | vgris        | a123456  | 200    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 200    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -43,17 +43,17 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |
 
     @searching
     Scenario Outline: ${ip5.scenario.title.searching('ADMIN', 'get the desk list from an existing tenant', 200, total, searchTerm, sort, direction)}
-        * ip5.api.v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/desk'

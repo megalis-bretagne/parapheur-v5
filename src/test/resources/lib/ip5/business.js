@@ -46,10 +46,22 @@ function fn(config) {
     config.ip5.business.api.draft['createAndSendSimple'] = function(args) {
         // @todo: annexes
         let params = karate.call('classpath:lib/ip5/business/api/draft/params.feature', args);
-        let draft = ip5.business.api.draft.createSimple(params, args.mainFiles);
+
+        let draftCreationResult = ip5.business.api.draft.createSimple(params, args.mainFiles);
+
+        let getFolderParams  = {
+          draft: {id: draftCreationResult.id},
+          desktop: params.desktop,
+          tenant: params.tenant
+        };
+
+        let draft = karate.call('classpath:lib/ip5/business/api/draft/getById.feature', getFolderParams).response;
 
         if (typeof args.mainFiles[0].detached !== "undefined") {
-            ip5.business.api.draft.addDetachedSignature(draft, params, ip.commonpath.get(args.mainFiles[0].file), ip.commonpath.get(args.mainFiles[0].detached));
+            ip5.business.api.draft.addDetachedSignature(
+                draft, params, ip.commonpath.get(args.mainFiles[0].file),
+                ip.commonpath.get(args.mainFiles[0].detached)
+            );
         }
 
         if (args.mainFiles !== undefined && args.mainFiles != null && args.mainFiles.length > 1) {
@@ -111,7 +123,7 @@ function fn(config) {
     config.ip5.business.formatsDeSignature['download'] = function(state, name) {
         var desktop;
         if (state === "finished") {
-            ip5.api.v1.auth.login("ws-fds", "a123456");
+            ip5.api.v1.auth.login("ws-fds", "a123456a123456");
             desktop = "WebService";
         } else {
             // @todo
