@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:keycloak-21
     volumes:
       - ./application-core.yml:/application.yml
     ports:
@@ -70,7 +70,7 @@ services:
     image: registry.libriciel.fr/public/signature/ip-alfresco:develop
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:keycloak-21
 
   nginx:
     image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
