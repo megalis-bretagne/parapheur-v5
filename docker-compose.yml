@@ -373,7 +373,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:19.0.3.4
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.0.1.0
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
