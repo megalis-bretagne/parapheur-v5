@@ -37,7 +37,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr/public/signature/ip-web:develop
+    image: registry.libriciel.fr/public/signature/ip-web:keycloak-21
     environment:
       - VERSION=5.0.6-develop
 
