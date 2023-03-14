@@ -30,7 +30,7 @@ Feature: Paramétrage métier "Legacy Bridge"
 
         Examples:
             | tenant        | name            | url                                      | login                                 | password | entity |
-            | Legacy Bridge | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456a123456  | 116    |
+            | Legacy Bridge | Recette mailSec | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | Ondiraitlesud1  | 116    |
 
     Scenario Outline: Create user "${userName}" with role "${privilege}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/user.create.feature') __row
