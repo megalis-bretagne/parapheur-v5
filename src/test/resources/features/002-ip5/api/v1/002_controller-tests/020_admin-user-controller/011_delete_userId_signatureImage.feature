@@ -32,10 +32,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 204    |
-            | TENANT_ADMIN     | vgris        | a123456  | 204    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | ADMIN            | cnoir        | a123456a123456  | 204    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 204    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
@@ -58,12 +58,12 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -83,10 +83,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |
 
     @permissions
@@ -105,10 +105,10 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |
 
     @data-validation
@@ -117,7 +117,7 @@ Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (De
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingUserId = email == null ? ip5.api.v1.user.createTemporary(existingTenantId) : ip5.api.v1.user.getIdByEmail(existingTenantId, '<email>')
 
-        * ip5.api.v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/' + existingTenantId + '/user/' + existingUserId + '/signatureImage'

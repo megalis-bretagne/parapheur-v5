@@ -49,13 +49,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
-            | TENANT_ADMIN     | vgris        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 201    |
         @fixme-ip5 @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -101,10 +101,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 404    |
-            | NONE             | ltransparent | a123456  | 404    |
+            | ADMIN            | cnoir        | a123456a123456  | 404    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
+            | NONE             | ltransparent | a123456a123456  | 404    |
             |                  |              |          | 404    |
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/workflowDefinition (Create a workf
         * def existingTenantId = ip5.api.v1.entity.getIdByName('Entité initiale')
         * def existingDeskId = ip5.api.v1.desk.createTemporary(existingTenantId)
 
-        * ip5.api.v1.auth.login('cnoir', 'a123456')
+        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
         * def unique = 'tmp-' + ip.utils.getUUID()
         * def key = ip5.api.v1.desk.getKeyStringFromNameString(unique)
 

@@ -28,14 +28,14 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         Examples:
             | tenant      | username       | password | desk       | document                                                                | type  | subtype | nameTemplate                          | count! | annotation |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      | démarrage  |
-            | Démo simple | ws@demo-simple | a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456a123456  | WebService | classpath:files/formats/document_office/document_office.doc             | ACTES | Visa    | Délibération DOC %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456a123456  | WebService | classpath:files/formats/document_libre_office/document_libre_office.odt | ACTES | Visa    | Délibération ODT %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Délibération PDF %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456a123456  | WebService | classpath:files/formats/document_rtf/document_rtf.rtf                   | ACTES | Visa    | Délibération RTF %counter%            | 2      | démarrage  |
+            | Démo simple | ws@demo-simple | a123456a123456  | WebService | classpath:files/formats/PDF_avec_tags/PDF_avec_tags.pdf                 | ACTES | Visa    | Demande avis complémentaire %counter% | 2      | démarrage  |
 
     Scenario Outline: ${action} sur le dossier "${name}" (ACTES/Visa)
-        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -63,7 +63,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Demande d'avis complémentaire et ${action} sur le dossier "${name}" (ACTES/Visa)
         # 1. Demande d'avis complémentaire
-        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -83,7 +83,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         # 2. Avis complémentaire
         # @todo: vérifier l'annotation privée
-        * ip5.ui.user.login("mpiaumier@demo-simple", "a123456")
+        * ip5.ui.user.login("mpiaumier@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('DGS') == { pending: 1 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
@@ -101,7 +101,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
         # 3. Action sur le dossier
         # @todo: vérifier l'annotation privée
-        * ip5.ui.user.login("flosserand@demo-simple", "a123456")
+        * ip5.ui.user.login("flosserand@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('Président') == { pending: #(pending) }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
@@ -122,7 +122,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
             | Demande avis complémentaire 2 | Rejet  | 1        |
 
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -161,7 +161,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5
     Scenario Outline: Vérifications des annotations du dossier ${title} "${name}" (ACTES/Visa)
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -196,7 +196,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5 @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -238,7 +238,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     @fixme-ip5 @issue-ip @todo-karate
     Scenario Outline: Vérifications du journal des événements du dossier ${title} "${name}" (ACTES/Visa)
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -278,7 +278,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des impressions (avec le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))
@@ -314,7 +314,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
 
     Scenario Outline: Vérifications des impressions (sans le bordereau de signature) du dossier ${title} "${name}" (ACTES/Visa)
         # @info: séparé des vérifications précédentes car sinon, on a une question de Chrome: ... souhaite télécharger plusieurs fichiers. Bloquer|Autoriser
-        * ip5.ui.user.login("ws@demo-simple", "a123456")
+        * ip5.ui.user.login("ws@demo-simple", "a123456a123456")
         #* match ip5.ui.desk.getTileBadges('WebService') == { finished: 5, pending: 0, rejected: 5 }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / WebService / Dossiers à traiter"))

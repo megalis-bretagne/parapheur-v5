@@ -436,7 +436,7 @@ function fn(config) {
             email: email,
             firstName: 'tmp',
             lastName: 'tmp',
-            password: 'a123456',
+            password: 'a123456a123456',
             privilege: 'NONE',
             notificationsCronFrequency: 'NONE',
             notificationsRedirectionMail: email,

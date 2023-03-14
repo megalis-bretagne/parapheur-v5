@@ -16,12 +16,12 @@ Feature: Paramétrage métier "Bons de commande"
 
         Examples:
             | tenant           | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Bons de commande | lfuchsia | lfuchsia@dom.local | Laëtitia  | Fuchsia  | a123456  | NONE      | disabled                   |                  |
-            | Bons de commande | findigo  | findigo@dom.local  | Françoise | Indigo   | a123456  | NONE      | disabled                   |                  |
-            | Bons de commande | opeche   | opeche@dom.local   | Olivier   | Pêche    | a123456  | NONE      | disabled                   |                  |
-            | Bons de commande | dpourpre | dpourpre@dom.local | Delphine  | Pourpre  | a123456  | NONE      | disabled                   |                  |
-            | Bons de commande | mrose    | mrose@dom.local    | Michèle   | Rose     | a123456  | NONE      | disabled                   |                  |
-            | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | lfuchsia | lfuchsia@dom.local | Laëtitia  | Fuchsia  | a123456a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | findigo  | findigo@dom.local  | Françoise | Indigo   | a123456a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | opeche   | opeche@dom.local   | Olivier   | Pêche    | a123456a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | dpourpre | dpourpre@dom.local | Delphine  | Pourpre  | a123456a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | mrose    | mrose@dom.local    | Michèle   | Rose     | a123456a123456  | NONE      | disabled                   |                  |
+            | Bons de commande | ws-bdc   | ws-bdc@dom.local   | Service   | Web      | a123456a123456  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/ip5/api/setup/metadata.create.feature') __row

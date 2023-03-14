@@ -2,7 +2,7 @@
 Feature: echo
 
     Scenario Outline: echo "${message}"
-        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/echo/simple.feature') params
         Then match rv.response /Envelope/Body/echoResponse == "[ws@legacy-bridge] m'a dit: \"" + ( message == null ? '' : message ) + "\"!"
             And match rv.response == karate.read('classpath:lib/ip/api/soap/schemas/echoResponse/OK.xml')

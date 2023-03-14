@@ -12,4 +12,4 @@ Feature: Création de l'entité "legacy-bridge" (IP 4)
 
         Examples:
             | tenantDomain  | password | title         | description   |
-            | legacy-bridge | a123456  | legacy-bridge | legacy-bridge |
+            | legacy-bridge | a123456a123456  | legacy-bridge | legacy-bridge |

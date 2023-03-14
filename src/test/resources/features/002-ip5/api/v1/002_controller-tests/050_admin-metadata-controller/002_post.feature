@@ -34,10 +34,10 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/metadata (Create metadata)
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456  | 201    |
-            | TENANT_ADMIN     | vgris        | a123456  | 201    |
+            | ADMIN            | cnoir        | a123456a123456  | 201    |
+            | TENANT_ADMIN     | vgris        | a123456a123456  | 201    |
         @fixme-ip5 @issue-todo
         Examples:
-            | FUNCTIONAL_ADMIN | ablanc       | a123456  | 403    |
-            | NONE             | ltransparent | a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
+            | NONE             | ltransparent | a123456a123456  | 403    |
             |                  |              |          | 401    |
