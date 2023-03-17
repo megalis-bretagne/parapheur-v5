@@ -115,6 +115,7 @@ variables:
       "docker-compose.yml"
       "docker-compose.override.init.yml"
       "backup.sh"
+      "cron.sh"
       ".env.dist"
       "LICENSE.md"
       "README.md"
