@@ -121,7 +121,9 @@ variables:
       "README.md"
       "src/main/resources/nginx/iparapheur.init.conf.template"
       )
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} --files-from <(printf "%s\n" "${packageFiles[@]}")
+    - mkdir ${PACKAGE_NAME}
+    - mv -t ${PACKAGE_NAME} ${packageFiles}
+    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
 
 package_prod:
   stage: package
