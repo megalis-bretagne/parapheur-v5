@@ -110,7 +110,6 @@ variables:
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
-    # General files
     - mkdir ${PACKAGE_NAME}
     - >
       mv -t ${PACKAGE_NAME} \
@@ -122,13 +121,11 @@ variables:
          CHANGELOG.md \
          LICENSE.md \
          README.md
-    # Resource files
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >
       mv -t ${PACKAGE_NAME}/docker-resources \
          src/main/resources/nginx/iparapheur.init.conf.template
-    # Final zip
-    - tar -cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
+    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
 
 package_prod:
   stage: package
