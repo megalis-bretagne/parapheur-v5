@@ -113,19 +113,19 @@ variables:
     # General files
     - mkdir ${PACKAGE_NAME}
     - >-
-      mv -t ${PACKAGE_NAME}
-         docker-compose.yml
-         docker-compose.override.init.yml
-         backup.sh
-         cron.sh
-         .env.dist
-         CHANGELOG.md
-         LICENSE.md
-         README.md
+      mv -t ${PACKAGE_NAME} \
+         docker-compose.yml \
+         docker-compose.override.init.yml \
+         backup.sh \
+         cron.sh \
+         .env.dist \
+         CHANGELOG.md \
+         LICENSE.md \
+         README.md \
     # Resource files
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >-
-      mv -t ${PACKAGE_NAME}/docker-resources
+      mv -t ${PACKAGE_NAME}/docker-resources \
          src/main/resources/nginx/iparapheur.init.conf.template
     # Final zip
     - tar -cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
