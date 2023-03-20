@@ -113,15 +113,15 @@ variables:
     # "docker-compose.ipng.yml"
     - mkdir ${PACKAGE_NAME}
     - >
-      mv -t ${PACKAGE_NAME}
-         docker-compose.yml
-         docker-compose.override.init.yml
-         backup.sh
-         cron.sh
-         .env.dist
-         CHANGELOG.md
-         LICENSE.md
-         README.md
+      mv -t ${PACKAGE_NAME} \
+         docker-compose.yml \
+         docker-compose.override.init.yml \
+         backup.sh \
+         cron.sh \
+         .env.dist \
+         CHANGELOG.md \
+         LICENSE.md \
+         README.md \
          src/main/resources/nginx/iparapheur.init.conf.template
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
 
