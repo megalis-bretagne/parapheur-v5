@@ -121,7 +121,7 @@ variables:
          .env.dist \
          CHANGELOG.md \
          LICENSE.md \
-         README.md \
+         README.md
     # Resource files
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >-
