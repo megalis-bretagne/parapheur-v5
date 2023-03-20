@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:develop
+    image: registry.libriciel.fr/public/signature/ip-core:folder-action-wwebsocket
     volumes:
       - ./application-core.yml:/application.yml
     ports:
@@ -37,7 +37,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr/public/signature/ip-web:develop
+    image: registry.libriciel.fr/public/signature/ip-web:websocket-notify-folder-actions
     environment:
       - VERSION=5.0.6-develop
 
@@ -73,7 +73,7 @@ services:
     image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:websocket-upgrade-headers
 
 
 
