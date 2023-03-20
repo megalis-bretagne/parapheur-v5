@@ -202,11 +202,11 @@ publish:
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
   - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
-  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --quiet --volumes --remove-orphans"
+  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
   - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
   - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull --quiet"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && sudo ${SERVER_CURRENT_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d --quiet"
+  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
   - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
   - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
