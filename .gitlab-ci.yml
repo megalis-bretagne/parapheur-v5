@@ -115,10 +115,7 @@ variables:
       mv -t ${PACKAGE_NAME} \
          docker-compose.yml \
          docker-compose.override.init.yml \
-         .env.dist \
-         CHANGELOG.md \
-         LICENSE.md \
-         README.md
+         .env.dist
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >
       mv -t ${PACKAGE_NAME}/docker-resources \
