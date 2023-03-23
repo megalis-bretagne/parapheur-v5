@@ -115,8 +115,6 @@ variables:
       mv -t ${PACKAGE_NAME} \
          docker-compose.yml \
          docker-compose.override.init.yml \
-         backup.sh \
-         cron.sh \
          .env.dist \
          CHANGELOG.md \
          LICENSE.md \
@@ -124,7 +122,9 @@ variables:
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >
       mv -t ${PACKAGE_NAME}/docker-resources \
-         src/main/resources/nginx/iparapheur.init.conf.template
+         src/main/resources/nginx/iparapheur.init.conf.template \
+         backup.sh \
+         cron.sh
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
 
 package_prod:
@@ -210,6 +210,7 @@ publish:
   - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
   - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
+
 
 .deploy-job:
   variables:
