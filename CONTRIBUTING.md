@@ -3,27 +3,33 @@ Contributing
 
 ## Project structure
 
+#### File structure
 This project contains a main `docker-compose.yml` file, that should start an iparapheur properly.
 
 * `src/main/resources` every needed configuration files
 * `src/test` files for the integration tests (Karate)
 * `src/gatling` files for the performance tests (Gatling)
+* `build/karate-reports/karate-summary.html` Karate tests results
 
-## URLs
+#### URLs
 
-| URL                                                   | Description |
-| ---                                                   | ---         |
-| http://iparapheur.dom.local/                          | IP web UI   |
-| http://iparapheur.dom.local:9009/                     | Alfresco    |
-| http://iparapheur.dom.local:9090/                     | Keycloak    |
-| http://iparapheur.dom.local/matomo/                   | Matomo      |
-| http://iparapheur.dom.local/api/swagger-ui/index.html | Swagger UI  |
-| http://iparapheur.dom.local:8200/                     | Vault       |
+| URL                                                    | Description                |
+|--------------------------------------------------------|----------------------------|
+| http://iparapheur.dom.local/                           | IP web UI                  |
+| http://iparapheur.dom.local:9009/                      | Alfresco                   |
+| http://iparapheur.dom.local/auth/                      | Keycloak                   |
+| http://iparapheur.dom.local/matomo/                    | Matomo                     |
+| http://iparapheur.dom.local/api/swagger-ui/index.html  | Swagger UI                 |
+| http://iparapheur.dom.local:8200/                      | Vault                      |
+| http://iparapheur.dom.local/ws-iparapheur?wsdl         | Legacy Bridge MTOM wsdl    |
+| http://iparapheur.dom.local/ws-iparapheur-no-mtom?wsdl | Legacy Bridge no MTOM wsdl |
 
-## Windows 10 VirtualBox redirect
+## Signature setup
 
-Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.  
-The easier way seems to start a Win10 VM in NAT network (the default one) :   
+#### Windows 10 VirtualBox redirect
+
+Testing signature from a Linux/MacOS development desktop may be tricky, since LiberSign is Win10 only.
+The easier way seems to start a Win10 VM in NAT network (the default one) :
 https://developer.microsoft.com/fr-fr/windows/downloads/virtual-machines/
 
 Editing the `C:/Windows/system32/drivers/etc/hosts`, to redirect everything onto the host :
@@ -32,16 +38,109 @@ Editing the `C:/Windows/system32/drivers/etc/hosts`, to redirect everything onto
 10.0.2.2     iparapheur.dom.local
 ```
 
-## Docker overriding
+#### Fortify implementation (MacOS and Linux) (For debug only)
+
+
+###### APPLICATION_HOST setup
+
+Fortify uses WebCrypto for signature, which only works in a secure environment.
+
+If you want to use fortify to sign in localhost, you can set the **APPLICATION_HOST** envirnoment variable to **iparapheur.dom.localhost**. Keep in mind that *
+.localhost cannot be accessed from a virtual machine.
+
+###### Web settings
+
+1. Create a *settings.json* file in *src/main/resources/web* that contains :
+    ```json
+    {
+      "admin": {
+        "enableFortify": true
+      }
+    }
+    ```
+
+2. Create a docker compose override file with this content :
+    ```yaml
+    services:
+      web:
+        volumes:
+          - ./src/main/resources/web/settings.json:/usr/share/nginx/html/assets/settings.json
+    ```
+
+3. When starting the app do not forget to add the override :
+    ```bash
+    sudo docker compose -f docker-compose.yml -f docker-compose.your-override.yml up -d
+    ```
+
+## Application setup
+
+#### System settings
+
+Application settings are defined in a `.env` file located at the root of the project.  
+First, copy the example file :
+
+```bash
+cp .env.dist .env
+```
+
+By default, the application will start on the http://iparapheur.dom.local URL.  
+You can edit the `.env` file to change the passwords or URLs among others.
 
 #### Linux only
 
 You should declare two URLs in your `/etc/hosts` :
 
 ```
-127.0.0.1     host.docker.internal
-127.0.0.1     iparapheur.dom.local
+127.0.0.1     host.docker.internal 
+127.0.0.1     iparapheur.dom.local #APPLICATION_HOST
 ```
+
+You should use the create-base-dir.sh to init base directories with rights :
+
+```bash
+sudo ./create-base-dir.sh
+```
+
+#### Vault setup
+
+`http://iparapheur.dom.local:8200` for the UI page.  
+Most of the initialization can be in the command line, that will return keys to store :
+
+```bash
+sudo docker compose up -d vault
+sudo docker exec -it iparapheur-vault-1 vault operator init -key-shares=1 -key-threshold=1
+sudo docker exec -it iparapheur-vault-1 vault operator unseal <unseal_key>
+sudo docker exec -it iparapheur-vault-1 vault login token=<token>
+sudo docker exec -it iparapheur-vault-1 vault secrets enable -version=2 -path=secret kv
+```
+
+- Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
+
+#### Matomo setup
+
+```bash
+sudo docker compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo matomo-db
+```
+
+- Go to `http://iparapheur.dom.local/matomo/`.
+- Click next until you are in the Super User setup page.
+- fill the form :
+```
+Matomo root user : admin
+Matomo root pass : ${MATOMO_DB_ROOT_PASSWORD}
+Matomo root mail : admin@dom.local
+```
+- Click next, and fill the other form :
+```
+Site name        : i-Parapheur - Général
+Site url         : iparapheur.dom.local
+Locale           : France
+```
+
+* Administration (top-right cog)
+* User > Security (in the left menu)
+* Authentication token (all the way down): Create a new one, named `ipcore`
+* Add the token in the .env file
 
 #### Launching development mode
 
@@ -49,7 +148,7 @@ Some system-dependant override files are available, to expose every container's 
 The system-dependant `override.dev-XXX` docker-compose should be chained right after the production one :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up
+sudo docker compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d
 ```
 
 #### Useful tip :
@@ -59,39 +158,21 @@ Or simply removing a heavy one you won't use (like Matomo and its db)...
 To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
+sudo docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
       --scale core=0 \
       --scale web=0 \
       --scale matomo=0 \
       --scale matomo-db=0
 ```
 
-## Connecting to local DB
-
-```bash
-$ docker exec -it i-parapheur_postgres_1 /bin/sh
-$ psql --username "ipcore" --dbname "ipcore"
-$ docker exec -it i-parapheur_postgres_1 /usr/bin/psql
-```
-
 ## Integration tests
 
-### Quick and dirty
-
-#### Resetting the development data
-
-```bash
-# ~ 2 min
-$ ./dev-reset-and-setup.sh --force
-# INFO 8 --- [           main] coop.libriciel.ipcore.IpCoreApplication  : Started IpCoreApplication in 57.176 seconds (JVM running for 59.042)
-```
-
-##### Required software
+#### Required software
 
 Developed and tested with the below softwares and versions.
 
 | Software        | Version                |
-| ---             | ---                    |
+|-----------------|------------------------|
 | bash            | 4.4.20                 |
 | curl            | 7.58.0                 |
 | docker          | 20.10.5, build 55c4c88 |
@@ -103,24 +184,7 @@ Developed and tested with the below softwares and versions.
 | sed (GNU sed)   | 4.4                    |
 | ubuntu          | 18.04.5 LTS            |
 
-#### Launching Karate tests
-
-Some issues are yet to be created or closed before some tests can succeed.
-
-- [ip-core - issue #78](https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/ip-core/-/issues/78)
-- data validation and some other issues (search for `@issue-ip-core...`, `@issue-ip-web...`, ...) are yet to be created
-- some karate issues (search for `@fixme-karate...`, `@proposal`) should still be fixed
-
-| Command                                                                                                    | Description                                                                                                  | Completed | Failed |
-| ---                                                                                                        | ---                                                                                                          | ---       | ---    |
-| `gradle test -Dkarate.options="--tags @setup"`                                                             | Setup only (currently using ip-core API v. 1)                                                                | 32        | 0      |
-| `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate" --info`     | Run setup and all passing tests (ip-core and ip-web)                                                         | 149       | 0      |
-| `gradle test --info`                                                                                       | Run setup and all tests                                                                                      | 665       | 254    |
-| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web" --info`                          | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 | 300       | 75     |
-| `gradle test -Dkarate.options="--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation" --info` | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes | 156       | 13     |
-
-
-### Prerequisites
+#### Prerequisites
 
 * Gradle 7.0+ for direct commands. Alternatively, the local gradle-wrapper can be used on CLI.
 * For the time being, values below are hard-coded in `src/test/resources/karate-config.js`
@@ -130,168 +194,114 @@ Some issues are yet to be created or closed before some tests can succeed.
     * UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set: `export CHROME_BIN=/usr/bin/chromium-browser`.
     * Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
 
-### Files
-
-#### Test files
-
-| Path                 | Description                                           |
-| ---                  | ---                                                   |
-| `src/test/java/`     | Java test classes (you shouldn't need to modify them) |
-| `src/test/resources` | Karate tests, environment, helpers, ...               |
-
-#### Test results
-
-| Path                                       | Description                           |
-| ---                                        | ---                                   |
-| `build/karate-reports/karate-summary.html` | Karate results, with details          |
-| `build/reports/tests/test/index.html`      | Gradle results, with way less details |
-
-### Running the tests
-
-For more information, have a look below at "Command-line switches" and "Tags".
-
-### Run all tests
+#### Install Gradle
 
 ```bash
-$ gradle test
+sudo apt update
+sudo apt upgrade
+```
+
+* Install java 17
+```bash
+sudo apt install openjdk-17-jdk openjdk-17-jre
+```
+
+* Check java version
+```bash
+java -version
+```
+
+* Install SDKMAN to download gradle (or download gradle from website https://gradle.org/install/)
+```bash
+curl -s "https://get.sdkman.io" | bash
+```
+
+* Open a new terminal then finally :
+```bash
+sdk install gradle 8.0.2
+```
+
+* Check gradle version
+```bash
+gradle -v
+```
+
+#### Launching Karate tests
+
+- To launch tests based on a tag, use :
+```bash
+gradle test -Dkarate.options="--tags @tag"
+```
+
+- To exclude tests base on a tag, use :
+```bash
+gradle test -Dkarate.options="--tags ~@ignoredTag"
+```
+
+- You can mix both :
+```bash
+gradle test -Dkarate.options="--tags @tag --tags ~@ignoredTag"
+```
+
+- Do not forget to specify the -Dkarate.adminUserPwd option, or the requests won't be authorized
+
+```bash
+gradle test -Dkarate.options="--tags @tag --tags ~@ignoredTag" -Dkarate.adminUserPwd="${INITIAL_IPARAPHEUR_ADMIN_PASSWORD}"
+```
+
+| Tags                                                                 | Description                                                                                                  | 
+|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `--tags @setup`                                                      | Setup only (currently using ip-core API v. 1)                                                                |
+| `--tags ~@fixme-ip-core --tags ~@proposal --tags ~@fixme-karate`     | Run setup and all passing tests (ip-core and ip-web)                                                         |
+| `--tags ~@issue-ip-core-78 --tags ~@ip-web`                          | Run setup and all ip-core tests that won't be fixed by _ip-core - issue #78_                                 |
+| `--tags ~@issue-ip-core-78 --tags ~@ip-web --tags ~@data-validation` | Run setup and all ip-core tests that won't be fixed by either _ip-core - issue #78_ or data validation fixes |
+
+
+#### Run all tests
+
+```bash
+gradle test
 ```
 
 #### Command-line switches
 
 | Switch                           | Description                                                                                               |
-| ---                              | ---                                                                                                       |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------|
 | `--info`                         | Verbosity, print some informations while running the tests (use to see `karate.log()` output)             |
 | `--debug`                        | Verbosity, print more informations while running the tests (use to see `karate.log()` output)             |
+| `-Dkarate.adminUserPwd=password` | Specify admin user password                                                                               |
 | `-Dkarate.headless=false`        | When running ip-web tests, don't use headless chrome, so you will see the Chrome UI, ideal for developing |
 | `-Dkarate.options="--tags @..."` | Use tags to filter out tests, see "Tags" below                                                            |
 
-#### Tags
 
-#### Working with tags
+## IPNG
 
-| Tags                                                                                                         | Description                                                                                                               |
-| ---                                                                                                          | ---                                                                                                                       |
-| `-Dkarate.options="--tags @permissions"`                                                                     | Run tests tagged with `@permissions` only                                                                                 |
-| `-Dkarate.options="--tags ~@fixme-ip-core"`                                                                  | Run tests __not__ tagged with `@fixme-ip-core`                                                                            |
-| `-Dkarate.options="--tags @permissions,@searching"`                                                          | Run tests tagged with `@permissions` __or__ `@searching`                                                                  |
-| `-Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"` | Run currently passing tests (not tagged with either `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
+What follows assumes that one already has an activated entity on the IPNG network, and is in possession of the corresponding material (certificate / wallet,
+connection profile, CA cert, IPNG host URL and MSP id). If not please contact your IPNG provider.
 
-##### Getting the tags list
+First fill in the two required var in `.env` : `IPNG_HOST` and `IPNG_MSP`, that must have been provided.  
+Create and the copy all the material into the directory `data/ipng`. It's final structure should look like this :
 
-```bash
-./dev-reset-and-setup.sh karate-tags
+```
+ ./data/ipng/
+   - connection-profile.xml
+   - ca-certs/
+     - ca/
+       - <CA cert>.pem
+   - wallet/
+     - ca/
+        <your-IPNG-entity-id>.id
 ```
 
-#### Examples
+Additionally, if the Entity that will be connected to IPNG already exists, you can map it in `src/main/resources/core/application-ipng.yml`, uncommenting and
+replacing the values :
 
-| `-Dkarate.options="..."` |||
-? | `--tags '@setup or (ip-core and api-v1)'` |||
-| `--tags @ip-core --tags ~@issue-ip-core-78` |||
-
-- `gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@ip-web" --info`
-- corrections swagger dans mes issues
-
-```bash
-# Run all currently passing tests
-$ gradle test -Dkarate.options="--tags ~@fixme-ip-core --tags ~@todo-ip-core --tags ~@fixme-ip-web --tags ~@todo-ip-web"
-# Setup only (currently using ip-core API v. 1)
-$ gradle test -Dkarate.options="--tags @setup"
-# Run ip-core API v. 1 tests only
-$ gradle test -Dkarate.options="--tags @ip-core --tags @api-v1"
-# Run ip-web tests
-$ gradle test -Dkarate.options="--tags @ip-web"
-# Run the test(s) tagged with the @wip tag with a visible Chrome or Chromium web browser and show some informations in the console
-$ gradle test --info -Dkarate.options="--tags @wip" -Dkarate.headless=false
-# Run all tests, except the ones covered by known issues (98 passed, 68 failed, 166 scenarios, 59 % passing)
-$ gradle test -Dkarate.options="--tags ~@issue-ip-core-78" --info
+```yaml
+ipng:
+  tenant-to-entities:
+    <iparapheur-entity-uuid>: <ipng-entity-id>
 ```
 
-#### Available tags
 
-| Tag                | Description                                                                                                          |
-| ---                | ---                                                                                                                  |
-| `@api-v1`          | Tests for `ip-core` API v. 1 (same as `@ip-core` for the time being)                                                 |
-| `@authentication`  | Tests about authentication                                                                                           |
-| `@data-validation` | Tests about data validation                                                                                          |
-| `@fixme-ip-core`   | Currently failing `ip-core` tests                                                                                    |
-| `@fixme-ip-web`    | Currently failing `ip-web` tests                                                                                     |
-| `@ip-core`         | Tests for `ip-core` API v. 1 (same as `@api-v1` for the time being)                                                  |
-| `@ip-web`          | Tests for `ip-web`                                                                                                   |
-| `@l10n`            | Tests about localization                                                                                             |
-| `@permissions`     | Tests about permissions                                                                                              |
-| `@proposal`        | Proposals to be made to the IP team (used with `@fixme-ip-core`, `@fixme-ip-web`, `@todo-ip-core` or `@todo-ip-web`) |
-| `@searching`       | Tests about searching, filtering, sorting                                                                            |
-| `@setup`           | Setting up some data for subsequent tests                                                                            |
-| `@todo-ip-core`    | An issue is to be filled on the `ip-core` project                                                                    |
-| `@todo-ip-web`     | An issue is to be filled on the `ip-web` project                                                                     |
-| `@todo-karate`     | Karate tests needed                                                                                                  |
-| `@wip`             | Currently unused, use this tag to mark and filter the current test you're working on                                 |
-
-### @todo
-
-- [ ] Covered API routes
-    - Get from [Swagger UI](http://iparapheur.dom.local/api/swagger-ui/#/)
-        - `$x('//h4//span//text()') + $x('//h4//small//text()')`
-        - `$x('//div[contains(@class, "opblock-summary")]')`
-    - [@todo: JSON](http://iparapheur.dom.local/api/v2/api-docs)
-
-### References
-
-- [Karate](https://intuit.github.io/karate/)
-- [Karate UI](https://intuit.github.io/karate/karate-core/)
-
-## Performance tests
-
-For stress tests, we use Gatling with a dedicated `src/gatling` folder.  
-Every test can be started with the command :
-
-```bash
-$ gradle clean gatlingRun
-```
-
-Every Integration test should use the `src/gatling/application.yml`'s `tests.repeat_count` value.  
-This value can be overridden (increased), to turn those integrations into performance tests :
-
-```bash
-$ gradle clean gatlingRun -Dtests.repeat_count=1000000
-```
-
-Full run :
-
-```bash
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.TenantsSimulation -Dtests.repeat_count=2
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.UsersSimulation -Dtests.repeat_count=200
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.auth.DesksSimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.WorkflowSimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.database.TypologySimulation -Dtests.repeat_count=10
-$ gradle clean gatlingRun-coop.libriciel.iparapheur.flowable.FolderSimulation -Dtests.repeat_count=500
-```
-
-### Other resources
-
-The login page is provided directly by the keycloak container (as required in recommended practices).   
-Therefore we provide a customized login page theme, which is added to the keycloak container resources.  
-The gitlab project allowing to build those themed login page is
-here : [https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak](https://gitlab.libriciel.fr/outils/chartegraphique/theme-libriciel-keycloak)
-
-## Flowable potential exploitation problem
-
-If flowable is restarted very early in its lifecycle, some locks can remain in the database preventing further start of the container.  
-In such cases this command in Flowable DB can be useful :
-
-```sql
--- noinspection SqlNoDataSourceInspectionForFile,SqlResolve
-
-UPDATE public.flw_ev_databasechangeloglock
-SET locked= FALSE,
-    lockgranted=null,
-    lockedby=null
-WHERE id = 1;
-```
-
-## Re-insert a message from redis error queue
-
-From the shell in the redis conrtainer, assuming we want to reup the latest error message :  
-```
-redis-cli --raw XREVRANGE ipng-error + - COUNT 1 | tail -n 8 |  tr "\n" " " | xargs redis-cli XADD ipng-proof '*'
-```
+Turn down and erase containers  : `docker compose [- f ...] down -v`.
+Then start it with the IPNG activated :  `docker compose [- f ...] -f docker-compose.ipng.yml up -d`
