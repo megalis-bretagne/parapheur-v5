@@ -19,8 +19,8 @@
 #
 
 # This script should be called every night, by the crontab:
-#   05 01 * * * /opt/iparapheur/dist/cron.sh
+#   05 01 * * * /opt/iparapheur/dist/docker-resources/cron.sh
 
-cd /opt/iparapheur/dist
+cd /opt/iparapheur/dist/docker-resources
 
 ./backup.sh

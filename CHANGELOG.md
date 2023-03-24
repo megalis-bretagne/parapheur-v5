@@ -7,6 +7,48 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.9] - 2023-03-24
+[5.0.9]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.9.tar.gz
+
+### Corrections
+
+- Disparition des boutons d'annotations sur les petits écrans
+- Disparition des annotations au redimensionnement de la fenêtre
+- Affichage des flux PES signés
+- Création d'un dossier avec métadonnées par webservice SOAP
+
+
+## [5.0.8] - 2023-03-17
+[5.0.8]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.8.tar.gz
+
+### Ajouts
+
+- Filtre "Traités"
+- Règles de sécurité NginX
+
+### Corrections
+
+- Affichage des métadonnées à valeur prédéfinies
+- Téléchargement depuis la corbeille
+- Ouverture d'un dossier
+- Tri sur la colonne de création
+- Orthographe et affichage
+- Historique de la signature externe externe
+- Parse des métadonnées Entières/Décimales
+- Forcer les métadonnées vides à `null` dans le script Groovy
+- Affichage des actions lors d'une délégation
+- Hiérarchie des bureaux préservée lors d'une édition
+- Affichage des actions pour les absences spécifiques à un type / sous-type
+- Droits de visualisation sur les dossiers pour le bureau remplaçant en cas d'absence
+
+### Suppressions
+
+- Affichage des Zips dans la visionneuse PDF
+- Sous-dossier `./src` sur l'installation serveur
+- Messages d'alerte sur les métadonnées lors d'une création d'un dossier manuel avec script de sélection
+- Possibilité de créer un calque sans image
+
+
 ## [5.0.7] - 2023-02-17
 [5.0.7]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.7.tar.gz
 
