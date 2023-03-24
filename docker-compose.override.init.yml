@@ -20,4 +20,4 @@ services:
 
   nginx:
     volumes:
-      - ./src/main/resources/nginx/iparapheur.init.conf.template:/etc/nginx/templates/iparapheur.conf.template
+      - /opt/iparapheur/dist/docker-resources/iparapheur.init.conf.template:/etc/nginx/templates/iparapheur.conf.template
