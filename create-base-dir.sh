@@ -18,12 +18,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-mkdir -p data/alfresco
-mkdir -p data/solr/data
-mkdir -p data/solr/contentstore
-mkdir -p data/matomo/config
-mkdir -p data/matomo/plugins
-mkdir -p data/pes-viewer/pesPJ
-mkdir -p data/transfer/data
-mkdir -p data/vault/data
+mkdir -m 757 -p /data/iparapheur/alfresco
+mkdir -m 757 -p /data/iparapheur/postgres
+mkdir -m 757 -p /data/iparapheur/solr/data
+mkdir -m 757 -p /data/iparapheur/solr/contentstore
+mkdir -m 757 -p /data/iparapheur/matomo/config
+mkdir -m 757 -p /data/iparapheur/matomo/plugins
+mkdir -m 757 -p /data/iparapheur/pes-viewer/pesPJ
+mkdir -m 757 -p /data/iparapheur/transfer/data
+mkdir -m 757 -p /data/iparapheur/vault/data
 
