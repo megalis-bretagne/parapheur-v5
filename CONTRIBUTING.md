@@ -101,47 +101,6 @@ You should use the create-base-dir.sh to init base directories with rights :
 sudo ./create-base-dir.sh
 ```
 
-#### Vault setup
-
-`http://iparapheur.dom.local:8200` for the UI page.  
-Most of the initialization can be in the command line, that will return keys to store :
-
-```bash
-sudo docker compose up -d vault
-sudo docker exec -it iparapheur-vault-1 vault operator init -key-shares=1 -key-threshold=1
-sudo docker exec -it iparapheur-vault-1 vault operator unseal <unseal_key>
-sudo docker exec -it iparapheur-vault-1 vault login token=<token>
-sudo docker exec -it iparapheur-vault-1 vault secrets enable -version=2 -path=secret kv
-```
-
-- Save the 2 values into your `.env` file respectively in the variables `VAULT_UNSEAL_KEY` and `VAULT_TOKEN`
-
-#### Matomo setup
-
-```bash
-sudo docker compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up -d nginx matomo matomo-db
-```
-
-- Go to `http://iparapheur.dom.local/matomo/`.
-- Click next until you are in the Super User setup page.
-- fill the form :
-```
-Matomo root user : admin
-Matomo root pass : ${MATOMO_DB_ROOT_PASSWORD}
-Matomo root mail : admin@dom.local
-```
-- Click next, and fill the other form :
-```
-Site name        : i-Parapheur - Général
-Site url         : iparapheur.dom.local
-Locale           : France
-```
-
-* Administration (top-right cog)
-* User > Security (in the left menu)
-* Authentication token (all the way down): Create a new one, named `ipcore`
-* Add the token in the .env file
-
 #### Launching development mode
 
 Some system-dependant override files are available, to expose every container's ports, and serve appropriate configuration files.  
