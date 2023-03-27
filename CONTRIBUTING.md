@@ -153,38 +153,6 @@ Developed and tested with the below softwares and versions.
     * UI tests will use Chrome / Chromium, so make sure the `CHROME_BIN` environment variable is set: `export CHROME_BIN=/usr/bin/chromium-browser`.
     * Export environment variables from your `.env` once in your terminal before running the tests: `export $(grep -v "^\(#.*\|\s*$\)" .env | xargs)`
 
-#### Install Gradle
-
-```bash
-sudo apt update
-sudo apt upgrade
-```
-
-* Install java 17
-```bash
-sudo apt install openjdk-17-jdk openjdk-17-jre
-```
-
-* Check java version
-```bash
-java -version
-```
-
-* Install SDKMAN to download gradle (or download gradle from website https://gradle.org/install/)
-```bash
-curl -s "https://get.sdkman.io" | bash
-```
-
-* Open a new terminal then finally :
-```bash
-sdk install gradle 8.0.2
-```
-
-* Check gradle version
-```bash
-gradle -v
-```
-
 #### Launching Karate tests
 
 - To launch tests based on a tag, use :
