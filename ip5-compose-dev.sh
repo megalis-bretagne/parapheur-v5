@@ -364,6 +364,8 @@ __setup_vault__()
       echo "Vault - setup..."
       log_hr
 
+      COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-iparapheur}"
+
       docker compose \
           --file docker-compose.yml \
           up -d vault
