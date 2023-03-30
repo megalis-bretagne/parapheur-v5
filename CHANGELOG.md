@@ -7,6 +7,14 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.10] - 2023-03-30
+[5.0.9]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.10.tar.gz
+
+### Corrections
+
+- Envoi d'un dossier avec métadonnées via le webservice SOAP
+
+
 ## [5.0.9] - 2023-03-24
 [5.0.9]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.9.tar.gz
 
