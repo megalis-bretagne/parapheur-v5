@@ -13,7 +13,7 @@ Feature: UI tenant lib
     * waitFor("//td//*[contains(text(),'" + tenant + "')]//ancestor::tr//button[@title='Supprimer']").click()
     * waitFor("//input[@id='confirmTenantNameInput']")
     * input("//input[@id='confirmTenantNameInput']", tenant)
-    * waitFor("//button[contains(@title, 'Supprimer définitivement')]").click()
+    * waitForEnabled("//button[contains(@title, 'Supprimer définitivement')]").click()
     * waitForEnabled(ip5.ui.locator.button("Fermer")).click()
 
     # Check tenant deletion
