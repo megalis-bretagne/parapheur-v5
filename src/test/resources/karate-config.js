@@ -24,6 +24,8 @@ function fn() {
         env = 'dev';
     }
 
+    karate.configure('retry', { count: 30, interval: 300 });
+
     const baseUrl = karate.properties['karate.baseUrl'] || 'http://iparapheur.dom.local/';
     const soapBaseUrl = karate.properties['karate.soapBaseUrl'] || baseUrl;
     const chromeBin = karate.properties['karate.chromeBin'] || '/usr/bin/chromium-browser';
