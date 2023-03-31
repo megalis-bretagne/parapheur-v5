@@ -83,7 +83,7 @@ function fn() {
         type: 'chrome',
         // @see https://github.com/karatelabs/karate/blob/master/karate-docker/karate-chrome/supervisord.conf
         // @see https://stackoverflow.com/questions/73337435/karate-dsl-options-window-size-and-incognito-is-not-working-for-chromedrive
-        addOptions: ['--disable-gpu','lang=fr_FR,fr', '--remote-allow-origins=*'],
+        addOptions: ['--disable-gpu','lang=fr_FR,fr', '--remote-allow-origins=*', '--user-data-dir=' + chromeCacheDir],
         //addOptions: ['--windows-size=1024,768'],
         /*webDriverSession: {
             capabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
