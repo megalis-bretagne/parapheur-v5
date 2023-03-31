@@ -2,7 +2,7 @@
 Feature: Subtype setup lib
 
     Scenario: Create subtype
-        * ip.pause(5)
+
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
         * def prepareSubtypeLayerList =
 """

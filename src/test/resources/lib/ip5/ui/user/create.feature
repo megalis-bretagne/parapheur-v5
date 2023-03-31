@@ -24,9 +24,9 @@ Feature: UI user lib
     * waitFor("//a[text()='Droits']").click()
     * waitFor("//div[@class='modal-body']//label[contains(@class, 'btn')][position()=" + ip5.ui.admin.getRoleIndex(role) + "]").click()
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
-    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
+
+#    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+
 
     # Check user creation
     * input("//input[contains(@placeholder, 'Rechercher un utilisateur')]", username)

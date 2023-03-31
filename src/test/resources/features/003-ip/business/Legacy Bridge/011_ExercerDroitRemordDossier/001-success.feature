@@ -7,7 +7,7 @@ Feature: ExercerDroitRemordDossier
         When def rv = call read('classpath:lib/ip/api/soap/requests/CreerDossier/simple_success.feature') params
         Then def dossierId = rv.dossierId
 
-        * ip.pause(5)
+        * ip.pause(3)
 
         # 2. Exercice du droit de remords
         Given def params = { dossierId: "#(dossierId)", username: "ws@legacy-bridge", password: "a123456a123456" }

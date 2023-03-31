@@ -6,7 +6,6 @@ Feature: UI desk lib
     """
     (owners) => {
       const selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
-      ip.pause(5);
 
       for(let i = 0; i < owners.length; i++) {
         value(selector, '');
@@ -39,7 +38,6 @@ Feature: UI desk lib
     """
     (associatedDesks) => {
       let selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
-      ip.pause(5);
 
       for(let i = 0; i < associatedDesks.length; i++) {
         value(selector, '');
@@ -54,7 +52,6 @@ Feature: UI desk lib
     * waitFor("//app-header")
     * waitFor(ip5.ui.locator.header['Administration']).click()
     * ip5.ui.admin.selectTenant(tenant)
-    * ip.pause(2)
     * waitFor("{^}Bureaux").click()
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
 
@@ -70,7 +67,7 @@ Feature: UI desk lib
     # Check desk creation
     * waitFor("{^}Bureaux associés").click()
     * selectAssociated(!associatedDesks ? [] : associatedDesks)
-    * ip.pause(1)
+
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
     * waitFor("//tbody//td[contains(text(),'" + title + "')]")

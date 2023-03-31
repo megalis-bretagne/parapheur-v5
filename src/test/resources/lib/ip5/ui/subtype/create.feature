@@ -14,13 +14,13 @@ Feature: UI subtype lib
     * input("#popupNameInput", [name, Key.ENTER], 200)
     * input("{^}Description", [description, Key.ENTER], 200)
     * waitFor("#ngb-nav-3").click()
-    * ip.pause(1)
+
     * waitForEnabled("#selectValidationWorkflow input").input(workflow)
     * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
-    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
+
+#    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+
 
     # Check user creation
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
