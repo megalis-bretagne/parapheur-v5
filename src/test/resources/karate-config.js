@@ -74,6 +74,26 @@ function fn() {
 
     karate.configure('headers', {Accept: 'application/json'});
 
+    const chromeCacheDir = config.buildDir + 'chrome-cache-dir';
+    const browserConf = {
+        executable: config.CHROME_BIN,
+        headless: config.headless,
+        showDriverLog: false,
+        showProcessLog: false,
+        type: 'chrome',
+        // @see https://github.com/karatelabs/karate/blob/master/karate-docker/karate-chrome/supervisord.conf
+        // @see https://stackoverflow.com/questions/73337435/karate-dsl-options-window-size-and-incognito-is-not-working-for-chromedrive
+        addOptions: ['--disable-gpu','lang=fr_FR,fr', '--remote-allow-origins=*'],
+        //addOptions: ['--windows-size=1024,768'],
+        /*webDriverSession: {
+            capabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
+            desiredCapabilities: { 'goog:chromeOptions': { 'credentials_enable_service': false, 'profile.password_manager_enabled': false } },
+            prefs: { 'credentials_enable_service': false, 'profile.password_manager_enabled': false },
+        }*/
+    };
+
+
+    karate.configure('driver', browserConf);
     // @see https://medium.com/@babusekaran/organizing-re-usable-functions-karatedsl-575cd76daa27
     // Common code
     config = karate.call('classpath:lib/ip/api/soap.js', config);

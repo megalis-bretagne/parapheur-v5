@@ -2,7 +2,7 @@
 Feature: Traitement des dossiers
 
     Background:
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
 
     Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge

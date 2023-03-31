@@ -2,7 +2,7 @@
 Feature: Connexion
 
     Background:
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         # force logout between each scenario
         * driver baseUrl + ip5.ui.url.logout
 

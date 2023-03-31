@@ -15,7 +15,7 @@ Feature: ...
         * def params = karate.merge(defaults, __arg)
         * params["metadata"] = ip.business.metadonnees.map[params.folder]
 
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 

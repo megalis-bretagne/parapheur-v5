@@ -2,7 +2,7 @@
 Feature: 002 - Scénario de démo simple, partie utilisation
 
     Background:
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
 
         * waitFor('#kc-logout').click()
