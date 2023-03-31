@@ -9,7 +9,7 @@ Feature: UI desk lib
 
       for(let i = 0; i < owners.length; i++) {
         value(selector, '');
-        input(selector, owners[i]);
+        waitFor(selector).input(owners[i]);
         waitFor("//tr//td[contains(normalize-space(text()), '" + owners[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
       }
     }
@@ -41,7 +41,7 @@ Feature: UI desk lib
 
       for(let i = 0; i < associatedDesks.length; i++) {
         value(selector, '');
-        input(selector, associatedDesks[i]);
+        waitFor(selector).input(associatedDesks[i]);
 
         waitFor("//tr//td[contains(normalize-space(text()), '" + associatedDesks[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
       }

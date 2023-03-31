@@ -27,5 +27,5 @@ Feature: UI type lib
 
 
     # Check type creation
-    * input("//input[contains(@placeholder, 'Rechercher des types')]", name)
+    * waitFor("//input[contains(@placeholder, 'Rechercher des types')]").input(name)
     * waitFor("//tbody//td[contains(text(),'" + name + "')]")

@@ -29,5 +29,5 @@ Feature: UI user lib
 
 
     # Check user creation
-    * input("//input[contains(@placeholder, 'Rechercher un utilisateur')]", username)
+    * waitFor("//input[contains(@placeholder, 'Rechercher un utilisateur')]").input(username)
     * waitFor("//tbody//td//*[contains(text(),'" + username + "')]")

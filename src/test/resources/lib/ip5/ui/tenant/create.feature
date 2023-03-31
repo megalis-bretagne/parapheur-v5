@@ -10,7 +10,7 @@ Feature: UI tenant lib
 
     # Create tenant
     * waitFor("{^}Créer une nouvelle entité").click()
-    * input(ip5.ui.locator.input("Nom"), tenant)
+    * waitFor(ip5.ui.locator.input("Nom")).input(tenant)
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
 
 #    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
@@ -18,5 +18,5 @@ Feature: UI tenant lib
 
     # Check tenant creation
     * waitFor(ip5.ui.element.breadcrumb("Administration / Entités"))
-    * input("//input[@placeholder='Rechercher une entité']", tenant)
+    * waitFor("//input[@placeholder='Rechercher une entité']").input(tenant)
     * waitFor("//tbody//td//*[contains(text(),'" + tenant + "')]")

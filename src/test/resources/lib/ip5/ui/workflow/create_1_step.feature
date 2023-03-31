@@ -25,5 +25,5 @@ Feature: UI workflow lib
 
 
     # Check workflow creation
-    * input("//input[contains(@placeholder, 'Rechercher des circuits')]", [name, Key.ENTER], 200)
+    * waitFor("//input[contains(@placeholder, 'Rechercher des circuits')]").input([name, Key.ENTER], 200)
     * waitFor("//tbody//td[normalize-space(.)='" + type + "']")

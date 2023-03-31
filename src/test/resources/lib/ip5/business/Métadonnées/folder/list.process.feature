@@ -20,11 +20,11 @@ Feature: ...
         * ip5.ui.user.login(params.username, params.password)
 
         # Filtre sur le type, sous-type et nom du dossier
-        * click(ip5.ui.locator.tray.filter.toggle)
+        * waitFor(ip5.ui.locator.tray.filter.toggle).click()
         * ip5.ui.ngSelect("//app-type-selector//ng-select", params.type)
         * ip5.ui.ngSelect("//app-subtype-selector//ng-select", params.subtype)
         * input(ip5.ui.locator.input('Titre'), [params.folder, Key.ENTER], 200)
-        * click(ip5.ui.locator.tray.filter.apply)
+        * waitFor(ip5.ui.locator.tray.filter.apply).click()
 
         * def folderXpath = "//table//a[normalize-space(text()='" + params.folder + "')]"
         * waitFor(folderXpath)
