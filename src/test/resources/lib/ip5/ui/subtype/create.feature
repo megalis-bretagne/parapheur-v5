@@ -15,6 +15,7 @@ Feature: UI subtype lib
     * input("{^}Description", [description, Key.ENTER], 200)
     * waitFor("#ngb-nav-3").click()
 
+    * ip.pause(1)
     * waitForEnabled("#selectValidationWorkflow input").input(workflow)
     * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()

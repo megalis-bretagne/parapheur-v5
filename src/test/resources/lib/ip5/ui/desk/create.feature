@@ -60,12 +60,15 @@ Feature: UI desk lib
     * input(ip5.ui.locator.input("Titre"), [title, Key.ENTER], 300)
     * input(ip5.ui.locator.input("Nom court"), [shortName, Key.ENTER], 300)
     * waitFor("{^}Acteurs").click()
+    * ip.pause(1)
     * selectOwners(owners)
     * waitFor("{^}Habilitations").click()
+    * ip.pause(1)
     * selectPermissions(permissions)
 
     # Check desk creation
     * waitFor("{^}Bureaux associés").click()
+    * ip.pause(1)
     * selectAssociated(!associatedDesks ? [] : associatedDesks)
 
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()

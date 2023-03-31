@@ -23,6 +23,7 @@ Feature: UI user lib
     * input(ip5.ui.locator.input("Confirmer le mot de passe"), [password, Key.ENTER], 200)
     * waitFor("//a[text()='Droits']").click()
     * waitFor("//div[@class='modal-body']//label[contains(@class, 'btn')][position()=" + ip5.ui.admin.getRoleIndex(role) + "]").click()
+    * ip.pause(1)
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
 
 #    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()

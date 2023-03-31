@@ -14,6 +14,7 @@ Feature: UI type lib
     * input(ip5.ui.locator.input("Nom"), name)
     * input(ip5.ui.locator.input("Description"), description)
     * waitFor("{^}Protocole et format de signature").click()
+    * ip.pause(1)
     * waitFor("#protocolInput input").input(protocol)
     * waitFor("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]").click()
     * input("#popupSigningFormatInput input", format)
