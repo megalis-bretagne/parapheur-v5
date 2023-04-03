@@ -32,3 +32,7 @@ Feature: UI user lib
     # Check user creation
     * waitFor("//input[contains(@placeholder, 'Rechercher un utilisateur')]").input(username)
     * waitFor("//tbody//td//*[contains(text(),'" + username + "')]")
+
+    * ip5.api.v1.auth.logout()
+    * ip5.api.v1.auth.login(username, password)
+    * ip5.api.v1.user.updateCurrentUserNotificationFrequency('none')
