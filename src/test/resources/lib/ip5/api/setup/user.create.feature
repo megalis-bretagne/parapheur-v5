@@ -51,6 +51,11 @@
 """
         When method PUT
         Then status 200
+
+      * ip5.api.v1.auth.login(userName, password)
+      * ip5.api.v1.user.updateCurrentUserNotificationFrequency('none')
+
+
 #
 #      # PUT pour corriger la disparition de complementaryField ... mais ça ne marche pas
 #      Given url baseUrl

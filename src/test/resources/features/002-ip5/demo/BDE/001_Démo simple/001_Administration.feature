@@ -11,6 +11,11 @@ Feature: 001 - Scénario de démo simple, partie administration
     * ip5.ui.user.login("user", adminUserPwd)
 
   @basic
+  Scenario: Enregistrement de la frequence de notification pour le superadmin
+    * ip5.api.v1.auth.login("user", adminUserPwd)
+    * ip5.api.v1.user.updateCurrentUserNotificationFrequency('none')
+
+  @basic
   Scenario: Créer une entité
     * ip5.ui.user.login("user", adminUserPwd)
     * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
@@ -71,8 +76,8 @@ Feature: 001 - Scénario de démo simple, partie administration
     * waitFor(ip5.ui.toast.success("Préférences utilisateur éditées avec succès."))
 
     Examples:
-      | tenant      | username               | lastName  | firstName | email                     | password | role            |
-      | Démo simple | flosserand@demo-simple | Losserand | Frédéric  | flosserand-demo@dom.local | a123456a123456  | Aucun privilège |
+      | tenant      | username               | lastName  | firstName | email                     | password       | role            |
+      | Démo simple | flosserand@demo-simple | Losserand | Frédéric  | flosserand-demo@dom.local | a123456a123456 | Aucun privilège |
 
   Scenario Outline: Créer un bureau ${title} pour ${description} utilisateur sans droit
     * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
