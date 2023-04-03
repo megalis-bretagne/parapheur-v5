@@ -36,5 +36,6 @@ Feature: ...
         * waitFor(ip5.ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 
         #* waitFor("//strong[text()='Métadonnées']");
+        * ip.pauseMillis(300)
         * def metadatas = ip5.ui.getMetadatas()
         * match metadatas == params.metadatas
