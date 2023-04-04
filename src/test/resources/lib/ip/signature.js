@@ -74,12 +74,12 @@ function fn(config) {
             tokens,
             // @todo: #notpresent ?
             //xpath = "//*[namespace-uri()='http://www.w3.org/2000/09/xmldsig#'][local-name()='Signature']",
-            xpath = "/*/Signature",
+            xpath = "//Bordereau/Signature",
             signatureNodeList,
             signingTime;
 
         signatureNodeList = karate.xmlPath(content, xpath);
-        if(JSON.stringify(signatureNodeList) === "#notpresent") {
+        if(signatureNodeList === "#notpresent") {
             return karate.fail("Impossible d'extraire les signatures (xpath: " + xpath + ")");
         }
 
@@ -128,8 +128,9 @@ function fn(config) {
             }
         }
     };
+
     config.ip.signature.helios['extract'] = function(path) {
-        var prefix = "/PES_Aller/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
+        var prefix = "/PES_Aller/PES_DepenseAller/Bordereau/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
             content = karate.read("file://" + path);
         return {
             City: karate.xmlPath(content, prefix + "/SignatureProductionPlace/City/text()"),
