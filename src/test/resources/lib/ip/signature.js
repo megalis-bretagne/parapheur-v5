@@ -74,12 +74,12 @@ function fn(config) {
             tokens,
             // @todo: #notpresent ?
             //xpath = "//*[namespace-uri()='http://www.w3.org/2000/09/xmldsig#'][local-name()='Signature']",
-            xpath = "/*/Signature",
+            xpath = "//Bordereau/Signature",
             signatureNodeList,
             signingTime;
 
         signatureNodeList = karate.xmlPath(content, xpath);
-        if(JSON.stringify(signatureNodeList) === "#notpresent") {
+        if(signatureNodeList === "#notpresent") {
             return karate.fail("Impossible d'extraire les signatures (xpath: " + xpath + ")");
         }
 
@@ -87,7 +87,7 @@ function fn(config) {
             signatureNodeList = [signatureNodeList];
         }
 
-        for (idx = 0; idx < signatureNodeList.length; idx++) {
+        for (idx = 0 ; idx < signatureNodeList.length ; idx++) {
             id = karate.xmlPath(signatureNodeList[idx], "/Signature/@Id");
             if(id == "#notpresent") {
                 return karate.fail("Impossible d'extraire la signature " + String(idx + 1) + " (xpath: /Signature/@Id)");
@@ -102,6 +102,7 @@ function fn(config) {
             if(element == "#notpresent") {
                 return karate.fail("Impossible d'extraire la signature " + String(idx + 1) + " (xpath: " + xpath + ")");
             }
+
             matches = JSON.stringify(element).match(/^{"([^"]+)":/);
             name = matches[1].replace(/^[^:]+:/, '');
             signingTime = karate.xmlPath(content, "//QualifyingProperties[@Target='#" + id + "']//SigningTime/text()");
@@ -111,7 +112,7 @@ function fn(config) {
 
             cmd = "xmlsec1 " +
                 "--verify ";
-            for(idxCert=0;idxCert<certs.length;idxCert++) {
+            for (idxCert = 0 ; idxCert < certs.length ; idxCert++) {
                 cmd += "--trusted-pem \"" + karate.toAbsolutePath(certs[idxCert]) + "\" ";
             }
             cmd += "--node-xpath \"//*[namespace-uri()='http://www.w3.org/2000/09/xmldsig#'][local-name()='Signature'][@Id='" + id + "']\" " +
@@ -127,8 +128,9 @@ function fn(config) {
             }
         }
     };
+
     config.ip.signature.helios['extract'] = function(path) {
-        var prefix = "/PES_Aller/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
+        var prefix = "/PES_Aller/PES_DepenseAller/Bordereau/Signature/Object/QualifyingProperties/SignedProperties/SignedSignatureProperties",
             content = karate.read("file://" + path);
         return {
             City: karate.xmlPath(content, prefix + "/SignatureProductionPlace/City/text()"),
@@ -156,7 +158,7 @@ function fn(config) {
         line3 = (typeof line3 === "undefined") ? ip5.business.regexp.annotation.date : line3;
         return {
             "position": position,
-            "text":[
+            "text": [
                 line1,
                 line2,
                 line3
@@ -165,7 +167,7 @@ function fn(config) {
     };
     config.ip.signature.pades['certificates'] = config.ip.signature.pades['certificates'] || {};
     config.ip.signature.pades.certificates['read'] = function (path) {
-        var cmd = [ "pdfsig", "-nocert", path ],
+        var cmd = ["pdfsig", "-nocert", path],
             idx,
             lines,
             matches,
@@ -180,7 +182,7 @@ function fn(config) {
         tmp = proc.sysOut.replace(/\n$/, '');
         lines = tmp.split(/\r?\n/).filter(element => element);
 
-        for (idx=0;idx<lines.length;idx++) {
+        for (idx = 0 ; idx < lines.length ; idx++) {
             if (matches = lines[idx].match(/^Signature #([0-9]+):$/)) {
                 if (karate.keysOf(signature).length > 0) {
                     result.push(signature);
@@ -208,7 +210,7 @@ function fn(config) {
         }
 
         result.sort(function compare(a, b) { if (a.timestamp < b.timestamp) return -1; if (a.timestamp > b.timestamp) return 1; return 0; } );
-        for (idx=0;idx<result.length;idx++) {
+        for (idx = 0 ; idx < result.length ; idx++) {
             delete result[idx].timestamp;
         }
 
