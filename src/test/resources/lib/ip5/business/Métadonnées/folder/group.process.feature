@@ -15,16 +15,16 @@ Feature: ...
         * def params = karate.merge(defaults, __arg)
         * params["metadata"] = ip.business.metadonnees.map[params.folder]
 
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
         * waitFor("{a}" + params.desktop).click()
 
         # Filtre sur le nom du dossier
-        * click(ip5.ui.locator.tray.filter.toggle)
+        * waitFor(ip5.ui.locator.tray.filter.toggle).click()
         * input(ip5.ui.locator.input('Titre'), [params.folder, Key.ENTER], 200)
-        * click(ip5.ui.locator.tray.filter.apply)
+        * waitFor(ip5.ui.locator.tray.filter.apply).click()
 
         * def checkboxXpath = "//table//th//input[@type='checkbox']"
         * waitFor(checkboxXpath)

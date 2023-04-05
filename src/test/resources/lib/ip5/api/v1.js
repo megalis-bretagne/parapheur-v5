@@ -117,7 +117,7 @@ function fn(config) {
             mainFilePath = {'file': mainFilePath, 'detached': null};
         }
 
-        for (var i=start;i<=max;i++) {
+        for (var i = start ; i <= max ; i++) {
             var createFolderRequest = {
                 dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
@@ -164,7 +164,7 @@ function fn(config) {
             ]
         ;
 
-        for (var i=start;i<=max;i++) {
+        for (var i = start ; i <= max ; i++) {
             var createFolderRequest = {
                 dueDate: extra.dueDate === undefined ? null : extra.dueDate,
                 metadata: extra.metadata === undefined ? {} : extra.metadata,
@@ -189,7 +189,7 @@ function fn(config) {
     };
     config.ip5.api.v1.desk['getAllIdsByNames'] = function (tenantId, names, containing = false) {
         result = [];
-        for (var i=0 ; i < names.length ; i++) {
+        for (var i = 0 ; i < names.length ; i++) {
             result.push(ip5.api.v1.desk.getIdByName(tenantId, names[i], containing));
         }
         return result;
@@ -209,11 +209,11 @@ function fn(config) {
         return response.body;
     };
     config.ip5.api.v1.desk['getCreationPayload'] = function (tenantId, name, shortName, owners, parent, associated, permissions) {
-        for (var i=0;i<owners.length;i++) {
+        for (var i = 0 ; i < owners.length ; i++) {
             owners[i] = ip5.api.v1.user.getIdByEmail(tenantId, owners[i]);
         }
 
-        for (var i=0;i<associated.length;i++) {
+        for (var i = 0 ; i < associated.length ; i++) {
             associated[i] = ip5.api.v1.desk.getIdByName(tenantId, associated[i]);
         }
 
@@ -226,10 +226,10 @@ function fn(config) {
             delegatingDesks: [],
             delegationManagerIdsList: [],
             description: 'Bureau ' + name,
-            filterableMetadataIdsList:[],
-            filterableSubtypeIdsList:[],
+            filterableMetadataIdsList: [],
+            filterableSubtypeIdsList: [],
             folderCreationAllowed: permissions['creation'] === undefined ? false : permissions['creation'],
-            linkedDeskboxIds:[],
+            linkedDeskboxIds: [],
             name: name,
             ownerUserIdsList: owners,
             parentDeskId: parent === '' ? null : ip5.api.v1.desk.getIdByName(tenantId, parent),
@@ -461,6 +461,8 @@ function fn(config) {
 
         return response.body['id'];
     };
+
+
     config.ip5.api.v1.user['getById'] = function (tenantId, userId) {
         response = karate
             .http(baseUrl)
@@ -495,6 +497,41 @@ function fn(config) {
         // @todo: check if it really does not exist
         return '00000000-0000-0000-0000-000000000000';
     };
+
+    config.ip5.api.v1.user['getCurrentUserData'] = function () {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/currentUser')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting current user');
+        }
+
+        return response.body;
+    };
+
+    config.ip5.api.v1.user['update'] = function (userObject) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/currentUser')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
+            .put(userObject);
+
+        if (response.status !== 200 && response.status !== 201) {
+            karate.fail('Got status code ' + response.status + ' while setting current user\'s preferences');
+        }
+    };
+
+    config.ip5.api.v1.user['updateCurrentUserNotificationFrequency'] = function (notifFrequency) {
+        let userData = ip5.api.v1.user.getCurrentUserData();
+        userData.notificationsCronFrequency = notifFrequency;
+        ip5.api.v1.user.update(userData);
+    };
+
 
     /*
     --
@@ -624,6 +661,7 @@ function fn(config) {
         var element = ip5.api.v1.utils.filterSingleElementFromGetResponse(response, 'type', 'name', name, containing);
         return element['id'];
     };
+
 
     /**
      * utils

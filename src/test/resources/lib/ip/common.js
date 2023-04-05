@@ -66,6 +66,10 @@ function fn(config) {
         java.lang.Thread.sleep(seconds * 1000);
     };
 
+    config.ip['pauseMillis'] = function(milliseconds){
+        java.lang.Thread.sleep(milliseconds);
+    };
+
     /**
      * utils
      */

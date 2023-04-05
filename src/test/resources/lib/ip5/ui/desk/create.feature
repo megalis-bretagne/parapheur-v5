@@ -6,11 +6,10 @@ Feature: UI desk lib
     """
     (owners) => {
       const selector = "//input[normalize-space(@placeholder)='Rechercher un utilisateur']";
-      ip.pause(5);
 
       for(let i = 0; i < owners.length; i++) {
         value(selector, '');
-        input(selector, owners[i]);
+        waitFor(selector).input(owners[i]);
         waitFor("//tr//td[contains(normalize-space(text()), '" + owners[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
       }
     }
@@ -39,11 +38,10 @@ Feature: UI desk lib
     """
     (associatedDesks) => {
       let selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
-      ip.pause(5);
 
       for(let i = 0; i < associatedDesks.length; i++) {
         value(selector, '');
-        input(selector, associatedDesks[i]);
+        waitFor(selector).input(associatedDesks[i]);
 
         waitFor("//tr//td[contains(normalize-space(text()), '" + associatedDesks[i] + "')]/ancestor::tr//*[@title='Ajouter']").click()
       }
@@ -54,7 +52,6 @@ Feature: UI desk lib
     * waitFor("//app-header")
     * waitFor(ip5.ui.locator.header['Administration']).click()
     * ip5.ui.admin.selectTenant(tenant)
-    * ip.pause(2)
     * waitFor("{^}Bureaux").click()
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
 
@@ -63,14 +60,17 @@ Feature: UI desk lib
     * input(ip5.ui.locator.input("Titre"), [title, Key.ENTER], 300)
     * input(ip5.ui.locator.input("Nom court"), [shortName, Key.ENTER], 300)
     * waitFor("{^}Acteurs").click()
+    * ip.pause(1)
     * selectOwners(owners)
     * waitFor("{^}Habilitations").click()
+    * ip.pause(1)
     * selectPermissions(permissions)
 
     # Check desk creation
     * waitFor("{^}Bureaux associés").click()
-    * selectAssociated(!associatedDesks ? [] : associatedDesks)
     * ip.pause(1)
+    * selectAssociated(!associatedDesks ? [] : associatedDesks)
+
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Bureaux"))
     * waitFor("//tbody//td[contains(text(),'" + title + "')]")

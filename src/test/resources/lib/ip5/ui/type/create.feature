@@ -14,8 +14,8 @@ Feature: UI type lib
     * input(ip5.ui.locator.input("Nom"), name)
     * input(ip5.ui.locator.input("Description"), description)
     * waitFor("{^}Protocole et format de signature").click()
-    * ip.pause(5)
-    * input("#protocolInput input", protocol)
+    * ip.pause(1)
+    * waitFor("#protocolInput input").input(protocol)
     * waitFor("//*[@id='protocolInput']//*[contains(@class, 'ng-option ')]").click()
     * input("#popupSigningFormatInput input", format)
     * waitFor("//*[@id='popupSigningFormatInput']//*[contains(@class, 'ng-option ')]").click()
@@ -23,10 +23,10 @@ Feature: UI type lib
     * waitFor("{^}Tampon de signature").click()
     * eval if (stamp === true) waitFor("//*[text()='Afficher']").click()
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
-    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
+
+#    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+
 
     # Check type creation
-    * input("//input[contains(@placeholder, 'Rechercher des types')]", name)
+    * waitFor("//input[contains(@placeholder, 'Rechercher des types')]").input(name)
     * waitFor("//tbody//td[contains(text(),'" + name + "')]")

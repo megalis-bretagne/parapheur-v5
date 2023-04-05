@@ -17,6 +17,12 @@
       <option name="BLANK_LINES_AROUND_METHOD" value="2" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
     </codeStyleSettings>
+    <codeStyleSettings language="JavaScript">
+      <option name="SPACE_BEFORE_SEMICOLON" value="true" />
+    </codeStyleSettings>
+    <codeStyleSettings language="TypeScript">
+      <option name="SPACE_BEFORE_SEMICOLON" value="true" />
+    </codeStyleSettings>
     <codeStyleSettings language="XML">
       <arrangement>
         <rules>
