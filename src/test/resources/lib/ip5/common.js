@@ -114,7 +114,7 @@ function fn(config) {
             result = [],
             url;
         // @todo: essayer une étape de création avec le premier document, puis ajouter les autres documents, puis ajouter les signature détachées, puis les annexes
-        for(idxDoc=0;idxDoc<folder.documentList.length;idxDoc++) {
+        for (idxDoc = 0 ; idxDoc < folder.documentList.length ; idxDoc++) {
             // Document
             document = folder.documentList[idxDoc];
             url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id;
@@ -131,7 +131,7 @@ function fn(config) {
             }
 
             // Detached signatures
-            for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
+            for (idxDet = 0 ; idxDet < document.detachedSignatures.length ; idxDet++) {
                 detached = document.detachedSignatures[idxDet];
                 url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
                 content = karate.call('classpath:lib/ip/get.feature', { url: url });
@@ -161,7 +161,7 @@ function fn(config) {
         // @todo: du coup, on pourrait simplifier le retour
         // { files: { name: path }, detached: { name: path }, annexes: { name: path } }
         // ...teamplates.ip.ui.expect(["document_rtf.rtf"], ["document_rtf-0-signature_externe.p7s"])
-        for(idxDoc=0;idxDoc<folder.documentList.length;idxDoc++) {
+        for (idxDoc = 0 ; idxDoc < folder.documentList.length ; idxDoc++) {
             row = {};
 
             // Document
@@ -181,7 +181,7 @@ function fn(config) {
 
             // Detached signatures
             // @todo: renommer les signatures détachées ?
-            for(idxDet=0;idxDet<document.detachedSignatures.length;idxDet++) {
+            for (idxDet = 0 ; idxDet < document.detachedSignatures.length ; idxDet++) {
                 detached = document.detachedSignatures[idxDet];
                 url = "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/document/" + document.id + "/detachedSignature/" + detached.id;
                 content = karate.call('classpath:lib/ip/get.feature', { url: url });
@@ -207,9 +207,9 @@ function fn(config) {
             row = {},
             rowDataToSignList;
 
-        for (idx = 0;idx<list.length;idx++) {
+        for (idx = 0 ; idx < list.length ; idx++) {
             rowDataToSignList = [];
-            for(idxDataToSignList=0;idxDataToSignList<list[idx].dataToSignList.length;idxDataToSignList++) {
+            for (idxDataToSignList = 0 ; idxDataToSignList < list[idx].dataToSignList.length ; idxDataToSignList++) {
                 rowDataToSignList.push({
                     id: list[idx].dataToSignList[idxDataToSignList].id,
                     dataToSignBase64: list[idx].dataToSignList[idxDataToSignList].dataToSignBase64,
@@ -230,7 +230,7 @@ function fn(config) {
 
     config.ip5.utils['getDraftDocumentId'] = function (response, fileName) {
         fileName = ip.utils.file.basename(fileName);
-        for (var idx = 0;idx < response.documentList.length;idx++) {
+        for (var idx = 0 ; idx < response.documentList.length ; idx++) {
             if (fileName === response.documentList[idx].name && response.documentList[idx].id !== null) {
                 return response.documentList[idx].id;
             }

@@ -2,7 +2,7 @@
 Feature: ...
 
     Scenario: ...
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
 
         * def getState = function(action) { return action === 'Rejet' ? 'rejected' : 'finished'; }
@@ -20,7 +20,7 @@ Feature: ...
         * params["state"] = getState(__arg.action)
         * karate.log(params)
 
-        * configure driver = ip.ui.driver.configure
+        # * configure driver = ip.ui.driver.configure
         * driver baseUrl + ip5.ui.url.logout
         * ip5.ui.user.login(params.username, params.password)
 
@@ -36,5 +36,6 @@ Feature: ...
         * waitFor(ip5.ui.element.breadcrumb("Accueil / " + params.tenant + " / " + params.desktop + " / " + params.folder))
 
         #* waitFor("//strong[text()='Métadonnées']");
+        * ip.pauseMillis(300)
         * def metadatas = ip5.ui.getMetadatas()
         * match metadatas == params.metadatas

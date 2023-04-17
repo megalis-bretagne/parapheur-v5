@@ -18,12 +18,12 @@ Feature: UI subtype lib
     * waitForEnabled("#selectValidationWorkflow input").input(workflow)
     * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
     * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
-    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
-    * ip.pause(1)
+
+#    * eval if(exists(ip5.ui.locator.button("Enregistrer")) === true) waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
+
 
     # Check user creation
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
     * waitFor(ip5.ui.toast.success("Le sous-type " + name + " a été créé avec succès"))
-    * input("//input[contains(@placeholder, 'Rechercher des types')]", [name, Key.ENTER], 200)
+    * waitFor("//input[contains(@placeholder, 'Rechercher des types')]").input([name, Key.ENTER], 200)
     * waitFor("//tbody//td[contains(text(),'" + name + "')]")

@@ -17,16 +17,16 @@ Feature: UI draft lib
 #        * click("#typeSelector ng-select .ng-placeholder")
 
 #        * click(".ng-select-clearable .ng-input")
-#        * ip.pause(5)
+
 #        * click(".ng-option")
-#        * ip.pause(5)
+
 
         * waitFor("//*[@id='typeSelector']//*[@class='ng-input']").click()
         * mouse().move("#typeSelector").go();
         * waitFor("#typeSelector .ng-select-clearable .ng-input").click()
-        * ip.pause(5)
+
         * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + type + "']/ancestor::*[contains(@class, 'ng-option')]").click()
-        * ip.pause(5)
+
         * waitFor("//*[@id='subtypeSelector']").click()
         * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + subtype + "']/ancestor::*[contains(@class, 'ng-option')]").click()
-        * ip.pause(5)
+

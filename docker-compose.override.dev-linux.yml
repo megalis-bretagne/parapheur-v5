@@ -84,18 +84,20 @@ services:
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif:develop
     ports:
       - "8079:80"
 
 
   pes-viewer:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer:develop
     memswap_limit: 1536M
     ports:
       - "8888:8888"
 
 
   pdf-stamp:
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
     memswap_limit: 1G
     ports:
       - "8889:8080"
@@ -105,12 +107,14 @@ services:
 
 
   alfresco:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco:develop
     memswap_limit: 1536M
     ports:
       - "9009:8080"
 
 
   transform-core-aio:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio:develop
     ports:
       - "8090:8090"
 
@@ -123,12 +127,14 @@ services:
 
 
   postgres:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
     memswap_limit: 1G
     ports:
       - "5432:5432"
 
 
   keycloak:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
     command: start  --import-realm
     memswap_limit: 1536M
     ports:
@@ -147,7 +153,7 @@ services:
 
 
   redis:
-    image: redis:6.0-alpine
+    image: redis:6.2.1-alpine
     memswap_limit: 128M
     ports:
       - "6379:6379"
@@ -161,11 +167,13 @@ services:
 
 
   vault:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault:develop
     ports:
       - "8200:8200"
 
 
   prometheus:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus:develop
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:

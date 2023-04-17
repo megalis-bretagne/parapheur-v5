@@ -20,10 +20,10 @@ Feature: UI workflow lib
     * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
     * waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
     * waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
-    * ip.pause(1)
-    * eval if(exists(ip5.ui.locator.button("Créer le circuit")) === true) waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
-    * ip.pause(1)
+
+#    * eval if(exists(ip5.ui.locator.button("Créer le circuit")) === true) waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
+
 
     # Check workflow creation
-    * input("//input[contains(@placeholder, 'Rechercher des circuits')]", [name, Key.ENTER], 200)
+    * waitFor("//input[contains(@placeholder, 'Rechercher des circuits')]").input([name, Key.ENTER], 200)
     * waitFor("//tbody//td[normalize-space(.)='" + type + "']")
