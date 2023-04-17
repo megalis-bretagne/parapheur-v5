@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: registry.libriciel.fr/public/signature/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
     volumes:
       - ./application-core.yml:/application.yml
     ports:
@@ -37,17 +37,17 @@ services:
 
 
   web:
-    image: registry.libriciel.fr/public/signature/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
-      - VERSION=5.0.6-develop
+      - VERSION=5.0.10-develop
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif:develop
 
 
   crypto:
@@ -63,18 +63,31 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+
+
 
 
   alfresco:
-    image: registry.libriciel.fr/public/signature/ip-alfresco:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco:develop
+
+  transform-core-aio:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio:develop
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
 
+  postgres:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+
+  vault:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault:develop
+
+  prometheus:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus:develop
 
 
   smtp:
