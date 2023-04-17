@@ -282,13 +282,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      transform-core-aio:
-        condition: service_healthy
       activemq:
         condition: service_started
+      transform-custom-engine:
+        condition: service_healthy
+      transform-core-aio:
+        condition: service_healthy
     volumes:
       - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
-
 
   transform-core-aio:
     image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.0
@@ -298,6 +299,20 @@ services:
       resources:
         limits:
           memory: 1280M
+
+  transform-custom-engine:
+    image: test-ip-custom-engine:latest
+    environment:
+      JAVA_OPTS: " -Xms256m -Xmx1256m"
+      ACTIVEMQ_URL: "nio://activemq:61616"
+      ACTIVEMQ_USER: "admin"
+      ACTIVEMQ_PASSWORD: "admin"
+    restart: unless-stopped
+    tty: true
+    deploy:
+      resources:
+        limits:
+          memory: 1200M
 
 
   # solr6:

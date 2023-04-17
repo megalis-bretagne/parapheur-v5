@@ -105,6 +105,9 @@ services:
 
 
   alfresco:
+    image: test-alfresco:latest
+    extra_hosts:
+      - "transform-custom-engine:host-gateway"
     memswap_limit: 1536M
     ports:
       - "9009:8080"
@@ -114,6 +117,9 @@ services:
     ports:
       - "8090:8090"
 
+  transform-custom-engine:
+    ports:
+      - "25000:8090"
 
   #solr6:
   #  #mem_limit: 1536M
