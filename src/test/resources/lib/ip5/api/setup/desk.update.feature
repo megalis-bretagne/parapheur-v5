@@ -8,7 +8,7 @@ Feature: Desk setup lib
         * def deskId = ip5.api.v1.desk.getIdByName(tenantId, name)
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/desk/', deskId
+            And path '/api/provisioning/v1/admin/tenant/', tenantId, '/desk/', deskId
             And header Accept = 'application/json'
             And request payload
         When method PUT
