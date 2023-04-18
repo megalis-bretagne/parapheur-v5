@@ -299,7 +299,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1280M
+          memory: 1G
 
 
   transform-engine-extractor:
@@ -315,7 +315,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 800M
+          memory: 1G
 
 
   # solr6:
