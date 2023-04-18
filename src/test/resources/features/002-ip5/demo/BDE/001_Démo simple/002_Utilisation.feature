@@ -327,7 +327,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         # @todo: il faudrait vérifier que l'on a bien téléchargé des fichiers PDF
         * waitFor("//button[@name='secondary_actions_button']").click()
         * waitFor("//a[@name='secondary_actions_menu_link_print']").click()
-        * waitFor("{^}Ajouter le bordereau de signature").click()
+        * waitFor("//input[@id='includeDocket']").click()
         * waitFor("//button[@name='perform_action_print']").click()
         * waitFor("{^}Annuler").click()
         * waitForResultCount("//button[@name='perform_action_print']", 0)
