@@ -117,9 +117,9 @@ services:
     ports:
       - "8090:8090"
 
-  transform-custom-engine:
+  libriciel-transform-engine:
     ports:
-      - "25000:8090"
+      - "9010:8090"
 
   #solr6:
   #  #mem_limit: 1536M
