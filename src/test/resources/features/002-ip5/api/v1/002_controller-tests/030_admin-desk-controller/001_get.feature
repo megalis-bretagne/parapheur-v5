@@ -14,7 +14,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -34,7 +34,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk'
+            And path '/api/provisioning/v1/admin/tenant/', nonExistingTenantId, '/desk'
             And header Accept = 'application/json'
         When method GET
         Then status <status>
@@ -56,7 +56,7 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/desk (List desks)
         * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/desk'
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/desk'
             And header Accept = 'application/json'
             And param sort = '<sort>,<direction>'
             And param searchTerm = '<searchTerm>'
