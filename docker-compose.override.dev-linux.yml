@@ -105,9 +105,7 @@ services:
 
 
   alfresco:
-    image: test-alfresco:latest
-    extra_hosts:
-      - "transform-custom-engine:host-gateway"
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco:develop
     memswap_limit: 1536M
     ports:
       - "9009:8080"

@@ -286,10 +286,11 @@ services:
         condition: service_started
       transform-core-aio:
         condition: service_healthy
-      libriciel-transform-engine:
+      transform-engine-extractor:
         condition: service_healthy
     volumes:
       - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
+
 
   transform-core-aio:
     image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.0
@@ -300,9 +301,12 @@ services:
         limits:
           memory: 1280M
 
-  libriciel-transform-engine:
-    image: libriciel-transform-engine:latest
+
+  transform-engine-extractor:
+    #FIXME
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-engine-extractor:latest
     environment:
+      #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
       ACTIVEMQ_USER: "admin"
       ACTIVEMQ_PASSWORD: "admin"
@@ -311,7 +315,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1200M
+          memory: 800M
 
 
   # solr6:
