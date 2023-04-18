@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:provisioning-desk-lib
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
     volumes:
       - ./application-core.yml:/application.yml
     ports:
@@ -37,7 +37,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:provisioning-desk-lib
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
       - VERSION=5.0.10-develop
 
