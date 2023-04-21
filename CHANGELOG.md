@@ -7,6 +7,37 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.11] - 2023-04-21
+[5.0.11]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.11.tar.gz
+
+### Ajouts
+
+- Label générique lors d'une action multiple groupée (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/732)
+- Suppression automatique des espaces dans les formulaires de création (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/900 & https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/898)
+- API de provisioning
+
+### Corrections
+
+- Redirection lors d'une action groupée
+- Reconnaissance du Mimetype d'une PJ PES
+- Injection de métadonnées
+- Métadonnée dans un script de sélection
+- Tag et emplacements de signature
+- Suffixe de la signature CAdES générée
+- Suppression d'une absence
+- Labels
+- Dossier de preuve lors d'un envoi à la corbeille
+- Détection du tag sur une signature externe
+- Mise à jour du header
+
+### Suppressions
+
+- Bouton en double
+
+### Patch
+- Version 3.0 de de partie client-natif de Libersign
+
+
 ## [5.0.10] - 2023-03-30
 [5.0.10]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.10.tar.gz
 

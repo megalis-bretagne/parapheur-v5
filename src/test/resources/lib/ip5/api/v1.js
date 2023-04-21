@@ -197,7 +197,7 @@ function fn(config) {
     config.ip5.api.v1.desk['getById'] = function (tenantId, deskId) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/desk/' + deskId)
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/desk/' + deskId)
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .get();
