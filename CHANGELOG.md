@@ -7,14 +7,15 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.11] - 2023-04-21
+## [5.0.11] - 2023-04-25
 [5.0.11]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.11.tar.gz
 
 ### Ajouts
 
-- Label générique lors d'une action multiple groupée (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/732)
-- Suppression automatique des espaces dans les formulaires de création (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/900 & https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/898)
+- Label générique lors d'une action multiple groupée
+- Suppression automatique des espaces dans les formulaires de création
 - API de provisioning
+- Mise à jour des compteurs de dossiers par WebSocket
 
 ### Corrections
 
@@ -29,6 +30,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Dossier de preuve lors d'un envoi à la corbeille
 - Détection du tag sur une signature externe
 - Mise à jour du header
+- Notifications groupées
 
 ### Suppressions
 
