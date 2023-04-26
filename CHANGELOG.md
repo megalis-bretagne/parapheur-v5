@@ -31,6 +31,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Détection du tag sur une signature externe
 - Mise à jour du header
 - Notifications groupées
+- Affichage du bureau émetteur dans l'aperçu du sous-type
 
 ### Suppressions
 
