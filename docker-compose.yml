@@ -286,7 +286,7 @@ services:
         condition: service_started
       transform-core-aio:
         condition: service_healthy
-      transform-engine-extractor:
+      libriciel-engine-extractors:
         condition: service_healthy
     volumes:
       - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
@@ -302,7 +302,7 @@ services:
           memory: 1G
 
 
-  transform-engine-extractors:
+  libriciel-engine-extractors:
     #FIXME
     image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:canary
     environment:
