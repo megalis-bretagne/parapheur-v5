@@ -302,14 +302,12 @@ services:
           memory: 1G
 
 
-  transform-engine-extractor:
+  transform-engine-extractors:
     #FIXME
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-engine-extractor:latest
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:canary
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
-      ACTIVEMQ_USER: "admin"
-      ACTIVEMQ_PASSWORD: "admin"
     restart: unless-stopped
     tty: true
     deploy:
