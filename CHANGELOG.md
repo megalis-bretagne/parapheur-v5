@@ -7,12 +7,22 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.13] - 2023-05-09
+[5.0.13]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.13.tar.gz
+
+### Corrections
+
+- Labels rétrocompatibles de signature externe via SOAP
+- Marqueur "Lu" sur un dossier
+
+
 ## [5.0.12] - 2023-04-28
 [5.0.12]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.12.tar.gz
 
 ### Corrections
 
 - Rollback de Libersign
+
 
 ## [5.0.11] - 2023-04-25
 [5.0.11]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.11.tar.gz
