@@ -231,7 +231,7 @@ function fn(config) {
             folderCreationAllowed: permissions['creation'] === undefined ? false : permissions['creation'],
             linkedDeskboxIds: [],
             name: name,
-            ownerUserIdsList: owners,
+            ownerIds: owners,
             parentDeskId: parent === '' ? null : ip5.api.v1.desk.getIdByName(tenantId, parent),
             shortName: shortName,
             supervisorIdsList: []
