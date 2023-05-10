@@ -361,7 +361,7 @@ services:
 
 
   redis:
-    image: hubdocker.libriciel.fr/redis:6.2.1-alpine
+    image: hubdocker.libriciel.fr/redis:6.2.12-alpine
     restart: unless-stopped
     tty: true
     deploy:
