@@ -231,7 +231,7 @@ function fn(config) {
             folderCreationAllowed: permissions['creation'] === undefined ? false : permissions['creation'],
             linkedDeskboxIds: [],
             name: name,
-            ownerUserIdsList: owners,
+            ownerIds: owners,
             parentDeskId: parent === '' ? null : ip5.api.v1.desk.getIdByName(tenantId, parent),
             shortName: shortName,
             supervisorIdsList: []
@@ -526,13 +526,48 @@ function fn(config) {
         }
     };
 
+
     config.ip5.api.v1.user['updateCurrentUserNotificationFrequency'] = function (notifFrequency) {
-        let userData = ip5.api.v1.user.getCurrentUserData();
+        let userData = ip5.api.v1.userPref.getCurrentUserPreferences();
         userData.notificationsCronFrequency = notifFrequency;
-        ip5.api.v1.user.update(userData);
+        ip5.api.v1.userPref.update(userData);
     };
 
 
+    /**
+     * User preferences
+     */
+
+    config.ip5.api.v1['userPref'] = {};
+    config.ip5.api.v1.userPref['getCurrentUserPreferences'] = function () {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/currentUser/preferences')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
+            .get();
+
+        if (response.status !== 200) {
+            karate.fail('Got status code ' + response.status + ' while getting current user');
+        }
+
+        return response.body;
+    };
+
+    config.ip5.api.v1.userPref['update'] = function (userPrefObject) {
+        response = karate
+            .http(baseUrl)
+            .path('/api/v1/currentUser/preferences')
+            .header('Accept', 'application/json')
+            .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
+            .put(userPrefObject);
+
+        if (response.status !== 200 && response.status !== 201) {
+            karate.fail('Got status code ' + response.status + ' while setting current user\'s preferences');
+        }
+    };
+
+    
     /*
     --
     */
