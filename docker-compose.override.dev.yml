@@ -29,7 +29,7 @@
 services:
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:reserved-metadata-allowed
     volumes:
       - ./application-core.yml:/application.yml
     ports:
@@ -63,7 +63,7 @@ services:
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:reserved-metadata-allowed
 
 
 
