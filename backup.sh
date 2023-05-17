@@ -56,7 +56,7 @@ __main__() {
 
   printf "Shutting down iparapheur -\n"
   cd /opt/iparapheur/current
-  docker compose down -v
+  docker compose down -v --remove-orphans
 
   printf "Starting databases -\n"
   docker compose up -d postgres matomo-db
