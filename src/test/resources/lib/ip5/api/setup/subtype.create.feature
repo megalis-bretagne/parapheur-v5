@@ -93,7 +93,7 @@ function(payload, defaults) {
         * def payload = cleanupPayload(payload, defaults);
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
+            And path '/api/provisioning/v1/admin/tenant/', tenantId, '/typology/type/', typeId, '/subtype'
             And header Accept = 'application/json'
             And request payload
         When method POST
