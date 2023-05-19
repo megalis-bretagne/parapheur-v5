@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-user-controller
-Feature: DELETE /api/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
+Feature: DELETE /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/signatureImage (Delete user's signature image)
 
     Background:
         * ip5.api.v1.auth.login('user', adminUserPwd)

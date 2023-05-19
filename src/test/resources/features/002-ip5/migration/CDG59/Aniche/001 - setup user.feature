@@ -18,7 +18,7 @@ Feature: Vérification de l'entité "CDG59/Aniche" et ajout de user à celle-ci 
 
         # Association de l'utilisateur à l'entité
         Given url baseUrl
-            And path "/api/v1/admin/user/" + userId + "/tenant/" + tenantId
+            And path "/api/provisioning/v1/admin/user/" + userId + "/tenant/" + tenantId
             And header Accept = "application/json"
         When method PUT
         Then status 200
