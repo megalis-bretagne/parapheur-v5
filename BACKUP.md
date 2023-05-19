@@ -18,7 +18,7 @@ Move the previous data away, if needed
 ```bash
 # Remove the .env file
 cd /opt/iparapheur/current
-sudo docker compose down -v
+sudo docker compose down -v --remove-orphans
 mv .env .env_$(date '+%Y-%m-%d_%H-%M').bak
 
 # Remove the data folder

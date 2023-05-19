@@ -13,7 +13,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * def existingDeskData = ip5.api.v1.desk.getById(existingTenantId, existingDeskId)
         * existingDeskData['associatedDeskIdsList'] = []
         * existingDeskData['filterableMetadataIdsList'] = []
-        * existingDeskData['ownerUserIdsList'] = []
+        * existingDeskData['ownerIds'] = []
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit an existing desk from an existing tenant', status)}

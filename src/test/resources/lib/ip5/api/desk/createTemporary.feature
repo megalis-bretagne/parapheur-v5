@@ -15,7 +15,7 @@ Feature: Desk lib
     "filterableSubtypeIdsList":[],
     "folderCreationAllowed": true,
     "linkedDeskboxIds":[],
-    "ownerUserIdsList": [],
+    "ownerIds": [],
     "name": "#(name)",
     "shortName": "#(name)",
     "description": "#(description)",
