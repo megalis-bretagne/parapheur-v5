@@ -104,7 +104,9 @@ variables:
     name: Partenaires
     url: https://${PARTNER_TARGET_SERVER_URL}
 
+
 # <editor-fold desc="Package">
+
 
 .prepare-package: &prepare-package
   script:
@@ -194,7 +196,6 @@ publish:
   - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
   - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILE} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
 
-
 .deploying-app: &deploying-app
   - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
   - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
@@ -207,7 +208,6 @@ publish:
   - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
   - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
   - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
-
 
 .deploy-job:
   variables:

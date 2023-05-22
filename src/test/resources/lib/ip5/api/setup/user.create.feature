@@ -10,7 +10,7 @@
         * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/user'
+            And path '/api/provisioning/v1/admin/tenant/', tenantId, '/user'
             And header Accept = 'application/json'
             And request
 """
@@ -33,7 +33,7 @@
 
         # @fixme: complementaryField, bien que fourni, sauvegarde une valeur null
         Given url baseUrl
-            And path '/api/v1/admin/user/' + userId
+            And path '/api/provisioning/v1/admin/user/' + userId
             And header Accept = 'application/json'
             And request
 """

@@ -13,14 +13,14 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * def existingDeskData = ip5.api.v1.desk.getById(existingTenantId, existingDeskId)
         * existingDeskData['associatedDeskIdsList'] = []
         * existingDeskData['filterableMetadataIdsList'] = []
-        * existingDeskData['ownerUserIdsList'] = []
+        * existingDeskData['ownerIds'] = []
 
     @permissions
     Scenario Outline: ${ip5.scenario.title.permissions(role, 'edit an existing desk from an existing tenant', status)}
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId
             And header Accept = 'application/json'
             And request existingDeskData
         When method PUT
@@ -41,7 +41,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk/', existingDeskId
+            And path '/api/provisioning/v1/admin/tenant/', nonExistingTenantId, '/desk/', existingDeskId
             And header Accept = 'application/json'
             And request existingDeskData
         When method PUT
@@ -61,7 +61,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/desk/', nonExistingDeskId
             And header Accept = 'application/json'
             And request existingDeskData
         When method PUT
@@ -84,7 +84,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/desk/', nonExistingDeskId
+            And path '/api/provisioning/v1/admin/tenant/', nonExistingTenantId, '/desk/', nonExistingDeskId
             And header Accept = 'application/json'
             And request existingDeskData
         When method PUT
@@ -106,7 +106,7 @@ Feature: PUT /api/v1/admin/tenant/{tenantId}/desk/{deskId} (Edit desk)
         * requestData[field] = ip.utils.eval(value)
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/desk/', existingDeskId
             And header Accept = 'application/json'
             And request requestData
 

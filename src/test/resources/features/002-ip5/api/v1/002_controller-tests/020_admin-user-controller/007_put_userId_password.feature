@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-user-controller
-Feature: PUT /api/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
+Feature: PUT /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/password (Update user password)
 
     Background:
         * ip5.api.v1.auth.login('user', adminUserPwd)

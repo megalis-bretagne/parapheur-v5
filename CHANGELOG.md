@@ -7,6 +7,82 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.14] - pending
+[5.0.14]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.14.tar.gz
+
+### Ajouts
+
+- Injection de métadonnées techniques sans avoir à les créer
+
+### Corrections
+
+- Actions sur un dossier
+- Annotations au démarrage d'un dossier
+- Permissions via Pastell
+- Champs de Recherche
+- Dissociation d'un utilisateur
+- Historique des évènements dans l'API SOAP
+- Locale et Timezone
+- Labels
+- Suppression d'un tenant
+- Suppression d'un dossier par un administrateur fonctionnel
+
+### Suppressions
+
+- Actions instantanées dans la popup d'édition des bureaux
+
+
+## [5.0.13] - 2023-05-09
+[5.0.13]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.13.tar.gz
+
+### Corrections
+
+- Labels rétrocompatibles de signature externe via SOAP
+- Marqueur "Lu" sur un dossier
+
+
+## [5.0.12] - 2023-04-28
+[5.0.12]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.12.tar.gz
+
+### Corrections
+
+- Rollback de Libersign
+
+
+## [5.0.11] - 2023-04-25
+[5.0.11]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.11.tar.gz
+
+### Ajouts
+
+- Label générique lors d'une action multiple groupée
+- Suppression automatique des espaces dans les formulaires de création
+- API de provisioning
+- Mise à jour des compteurs de dossiers par WebSocket
+
+### Corrections
+
+- Redirection lors d'une action groupée
+- Reconnaissance du Mimetype d'une PJ PES
+- Injection de métadonnées
+- Métadonnée dans un script de sélection
+- Tag et emplacements de signature
+- Suffixe de la signature CAdES générée
+- Suppression d'une absence
+- Labels
+- Dossier de preuve lors d'un envoi à la corbeille
+- Détection du tag sur une signature externe
+- Mise à jour du header
+- Notifications groupées
+- Affichage du bureau émetteur dans l'aperçu du sous-type
+
+### Suppressions
+
+- Bouton en double
+
+### Patch
+- Version 3.0 de de partie client-natif de Libersign
+
+
 ## [5.0.10] - 2023-03-30
 [5.0.10]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.10.tar.gz
 

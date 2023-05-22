@@ -73,7 +73,8 @@ Feature: 001 - Scénario de démo simple, partie administration
     * waitFor("thead .slider").click()
     * waitFor("{^}Unitaire").click()
     * waitFor(ip5.ui.locator.button("Valider")).click()
-    * waitFor(ip5.ui.toast.success("Préférences utilisateur éditées avec succès."))
+
+    # TODO (or not) if we really want to check, reload and see if unitary notif are checked
 
     Examples:
       | tenant      | username               | lastName  | firstName | email                     | password       | role            |

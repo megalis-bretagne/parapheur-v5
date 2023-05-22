@@ -23,7 +23,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/desk (Create a new desk)
 	"filterableSubtypeIdsList":[],
 	"folderCreationAllowed": true,
 	"linkedDeskboxIds":[],
-	"ownerUserIdsList": [],
+	"ownerIds": [],
     "name": "#(unique)",
     "shortName": "#(unique)",
     "description": "#(description)",

@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-user-controller
-Feature: GET /api/v1/admin/tenant/{tenantId}/user (List users)
+Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user (List users)
 
 	Background:
 		* ip5.api.v1.auth.login('user', adminUserPwd)

@@ -15,7 +15,7 @@ Feature: Desk lib
     "filterableSubtypeIdsList":[],
     "folderCreationAllowed": true,
     "linkedDeskboxIds":[],
-    "ownerUserIdsList": [],
+    "ownerIds": [],
     "name": "#(name)",
     "shortName": "#(name)",
     "description": "#(description)",
@@ -24,7 +24,7 @@ Feature: Desk lib
 """
 
     Given url baseUrl
-        And path '/api/v1/admin/tenant/', tenantId, '/desk'
+        And path '/api/provisioning/v1/admin/tenant/', tenantId, '/desk'
         And header Accept = 'application/json'
         And request requestData
     When method POST

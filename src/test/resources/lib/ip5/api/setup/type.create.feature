@@ -20,7 +20,7 @@ Feature: Type setup lib
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/typology/type'
+            And path '/api/provisioning/v1/admin/tenant/', tenantId, '/typology/type'
             And header Accept = 'application/json'
             And request payload
         When method POST
