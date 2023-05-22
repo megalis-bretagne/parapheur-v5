@@ -182,7 +182,7 @@ services:
 
 
   libersign:
-    image: registry.libriciel.fr/public/signature/libersign:1.11.4
+    image: registry.libriciel.fr/public/signature/libersign:3.0.1
     restart: unless-stopped
     tty: true
     deploy:
