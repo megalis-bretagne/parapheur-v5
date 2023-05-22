@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-typology-controller
-Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
+Feature: POST /api/provisioning/v1/admin/tenant/{tenantId}/typology/type (Create type)
 
     Background:
         * ip5.api.v1.auth.login('user', adminUserPwd)
@@ -15,7 +15,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/typology/type'
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/typology/type'
             And header Accept = 'application/json'
             And request
 """
@@ -51,7 +51,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
         * ip5.api.v1.auth.login('<username>', '<password>')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', nonExistingTenantId, '/typology/type'
+            And path '/api/provisioning/v1/admin/tenant/', nonExistingTenantId, '/typology/type'
             And header Accept = 'application/json'
             And request
 """
@@ -96,7 +96,7 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type (Create type)
         * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', existingTenantId, '/typology/type'
+            And path '/api/provisioning/v1/admin/tenant/', existingTenantId, '/typology/type'
             And header Accept = 'application/json'
             And request requestData
 

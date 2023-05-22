@@ -658,7 +658,7 @@ function fn(config) {
     config.ip5.api.v1.type['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/typology')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)
@@ -683,7 +683,7 @@ function fn(config) {
     config.ip5.api.v1.subtype['getIdByName'] = function (tenantId, typeId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/typology/type/' + typeId + '/subtype')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/typology/type/' + typeId + '/subtype')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)

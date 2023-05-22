@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-user-controller
-Feature: GET /api/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user's desks)
+Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/desks (Get a single user's desks)
 
     Background:
         * ip5.api.v1.auth.login('user', adminUserPwd)

@@ -7,7 +7,7 @@ Feature: Tenant user associate setup lib
         * def userId = ip5.api.v1.user.getIdByEmail(defaultTenantId, email)
 
         Given url baseUrl
-            And path '/api/v1/admin/user/', userId, '/tenant/', tenantId
+            And path '/api/provisioning/v1/admin/user/', userId, '/tenant/', tenantId
             And header Accept = 'application/json'
             And request
 """
