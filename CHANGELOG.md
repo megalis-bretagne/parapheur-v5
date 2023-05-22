@@ -7,6 +7,31 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.14] - pending
+[5.0.14]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.14.tar.gz
+
+### Ajouts
+
+- Injection de métadonnées techniques sans avoir à les créer
+
+### Corrections
+
+- Actions sur un dossier
+- Annotations au démarrage d'un dossier
+- Permissions via Pastell
+- Champs de Recherche
+- Dissociation d'un utilisateur
+- Historique des évènements dans l'API SOAP
+- Locale et Timezone
+- Labels
+- Suppression d'un tenant
+- Suppression d'un dossier par un administrateur fonctionnel
+
+### Suppressions
+
+- Actions instantanées dans la popup d'édition des bureaux
+
+
 ## [5.0.13] - 2023-05-09
 [5.0.13]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.13.tar.gz
 
