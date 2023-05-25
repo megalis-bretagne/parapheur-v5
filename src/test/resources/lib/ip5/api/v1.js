@@ -480,7 +480,7 @@ function fn(config) {
     config.ip5.api.v1.user['getIdByEmail'] = function (tenantId, email, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/user')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/user')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', email)
@@ -658,7 +658,7 @@ function fn(config) {
     config.ip5.api.v1.type['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/typology')
+            .path('/api/internal/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)

@@ -62,16 +62,13 @@ function(payload, defaults) {
     "creationPermittedDeskIds": null,
     "creationWorkflowId": null,
     "digitalSignatureMandatory": false,
-    "externalSignatureConfig": {},
     "externalSignatureConfigId": null,
     "filterableByDeskIds": null,
-    "ipngTypeKeys": [],
     "multiDocuments": false,
     "name": "",
     "sealCertificateId": "",
     "secureMailServerId": "",
-    "subtypeLayerList": [],
-    "subtypeLayerRequestList": [],
+    "subtypeLayers": [],
     "subtypeMetadataList": [],
     "validationWorkflowId": "",
     "workflowSelectionScript": ""
@@ -85,7 +82,7 @@ function(payload, defaults) {
         * payload['externalSignatureConfigId'] = ip.utils.isEmpty(payload['externalSignatureConfigId']) ? null : ip5.api.v1.externalSignature.getIdByName(tenantId, payload['externalSignatureConfigId'])
         * payload['sealCertificateId'] = ip.utils.isEmpty(payload['sealCertificateId']) ? null : ip5.api.v1.sealCertificate.getIdByName(tenantId, payload['sealCertificateId'])
         * payload['secureMailServerId'] = ip.utils.isEmpty(payload['secureMailServerId']) ? null : ip5.api.v1.secureMailServer.getIdByName(tenantId, payload['secureMailServerId'])
-        * payload['subtypeLayerList'] = ip.utils.isEmpty(payload['subtypeLayerList']) ? [] : prepareSubtypeLayerList(tenantId, payload['subtypeLayerList'])
+        * payload['subtypeLayers'] = ip.utils.isEmpty(payload['subtypeLayerList']) ? [] : prepareSubtypeLayerList(tenantId, payload['subtypeLayerList'])
         * payload['subtypeMetadataList'] = replaceMetadataKeyById(tenantId, payload['subtypeMetadataList'])
         * payload['validationWorkflowId'] = ip.utils.isEmpty(payload['validationWorkflowId']) ? null : ip5.api.v1.workflow.getKeyByName(tenantId, payload['validationWorkflowId'])
         * payload['workflowSelectionScript'] = ip.utils.isEmpty(payload['workflowSelectionScript']) ? '' : karate.readAsString(payload['workflowSelectionScript'])
