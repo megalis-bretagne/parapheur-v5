@@ -1,5 +1,5 @@
 @api @ip5 @ip-core @api-v1 @admin-typology-controller
-Feature: POST /api/v1/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
+Feature: POST /api/provisioning/v1/admin/tenant/{tenantId}/typology/type/{typeId}/subtype (Create subtype)
 
     Background:
         * ip5.api.v1.auth.login('user', adminUserPwd)
