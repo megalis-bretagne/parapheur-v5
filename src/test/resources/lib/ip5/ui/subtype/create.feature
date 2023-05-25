@@ -24,6 +24,6 @@ Feature: UI subtype lib
 
     # Check user creation
     * waitFor(ip5.ui.element.breadcrumb("Administration / " + tenant + " / Typologie des dossiers"))
-    * waitFor(ip5.ui.toast.success("Le sous-type " + name + " a été créé avec succès"))
+    * waitFor(ip5.ui.toast.success("Le sous-type a été créé avec succès"))
     * waitFor("//input[contains(@placeholder, 'Rechercher des types')]").input([name, Key.ENTER], 200)
     * waitFor("//tbody//td[contains(text(),'" + name + "')]")
