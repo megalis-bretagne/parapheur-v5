@@ -13,12 +13,13 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Ajouts
 
 - Injection de métadonnées techniques sans avoir à les créer
+- Champs de recherche dans l'administration
+- Limite du nombre de caractère dans le champ libre de l'utilisateur
 
 ### Corrections
 
 - Actions sur un dossier
 - Annotations au démarrage d'un dossier
-- Permissions via Pastell
 - Champs de Recherche
 - Dissociation d'un utilisateur
 - Historique des évènements dans l'API SOAP
@@ -26,10 +27,17 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Labels
 - Suppression d'un tenant
 - Suppression d'un dossier par un administrateur fonctionnel
+- Connexion avec Pastell
+- Récupération des types par Pastell
+- Permissions via Pastell
+- Unification des labels dans la visionneuse de dossiers
+- Dissociation d'un utilisateur d'une entité
+- Édition d'un utilisateur
 
 ### Suppressions
 
 - Actions instantanées dans la popup d'édition des bureaux
+- Bouton d'envoi à la corbeille pour un utilisateur sans droit approprié
 
 
 ## [5.0.13] - 2023-05-09
