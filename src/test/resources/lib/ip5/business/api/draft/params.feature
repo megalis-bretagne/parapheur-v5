@@ -18,7 +18,6 @@ Feature: IP v.5 REST draft lib
         When method GET
         Then status 200
         * def subtype = karate.jsonPath(response, "$.content[?(@.name=='" + __arg.subtype + "')]")[0]
-        * karate.log(subtype)
         * def path = "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/draft"
 
         # @todo: defaults + merge des champs nécessaires
