@@ -1,6 +1,6 @@
 {
   "total": "#number",
-  "data": "#[] #(schemas.tenant.index_element)",
+  "content": "#[] #(schemas.tenant.index_element)",
   "size": "#number",
   "page": "#number"
 }
