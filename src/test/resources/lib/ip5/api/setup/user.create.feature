@@ -3,10 +3,11 @@
 
     Scenario: Create user
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
+        * def associatedTenantIds = [tenantId]
         * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
         * def administeredDeskName = __row['administeredDesk'];
         * def administeredDeskId = ip.utils.isNullOrEmpty(administeredDeskName) ? null : ip5.api.v1.desk.getIdByName(tenantId, administeredDeskName);
-        * def administeredDesks = administeredDeskId === null ? [] : [{id: administeredDeskId, name: administeredDeskName}]
+        * def administeredDesks = administeredDeskId === null ? [] : [administeredDeskId]
         * def complementaryField = ip.utils.isEmpty(__row['complementaryField']) === undefined ? null : __row['complementaryField']
 
         Given url baseUrl
@@ -23,7 +24,8 @@
     complementaryField: '#(complementaryField)',
     privilege: '#(privilege)',
     notificationsCronFrequency: '#(notificationsCronFrequency)',
-    administeredDesks: '#(administeredDesks)'
+    administeredDeskIds: '#(administeredDesks)',
+    associatedTenantIds: '#(associatedTenantIds)'
 }
 """
             When method POST
@@ -33,7 +35,7 @@
 
         # @fixme: complementaryField, bien que fourni, sauvegarde une valeur null
         Given url baseUrl
-            And path '/api/provisioning/v1/admin/user/' + userId
+      And path '/api/provisioning/v1/admin/tenant/', tenantId, '/user/' + userId
             And header Accept = 'application/json'
             And request
 """
@@ -46,7 +48,8 @@
     complementaryField: '#(complementaryField)',
     privilege: '#(privilege)',
     notificationsCronFrequency: '#(notificationsCronFrequency)',
-    administeredDesks: '#(administeredDesks)'
+    administeredDesks: '#(administeredDesks)',
+    associatedTenantIds: '#(associatedTenantIds)'
 }
 """
         When method PUT
