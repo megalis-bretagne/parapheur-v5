@@ -16,6 +16,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Champs de recherche dans l'administration
 - Limite du nombre de caractère dans le champ libre de l'utilisateur
 
+### Modifications
+- Intégration de Libersign v3
+
+
 ### Corrections
 
 - Actions sur un dossier
@@ -33,6 +37,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Unification des labels dans la visionneuse de dossiers
 - Dissociation d'un utilisateur d'une entité
 - Édition d'un utilisateur
+- Notifications groupées
 
 ### Suppressions
 
