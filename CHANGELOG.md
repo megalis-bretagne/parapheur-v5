@@ -7,7 +7,7 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.14] - pending
+## [5.0.14] - 31/05/2023
 [5.0.14]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.14.tar.gz
 
 ### Ajouts
@@ -15,10 +15,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Injection de métadonnées techniques sans avoir à les créer
 - Champs de recherche dans l'administration
 - Limite du nombre de caractère dans le champ libre de l'utilisateur
-
-### Modifications
-- Intégration de Libersign v3
-
+- Libersign v3
 
 ### Corrections
 
