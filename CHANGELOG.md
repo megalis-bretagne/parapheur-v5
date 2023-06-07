@@ -14,7 +14,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Injection de métadonnées techniques sans avoir à les créer
 - Champs de recherche dans l'administration
-- Limite du nombre de caractère dans le champ libre de l'utilisateur
+- Limite du nombre de caractères dans le champ libre de l'utilisateur
 - Libersign v3
 
 ### Corrections
