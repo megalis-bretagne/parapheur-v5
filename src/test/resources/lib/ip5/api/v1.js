@@ -242,7 +242,7 @@ function fn(config) {
     config.ip5.api.v1.desk['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/desk')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/desk')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)
@@ -330,7 +330,7 @@ function fn(config) {
             karate.fail('Got status code ' + response.status + ' while getting desk id by its tenantId and deskId');
         }
 
-        response.body.data.forEach(tenant => result.push(tenant));
+        response.body.content.forEach(tenant => result.push(tenant));
 
         return result;
     };
@@ -466,7 +466,7 @@ function fn(config) {
     config.ip5.api.v1.user['getById'] = function (tenantId, userId) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/user/' + userId)
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/user/' + userId)
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .get();
@@ -480,7 +480,7 @@ function fn(config) {
     config.ip5.api.v1.user['getIdByEmail'] = function (tenantId, email, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/user')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/user')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', email)
@@ -658,7 +658,7 @@ function fn(config) {
     config.ip5.api.v1.type['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/typology')
+            .path('/api/internal/admin/tenant/' + tenantId + '/typology')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)
