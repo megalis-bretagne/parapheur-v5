@@ -7,18 +7,15 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.14] - pending
+## [5.0.14] - 2023-05-31
 [5.0.14]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.14.tar.gz
 
 ### Ajouts
 
 - Injection de métadonnées techniques sans avoir à les créer
 - Champs de recherche dans l'administration
-- Limite du nombre de caractère dans le champ libre de l'utilisateur
-
-### Modifications
-- Intégration de Libersign v3
-
+- Limite du nombre de caractères dans le champ libre de l'utilisateur
+- Libersign v3
 
 ### Corrections
 
