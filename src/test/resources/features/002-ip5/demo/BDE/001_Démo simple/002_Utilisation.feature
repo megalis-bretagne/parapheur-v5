@@ -75,7 +75,11 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor("{^button}Actions").click()
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::a[contains(@class, 'dropdown')]").click()
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", "demande d'avis complémentaire", name)
-        # @todo: sélection du bureau (ici, il n'y en a qu'un seul, donc pré-sélectionné)
+        # @todo: this hardcoded value is not very nice
+        * def desk = 'DGS'
+        # @fixme: There should be a correct id on the desk selector, this 'validator' value is present on every desk selctor and should not be used
+        * input("//*[@id='validator']//input[@type='text']", desk)
+        * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         #* waitFor(ip5.ui.toast.success("avis complémentaire a été effectuée avec succès"))
