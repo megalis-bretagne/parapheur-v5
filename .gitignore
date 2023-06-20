@@ -267,6 +267,11 @@ hs_err_pid*
 ### iparapheur
 ### Project-specific files
 
+.idea/dataSources.xml
+.idea/jpa-buddy-datasource.xml
+.idea/jpa-buddy.xml
+.idea/GitlabLint.xml
+
 docker-compose.override.instance-*
 data*/*
 !.gitkeep
