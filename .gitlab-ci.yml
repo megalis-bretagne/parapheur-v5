@@ -40,71 +40,6 @@ variables:
   DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG: ""
 
 
-.e2e-test-config:
-  variables: &e2e-test-config
-    TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "TRUE"
-    OVERWRITE_ADMIN_PASSWORD: "TRUE"
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment: &e2e-test-environment
-    name: Charge/Tests e2e
-    url: https://charge.iparapheurubu22-5-0.recette.libriciel.net
-
-.acceptance-config:
-  variables: &acceptance-config
-    TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &acceptance-environment
-    name: Recette
-    url: https://iparapheurubu22-5-0.recette.libriciel.net
-
-.dev-config:
-  variables: &dev-config
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment: &dev-environment
-    name: Dev
-    url: https://iparapheur-5-0.dev.libriciel.net
-
-.formation-config:
-  variables: &formation-config
-    TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &formation-environment
-    name: Formation
-    url: https://iparapheur.formation.libriciel.fr
-
-.test-config:
-  variables: &test-config
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &test-environment
-    name: Test
-    url: https://iparapheur-5-0.test.libriciel.net
-
-.partner-config:
-  variables: &partner-config
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
-    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &partner-environment
-    name: Partenaires
-    url: https://iparapheur-5-0.partenaire.libriciel.fr
-
-
 # <editor-fold desc="Package">
 
 
@@ -241,8 +176,17 @@ strict-e2e-tests-deploy:
         OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG}
     - when: manual
   allow_failure: false
-  variables: *e2e-test-config
-  environment: *e2e-test-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "TRUE"
+    OVERWRITE_ADMIN_PASSWORD: "TRUE"
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+  environment:
+    name: Charge/Tests e2e
+    url: https://charge.iparapheurubu22-5-0.recette.libriciel.net
 
 #tolerant-e2e-tests-deploy:
 #  extends: [ .deploy-job ]
@@ -275,8 +219,14 @@ acceptance-deploy:
     - if: $CI_COMMIT_TAG != null
       when: always
     - when: manual
-  variables: *acceptance-config
-  environment: *acceptance-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment:
+    name: Recette
+    url: https://iparapheurubu22-5-0.recette.libriciel.net
 
 dev-deploy:
   extends: [ .deploy-job ]
@@ -287,8 +237,15 @@ dev-deploy:
     - if: $NIGHTLY == "TRUE"
       when: always
     - when: manual
-  variables: *dev-config
-  environment: *dev-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+  environment:
+    name: Dev
+    url: https://iparapheur-5-0.dev.libriciel.net
 
 formation-deploy:
   extends: [ .deploy-job ]
@@ -299,8 +256,14 @@ formation-deploy:
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *formation-config
-  environment: *formation-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment:
+    name: Formation
+    url: https://iparapheur.formation.libriciel.fr
 
 test-deploy:
   extends: [ .deploy-job ]
@@ -311,8 +274,14 @@ test-deploy:
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *test-config
-  environment: *test-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment:
+    name: Test
+    url: https://iparapheur-5-0.test.libriciel.net
 
 partner-deploy:
   extends: [ .deploy-job ]
@@ -323,8 +292,14 @@ partner-deploy:
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *partner-config
-  environment: *partner-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
+    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
+    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
+    RESET_DATA: "FALSE"
+  environment:
+    name: Partenaires
+    url: https://iparapheur-5-0.partenaire.libriciel.fr
 
 # </editor-fold desc="Deploy">
 
