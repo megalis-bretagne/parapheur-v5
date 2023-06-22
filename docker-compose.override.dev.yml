@@ -63,7 +63,7 @@ services:
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:fix-detached-signature
 
 
   alfresco:
