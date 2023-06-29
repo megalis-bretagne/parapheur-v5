@@ -238,7 +238,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.0
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.1
     restart: unless-stopped
     tty: true
     deploy:
