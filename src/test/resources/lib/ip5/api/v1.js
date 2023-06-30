@@ -738,7 +738,7 @@ function fn(config) {
     config.ip5.api.v1.workflow['getKeyByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/workflowDefinition')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/workflowDefinition')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('searchTerm', name)
