@@ -276,7 +276,7 @@ function fn(config) {
     config.ip5.api.v1.entity['getIdByName'] = function (name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant')
+            .path('/api/provisioning/v1/admin/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('page', 0)
@@ -295,7 +295,7 @@ function fn(config) {
     config.ip5.api.v1.entity['getNameById'] = function (id) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant')
+            .path('/api/provisioning/v1/admin/tenant')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('page', 0)
@@ -318,7 +318,7 @@ function fn(config) {
         var result = [],
             response = karate
                 .http(baseUrl)
-                .path('/api/v1/admin/tenant/')
+                .path('/api/provisioning/v1/admin/tenant/')
                 .param('size', 100)
                 .param('searchTerm', partialName)
                 .param('sort', 'NAME,ASC')
