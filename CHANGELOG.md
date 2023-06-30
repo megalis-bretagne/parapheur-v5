@@ -7,6 +7,16 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.16] - 2023-06-30
+[5.0.16]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.16.tar.gz
+
+### Corrections
+
+- Connexion avec PASTELL
+- Métadonnée décimale
+- Affichage des message d'erreurs
+
+
 ## [5.0.15] - 2023-06-23
 [5.0.15]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.15.tar.gz
 
