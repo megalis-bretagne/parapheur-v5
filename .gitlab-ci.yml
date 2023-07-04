@@ -225,6 +225,7 @@ dev-deploy:
       when: always
     - when: manual
   variables:
+    TARGETED_SOFTWARE: iparapheur
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
