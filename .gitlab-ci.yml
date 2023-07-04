@@ -221,6 +221,7 @@ acceptance-deploy:
 dev-deploy:
   extends: [ .update-software-on-server ]
   stage: deploy
+  tags: [ runner-signature-shell ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
