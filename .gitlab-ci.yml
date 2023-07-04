@@ -234,7 +234,7 @@ dev-deploy:
     TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
   environment:
-    name: Dev
+    name: Develop
     url: https://iparapheur-5-0.dev.libriciel.net
 
 
