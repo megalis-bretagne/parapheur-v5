@@ -50,7 +50,8 @@ variables:
 # <editor-fold desc="Package">
 
 
-.prepare-package: &prepare-package
+.prepare-package:
+  stage: package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
@@ -67,26 +68,21 @@ variables:
          backup.sh \
          cron.sh
     - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
+  artifacts:
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 package_prod:
-  stage: package
+  extends: [ .prepare-package ]
   only: [ tags ]
-  <<: *prepare-package
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
-package:
-  stage: package
+package_dev:
+  extends: [ .prepare-package ]
   except: [ tags ]
-  <<: *prepare-package
   artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
     # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
 
