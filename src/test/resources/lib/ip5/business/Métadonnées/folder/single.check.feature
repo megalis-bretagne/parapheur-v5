@@ -1,4 +1,4 @@
-@business @metadonnees @folder @ignore
+@business @metadonnees @folder @ignore @ok
 Feature: ...
 
     Scenario: ...
@@ -12,6 +12,7 @@ Feature: ...
     tenant: "Métadonnées",
     username: "ws-meta",
     password: "a123456a123456",
+    date: "2022-09-01",
     desktop: "WebService"
 }
 """
