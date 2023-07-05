@@ -67,7 +67,7 @@ variables:
          src/main/resources/nginx/iparapheur.init.conf.template \
          backup.sh \
          cron.sh
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
+    - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
   artifacts:
     name: ${PACKAGE_NAME}
     paths:
