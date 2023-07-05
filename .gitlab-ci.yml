@@ -227,7 +227,7 @@ dev-deploy:
     - if: $NIGHTLY == "TRUE"
       when: always
     - when: manual
-  variables:
+  variables: 
     <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
