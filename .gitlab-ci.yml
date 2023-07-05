@@ -50,7 +50,7 @@ variables:
 # <editor-fold desc="Package">
 
 
-.prepare-package:
+package_tar_gz:
   stage: package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
@@ -68,26 +68,14 @@ variables:
          backup.sh \
          cron.sh
     - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
-  after_script:
-    - pwd
-    - ls -la
   artifacts:
+    # The package is only needed for a while, to be used on the next deploy jobs.
+    # This internal package is irrelevant after the next release is out.
+    # It is already published on the public Nexus anyway.
+    expire_in: 3 months
     name: ${PACKAGE_NAME}
     paths:
       - ${PACKAGE_NAME_WITH_EXTENSION}
-
-
-package_prod:
-  extends: [ .prepare-package ]
-  only: [ tags ]
-
-
-package_dev:
-  extends: [ .prepare-package ]
-  except: [ tags ]
-  artifacts:
-    # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
-    expire_in: 30 days
 
 
 # </editor-fold desc="Package">
@@ -98,11 +86,7 @@ package_dev:
 
 publish:
   stage: publish
-  needs:
-    - job: package_dev
-      optional: true
-    - job: package_prod
-      optional: true
+  dependencies: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -133,11 +117,7 @@ publish:
 .deploy-job:
   variables:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
-  needs:
-    - job: package_dev
-      optional: true
-    - job: package_prod
-      optional: true
+  dependencies: [ package_tar_gz ]
   before_script:
     - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
     # Prepare the SSH agent
@@ -225,11 +205,7 @@ acceptance-deploy:
 
 dev-deploy:
   extends: [ .update-software-on-server ]
-  needs:
-    - job: package_dev
-      optional: true
-    - job: package_prod
-      optional: true
+  dependencies: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -270,6 +246,7 @@ formation-deploy:
 
 test-deploy:
   extends: [ .update-software-on-server ]
+  dependencies: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
