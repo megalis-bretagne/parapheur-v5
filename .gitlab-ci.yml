@@ -71,15 +71,15 @@ variables:
   after_script:
     - pwd
     - ls -la
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 package_prod:
   extends: [ .prepare-package ]
   only: [ tags ]
+  artifacts:
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 package_dev:
@@ -88,6 +88,9 @@ package_dev:
   artifacts:
     # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 # </editor-fold desc="Package">
