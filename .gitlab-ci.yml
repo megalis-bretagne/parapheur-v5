@@ -107,16 +107,20 @@ publish:
 # <editor-fold desc="Deploy">
 
 
-.update-software-on-server-global-variables: &update-software-on-server-global-variables
-  TARGETED_SOFTWARE: iparapheur
-  TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
-  PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-
-
-strict-e2e-tests-deploy:
+# Local generic deploy job,
+# All the subsequent deploy jobs will extend this one.
+.iparapheur_deploy:
   extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
+  variables:
+    TARGETED_SOFTWARE: iparapheur
+    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
+    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
+
+
+strict-e2e-tests-deploy:
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -129,7 +133,6 @@ strict-e2e-tests-deploy:
     - when: manual
   allow_failure: false
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
@@ -139,9 +142,7 @@ strict-e2e-tests-deploy:
 
 
 acceptance-deploy:
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -149,15 +150,12 @@ acceptance-deploy:
       when: always
     - when: manual
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
 
 
 dev-deploy:
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -165,16 +163,13 @@ dev-deploy:
       when: always
     - when: manual
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
 
 
 formation-deploy:
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -182,15 +177,12 @@ formation-deploy:
       when: manual
     - when: manual
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
     SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
 
 
 test-deploy:
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -198,15 +190,12 @@ test-deploy:
       when: manual
     - when: manual
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
 
 
 partner-deploy:
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -214,7 +203,6 @@ partner-deploy:
       when: manual
     - when: manual
   variables:
-    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
     SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
 
