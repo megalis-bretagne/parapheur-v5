@@ -124,6 +124,7 @@ publish:
 .update-software-on-server-global-variables: &update-software-on-server-global-variables
   TARGETED_SOFTWARE: iparapheur
   TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
+  PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
 .deploy-job:
