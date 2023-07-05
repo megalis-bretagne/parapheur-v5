@@ -44,7 +44,6 @@ variables:
   SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
   SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
   INIT_SCRIPT: "ip5-compose-dev.sh"
-  DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG: ""
 
 
 # <editor-fold desc="Package">
@@ -127,8 +126,6 @@ strict-e2e-tests-deploy:
       when: always
     - if: $CI_COMMIT_TAG != null
       when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG}
     - when: manual
   allow_failure: false
   variables:
