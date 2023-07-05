@@ -40,10 +40,6 @@ variables:
     description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-  SERVER_CURRENT_PATH: "/opt/iparapheur/current"
-  SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
-  SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
-  INIT_SCRIPT: "ip5-compose-dev.sh"
 
 
 # <editor-fold desc="Package">
@@ -107,13 +103,15 @@ publish:
 # <editor-fold desc="Deploy">
 
 
-# Local generic deploy job,
-# All the subsequent deploy jobs will extend this one.
 .iparapheur_deploy:
+  # Local generic deploy job, the remote one is software-agnostic.
+  # This is where we make it iparapheur-specific.
+  # All the following deploy jobs will extend this one.
   extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
   variables:
+    INIT_SCRIPT: "ip5-compose-dev.sh"
     TARGETED_SOFTWARE: iparapheur
     TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
     PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
