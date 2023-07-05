@@ -71,15 +71,15 @@ variables:
   after_script:
     - pwd
     - ls -la
+  artifacts:
+    name: ${PACKAGE_NAME}
+    paths:
+      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 package_prod:
   extends: [ .prepare-package ]
   only: [ tags ]
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 package_dev:
@@ -88,9 +88,6 @@ package_dev:
   artifacts:
     # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
     expire_in: 30 days
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
 # </editor-fold desc="Package">
@@ -102,7 +99,7 @@ package_dev:
 publish:
   stage: publish
   needs:
-    - job: package
+    - job: package_dev
       optional: true
     - job: package_prod
       optional: true
@@ -137,7 +134,7 @@ publish:
   variables:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   needs:
-    - job: package
+    - job: package_dev
       optional: true
     - job: package_prod
       optional: true
@@ -228,6 +225,11 @@ acceptance-deploy:
 
 dev-deploy:
   extends: [ .update-software-on-server ]
+  needs:
+    - job: package_dev
+      optional: true
+    - job: package_prod
+      optional: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
