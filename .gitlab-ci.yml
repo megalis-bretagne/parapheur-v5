@@ -259,7 +259,7 @@ formation-deploy:
 
 
 test-deploy:
-  extends: [ .deploy-job ]
+  extends: [ .update-software-on-server ]
   stage: deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -268,10 +268,9 @@ test-deploy:
       when: manual
     - when: manual
   variables:
+    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
   environment:
     name: Test
     url: https://iparapheur-5-0.test.libriciel.net
