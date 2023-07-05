@@ -68,6 +68,9 @@ variables:
          backup.sh \
          cron.sh
     - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
+  after_script:
+    - pwd
+    - ls -la
   artifacts:
     name: ${PACKAGE_NAME}
     paths:
@@ -228,7 +231,10 @@ dev-deploy:
     - if: $NIGHTLY == "TRUE"
       when: always
     - when: manual
-  variables: 
+  before_script:
+    - pwd
+    - ls -la
+  variables:
     <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
