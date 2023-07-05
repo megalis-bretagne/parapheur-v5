@@ -212,9 +212,6 @@ dev-deploy:
     - if: $NIGHTLY == "TRUE"
       when: always
     - when: manual
-  before_script:
-    - pwd
-    - ls -la
   variables:
     <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
