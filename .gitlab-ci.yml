@@ -115,6 +115,7 @@ publish:
 
 
 .deploy-job:
+  stage: deploy
   variables:
     APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
   dependencies: [ package_tar_gz ]
@@ -157,7 +158,8 @@ publish:
 
 strict-e2e-tests-deploy:
   extends: [ .deploy-job ]
-  stage: deploy
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -186,7 +188,8 @@ strict-e2e-tests-deploy:
 
 acceptance-deploy:
   extends: [ .deploy-job ]
-  stage: deploy
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -225,7 +228,8 @@ dev-deploy:
 
 formation-deploy:
   extends: [ .deploy-job ]
-  stage: deploy
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -263,7 +267,8 @@ test-deploy:
 
 partner-deploy:
   extends: [ .deploy-job ]
-  stage: deploy
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
