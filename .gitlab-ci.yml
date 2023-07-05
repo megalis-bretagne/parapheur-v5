@@ -114,50 +114,8 @@ publish:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
-.deploy-job:
-  stage: deploy
-  variables:
-    APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
-  dependencies: [ package_tar_gz ]
-  before_script:
-    - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
-    # Prepare the SSH agent
-    - echo -e "🕵🏽 \e[46mPreparing ssh agent\e[0m 🕵🏽"
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    # Copying deployment files
-    - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/\e[0m 📤"
-    - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${PACKAGE_NAME_WITH_EXTENSION}
-    - ${APPLY_COMMAND} "tar -zxf ${PACKAGE_NAME_WITH_EXTENSION}"
-    - ${APPLY_COMMAND} "rm ${PACKAGE_NAME_WITH_EXTENSION}"
-    - ${APPLY_COMMAND} "sudo mv ${PACKAGE_NAME} ${SERVER_DIST_PATH}"
-    - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/${INIT_SCRIPT}
-    - ${APPLY_COMMAND} "sudo chmod 770 ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
-    - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
-    - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
-    - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
-    - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILE} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
-    # Deploying app
-    - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
-    - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
-    - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
-    - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
-    - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-    - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull --quiet"
-    - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && sudo ${SERVER_CURRENT_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-    - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
-    - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
-    - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
-    - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
-    - echo -e "🎉🎉🎉 \e[42m${CI_COMMIT_REF_NAME} successfully deployed on ${TARGETED_ENVIRONNEMENT_URL}\e[0m 🎉🎉🎉"
-
-
 strict-e2e-tests-deploy:
-  extends: [ .deploy-job ]
+  extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
   rules:
@@ -174,20 +132,17 @@ strict-e2e-tests-deploy:
     - when: manual
   allow_failure: false
   variables:
+    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
     SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
     RESET_DATA: "TRUE"
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
     OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment:
-    name: Charge/Tests e2e
-    url: https://charge.iparapheurubu22-5-0.recette.libriciel.net
 
 
 acceptance-deploy:
-  extends: [ .deploy-job ]
+  extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
   rules:
@@ -197,13 +152,9 @@ acceptance-deploy:
       when: always
     - when: manual
   variables:
+    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment:
-    name: Recette
-    url: https://iparapheurubu22-5-0.recette.libriciel.net
 
 
 dev-deploy:
@@ -221,13 +172,10 @@ dev-deploy:
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment:
-    name: Develop
-    url: https://iparapheur-5-0.dev.libriciel.net
 
 
 formation-deploy:
-  extends: [ .deploy-job ]
+  extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
   rules:
@@ -237,13 +185,9 @@ formation-deploy:
       when: manual
     - when: manual
   variables:
+    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
     SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment:
-    name: Formation
-    url: https://iparapheur.formation.libriciel.fr
 
 
 test-deploy:
@@ -260,13 +204,10 @@ test-deploy:
     <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-  environment:
-    name: Test
-    url: https://iparapheur-5-0.test.libriciel.net
 
 
 partner-deploy:
-  extends: [ .deploy-job ]
+  extends: [ .update-software-on-server ]
   needs: [ package_tar_gz ]
   tags: [ runner-signature-shell ]
   rules:
@@ -276,13 +217,9 @@ partner-deploy:
       when: manual
     - when: manual
   variables:
+    <<: *update-software-on-server-global-variables
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
-    TARGETED_ENVIRONNEMENT_USER: gitlab-ci
     SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment:
-    name: Partenaires
-    url: https://iparapheur-5-0.partenaire.libriciel.fr
 
 
 # </editor-fold desc="Deploy">
