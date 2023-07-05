@@ -205,7 +205,7 @@ acceptance-deploy:
 
 dev-deploy:
   extends: [ .update-software-on-server ]
-  dependencies: [ package_tar_gz ]
+  needs: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -246,7 +246,7 @@ formation-deploy:
 
 test-deploy:
   extends: [ .update-software-on-server ]
-  dependencies: [ package_tar_gz ]
+  needs: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
