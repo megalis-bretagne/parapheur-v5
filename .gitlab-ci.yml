@@ -17,9 +17,7 @@
 #
 
 include:
-  - project: "libriciel/integration-continue/templates"
-    ref: deploy-on-local-servers
-    file: 'jobs/update-software-on-server/update-software-on-server.yml'
+  - remote: 'https://api.r2devops.libriciel.fr/job/r/gitlab/libriciel/integration-continue/templates/update-software-on-server@1.0.0.yaml'
 
 
 stages:
