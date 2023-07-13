@@ -5,7 +5,7 @@ Feature: Metadata setup lib
         * def tenantId = ip5.api.v1.entity.getIdByName(tenant)
 
         Given url baseUrl
-            And path '/api/v1/admin/tenant/', tenantId, '/metadata'
+            And path '/api/provisioning/v1/admin/tenant/', tenantId, '/metadata'
             And header Accept = 'application/json'
             And request
 """

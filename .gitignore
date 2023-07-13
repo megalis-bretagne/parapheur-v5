@@ -271,6 +271,7 @@ hs_err_pid*
 .idea/jpa-buddy-datasource.xml
 .idea/jpa-buddy.xml
 .idea/GitlabLint.xml
+.idea/sonarlint/**
 
 docker-compose.override.instance-*
 data*/*

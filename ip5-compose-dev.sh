@@ -349,7 +349,8 @@ __reset__()
           -f docker-compose.yml \
           down \
           --remove-orphans \
-          --volumes
+          --volumes \
+          2> /dev/null
       rm -rf /data/iparapheur
       mkdir -m 777 -p /data/iparapheur/{alfresco,matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
       touch /data/iparapheur/{alfresco,matomo/{config,plugins},pes-viewer/pesPJ,transfer}/.gitkeep
@@ -368,7 +369,7 @@ __setup_vault__()
 
       docker compose \
           --file docker-compose.yml \
-          up -d vault
+          up -d vault 2> /dev/null
       sleep ${SLEEP_VALUE}
       VAULT_OUTPUT="`docker exec -it ${COMPOSE_PROJECT_NAME}-vault-1 vault operator init -key-shares=1 -key-threshold=1`"
       export VAULT_UNSEAL_KEY="`echo "${VAULT_OUTPUT}" | grep --color=never "Unseal Key 1:" | sed "s/Unseal Key 1: //g" | sed 's/\x1b\[[0-9;]*m//g' | sed "s/\s\+//g"`"
@@ -419,7 +420,7 @@ __setup_matomo__()
     docker compose \
         --file docker-compose.yml \
         --file docker-compose.override.init.yml \
-        up -d matomo nginx
+        up -d matomo nginx 2> /dev/null
     sleep ${SLEEP_VALUE}
     rm -f $MATOMO_COOKIES
     curl_get "${MATOMO_URL}"
@@ -537,18 +538,18 @@ __main__()
                   __setup_vault__
                   __setup_matomo__
                   export_dot_env
-                  docker compose down --volumes --remove-orphans
+                  docker compose down --volumes --remove-orphans 2> /dev/null
                   chmod -R 0777 /data/iparapheur
                   if [ "${START_APP}" == "1" ] ; then
                     if [ "${OVERRIDE_COMPOSE_FILE}" == "1" ] ; then
                       docker compose \
                       --file docker-compose.yml \
                       --file docker-compose.override.dev-`accepted_arch`.yml \
-                      up
+                      up 2> /dev/null
                     else
                       docker compose \
                       --file docker-compose.yml \
-                      up
+                      up 2> /dev/null
                     fi
                   fi
                   exit 0
