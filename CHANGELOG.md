@@ -27,6 +27,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Erreur lors d'un sous-type supprimé
 - Page de la signature sur Yousign
 - Liste des types limités à 50
+- Changement de tenant dans l'administration des dossiers
+- Envoi à la corbeille depuis les dossiers rejetés
 
 
 ## [5.0.16] - 2023-06-30
