@@ -21,7 +21,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Corrections
 
 - Templates de mails
-- Message d'erreur à la création d'un utilisateur
+- Messages d'erreurs
 - Récupération de la signature détachée
 - Métadonnées obligatoires lors d'une annulation
 - Erreur lors d'un sous-type supprimé
@@ -29,6 +29,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Liste des types limités à 50
 - Changement de tenant dans l'administration des dossiers
 - Envoi à la corbeille depuis les dossiers rejetés
+- Absence avec typologie
+- Téléchargement du dossier avec annexes
+- Métadonnées obligatoires sur le tableau de bord
+- Labels
 
 
 ## [5.0.16] - 2023-06-30
