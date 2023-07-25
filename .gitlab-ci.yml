@@ -213,6 +213,7 @@ partner-deploy:
   image: markhobson/maven-chrome:jdk-11
   variables:
     LANG: fr_FR.UTF-8
+    E2E_TESTS_TARGET_SERVER_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
   stage: e2e-tests
   script:
     - set -eo pipefail
