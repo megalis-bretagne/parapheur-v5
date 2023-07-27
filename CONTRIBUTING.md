@@ -232,3 +232,9 @@ ipng:
 
 Turn down and erase containers  : `docker compose [- f ...] down -v`.
 Then start it with the IPNG activated :  `docker compose [- f ...] -f docker-compose.ipng.yml up -d`
+
+## Re-insert a message from redis error queue
+From the shell in the redis conrtainer, assuming we want to reup the latest error message :  
+```
+redis-cli --raw XREVRANGE ipng-error + - COUNT 1 | tail -n 8 |  tr "\n" " " | xargs redis-cli XADD ipng-proof '*'
+```
