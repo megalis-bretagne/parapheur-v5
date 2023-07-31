@@ -265,7 +265,7 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.2
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -295,7 +295,7 @@ services:
 
 
   transform-core-aio:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -305,8 +305,7 @@ services:
 
 
   libriciel-engine-extractors:
-    #FIXME
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:canary
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.0.0
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
