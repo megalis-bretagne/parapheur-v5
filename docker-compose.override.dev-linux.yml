@@ -115,9 +115,14 @@ services:
 
   transform-core-aio:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio:develop
+    # ports:
+    #  - "8090:8090"
+
+
+  libriciel-engine-extractors:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors:develop
     ports:
       - "8090:8090"
-
 
   #solr6:
   #  #mem_limit: 1536M
