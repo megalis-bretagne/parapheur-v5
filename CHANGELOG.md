@@ -7,6 +7,83 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.17] - 2023-07-13
+[5.0.17]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.17.tar.gz
+
+### Ajouts
+
+- Aide à la saisie des mots de passe
+- Liste des tenants dans l'API provisioning
+- CRUDL des cachets serveur dans l'API provisioning
+- Modification d'un cachet serveur
+- Tooltip pour les utilisateurs LDAP
+
+### Corrections
+
+- Templates de mails
+- Messages d'erreurs
+- Récupération de la signature détachée
+- Métadonnées obligatoires lors d'une annulation
+- Erreur lors d'un sous-type supprimé
+- Page de la signature sur Yousign
+- Liste des types limités à 50
+- Changement de tenant dans l'administration des dossiers
+- Envoi à la corbeille depuis les dossiers rejetés
+- Absence avec typologie
+- Téléchargement du dossier avec annexes
+- Métadonnées obligatoires sur le tableau de bord
+- Labels
+
+
+## [5.0.16] - 2023-06-30
+[5.0.16]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.16.tar.gz
+
+### Corrections
+
+- Connexion avec PASTELL
+- Métadonnée décimale
+- Affichage des message d'erreurs
+
+
+## [5.0.15] - 2023-06-23
+[5.0.15]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.15.tar.gz
+
+### Ajouts
+
+- Rectangle sur l'emplacement de signature
+- Métadonnées dans l'API de provisioning
+
+### Corrections
+
+- Liste des bureaux associés
+- Emplacement de signature
+- Affichage des boutons d'action
+- Données manquantes dans le fichier PREMIS
+- Édition d'une étape de signature externe
+- Téléchargement d'un dossier
+- Annulation de signature externe
+- Duplication d'un circuit
+- Infobulles
+- Évènement "Lu" dans l'historique
+- Étape collaborative
+- Affichage des permissions dans l'administration
+- Valeurs par défaut à la création d'un sous-type
+- Tri des dossiers traités
+- Popup de bureau
+- Recherche de bureaux variables
+- Messages d'erreurs explicites
+- Affichage de l'image de signature
+- Date limite dans l'API SOAP
+- Webservices via PASTELL
+- Sélection d'administration fonctionnelle à la création d'un utilisateur
+- Annotations sur les avis complémentaires
+
+### Suppressions
+
+- Affichage de la métadonnée obligatoire à un avis complémentaire
+- Sortie de la popup lors d'un clic hors-cadre
+
+
 ## [5.0.14] - 2023-05-31
 [5.0.14]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.14.tar.gz
 

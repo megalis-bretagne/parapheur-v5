@@ -16,6 +16,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+include:
+  - remote: 'https://api.r2devops.libriciel.fr/job/r/gitlab/libriciel/integration-continue/templates/update-software-on-server@1.0.0.yaml'
+
+
 stages:
   - package
   - publish
@@ -23,6 +27,7 @@ stages:
   - e2e-tests-setup
   - e2e-tests-strict
   - e2e-tests-tolerant
+
 
 variables:
   NIGHTLY:
@@ -33,82 +38,13 @@ variables:
     description: "If set to TRUE, deploy jobs will wipe data even if it normally don't (acceptance, dev)"
   PACKAGE_NAME: iparapheur-${CI_COMMIT_REF_NAME}
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-  SERVER_CURRENT_PATH: "/opt/iparapheur/current"
-  SERVER_SIMLINK_PATH: "/opt/iparapheur/dist"
-  SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}"
-  INIT_SCRIPT: "ip5-compose-dev.sh"
-  DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG: ""
-
-
-.e2e-test-config:
-  variables: &e2e-test-config
-    TARGETED_ENVIRONNEMENT_URL: ${E2E_TESTS_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${E2E_TESTS_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "TRUE"
-    OVERWRITE_ADMIN_PASSWORD: "TRUE"
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment: &e2e-test-environment
-    name: Charge/Tests e2e
-    url: https://${E2E_TESTS_TARGET_SERVER_URL}
-
-.acceptance-config:
-  variables: &acceptance-config
-    TARGETED_ENVIRONNEMENT_URL: ${ACCEPTANCE_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${ACCEPTANCE_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &acceptance-environment
-    name: Recette
-    url: https://${ACCEPTANCE_TARGET_SERVER_URL}
-
-.dev-config:
-  variables: &dev-config
-    TARGETED_ENVIRONNEMENT_URL: ${DEV_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${DEV_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-  environment: &dev-environment
-    name: Dev
-    url: https://${DEV_TARGET_SERVER_URL}
-
-.formation-config:
-  variables: &formation-config
-    TARGETED_ENVIRONNEMENT_URL: ${FORMATION_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${FORMATION_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &formation-environment
-    name: Formation
-    url: https://${FORMATION_TARGET_SERVER_URL}
-
-.test-config:
-  variables: &test-config
-    TARGETED_ENVIRONNEMENT_URL: ${TEST_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${TEST_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &test-environment
-    name: Test
-    url: https://${TEST_TARGET_SERVER_URL}
-
-.partner-config:
-  variables: &partner-config
-    TARGETED_ENVIRONNEMENT_URL: ${PARTNER_TARGET_SERVER_URL}
-    TARGETED_ENVIRONNEMENT_USER: ${PARTNER_TARGET_SERVER_USER}
-    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
-    RESET_DATA: "FALSE"
-  environment: &partner-environment
-    name: Partenaires
-    url: https://${PARTNER_TARGET_SERVER_URL}
 
 
 # <editor-fold desc="Package">
 
 
-.prepare-package: &prepare-package
+package_tar_gz:
+  stage: package
   script:
     - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
@@ -124,39 +60,26 @@ variables:
          src/main/resources/nginx/iparapheur.init.conf.template \
          backup.sh \
          cron.sh
-    - tar cfz ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
-
-package_prod:
-  stage: package
-  only: [ tags ]
-  <<: *prepare-package
+    - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
   artifacts:
+    # The package is only needed for a while, to be used on the next deploy jobs.
+    # This internal package is irrelevant after the next release is out.
+    # It is already published on the public Nexus anyway.
+    expire_in: 3 months
     name: ${PACKAGE_NAME}
     paths:
       - ${PACKAGE_NAME_WITH_EXTENSION}
 
-package:
-  stage: package
-  except: [ tags ]
-  <<: *prepare-package
-  artifacts:
-    name: ${PACKAGE_NAME}
-    paths:
-      - ${PACKAGE_NAME_WITH_EXTENSION}
-    # When https://gitlab.com/gitlab-org/gitlab-runner/-/issues/6412 is solved, package and package_prod should be merged
-    expire_in: 30 days
 
 # </editor-fold desc="Package">
 
+
 # <editor-fold desc="Publish">
+
 
 publish:
   stage: publish
-  needs:
-    - job: package
-      optional: true
-    - job: package_prod
-      optional: true
+  dependencies: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -171,63 +94,29 @@ publish:
     - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
     - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
 
+
 # </editor-fold desc="Publish">
+
 
 # <editor-fold desc="Deploy">
 
-.preparing-ssh: &preparing-ssh
-  - echo -e "🕵🏽 \e[46mPreparing ssh agent\e[0m 🕵🏽"
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "${SSH_PRIVATE_KEY_B64}" | base64 --decode)
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-.copying-deployment-files: &copying-deployment-files
-  - echo -e "📤 \e[46mCopying and extracting ${PACKAGE_NAME_WITH_EXTENSION}, ${INIT_SCRIPT} and ${OVERRIDE_DOCKER_COMPOSE_FILE} to ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/\e[0m 📤"
-  - scp ./${PACKAGE_NAME_WITH_EXTENSION} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${PACKAGE_NAME_WITH_EXTENSION}
-  - ${APPLY_COMMAND} "tar -zxf ${PACKAGE_NAME_WITH_EXTENSION}"
-  - ${APPLY_COMMAND} "rm ${PACKAGE_NAME_WITH_EXTENSION}"
-  - ${APPLY_COMMAND} "sudo mv ${PACKAGE_NAME} ${SERVER_DIST_PATH}"
-  - scp ./${INIT_SCRIPT} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_DIST_PATH}/${INIT_SCRIPT}
-  - ${APPLY_COMMAND} "sudo chmod 770 ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
-  - ${APPLY_COMMAND} "sudo chgrp deployment ${SERVER_DIST_PATH}/${INIT_SCRIPT}"
-  - ${APPLY_COMMAND} "unlink ${SERVER_SIMLINK_PATH}"
-  - ${APPLY_COMMAND} "ln -s --relative ${SERVER_DIST_PATH} ${SERVER_SIMLINK_PATH}"
-  - if [[ ! -z ${OVERRIDE_DOCKER_COMPOSE_FILE} ]]; then scp ./${OVERRIDE_DOCKER_COMPOSE_FILE} ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}:${SERVER_CURRENT_PATH}/docker-compose.override.yml; fi
-
-.deploying-app: &deploying-app
-  - echo -e "🚀 \e[46mDeploying application using ${OVERRIDE_DOCKER_COMPOSE_FILE}\e[0m 🚀"
-  - if [[ ${FORCE_RESET_DATA} == "TRUE" && ${RESET_DATA} == "FALSE" ]]; then echo -e "🧹⚠️ \e[41mData will be reset\e[0m ⚠️🧹"; fi
-  - if [[ ${OVERWRITE_ADMIN_PASSWORD} == "TRUE" ]]; then ${APPLY_COMMAND} "sed -i -E 's/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=(.*)/INITIAL_IPARAPHEUR_ADMIN_PASSWORD=${E2E_TESTS_INITIAL_ADMIN_PWD}/g' ${SERVER_CURRENT_PATH}/.env"; fi
-  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose down --volumes --remove-orphans"
-  - ${APPLY_COMMAND} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} pull --quiet"
-  - if [[ ${FORCE_RESET_DATA} == "TRUE" || ${RESET_DATA} == "TRUE" ]]; then ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && sudo ${SERVER_CURRENT_PATH}/${INIT_SCRIPT} setup --force --ignore-override-compose --dont-start-app"; fi
-  - ${APPLY_COMMAND} "cd ${SERVER_CURRENT_PATH} && docker compose ${DOCKER_COMPOSE_FILES[@]} up -d"
-  - echo -e "⏳️ \e[46mWaiting for the application to be up\e[0m ⌛️️"
-  - x=1; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" && $x -le 60 ]]; do sleep 5; echo ⌛️️ $(( x++ )) ⏳; done || false
-  - if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' https://${TARGETED_ENVIRONNEMENT_URL}/api/actuator/info)" != "200" ]]; then echo -e "❤️‍🩹❤️‍🩹❤️‍🩹 \e[41mApplication not started\e[0m ❤️‍🩹❤️‍🩹❤️‍🩹"; exit 1; fi
-
-.deploy-job:
+.iparapheur_deploy:
+  # Local generic deploy job, the remote one is software-agnostic.
+  # This is where we make it iparapheur-specific.
+  # All the following deploy jobs will extend this one.
+  extends: [ .update-software-on-server ]
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
   variables:
-    APPLY_COMMAND: "ssh -tt ${TARGETED_ENVIRONNEMENT_USER}@${TARGETED_ENVIRONNEMENT_URL}"
-  needs:
-    - job: package
-      optional: true
-    - job: package_prod
-      optional: true
-  before_script:
-    - echo -e "🚀🚀🚀 \e[42mDeploying ${CI_COMMIT_REF_NAME} on ${TARGETED_ENVIRONNEMENT_URL} with user ${TARGETED_ENVIRONNEMENT_USER}\e[0m 🚀🚀🚀"
-    - *preparing-ssh
-  script:
-    - *copying-deployment-files
-    - *deploying-app
-    - echo -e "🎉🎉🎉 \e[42m${CI_COMMIT_REF_NAME} successfully deployed on ${TARGETED_ENVIRONNEMENT_URL}\e[0m 🎉🎉🎉"
+    INIT_SCRIPT: "ip5-compose-dev.sh"
+    TARGETED_SOFTWARE: iparapheur
+    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
+    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
+
 
 strict-e2e-tests-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -237,98 +126,88 @@ strict-e2e-tests-deploy:
       when: always
     - if: $CI_COMMIT_TAG != null
       when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_OVERRIDE_FILE_FOR_TAG}
     - when: manual
   allow_failure: false
-  variables: *e2e-test-config
-  environment: *e2e-test-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+    RESET_DATA: "TRUE"
+    OVERWRITE_ADMIN_PASSWORD: "TRUE"
+    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
 
-#tolerant-e2e-tests-deploy:
-#  extends: [ .deploy-job ]
-#  stage: deploy-tolerant-tests
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
-#      when: never
-#    - if: $NIGHTLY == "TRUE"
-#      when: manual
-#    - if: $CI_COMMIT_BRANCH == 'develop'
-#      when: manual
-#    - when: manual
-#  needs:
-#    #    must repeat package here because extends overwrites instead of merge properties
-#    - job: package
-#      optional: true
-#    - job: package_prod
-#      optional: true
-#    - strict-e2e-tests-test
-#  allow_failure: false
-#  variables: *e2e-test-config
-#  environment: *e2e-test-environment
 
 acceptance-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_COMMIT_TAG != null
       when: always
     - when: manual
-  variables: *acceptance-config
-  environment: *acceptance-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+
 
 dev-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $NIGHTLY == "TRUE"
       when: always
     - when: manual
-  variables: *dev-config
-  environment: *dev-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+
 
 formation-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *formation-config
-  environment: *formation-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
+    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
+
 
 test-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *test-config
-  environment: *test-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
+
 
 partner-deploy:
-  extends: [ .deploy-job ]
-  stage: deploy
+  extends: [ .iparapheur_deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_COMMIT_TAG != null
       when: manual
     - when: manual
-  variables: *partner-config
-  environment: *partner-environment
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
+    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
+
 
 # </editor-fold desc="Deploy">
 
+
 # <editor-fold desc="E2e tests">
+
 
 .e2e-tests:
   image: markhobson/maven-chrome:jdk-11
@@ -351,6 +230,7 @@ partner-deploy:
       - build/karate-reports
       - build/karate-tests-fixme-ip-tag.txt
 
+
 setup-e2e-tests:
   extends: [ .e2e-tests ]
   stage: e2e-tests-setup
@@ -361,6 +241,7 @@ setup-e2e-tests:
     - job: strict-e2e-tests-deploy
       optional: true
   allow_failure: false
+
 
 strict-e2e-tests:
   extends: [ .e2e-tests ]
@@ -375,6 +256,7 @@ strict-e2e-tests:
   parallel:
     matrix:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
+
 
 tolerant-e2e-tests:
   extends: [ .e2e-tests ]
@@ -391,5 +273,6 @@ tolerant-e2e-tests:
   parallel:
     matrix:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
+
 
 # </editor-fold desc="E2e tests">
