@@ -172,7 +172,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.7
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.8
     restart: unless-stopped
     tty: true
     deploy:
