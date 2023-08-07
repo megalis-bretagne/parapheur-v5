@@ -22,7 +22,9 @@
 # "Bootstrap"
 # ----------------------------------------------------------------------------------------------------------------------
 
-cd /opt/iparapheur/current/
+IP_CURRENT_INSTALL_DIR=/opt/iparapheur/current/
+
+cd ${IP_CURRENT_INSTALL_DIR}
 set -a && source .env && set +a
 
 set -o errexit
@@ -55,7 +57,7 @@ __main__() {
   mkdir -p "${BACKUPS_ROOT_DIR}"
 
   printf "Shutting down iparapheur -\n"
-  cd /opt/iparapheur/current
+  cd ${IP_CURRENT_INSTALL_DIR}
   docker compose down -v --remove-orphans
 
   printf "Starting databases -\n"
@@ -79,7 +81,7 @@ __main__() {
         "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump --username ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
   done
 
-  cp /opt/iparapheur/current/.env /tmp/${CURRENT_SAVE_FOLDER_NAME}.env
+  cp ${IP_CURRENT_INSTALL_DIR}.env /tmp/${CURRENT_SAVE_FOLDER_NAME}.env
 
   # The first --transform renames the /data directory to /backup_<current date>_data
   # The second --transform removes the /tmp directory that contains all the .sql dumps so they are at the same level at the /backup_<current date>_data directory
@@ -118,7 +120,7 @@ __main__() {
 
   # Check if at least 2 backups are present
   if [ $backup_count -gt 1 ]; then
-    # deleting all backups exept the last 2 
+    # deleting all backups exept the last 2
     ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
   fi
 
