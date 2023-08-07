@@ -7,6 +7,25 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.18] - 2023-08-07
+[5.0.18]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.18.tar.gz
+
+### Ajouts
+
+- Support de l'API v3 de YouSign
+
+### Corrections
+
+- Restrictions des droits des superviseurs (actions en lots, annotations)
+- Liste des entités associées pour les utilisateurs LDAP
+- Gestion plus permissive des métadonnées inconnues à la création de dossier
+- Accès aux dossiers après suppression d'un bureau du circuit
+- Typos sur les caractères accentués dans la visionneuse PES
+- Sélection de la taille de police (auto / fixe) dans le tampon de signature
+
+### Patch
+- Version 3.1 de de partie client-natif de Libersign
+
 ## [5.0.17] - 2023-07-13
 [5.0.17]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.17.tar.gz
 
