@@ -60,7 +60,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.7.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.7.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -138,7 +138,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.6.10
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.6.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -172,7 +172,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.7
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -184,7 +184,7 @@ services:
 
 
   libersign:
-    image: registry.libriciel.fr/public/signature/libersign:3.0.3
+    image: registry.libriciel.fr/public/signature/libersign:3.1.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -194,7 +194,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.8
+    image: registry.libriciel.fr/public/signature/crypto:3.0.9
     restart: unless-stopped
     tty: true
     deploy:
@@ -214,7 +214,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.9
+    image: registry.libriciel.fr/public/signature/pastell-connector:1.3.10
     restart: unless-stopped
     tty: true
     deploy:
@@ -230,7 +230,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.3.5
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.4.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -240,7 +240,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.4
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.5
     restart: unless-stopped
     tty: true
     deploy:
@@ -265,7 +265,7 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.2
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -284,22 +284,37 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      transform-core-aio:
-        condition: service_healthy
       activemq:
         condition: service_started
+      transform-core-aio:
+        condition: service_healthy
+      libriciel-engine-extractors:
+        condition: service_healthy
     volumes:
       - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
 
 
   transform-core-aio:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.1
     restart: unless-stopped
     tty: true
     deploy:
       resources:
         limits:
-          memory: 1280M
+          memory: 1G
+
+
+  libriciel-engine-extractors:
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.0.0
+    environment:
+      #FIXME !ISSUE_1037
+      ACTIVEMQ_URL: "nio://activemq:61616"
+    restart: unless-stopped
+    tty: true
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
 
   # solr6:
@@ -375,7 +390,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.0.2.1
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.1.2.0
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
