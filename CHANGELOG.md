@@ -24,6 +24,13 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Typos sur les caractères accentués dans la visionneuse PES
 - Sélection de la taille de police (auto / fixe) dans le tampon de signature
 - Libellé approprié pour les notifications de rejets
+- Récupération d'une signature détachée par l'API SOAP
+- Affichage du nom de l'utilisateur connecté dans le header
+- Message lors de la suppression de documents en lot dans les dossiers rejetés
+- Enregistrement des bureaux favoris
+- Emplacement de signatures successives
+- Signatures externes en lot
+- Position de la signature avec Yousign et Universign
 
 ### Patch
 - Version 3.1 de de partie client-natif de Libersign
