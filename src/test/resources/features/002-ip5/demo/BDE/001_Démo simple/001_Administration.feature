@@ -18,12 +18,12 @@ Feature: 001 - Scénario de démo simple, partie administration
   @basic
   Scenario: Créer une entité
     * ip5.ui.user.login("user", adminUserPwd)
-    * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "Démo simple" }
+    * call read('classpath:lib/ip5/ui/tenant/create.feature') { tenant: "simple-toDelete" }
 
   @basic
   Scenario: Supprimer une entité
     * ip5.ui.user.login("user", adminUserPwd)
-    * call read('classpath:lib/ip5/ui/tenant/delete.feature') { tenant: "Démo simple" }
+    * call read('classpath:lib/ip5/ui/tenant/delete.feature') { tenant: "simple-toDelete" }
 
   @basic
   Scenario: Créer une entité
