@@ -55,7 +55,7 @@ Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
 
         Examples:
             | key       | position!            | line1            | line2                    |
-            | normal    | [100, 665, 300, 735] | Florence Garance | Nacarat                  |
+            | normal    | [200, 700, 400, 770] | Florence Garance | Nacarat                  |
 
     @fixme-ip5 @issue-compose-579
     Scenario Outline: Vérifications des annotations (${key})
