@@ -123,9 +123,6 @@ __main__() {
     # deleting all backups exept the last 2
     ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
   fi
-
-  printf "Starting up -\n"
-  docker compose up -d
 }
 
 __main__ "${@}"

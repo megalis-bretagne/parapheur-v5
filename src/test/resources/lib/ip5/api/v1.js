@@ -567,7 +567,7 @@ function fn(config) {
         }
     };
 
-    
+
     /*
     --
     */
@@ -630,7 +630,7 @@ function fn(config) {
     config.ip5.api.v1.sealCertificate['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/sealCertificate')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/sealCertificate')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('page', 0)
