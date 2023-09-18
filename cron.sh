@@ -23,4 +23,16 @@
 
 cd /opt/iparapheur/dist/docker-resources
 
+# Backup...
+
 ./backup.sh
+if [ $? -eq 0 ]; then
+  echo "Backup completed successfully."
+else
+  echo -e "\e[31mBackup failed with exit code $?.\e[0m"
+fi
+
+# Restart the app...
+
+cd /opt/iparapheur/current/
+docker compose up -d
