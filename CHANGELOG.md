@@ -13,6 +13,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Ajouts
 
 - Support de l'API v3 de YouSign
+- Ouverture de l'API standard
+- Redémarrage nocturne de l'application
 
 ### Corrections
 
@@ -31,11 +33,16 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Emplacement de signatures successives
 - Signatures externes en lot
 - Position de la signature avec Yousign et Universign
+- Log du rejet dans l'historique du fichier PREMIS
+- Retour d'API lors d'un mauvais login
+- Emplacement de signature lorsque 2 tags sont sur la même ligne
 
 ### Patch
+
 - Version 3.1 de de partie client-natif de Libersign
 
 ### Suppression
+
 - Notification à la création de Brouillon
 
 ## [5.0.17] - 2023-07-13
