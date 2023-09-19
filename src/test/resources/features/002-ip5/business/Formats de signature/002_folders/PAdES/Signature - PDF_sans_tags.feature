@@ -38,7 +38,7 @@ Feature: PAdES - Signature - PDF_sans_tags
         Examples:
             | key       | signedBy            | reason                    | location    |
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes | Agde        |
 
     Scenario Outline: Vérifications des annotations (${key})
         * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
