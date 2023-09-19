@@ -1,4 +1,4 @@
-@business @ip5 @formats-de-signature @folder
+@business @ip5 @formats-de-signature @folder @pades-repos-with-tag
 Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
 
     Background:
@@ -72,7 +72,7 @@ Feature: PAdES - Signature - PDF_avec_tags - repositionnement signature
 
         Examples:
             | key       | position!            | line1            | line2                    |
-            | surcharge | [100, 665, 300, 735] | Gilles Nacarat   | Responsable des méthodes |
+            | surcharge | [200, 700, 400, 770] | Gilles Nacarat   | Responsable des méthodes |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
