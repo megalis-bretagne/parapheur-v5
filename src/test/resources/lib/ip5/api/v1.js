@@ -136,6 +136,7 @@ function fn(config) {
                 mainFilePath: mainFilePath['file'],
                 mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                startPath: '/api/standard/v1/tenant/' + tenantId + '/desk/' + deskId + '/folder/{folderId}/task/unusedTaskId/start',
                 annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
@@ -181,6 +182,7 @@ function fn(config) {
                 // mainFilePath: mainFilePath,
                 mainFilesPaths: mainFilesPaths,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                startPath: '/api/standard/v1/tenant/' + tenantId + '/desk/' + deskId + '/folder/{folderId}/task/unusedTaskId/start',
                 annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
