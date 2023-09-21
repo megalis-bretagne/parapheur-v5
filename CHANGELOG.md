@@ -15,6 +15,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Support de l'API v3 de YouSign
 - Ouverture de l'API standard
 - Redémarrage nocturne de l'application
+- vérification de la non-utilisation du bureau dans un quelconque circuit avant suppression
 
 ### Corrections
 
@@ -36,6 +37,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Log du rejet dans l'historique du fichier PREMIS
 - Retour d'API lors d'un mauvais login
 - Emplacement de signature lorsque 2 tags sont sur la même ligne
+- Restriction de l'accès à la corbeille aux admin de tenant (et superadmin) uniquement
+- Statut dans iparapheur_historique.xml (API SOAP)
 
 ### Patch
 

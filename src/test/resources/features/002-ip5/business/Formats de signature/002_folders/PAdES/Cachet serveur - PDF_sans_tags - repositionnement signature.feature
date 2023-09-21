@@ -56,8 +56,8 @@ Feature: PAdES - Cachet serveur - PDF_sans_tags - repositionnement signature
 
         Examples:
             | key       | position!            | line1 | line2 | line3 |
-            | normal    | [100, 665, 300, 735] |       |       |       |
-            | surcharge | [100, 665, 300, 735] |       |       |       |
+            | normal    | [200, 700, 400, 770] |       |       |       |
+            | surcharge | [200, 700, 400, 770] |       |       |       |
 
     Scenario Outline: Vérifications des grigris de signature (${key})
         * def download = ip5.business.formatsDeSignature.download("finished", name + " - <key>")
