@@ -15,7 +15,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Support de l'API v3 de YouSign
 - Ouverture de l'API standard
 - Redémarrage nocturne de l'application
-- vérification de la non-utilisation du bureau dans un quelconque circuit avant suppression
+- Vérification de la non-utilisation du bureau dans un quelconque circuit avant suppression
+- Vérification de l'absence de dossier dans un circuit référençant un bureau avant sa suppression
 
 ### Corrections
 
