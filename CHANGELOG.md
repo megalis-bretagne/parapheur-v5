@@ -7,7 +7,7 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.18] - 2023-08-07
+## [5.0.18] - 2023-09-29
 [5.0.18]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.18.tar.gz
 
 ### Ajouts
@@ -15,8 +15,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Support de l'API v3 de YouSign
 - Ouverture de l'API standard
 - Redémarrage nocturne de l'application
-- Vérification de la non-utilisation du bureau dans un quelconque circuit avant suppression
-- Vérification de l'absence de dossier dans un circuit référençant un bureau avant sa suppression
+- Vérification de la non-utilisation d'un bureau à sa suppression
+- Message d'erreur spécifique lorsqu'un dossier cherche à avancer vers bureau supprimé
 
 ### Corrections
 
@@ -35,19 +35,26 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Emplacement de signatures successives
 - Signatures externes en lot
 - Position de la signature avec Yousign et Universign
-- Log du rejet dans l'historique du fichier PREMIS
+- Affichage du rejet dans l'historique du fichier PREMIS
 - Retour d'API lors d'un mauvais login
 - Emplacement de signature lorsque 2 tags sont sur la même ligne
-- Restriction de l'accès à la corbeille aux admin de tenant (et superadmin) uniquement
 - Statut dans iparapheur_historique.xml (API SOAP)
-
-### Patch
-
-- Version 3.1 de de partie client-natif de Libersign
+- Accès aux dossiers en fin de circuit depuis la page principale
+- Affichage du bureau supérieur hiérarchique dans l'édition d'un bureau
+- Récupération des dossiers Universign
 
 ### Suppression
 
 - Notification à la création de Brouillon
+- Étape variable dans les circuits de création
+- Accès à la corbeille aux admin fonctionnels
+
+### Patch
+
+- Version 3.1 de de partie client-natif de Libersign
+- Mise à jour de la librairie Angular
+- Mise à jour de la librairie FontAwesome, et des icônes
+
 
 ## [5.0.17] - 2023-07-13
 [5.0.17]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.17.tar.gz
