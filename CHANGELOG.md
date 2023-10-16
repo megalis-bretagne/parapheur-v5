@@ -7,6 +7,25 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.0.19] - 2023-10-18
+[5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz
+
+### Ajouts
+
+- Contrôle d'usage à la modification/suppression des métadonnées
+
+### Corrections
+
+- Affichage des types limités dans les champs de recherches
+- Affichage des circuits limités dans les champs de recherche
+- Blocages lors de la uppression en masses de dossiers
+- Méthode `isBureau` dans les scripts de sélection
+- Notation de variables en `${variable}` dans les scripts de sélection
+- Récupération via Pastell
+- Erreur de syntaxe dans le Premis
+- Divers bugs graphiques
+
+
 ## [5.0.18] - 2023-09-29
 [5.0.18]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.18.tar.gz
 
