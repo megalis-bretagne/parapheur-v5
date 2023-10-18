@@ -72,7 +72,7 @@ Feature: 001 - Scénario de démo simple, partie administration
     # thead .slider is the "activate all notifications" slider
     * waitFor("thead .slider").click()
     * waitFor("{^}Unitaire").click()
-    * waitFor(ip5.ui.locator.button("Valider")).click()
+    * waitFor(ip5.ui.locator.button("Enregistrer")).click()
 
     # TODO (or not) if we really want to check, reload and see if unitary notif are checked
 
