@@ -24,6 +24,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Récupération via Pastell
 - Erreur de syntaxe dans le Premis
 - Divers bugs graphiques
+- Contrôle de la version du PDF à l'envoi en signature externe via Yousign
 
 
 ## [5.0.18] - 2023-09-29
