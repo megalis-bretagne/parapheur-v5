@@ -7,6 +7,19 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased]
+[Unreleased]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.0.tar.gz
+
+### Ajouts
+
+- Lien vers les notes de versions dans la page "À propos"
+- Liste des licences tierces dans la page "À propos"
+- Modification des modèles de signature et de cachet dans l'admin avancée
+- Recueil de modèles de signatures
+- Bouton "Créer un super-administrateur" dans la liste globale des utilisateurs
+- Lien cliquable sur les métadonnées de type URL
+
+
 ## [5.0.19] - 2023-10-25
 [5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz
 
