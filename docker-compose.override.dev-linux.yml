@@ -132,7 +132,7 @@ services:
 
 
   postgres:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
     memswap_limit: 1G
     ports:
       - "5432:5432"
