@@ -7,18 +7,23 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.19] - 2023-10-18
+## [5.0.19] - 2023-10-25
 [5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz
 
 ### Ajouts
 
 - Contrôle d'usage à la modification/suppression des métadonnées
+- Création d'un dossier dans l'API standard
+- Liste des types dans l'API standard
+- Liste des types disponibles à la création de dossier dans l'API standard
+- Liste des sous-types dans l'API standard
+- Liste des sous-types disponibles à la création de dossier dans l'API standard
 
 ### Corrections
 
 - Affichage des types limités dans les champs de recherches
 - Affichage des circuits limités dans les champs de recherche
-- Blocages lors de la uppression en masses de dossiers
+- Blocages lors de la suppression en masse de dossiers
 - Méthode `isBureau` dans les scripts de sélection
 - Notation de variables en `${variable}` dans les scripts de sélection
 - Récupération via Pastell
