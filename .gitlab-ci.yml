@@ -40,6 +40,20 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
+my_job:
+  stage: package
+  variables:
+    LAST_TAG: $(git describe --tags --abbrev=0)
+    UPCOMING_TAG: $(IFS='.' read -a version_parts <<< "$LAST_TAG"; echo "${version_parts[0]}.${version_parts[1]}.$((version_parts[2] + 1))")
+    DEVELOP_SEMVER: "${UPCOMING_TAG}-alpha.develop.$(date '+%Y%m%dT%H%M%S')"
+    CURRENT_SEMVER: ${CI_COMMIT_TAG:-$DEVELOP_SEMVER}
+  script:
+    - echo "LAST_TAG: ${LAST_TAG}"
+    - echo "UPCOMING_TAG: ${UPCOMING_TAG}"
+    - echo "DEVELOP_SEMVER: ${DEVELOP_SEMVER}"
+    - echo "CURRENT_SEMVER: ${CURRENT_SEMVER}"
+
+
 # <editor-fold desc="Package">
 
 
