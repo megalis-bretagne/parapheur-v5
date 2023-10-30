@@ -42,12 +42,12 @@ variables:
 
 my_job:
   stage: package
-  variables:
-    LAST_TAG: $(git describe --tags --abbrev=0)
-    UPCOMING_TAG: $(IFS='.' read -a version_parts <<< "$LAST_TAG"; echo "${version_parts[0]}.${version_parts[1]}.$((version_parts[2] + 1))")
-    DEVELOP_SEMVER: "${UPCOMING_TAG}-alpha.develop.$(date '+%Y%m%dT%H%M%S')"
-    CURRENT_SEMVER: ${CI_COMMIT_TAG:-$DEVELOP_SEMVER}
   script:
+    - LAST_TAG=$(git describe --tags --abbrev=0)
+    - IFS='.' read -a version_parts <<< "$LAST_TAG"
+    - UPCOMING_TAG="${version_parts[0]}.${version_parts[1]}.$((version_parts[2] + 1))"
+    - DEVELOP_SEMVER="${UPCOMING_TAG}-alpha.develop.$(date '+%Y%m%dT%H%M%S')"
+    - CURRENT_SEMVER="${CI_COMMIT_TAG:-$DEVELOP_SEMVER}"
     - echo "LAST_TAG=${LAST_TAG}"
     - echo "UPCOMING_TAG=${UPCOMING_TAG}"
     - echo "DEVELOP_SEMVER=${DEVELOP_SEMVER}"
