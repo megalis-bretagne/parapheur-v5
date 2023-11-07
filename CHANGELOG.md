@@ -7,8 +7,8 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased]
-[Unreleased]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.0.tar.gz
+## [5.1.0]
+[5.1.0]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.0.tar.gz
 
 ### Ajouts
 
@@ -18,6 +18,25 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Recueil de modèles de signatures
 - Bouton "Créer un super-administrateur" dans la liste globale des utilisateurs
 - Lien cliquable sur les métadonnées de type URL
+
+
+## [5.0.20] - 2023-11-07
+[5.0.20]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.20.tar.gz
+
+### Ajouts
+
+- Circuits dans l'API Standard (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1231)
+- Contrôles d'intégrité à la suppression d'un circuit (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/ip-web/-/issues/286)
+
+### Corrections
+
+- Montée de version de Libersign, pour une version en OpenJDK (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1128)
+- Erreur à l'édition d'un calque, lors de la suppression d'un élément (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1286)
+- Erreur à l'association d'un calque à un sous-type (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1285)
+
+### Suppressions
+
+- Message "action automatique" dans le modèle de cachet par défaut (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/819)
 
 
 ## [5.0.19] - 2023-10-25
