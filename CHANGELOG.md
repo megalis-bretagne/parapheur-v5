@@ -25,18 +25,18 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 ### Ajouts
 
-- Circuits dans l'API Standard (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1231)
-- Contrôles d'intégrité à la suppression d'un circuit (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/ip-web/-/issues/286)
+- Circuits dans l'API Standard
+- Contrôles d'intégrité à la suppression d'un circuit
 
 ### Corrections
 
-- Montée de version de Libersign, pour une version en OpenJDK (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1128)
-- Erreur à l'édition d'un calque, lors de la suppression d'un élément (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1286)
-- Erreur à l'association d'un calque à un sous-type (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/1285)
+- Montée de version de Libersign, pour une version en OpenJDK
+- Erreur à l'édition d'un calque, lors de la suppression d'un élément
+- Erreur à l'association d'un calque à un sous-type
 
 ### Suppressions
 
-- Message "action automatique" dans le modèle de cachet par défaut (https://gitlab.libriciel.fr/libriciel/pole-signature/i-Parapheur-v5/i-Parapheur/compose/-/issues/819)
+- Message "action automatique" dans le modèle de cachet par défaut
 
 
 ## [5.0.19] - 2023-10-25
