@@ -78,7 +78,9 @@ __main__() {
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s -\n" "${DB_NAME}"
     docker compose exec postgres /bin/bash -c \
-        "export PGPASSWORD=${POSTGRES_PASSWORD} && /usr/bin/pg_dump --username ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
+        "export PGPASSWORD=${POSTGRES_PASSWORD}"
+    docker compose exec postgres /bin/bash -c \
+          "pg_dump --username ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
   done
 
   cp ${IP_CURRENT_INSTALL_DIR}.env /tmp/${CURRENT_SAVE_FOLDER_NAME}.env
@@ -106,23 +108,13 @@ __main__() {
       --exclude=${DATA_ROOT_DIR}/nginx \
       --exclude=${DATA_ROOT_DIR}/matomo-db \
       --exclude=${DATA_ROOT_DIR}/postgres \
-      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}".tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
+      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"_pending.tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
   printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"
 
   printf "Clean up temp & old files -\n"
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
-  # Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
-  # Note that we should skip saturday and sunday backups in the crontab
-
-  # number of backups
-  backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
-
-  # Check if at least 2 backups are present
-  if [ $backup_count -gt 1 ]; then
-    # deleting all backups exept the last 2
-    ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
-  fi
+  mv "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}_pending.tar.gz" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}.tar.gz"
 }
 
 __main__ "${@}"
