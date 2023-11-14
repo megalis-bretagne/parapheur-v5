@@ -17,17 +17,17 @@
 #
 
 BACKUPS_ROOT_DIR=${BACKUPS_ROOT_DIR:-/data/iparapheur_backups}
-  # Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
-  # Note that we should skip saturday and sunday backups in the crontab
+# Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
+# Note that we should skip saturday and sunday backups in the crontab
 
-  # Delete *_pending backups
-  rm ${BACKUPS_ROOT_DIR}/*_pending.tar.gz
+# Delete *_pending backups
+rm ${BACKUPS_ROOT_DIR}/*_pending.tar.gz
 
-  # Number of backups
-  backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
+# Number of backups
+backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
 
-  # Check if at least 2 backups are present
-  if [ $backup_count -gt 1 ]; then
-    # Deleting all backups exept the last 2
-    ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
-  fi
+# Check if at least 2 backups are present
+if [ $backup_count -gt 1 ]; then
+  # Deleting all backups exept the last 2
+  ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
+fi

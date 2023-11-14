@@ -115,9 +115,6 @@ __main__() {
   printf "Clean up temp & old files -\n"
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
   mv "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}_pending.tar.gz" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}.tar.gz"
-
-
-
 }
 
 __main__ "${@}"
