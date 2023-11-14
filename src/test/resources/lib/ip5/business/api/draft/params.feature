@@ -6,14 +6,14 @@ Feature: IP v.5 REST draft lib
         * def desktop = ip5.business.api.desktop.getByName(tenant.id, __arg.desktop)
 
         Given url baseUrl
-            And path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types"
+            And path "/api/standard/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types/creation-allowed"
             And header Accept = "application/json"
         When method GET
         Then status 200
         * def type = karate.jsonPath(response, "$.content[?(@.name=='" + __arg.type + "')]")[0]
 
         Given url baseUrl
-        And path "/api/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types/" + type.id + "/subtypes"
+        And path "/api/standard/v1/tenant/" + tenant.id + "/desk/" + desktop.id + "/types/" + type.id + "/subtypes/creation-allowed"
         And header Accept = "application/json"
         When method GET
         Then status 200
