@@ -21,7 +21,7 @@ function (tenantId, metadataKeys) {
     * def mandatoryRejectionMetadata = getWorkflowMandatoryMetadataIds(tenantId, karate.get('mandatoryRejectionMetadata', []))
 
     Given url baseUrl
-    And path '/api/v1/admin/tenant/', tenantId, '/workflowDefinition'
+    And path '/api/provisioning/v1/admin/tenant/', tenantId, '/workflow-definition'
     And header Accept = 'application/json'
     And request
 """
@@ -36,13 +36,19 @@ function (tenantId, metadataKeys) {
             "notifiedDeskIds": [],
             "mandatoryValidationMetadataIds": #(mandatoryValidationMetadata),
             "mandatoryRejectionMetadataIds": #(mandatoryRejectionMetadata)
+        },
+        {
+          "type": "ARCHIVE",
+          "validatingDeskIds": [
+            "i_Parapheur_reserved_emitter"
+          ],
+          "notifiedDeskIds": []
         }
     ],
     "name": "#(name)",
     "id": "#(key)",
     "key": "#(key)",
-    "deploymentId": "#(key)",
-    "finalDeskId": "##EMITTER##",
+    "finalDeskId": "i_Parapheur_reserved_emitter",
     "finalNotifiedDeskIds": []
 }
 """
