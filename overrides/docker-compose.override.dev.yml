@@ -39,7 +39,7 @@ services:
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
-      - VERSION=5.0.10-develop
+      - VERSION=5.0.20-develop
 
 
   workflow:
