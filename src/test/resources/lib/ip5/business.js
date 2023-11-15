@@ -82,7 +82,9 @@ function fn(config) {
                 }
             }
         }
-        karate.call('classpath:lib/ip5/business/api/draft/send.feature', karate.merge(args, { draft: draft, path: params.path }));
+
+        let startRequestPath = '/api/standard/v1/tenant/' + params.tenant.id + '/desk/' + params.desktop.id + '/folder/' + draftCreationResult.id + '/task/unusedTaskId/start';
+        karate.call('classpath:lib/ip5/business/api/draft/send.feature', karate.merge(args, { draft: draft, path: startRequestPath }));
     };
     config.ip5.business.api.draft['createSimple'] = function(params, mainFiles) {
         var rv = karate.call('classpath:lib/ip5/business/api/draft/createSimple.feature', { params: params, mainFiles: mainFiles } );

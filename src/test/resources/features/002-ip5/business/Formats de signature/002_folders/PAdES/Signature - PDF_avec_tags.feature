@@ -38,7 +38,7 @@ Feature: PAdES - Signature - PDF_avec_tags
         Examples:
             | key       | signedBy            | reason                    | location    |
             | normal    | Prenom Nom - Usages | Nacarat                   | Montpellier |
-            | surcharge | Prenom Nom - Usages | Responsable des méthodes  | Agde        |
+            | surcharge | Prenom Nom - Usages | Responsable des méthodes | Agde        |
 
     @fixme-ip5 @issue-compose-579 @issue-todo
     Scenario Outline: Vérifications des annotations (${key})

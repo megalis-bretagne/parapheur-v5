@@ -136,6 +136,7 @@ function fn(config) {
                 mainFilePath: mainFilePath['file'],
                 mainFileDetachedPath: mainFilePath['detached'],
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                startPath: '/api/standard/v1/tenant/' + tenantId + '/desk/' + deskId + '/folder/{folderId}/task/unusedTaskId/start',
                 annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
@@ -181,6 +182,7 @@ function fn(config) {
                 // mainFilePath: mainFilePath,
                 mainFilesPaths: mainFilesPaths,
                 path: '/api/v1/tenant/' + tenantId + '/desk/' + deskId + '/draft',
+                startPath: '/api/standard/v1/tenant/' + tenantId + '/desk/' + deskId + '/folder/{folderId}/task/unusedTaskId/start',
                 annotation: annotation === '' ? '' : annotation + ' du dossier ' + createFolderRequest.name,
                 username: username,
             });
@@ -567,7 +569,7 @@ function fn(config) {
         }
     };
 
-    
+
     /*
     --
     */
@@ -630,7 +632,7 @@ function fn(config) {
     config.ip5.api.v1.sealCertificate['getIdByName'] = function (tenantId, name, containing = false) {
         response = karate
             .http(baseUrl)
-            .path('/api/v1/admin/tenant/' + tenantId + '/sealCertificate')
+            .path('/api/provisioning/v1/admin/tenant/' + tenantId + '/sealCertificate')
             .header('Accept', 'application/json')
             .header('Authorization', 'Bearer ' + ip5.api.v1.auth.token.access_token)
             .param('page', 0)

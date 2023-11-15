@@ -108,9 +108,17 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors:develop
     ports:
       - "8090:8090"
+
+
+  activemq:
+    ports:
+      - "8161:8161"   # Web Console
+      - "5672:5672"   # AMQP
+      - "61616:61616" # OpenWire
+      - "61613:61613" # STOMP
 
 
   postgres:
@@ -145,6 +153,7 @@ services:
 
 
   prometheus:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus:develop
     ports:
       - "9091:9090"
     volumes:

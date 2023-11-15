@@ -7,12 +7,73 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.0.18] - 2023-08-07
+## [5.1.0]
+[5.1.0]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.0.tar.gz
+
+### Ajouts
+
+- Lien vers les notes de versions dans la page "À propos"
+- Liste des licences tierces dans la page "À propos"
+- Modification des modèles de signature et de cachet dans l'admin avancée
+- Recueil de modèles de signatures
+- Bouton "Créer un super-administrateur" dans la liste globale des utilisateurs
+- Lien cliquable sur les métadonnées de type URL
+
+
+## [5.0.20] - 2023-11-07
+[5.0.20]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.20.tar.gz
+
+### Ajouts
+
+- Circuits dans l'API Standard
+- Contrôles d'intégrité à la suppression d'un circuit
+
+### Corrections
+
+- Montée de version de Libersign, pour une version en OpenJDK
+- Erreur à l'édition d'un calque, lors de la suppression d'un élément
+- Erreur à l'association d'un calque à un sous-type
+
+### Suppressions
+
+- Message "action automatique" dans le modèle de cachet par défaut
+
+
+## [5.0.19] - 2023-10-25
+[5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz
+
+### Ajouts
+
+- Contrôle d'usage à la modification/suppression des métadonnées
+- Création d'un dossier dans l'API standard
+- Liste des types dans l'API standard
+- Liste des types disponibles à la création de dossier dans l'API standard
+- Liste des sous-types dans l'API standard
+- Liste des sous-types disponibles à la création de dossier dans l'API standard
+
+### Corrections
+
+- Affichage des types limités dans les champs de recherches
+- Affichage des circuits limités dans les champs de recherche
+- Blocages lors de la suppression en masse de dossiers
+- Méthode `isBureau` dans les scripts de sélection
+- Notation de variables en `${variable}` dans les scripts de sélection
+- Récupération via Pastell
+- Erreur de syntaxe dans le Premis
+- Divers bugs graphiques
+- Contrôle de la version du PDF à l'envoi en signature externe via Yousign
+
+
+## [5.0.18] - 2023-09-29
 [5.0.18]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.18.tar.gz
 
 ### Ajouts
 
 - Support de l'API v3 de YouSign
+- Ouverture de l'API standard
+- Redémarrage nocturne de l'application
+- Vérification de la non-utilisation d'un bureau à sa suppression
+- Message d'erreur spécifique lorsqu'un dossier cherche à avancer vers bureau supprimé
 
 ### Corrections
 
@@ -31,12 +92,26 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Emplacement de signatures successives
 - Signatures externes en lot
 - Position de la signature avec Yousign et Universign
-
-### Patch
-- Version 3.1 de de partie client-natif de Libersign
+- Affichage du rejet dans l'historique du fichier PREMIS
+- Retour d'API lors d'un mauvais login
+- Emplacement de signature lorsque 2 tags sont sur la même ligne
+- Statut dans iparapheur_historique.xml (API SOAP)
+- Accès aux dossiers en fin de circuit depuis la page principale
+- Affichage du bureau supérieur hiérarchique dans l'édition d'un bureau
+- Récupération des dossiers Universign
 
 ### Suppression
+
 - Notification à la création de Brouillon
+- Étape variable dans les circuits de création
+- Accès à la corbeille aux admin fonctionnels
+
+### Patch
+
+- Version 3.1 de de partie client-natif de Libersign
+- Mise à jour de la librairie Angular
+- Mise à jour de la librairie FontAwesome, et des icônes
+
 
 ## [5.0.17] - 2023-07-13
 [5.0.17]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.17.tar.gz

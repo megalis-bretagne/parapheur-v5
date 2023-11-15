@@ -74,7 +74,7 @@ function fn(config) {
         for (idx = 1;idx <= lines;idx++) {
             row = {};
             row[singular] = text(linePrefix + "[" + idx + "]/text()").trim();
-            row['Utilisateur'] = text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ +à [0-9]+:[0-9]+:[0-9]+$/i, '$1');
+            row['Utilisateur'] = text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ *[à,] [0-9]+:[0-9]+:[0-9]+$/i, '$1');
             actual.push(row);
         }
         return actual;
