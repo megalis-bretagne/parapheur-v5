@@ -20,7 +20,7 @@ services:
 
   core:
     volumes:
-      - ./src/main/resources/core/application-dev.yml:/application.yml
+      - ./application-core.yml:/application.yml
 
   smtp:
     image: tophfr/mailcatcher:0.7.1

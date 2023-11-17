@@ -122,11 +122,19 @@ strict-e2e-tests-deploy:
       when: never
     - if: $NIGHTLY == "TRUE"
       when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
     - if: $CI_COMMIT_BRANCH == 'develop'
       when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
     - if: $CI_COMMIT_TAG != null
       when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.e2e-tag.yml"
     - when: manual
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
   allow_failure: false
   variables:
     TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
@@ -134,7 +142,7 @@ strict-e2e-tests-deploy:
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
     RESET_DATA: "TRUE"
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
-    OVERRIDE_DOCKER_COMPOSE_FILE: "docker-compose.override.dev.yml"
+
 
 
 acceptance-deploy:
