@@ -18,6 +18,11 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Recueil de modèles de signatures
 - Bouton "Créer un super-administrateur" dans la liste globale des utilisateurs
 - Lien cliquable sur les métadonnées de type URL
+- Nom court du bureau dans le tampon de signature
+
+### Corrections
+
+- Tampons de signatures par défaut re-dessinés
 
 
 ## [5.0.20] - 2023-11-07
@@ -27,12 +32,19 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Circuits dans l'API Standard
 - Contrôles d'intégrité à la suppression d'un circuit
+- Gestion fine de la taille des backups
+- Indicateur de document principal dans le Premis
 
 ### Corrections
 
 - Montée de version de Libersign, pour une version en OpenJDK
 - Erreur à l'édition d'un calque, lors de la suppression d'un élément
 - Erreur à l'association d'un calque à un sous-type
+- Échanges avec Yousign V3
+- Positionnement de page avec Universign
+- Positionnement manuel de la signature
+- Blocage à l'envoi d'un dossier à la corbeille
+- Affichage de l'aperçu d'un circuit à la création d'un dossier en cas de script de sélection
 
 ### Suppressions
 
