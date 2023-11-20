@@ -138,7 +138,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.9.1
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.9.2
     restart: unless-stopped
     tty: true
     deploy:
