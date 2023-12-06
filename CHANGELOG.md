@@ -23,6 +23,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Corrections
 
 - Tampons de signatures par défaut re-dessinés
+- Taille par défaut du cadre de signature
 
 
 ## [5.0.20] - 2023-11-07
@@ -45,10 +46,18 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Positionnement manuel de la signature
 - Blocage à l'envoi d'un dossier à la corbeille
 - Affichage de l'aperçu d'un circuit à la création d'un dossier en cas de script de sélection
+- Ajout d'un `_` au résultat d'un script de sélection commençant par un chiffre
+- Préservation des tirets dans les migrations des circuits
+- Liaisons avec Pastell
+- Ajout d'une signature détachée à un dossier multi-docs
+- Enregistrement du bureau émetteur dans les bureaux notifiées d'une étape finale
+- Typos
+- Suppression d'une entité interrompue
 
 ### Suppressions
 
 - Message "action automatique" dans le modèle de cachet par défaut
+- Positionnement de signature pour une typologie à signature détachée
 
 
 ## [5.0.19] - 2023-10-25
