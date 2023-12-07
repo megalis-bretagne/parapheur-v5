@@ -26,7 +26,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Taille par défaut du cadre de signature
 
 
-## [5.0.20] - 2023-11-07
+## [5.0.20] - 2023-12-07
 [5.0.20]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.20.tar.gz
 
 ### Ajouts
@@ -35,6 +35,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Contrôles d'intégrité à la suppression d'un circuit
 - Gestion fine de la taille des backups
 - Indicateur de document principal dans le Premis
+- Verrouillage des champs "Nom/Prénom/Mail" à l'édition d'un utilisateur synchronisé par LDAP
 
 ### Corrections
 
@@ -45,18 +46,22 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Positionnement de page avec Universign
 - Positionnement manuel de la signature
 - Blocage à l'envoi d'un dossier à la corbeille
-- Affichage de l'aperçu d'un circuit à la création d'un dossier en cas de script de sélection
+- Affichage de l'aperçu d'un circuit à la création d'un dossier en cas de script de sélection.
 - Ajout d'un `_` au résultat d'un script de sélection commençant par un chiffre
 - Préservation des tirets dans les migrations des circuits
 - Liaisons avec Pastell
 - Ajout d'une signature détachée à un dossier multi-docs
 - Enregistrement du bureau émetteur dans les bureaux notifiées d'une étape finale
-- Typos
 - Suppression d'une entité interrompue
+- Récupération des signatures externes bloquées lorsqu'un des dossiers a été supprimé
+- Échanges avec l'API Yousign
+- Verrouillage des champs id lors d'une édition d'un utilisateur
+- Verrouillage des champs id lors d'une édition d'un circuit
+- Typos
 
 ### Suppressions
 
-- Message "action automatique" dans le modèle de cachet par défaut
+- Label "action automatique" dans le modèle de cachet par défaut
 - Positionnement de signature pour une typologie à signature détachée
 
 
