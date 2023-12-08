@@ -57,6 +57,9 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Échanges avec l'API Yousign
 - Verrouillage des champs id lors d'une édition d'un utilisateur
 - Verrouillage des champs id lors d'une édition d'un circuit
+- Récupération des infos d'une entité
+- Duplication d'un circuit
+- Envoi à la corbeille depuis le tableau de bord
 - Typos
 
 ### Suppressions
