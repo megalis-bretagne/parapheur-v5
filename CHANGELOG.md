@@ -61,12 +61,16 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Duplication d'un circuit
 - Envoi à la corbeille depuis le tableau de bord
 - Typos
+- Remplacement de la Cosignature détachée par le fichier à signer
 
 ### Suppressions
 
 - Label "action automatique" dans le modèle de cachet par défaut
 - Positionnement de signature pour une typologie à signature détachée
 
+### Limitations
+
+- Lors d'une migration v4 vers v5, si un circuit et un bureau ont le même nom, le script peut ne pas fonctionner
 
 ## [5.0.19] - 2023-10-25
 [5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz
