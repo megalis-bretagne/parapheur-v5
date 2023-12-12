@@ -222,7 +222,10 @@ function fn(config) {
         var payload = {
             actionAllowed: permissions['action'] === undefined ? false : permissions['action'],
             archivingAllowed: permissions['archiving'] === undefined ? false : permissions['archiving'],
-            associatedDeskIdsList: associated,
+            associatedDeskIds: associated,
+            supervisorIds: [],
+            delegationManagerIds: [],
+            filterableMetadataIds: [],
             availableSubtypeIdsList: [],
             chainAllowed: permissions['chain'] === undefined ? false : permissions['chain'],
             delegatingDesks: [],
