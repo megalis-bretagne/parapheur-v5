@@ -46,7 +46,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button").click()
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
-        * waitFor("{^}Valider").click()
+        * waitFor("//button[@title='Valider']").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
@@ -98,7 +98,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor("//*[contains(normalize-space(text()), 'vis complémentaire')]/ancestor-or-self::button").click()
         * ip5.ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
 
-        * waitFor("{^}Valider").click()
+        * waitFor("//button[@title='Valider']").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
         * ip5.ui.user.logout()
@@ -116,7 +116,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * waitFor("//*[contains(normalize-space(text()), '" + action + "')]/ancestor-or-self::button").click()
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
-        * waitFor("{^}Valider").click()
+        * waitFor("//button[@title='Valider']").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
