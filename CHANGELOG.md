@@ -26,6 +26,13 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Taille par défaut du cadre de signature
 
 
+## [5.0.21] - 2024-01-08
+[5.0.21]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.21.tar.gz
+
+### Corrections
+
+- Ajout du script de rotation
+
 
 ## [5.0.20] - 2023-12-07
 [5.0.20]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.20.tar.gz
