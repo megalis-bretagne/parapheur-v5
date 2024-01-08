@@ -59,6 +59,7 @@ package_tar_gz:
       mv -t ${PACKAGE_NAME}/docker-resources \
          src/main/resources/nginx/iparapheur.init.conf.template \
          backup.sh \
+         backup_rotation.sh \
          cron.sh
     - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
   artifacts:
