@@ -26,12 +26,37 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Taille par défaut du cadre de signature
 
 
+## [5.0.22] - 2024-01-10
+[5.0.22]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.22.tar.gz
+
+### Ajouts
+
+- Gestion du retour à la ligne dans le champ Informations complémentaires
+
+### Corrections
+
+- Crash à la dissociation de l'élément d'un calque
+- Suppression d'un circuit dont la clé est contenue dans une autre clé
+- Délai de chargement des bureaux
+- Position d'un tag de signature lorsque deux tags sont sur la même ligne
+- Gestion d'un ZIP en annexe
+- Message d'erreur lors de la suppression d'une métadonnée utilisée
+- Affichage des noms longs de bureaux
+- Infobulle du champ Informations complémentaires
+- Transfert de dossier depuis l'administration
+- Signature papier
+- Échanges avec PASTELL lors d'un dossier avec un circuit de création
+- Affichage de la liste des circuits parfois vide
+- Affichage de l'aperçu du circuit
+- Recyclage d'un dossier rejeté
+
+
 ## [5.0.21] - 2024-01-08
 [5.0.21]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.21.tar.gz
 
 ### Corrections
 
-- Ajout du script de rotation
+- Ajout du script de rotation de backups
 
 
 ## [5.0.20] - 2023-12-07
@@ -76,9 +101,6 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Label "action automatique" dans le modèle de cachet par défaut
 - Positionnement de signature pour une typologie à signature détachée
 
-### Limitations
-
-- Lors d'une migration v4 vers v5, si un circuit et un bureau ont le même nom, le script peut ne pas fonctionner
 
 ## [5.0.19] - 2023-10-25
 [5.0.19]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.19.tar.gz

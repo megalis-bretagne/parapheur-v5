@@ -23,7 +23,7 @@ Feature: Traitement des dossiers
         * if (action == 'Mail sécurisé') waitFor("//app-send-by-mail-popup//*[contains(normalize-space(text()), 'Mail sécurisé')]/parent::button").click()
 
         * if (action != 'Mail sécurisé') ip5.ui.folder.annotate.both("lvermillon@legacy-bridge", action, name)
-        * if (action != 'Mail sécurisé') waitFor("{^}Valider").click()
+        * if (action != 'Mail sécurisé') waitFor("//button[@title='Valider']").click()
         # Pastell may take around 7/8 seconds to respond
         * if (action == 'Mail sécurisé') ip.pause(10)
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))

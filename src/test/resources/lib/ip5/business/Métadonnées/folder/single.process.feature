@@ -35,7 +35,7 @@ Feature: ...
         * ip5.ui.folder.annotate.both(params.username, params.action, params.folder)
         * ip5.business.ui.metadatas.fill(ip.business.metadonnees.map[params.folder])
 
-        * waitFor("{^}Valider").click()
+        * waitFor("//button[@title='Valider']").click()
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
         * waitFor(ip5.ui.toast.success("action " + params.action + " sur le dossier " + params.folder + " a été effectuée avec succès"))
 
