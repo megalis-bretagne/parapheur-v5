@@ -113,9 +113,9 @@ services:
       - "9009:8080"
 
 
-  transform-core-aio:
-    # ports:
-    #  - "8090:8090"
+  # transform-core-aio:
+  #   ports:
+  #    - "8090:8090"
 
 
   libriciel-engine-extractors:
