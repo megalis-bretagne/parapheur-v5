@@ -265,7 +265,7 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:7.3.0.5
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.1.0.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -295,7 +295,7 @@ services:
 
 
   transform-core-aio:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.1
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:5.0.1.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -339,7 +339,7 @@ services:
 
 
   activemq:
-    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-rockylinux8
+    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.18-jre17-rockylinux8
     restart: unless-stopped
     tty: true
     deploy:
