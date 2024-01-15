@@ -110,7 +110,7 @@ services:
   libriciel-engine-extractors:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors:develop
     ports:
-     - "8090:8090"
+      - "8090:8090"
 
 
   activemq:
