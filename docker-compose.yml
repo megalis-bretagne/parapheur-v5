@@ -297,7 +297,7 @@ services:
   transform-core-aio:
     # TODO: Fix the internal API call into Core, and bump this image to the 4.0.1
     # TODO: (Better) Merge the Core logic into Alfresco
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.0.0.1
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.1.1.0
     restart: unless-stopped
     tty: true
     deploy:
