@@ -49,7 +49,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage de la liste des circuits parfois vide
 - Affichage de l'aperçu du circuit
 - Recyclage d'un dossier rejeté
-
+- Recherche de dossier automatique depuis v5 vers ancienne v4
+- Mime type des documùents lors de leur téléchargement
+- Ajout de Metadata à la création depuis l'API  standard
+- Augmentation du nombre de caractère autorisé dans les annotations publiques et privées (256 -> 512)
 
 ## [5.0.21] - 2024-01-08
 [5.0.21]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.21.tar.gz
