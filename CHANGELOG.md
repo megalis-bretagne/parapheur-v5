@@ -56,7 +56,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 ### Corrections
 
-- Ajout du script de rotation de backups
+- Script de rotation de backups
 
 
 ## [5.0.20] - 2023-12-07
