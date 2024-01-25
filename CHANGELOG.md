@@ -19,11 +19,16 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Bouton "Créer un super-administrateur" dans la liste globale des utilisateurs
 - Lien cliquable sur les métadonnées de type URL
 - Nom court du bureau dans le tampon de signature
+- Icône indiquant la validité technique de la signature sur les documents PAdES
 
 ### Corrections
 
 - Tampons de signatures par défaut re-dessinés
 - Taille par défaut du cadre de signature
+
+### Suppression
+
+- Mention "Action automatique" dans l'image du cachet automatique par défaut
 
 
 ## [5.0.22] - 2024-01-10
@@ -50,7 +55,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage de l'aperçu du circuit
 - Recyclage d'un dossier rejeté
 - Recherche de dossier automatique depuis v5 vers ancienne v4
-- Mime type des documùents lors de leur téléchargement
+- Mime type des documents lors de leur téléchargement
 - Ajout de Metadata à la création depuis l'API  standard
 - Augmentation du nombre de caractère autorisé dans les annotations publiques et privées (256 -> 512)
 
