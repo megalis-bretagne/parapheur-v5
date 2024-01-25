@@ -31,7 +31,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Mention "Action automatique" dans l'image du cachet automatique par défaut
 
 
-## [5.0.22] - 2024-01-10
+## [5.0.22] - 2024-01-25
 [5.0.22]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.22.tar.gz
 
 ### Ajouts
@@ -58,6 +58,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Mime type des documents lors de leur téléchargement
 - Ajout de Metadata à la création depuis l'API  standard
 - Augmentation du nombre de caractère autorisé dans les annotations publiques et privées (256 -> 512)
+
 
 ## [5.0.21] - 2024-01-08
 [5.0.21]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.21.tar.gz
