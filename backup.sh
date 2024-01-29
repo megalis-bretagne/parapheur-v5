@@ -60,19 +60,13 @@ __main__() {
   cd ${IP_CURRENT_INSTALL_DIR}
   docker compose down -v --remove-orphans
 
-  printf "Starting databases -\n"
-  docker compose up -d postgres matomo-db
+  printf "Starting database -\n"
+  docker compose up -d postgres
 
   # TODO check if service is healthy
   #  using some kind of docker inspect?
   printf "Waiting 10 seconds -\n"
   sleep 10s
-
-  printf "Dumping MatomoDB databases -\n"
-  docker compose exec matomo-db /usr/bin/mysqldump \
-      --user "${MATOMO_DB_USER}" \
-      --password="${MATOMO_DB_PASSWORD}" \
-      "${MATOMO_DB_DATABASE}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_matomo_backup.sql"
 
   printf "Dumping PostgreSQL databases -\n"
   for DB_NAME in "${DB_NAMES[@]}"; do
@@ -106,7 +100,6 @@ __main__() {
       --exclude=${DATA_ROOT_DIR}/alfresco/contentstore.deleted \
       --exclude=${DATA_ROOT_DIR}/pes-viewer \
       --exclude=${DATA_ROOT_DIR}/nginx \
-      --exclude=${DATA_ROOT_DIR}/matomo-db \
       --exclude=${DATA_ROOT_DIR}/postgres \
       -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"_pending.tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 

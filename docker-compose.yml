@@ -28,10 +28,6 @@
 name: iparapheur
 
 
-volumes:
-  matomo_internal_files: { }
-
-
 services:
 
 
@@ -47,16 +43,11 @@ services:
       - APPLICATION_HOST
       - KEYCLOAK_HOST
     volumes:
-      - matomo_internal_files:/var/www/html
-      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
-      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - matomo
 
 
   core:
@@ -78,8 +69,6 @@ services:
       - CONTENT_PORT
       - CONTENT_USER
       - CONTENT_PASSWORD
-      - MATOMO_TOKEN
-      - STATS_SERVICE_PROTOCOL
       - VAULT_UNSEAL_KEY
       - VAULT_TOKEN
       - APPLICATION_PROTOCOL
@@ -425,51 +414,6 @@ services:
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
-
-
-  matomo:
-    image: hubdocker.libriciel.fr/matomo:4.2.1-fpm
-    restart: unless-stopped
-    tty: true
-    # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
-    # We're assuming a generous 1G for the service, and a little bit for the DB.
-    deploy:
-      resources:
-        limits:
-          memory: 1024M
-    volumes:
-      - matomo_internal_files:/var/www/html
-      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
-      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
-    depends_on:
-      - matomo-db
-    environment:
-      - MATOMO_DATABASE_HOST=matomo-db
-      - MATOMO_DATABASE_USERNAME=${MATOMO_DB_USER}
-      - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD}
-      - MATOMO_DATABASE_DBNAME=${MATOMO_DB_DATABASE}
-    healthcheck:
-      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-
-  matomo-db:
-    image: hubdocker.libriciel.fr/mariadb:10.3.36
-    restart: unless-stopped
-    tty: true
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    volumes:
-      - ${DATA_ROOT_DIR}/matomo-db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
-      - MYSQL_USER=${MATOMO_DB_USER}
-      - MYSQL_PASSWORD=${MATOMO_DB_PASSWORD}
 
 
   vault:

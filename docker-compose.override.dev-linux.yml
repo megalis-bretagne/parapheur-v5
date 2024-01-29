@@ -152,11 +152,6 @@ services:
     # - KC_LOG_LEVEL=TRACE
 
 
-    # matomo:
-    #mem_limit: 512M
-    #memswap_limit: 512M
-
-
   redis:
     image: redis:6.2.1-alpine
     memswap_limit: 128M
