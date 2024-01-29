@@ -308,27 +308,6 @@ services:
           memory: 1G
 
 
-  # solr6:
-  #   image: alfresco/alfresco-search-services:2.0.5
-  #   deploy:
-  #    resources:
-  #      limits:
-  #        memory: 1G
-  #   environment:
-  #     #Solr needs to know how to register itself with Alfresco
-  #     - SOLR_ALFRESCO_HOST=${CONTENT_HOST}
-  #     - SOLR_ALFRESCO_PORT=${CONTENT_PORT}
-  #     #Alfresco needs to know how to call solr
-  #     - SOLR_SOLR_HOST=solr6
-  #     - SOLR_SOLR_PORT=8983
-  #     #Create the default alfresco and archive cores
-  #     - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
-  #     #HTTP by default
-  #     - ALFRESCO_SECURE_COMMS=none
-  #   ports:
-  #     - "8983:8983"    # Browser port
-
-
   activemq:
     # TODO: Fix the weird ClassNotFoundException on the native Alfresco's Docker image, and upgrade this
     image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-rockylinux8
