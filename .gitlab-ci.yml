@@ -18,7 +18,7 @@
 
 include:
   - project: "libriciel/integration-continue/templates"
-    ref: update-software-on-server@1.0.
+    ref: update-software-on-server@1.0.0
     file: '/jobs/update-software-on-server/update-software-on-server.yml'
 
 
