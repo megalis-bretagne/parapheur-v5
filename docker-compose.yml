@@ -361,7 +361,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.1.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.1.2.1
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
