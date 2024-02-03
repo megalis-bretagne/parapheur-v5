@@ -44,7 +44,7 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     memswap_limit: 64M
     environment:
-      - VERSION=5.0.22-develop
+      - VERSION=5.1.0-develop
     ports:
       - "4200:80"
 
@@ -124,15 +124,9 @@ services:
     ports:
       - "8090:8090"
 
-  #solr6:
-  #  #mem_limit: 1536M
-  #  #memswap_limit: 1536M
-  #  ports:
-  #    - 8983:8983
-
 
   postgres:
-    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
     memswap_limit: 1G
     ports:
       - "5432:5432"
@@ -150,11 +144,6 @@ services:
       - KC_HOSTNAME_STRICT=false
       - KC_HTTP_ENABLED=true
     # - KC_LOG_LEVEL=TRACE
-
-
-    # matomo:
-    #mem_limit: 512M
-    #memswap_limit: 512M
 
 
   redis:

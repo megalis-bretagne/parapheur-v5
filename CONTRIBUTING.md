@@ -18,7 +18,6 @@ This project contains a main `docker-compose.yml` file, that should start an ipa
 | http://iparapheur.dom.local/                           | IP web UI                  |
 | http://iparapheur.dom.local:9009/                      | Alfresco                   |
 | http://iparapheur.dom.local/auth/                      | Keycloak                   |
-| http://iparapheur.dom.local/matomo/                    | Matomo                     |
 | http://iparapheur.dom.local/api/swagger-ui/index.html  | Swagger UI                 |
 | http://iparapheur.dom.local:8200/                      | Vault                      |
 | http://iparapheur.dom.local/ws-iparapheur?wsdl         | Legacy Bridge MTOM wsdl    |
@@ -113,15 +112,13 @@ sudo docker compose -f docker-compose.yml -f docker-compose.override.dev-linux.y
 #### Useful tip :
 
 You might you want to start one of the sub-services natively, on your system.  
-Or simply removing a heavy one you won't use (like Matomo and its db)...   
+Or simply removing a heavy one you won't use...   
 To do so, scale down those services to `0`, to prevent `docker-compose` from starting those :
 
 ```bash
 sudo docker-compose -f docker-compose.yml -f docker-compose.override.dev-linux.yml up \
       --scale core=0 \
-      --scale web=0 \
-      --scale matomo=0 \
-      --scale matomo-db=0
+      --scale web=0
 ```
 
 ## Integration tests
