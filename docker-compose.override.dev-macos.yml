@@ -36,7 +36,7 @@ services:
   web:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
     environment:
-      - VERSION=5.0.6-develop
+      - VERSION=5.1.0-develop
     ports:
       - "4200:80"
 
@@ -122,7 +122,7 @@ services:
 
 
   postgres:
-    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
     ports:
       - "5432:5432"
 

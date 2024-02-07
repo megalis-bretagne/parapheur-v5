@@ -107,31 +107,6 @@ server {
     proxy_pass http://up_libersign/libersign;
   }
 
-  location = /matomo/index.php {
-    include             fastcgi_params;
-    fastcgi_param       SCRIPT_FILENAME     /var/www/html/index.php;
-    fastcgi_pass        matomo:9000;
-  }
-
-  location = /matomo/piwik.php {
-    include             fastcgi_params;
-    fastcgi_param       SCRIPT_FILENAME     /var/www/html/piwik.php;
-    fastcgi_pass        matomo:9000;
-  }
-
-  location = /matomo/matomo.php {
-    include             fastcgi_params;
-    fastcgi_param       SCRIPT_FILENAME     /var/www/html/matomo.php;
-    fastcgi_pass        matomo:9000;
-  }
-
-  # Matomo: serving static files (don't put trailing slash on it)
-  location /matomo {
-    index               index.php;
-    alias               /var/www/html;
-    try_files           $uri $uri/ =404;
-  }
-
   location /bl-xemwebviewer {
       proxy_intercept_errors off;
       proxy_pass http://up_pes_viewer/bl-xemwebviewer;

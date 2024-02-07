@@ -22,8 +22,6 @@ mkdir -m 757 -p /data/iparapheur/alfresco
 mkdir -m 757 -p /data/iparapheur/postgres
 mkdir -m 757 -p /data/iparapheur/solr/data
 mkdir -m 757 -p /data/iparapheur/solr/contentstore
-mkdir -m 757 -p /data/iparapheur/matomo/config
-mkdir -m 757 -p /data/iparapheur/matomo/plugins
 mkdir -m 757 -p /data/iparapheur/pes-viewer/pesPJ
 mkdir -m 757 -p /data/iparapheur/transfer/data
 mkdir -m 757 -p /data/iparapheur/vault/data

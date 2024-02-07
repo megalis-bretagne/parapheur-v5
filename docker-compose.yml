@@ -28,10 +28,6 @@
 name: iparapheur
 
 
-volumes:
-  matomo_internal_files: { }
-
-
 services:
 
 
@@ -47,20 +43,15 @@ services:
       - APPLICATION_HOST
       - KEYCLOAK_HOST
     volumes:
-      - matomo_internal_files:/var/www/html
-      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
-      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
       - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - matomo
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.10.9
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.10.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -78,8 +69,6 @@ services:
       - CONTENT_PORT
       - CONTENT_USER
       - CONTENT_PASSWORD
-      - MATOMO_TOKEN
-      - STATS_SERVICE_PROTOCOL
       - VAULT_UNSEAL_KEY
       - VAULT_TOKEN
       - APPLICATION_PROTOCOL
@@ -138,7 +127,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.9.9
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -240,7 +229,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.23
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.24
     restart: unless-stopped
     tty: true
     deploy:
@@ -319,27 +308,6 @@ services:
           memory: 1G
 
 
-  # solr6:
-  #   image: alfresco/alfresco-search-services:2.0.5
-  #   deploy:
-  #    resources:
-  #      limits:
-  #        memory: 1G
-  #   environment:
-  #     #Solr needs to know how to register itself with Alfresco
-  #     - SOLR_ALFRESCO_HOST=${CONTENT_HOST}
-  #     - SOLR_ALFRESCO_PORT=${CONTENT_PORT}
-  #     #Alfresco needs to know how to call solr
-  #     - SOLR_SOLR_HOST=solr6
-  #     - SOLR_SOLR_PORT=8983
-  #     #Create the default alfresco and archive cores
-  #     - SOLR_CREATE_ALFRESCO_DEFAULTS=alfresco,archive
-  #     #HTTP by default
-  #     - ALFRESCO_SECURE_COMMS=none
-  #   ports:
-  #     - "8983:8983"    # Browser port
-
-
   activemq:
     # TODO: Fix the weird ClassNotFoundException on the native Alfresco's Docker image, and upgrade this
     image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-rockylinux8
@@ -354,7 +322,7 @@ services:
 
 
   postgres:
-    image: registry.libriciel.fr:443/public/signature/ip-postgresql:10.23.1
+    image: registry.libriciel.fr:443/public/signature/ip-postgresql:15.4.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -393,7 +361,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.1.2.0
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:21.1.2.1
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -425,51 +393,6 @@ services:
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
-
-
-  matomo:
-    image: hubdocker.libriciel.fr/matomo:4.2.1-fpm
-    restart: unless-stopped
-    tty: true
-    # https://fr.matomo.org/docs/requirements/ says 2Go for the entire VM.
-    # We're assuming a generous 1G for the service, and a little bit for the DB.
-    deploy:
-      resources:
-        limits:
-          memory: 1024M
-    volumes:
-      - matomo_internal_files:/var/www/html
-      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
-      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
-    depends_on:
-      - matomo-db
-    environment:
-      - MATOMO_DATABASE_HOST=matomo-db
-      - MATOMO_DATABASE_USERNAME=${MATOMO_DB_USER}
-      - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD}
-      - MATOMO_DATABASE_DBNAME=${MATOMO_DB_DATABASE}
-    healthcheck:
-      test: [ "CMD-SHELL", "test -f /var/www/html/matomo.php" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-
-  matomo-db:
-    image: hubdocker.libriciel.fr/mariadb:10.3.36
-    restart: unless-stopped
-    tty: true
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    volumes:
-      - ${DATA_ROOT_DIR}/matomo-db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MATOMO_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MATOMO_DB_DATABASE}
-      - MYSQL_USER=${MATOMO_DB_USER}
-      - MYSQL_PASSWORD=${MATOMO_DB_PASSWORD}
 
 
   vault:

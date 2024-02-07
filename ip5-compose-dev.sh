@@ -36,8 +36,6 @@ fi
 # Don't do anything unless forced to
 FORCE="0"
 
-IGNORE_MATOMO_VERSION="0"
-
 # Security problems ahead with .env export...
 # which is why it's a dev script
 export_dot_env() {
@@ -52,20 +50,6 @@ export_dot_env
 KARATE_DEFAULT_TAGS_PATH="./src/test/resources/features"
 # @todo: get and use
 KEYCLOAK_CLIENT_SECRET="${KEYCLOAK_CLIENT_SECRET:-random-uuid}"
-MATOMO_COOKIES="${MATOMO_COOKIES:-/tmp/matomo-setup-cookies.txt}"
-MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
-MATOMO_DB_HOST="${MATOMO_DB_HOST:-matomo-db}"
-MATOMO_DB_TYPE="${MATOMO_DB_TYPE:-InnoDB}"
-MATOMO_DB_ROOT_EMAIL="${MATOMO_DB_ROOT_EMAIL:-admin@dom.local}"
-MATOMO_DB_ROOT_USER="${MATOMO_DB_ROOT_USER:-admin}"
-MATOMO_EXPECTED_VERSION="4.2.1"
-MATOMO_SITE_ID="${MATOMO_SITE_ID:-1}"
-MATOMO_SITE_NAME="${MATOMO_SITE_NAME:-i-Parapheur - Général}"
-MATOMO_SITE_TIMEZONE="${MATOMO_SITE_TIMEZONE:-Europe/Paris}"
-MATOMO_TABLES_PREFIX="${MATOMO_TABLES_PREFIX:-matomo_}"
-MATOMO_TOKEN_NAME="${MATOMO_TOKEN_NAME:-ipcore}"
-MATOMO_TMP_HTML="${MATOMO_TMP_HTML:-/tmp/matomo-setup-tmp.html}"
-MATOMO_URL="${MATOMO_URL:-http://${APPLICATION_HOST}/matomo/}"
 SLEEP_VALUE="${SLEEP_VALUE:-30s}"
 OVERRIDE_COMPOSE_FILE="1"
 START_APP="1"
@@ -175,14 +159,13 @@ __usage__()
     printf "  \t\t${warning} Destroys and re-creates a working i-Parapheur v. 5 development environment\n"
     printf "  \t\t${warning} Uses sudo to destroy and recreate /data/iparapheur dir.\n"
     printf "  \t\t${warning} Reads and exports values from the .env file\n"
-    printf "  \t\t${warning} Replaces values (MATOMO_TOKEN, VAULT_TOKEN, VAULT_UNSEAL_KEY) in the .env file and exports them\n"
+    printf "  \t\t${warning} Replaces values (VAULT_TOKEN, VAULT_UNSEAL_KEY) in the .env file and exports them\n"
     printf "\nOPTIONS\n"
     printf "  -f|--force\t\t\tYou have to use this option for the setup command to work\n"
     printf "  -h|--help\t\t\tDisplay this help\n"
-    printf "  --ignore-matomo-version\tDon't fail for unexpected Matomo version during check or setup (expected ${MATOMO_EXPECTED_VERSION})\n"
     printf "  --ignore-override-compose\tDon't use docker-compose override file\n"
     printf "  --dont-start-app\t\tDon't start app after initialization\n"
-    printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container or the matomo containers to properly start up during setup (default: 30s)\n"
+    printf "  -s|--sleep\t\t\tThe sleep amount to wait for the vault container to properly start up during setup (default: 30s)\n"
     printf "  -x|--xtrace\t\t\tDebug mode, prints every command before executing it (set -o xtrace)\n"
     printf "\nEXEMPLES\n"
     printf "  %s check\n" "${__SCRIPT__}"
@@ -304,17 +287,6 @@ __check_versions__() {
         fi
     done
 
-    # @info Matomo version 4.2.1, check __setup_matomo__
-    local MATOMO_VERSION="`grep "image.*matomo:" docker-compose.yml | sed 's/^.*matomo:\([0-9\.]\+\).*$/\1/g'`"
-    if [ "${MATOMO_VERSION}" == "${MATOMO_EXPECTED_VERSION}" ] ; then
-        log_icon_check "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
-    elif [ "${IGNORE_MATOMO_VERSION}" == "1" ] ; then
-            log_warning "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
-    else
-        mismatches=$((mismatches+1))
-        log_icon_cross "matomo ${MATOMO_VERSION} (expected ${MATOMO_EXPECTED_VERSION} for the function __setup_matomo__)"
-    fi
-
     if [ ${mismatches} -gt 0 ] ; then
         >&2 printf "\n${_red_}Fatal:${_default_} software versions requirements not met\n"
         exit 1
@@ -352,8 +324,8 @@ __reset__()
           --volumes \
           2> /dev/null
       rm -rf /data/iparapheur
-      mkdir -m 777 -p /data/iparapheur/{alfresco,matomo/{config,plugins},postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
-      touch /data/iparapheur/{alfresco,matomo/{config,plugins},pes-viewer/pesPJ,transfer}/.gitkeep
+      mkdir -m 777 -p /data/iparapheur/{alfresco,postgres,pes-viewer/pesPJ,solr/{contentstore,data},transfer/data,vault/data}
+      touch /data/iparapheur/{alfresco,pes-viewer/pesPJ,transfer}/.gitkeep
       chmod -R 0777 /data/iparapheur
 
       log_success "... resetting completed\n" "OK"
@@ -383,76 +355,6 @@ __setup_vault__()
       log_success "... Vault - setup completed\n" "OK"
 }
 
-curl_get() {
-    local url="${1}"
-    local output="`curl -b ${MATOMO_COOKIES} -c ${MATOMO_COOKIES} -s -o "${MATOMO_TMP_HTML}" -L -w "%{http_code} %{url_effective}\n" -L -X GET "${url}"`"
-
-    if [[ "${output}" =~ ^2[0-9][0-9] ]] ; then
-        printf "${_green_}${_check_}${_default_} %s\n" "${output}"
-    else
-        >&2 printf "${_red_}${_cross_}${_default_} %s\n" "${output}"
-        exit 1
-    fi
-}
-
-curl_post() {
-    local url="${1}"
-    local data="${2}"
-    local output="`curl -b ${MATOMO_COOKIES} -c ${MATOMO_COOKIES} -s -o "${MATOMO_TMP_HTML}" -L -w "%{http_code} %{url_effective}\n" -L -X POST "${url}" --data "${data}"`"
-
-    if [[ "${output}" =~ ^2[0-9][0-9] ]] ; then
-        printf "${_green_}${_check_}${_default_} %s\n" "${output}"
-    else
-        >&2 printf "${_red_}${_cross_}${_default_} %s\n" "${output}"
-        exit 1
-    fi
-}
-
-# @info Matomo version 4.2.1
-__setup_matomo__()
-{
-    export_dot_env
-
-    log_hr
-    echo "Matomo - setup..."
-    log_hr
-
-    docker compose \
-        --file docker-compose.yml \
-        --file docker-compose.override.init.yml \
-        up -d matomo nginx 2> /dev/null
-    sleep ${SLEEP_VALUE}
-    rm -f $MATOMO_COOKIES
-    curl_get "${MATOMO_URL}"
-    curl_get "${MATOMO_URL}index.php?action=systemCheck"
-    curl_get "${MATOMO_URL}index.php?action=databaseSetup"
-    curl_post "${MATOMO_URL}index.php?action=databaseSetup" "type=${MATOMO_DB_TYPE}&host=${MATOMO_DB_HOST}&username=`urlencode ${MATOMO_DB_USER}`&password=`urlencode ${MATOMO_DB_PASSWORD}`&dbname=`urlencode ${MATOMO_DB_DATABASE}`&tables_prefix=${MATOMO_TABLES_PREFIX}&adapter=`urlencode "PDO\MYSQL"`&submit=`urlencode "Next »"`"
-    curl_get "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation"
-    curl_post "${MATOMO_URL}index.php?action=setupSuperUser&module=Installation" "login=${MATOMO_DB_ROOT_USER}&password=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&password_bis=`urlencode ${MATOMO_DB_ROOT_PASSWORD}`&email=`urlencode ${MATOMO_DB_ROOT_EMAIL}`&submit=`urlencode "Next »"`"
-    curl_post "${MATOMO_URL}index.php?action=firstWebsiteSetup&module=Installation" "siteName=`urlencode "${MATOMO_SITE_NAME}"`&url=`urlencode "https://${APPLICATION_HOST}"`&timezone=`urlencode ${MATOMO_SITE_TIMEZONE}`&ecommerce=0&submit=`urlencode "Next »"`"
-    curl_get "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`"
-    curl_post "${MATOMO_URL}index.php?action=finished&module=Installation&site_idSite=${MATOMO_SITE_ID}&site_name=`urlencode "${MATOMO_SITE_NAME}"`" "submit=`urlencode "Continue to Matomo »"`"
-    log_success "... Matomo - setup completed\n" "OK"
-
-    log_hr
-    echo "Matomo - create token..."
-    log_hr
-
-    rm -f $MATOMO_COOKIES
-    MATOMO_DATE_URL="`date "+%Y-%m-%d"`"
-    curl_get "${MATOMO_URL}"
-    form_nonce=`grep -m 1 "form_nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
-    curl_post "${MATOMO_URL}index.php?module=Login" "form_login=${MATOMO_DB_ROOT_USER}&form_nonce=${form_nonce}&form_redirect=`urlencode "${MATOMO_URL}"`&form_password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`"
-    curl_get "${MATOMO_URL}?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}"
-    nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
-    curl_post "${MATOMO_URL}index.php?module=Login&action=confirmPassword&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "nonce=${nonce}&password=`urlencode "${MATOMO_DB_ROOT_PASSWORD}"`"
-    nonce=`grep -m 1 "nonce" "${MATOMO_TMP_HTML}" | sed 's/^.*value="\([^"]*\)".*$/\1/g'`
-    curl_post "${MATOMO_URL}index.php?module=UsersManager&action=addNewToken&idSite=${MATOMO_SITE_ID}&period=day&date=${MATOMO_DATE_URL}" "description=${MATOMO_TOKEN_NAME}&nonce=${nonce}"
-    export MATOMO_TOKEN="`grep "<code>" "${MATOMO_TMP_HTML}" | sed 's/^.*<code>\([^<]*\)<.*$/\1/g'`"
-    sed -i "s#MATOMO_TOKEN=.*#MATOMO_TOKEN=${MATOMO_TOKEN}#g" .env
-    log_success "... Matomo - create token completed\n" "OK"
-}
-
 __karate_tags__() {
     local path="${1}"
     find "${path}" \
@@ -473,16 +375,12 @@ __karate_tags__() {
 __main__()
 {
       cd ${__ROOT__}
-      opts=`getopt --longoptions force,ignore-matomo-version,ignore-override-compose,dont-start-app,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
+      opts=`getopt --longoptions force,ignore-override-compose,dont-start-app,help,sleep:,xtrace -- fhs:x "${@}"` || ( >&2 __usage__ ; exit 1 )
       eval set -- "$opts"
       while true ; do
           case "${1}" in
               -f|--force)
                   FORCE="1"
-                  shift
-              ;;
-              --ignore-matomo-version)
-                  IGNORE_MATOMO_VERSION="1"
                   shift
               ;;
               --ignore-override-compose)
@@ -536,7 +434,6 @@ __main__()
                   log_info "Copying .env to ${ENV_BACKUP}"
                   cp .env "${ENV_BACKUP}"
                   __setup_vault__
-                  __setup_matomo__
                   export_dot_env
                   docker compose down --volumes --remove-orphans 2> /dev/null
                   chmod -R 0777 /data/iparapheur
