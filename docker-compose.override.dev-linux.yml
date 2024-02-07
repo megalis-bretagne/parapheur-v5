@@ -124,12 +124,6 @@ services:
     ports:
       - "8090:8090"
 
-  #solr6:
-  #  #mem_limit: 1536M
-  #  #memswap_limit: 1536M
-  #  ports:
-  #    - 8983:8983
-
 
   postgres:
     # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
