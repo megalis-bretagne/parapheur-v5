@@ -7,7 +7,7 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.1.0]
+## [5.1.0] - 2023-02-07
 [5.1.0]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.0.tar.gz
 
 ### Ajouts
