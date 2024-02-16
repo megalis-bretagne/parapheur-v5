@@ -51,7 +51,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.10.11
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.10.12
     restart: unless-stopped
     tty: true
     deploy:
@@ -83,6 +83,7 @@ services:
       - KEYCLOAK_CLIENT_ID
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_RESTADMIN_PASSWORD
+      - KEYCLOAK_WEB_CLIENT_ID
       - INITIAL_IPARAPHEUR_ADMIN_USER
       - SECRET_PROTOCOL
       - SECRET_HOST
@@ -127,7 +128,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -143,7 +144,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.10.3
+    image: registry.libriciel.fr/public/signature/workflow:1.11.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -229,7 +230,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.24
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.25
     restart: unless-stopped
     tty: true
     deploy:
