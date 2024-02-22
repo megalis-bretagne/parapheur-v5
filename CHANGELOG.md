@@ -7,15 +7,21 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.1.1] - 2024-02-16
+## [5.1.1] - 2024-02-22
 [5.1.1]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.1.tar.gz
 
 ### Ajouts
 
 - Message lorsque l'utilisateur ne possède aucun bureau
+- Mention "en l'absence de" lors d'une notification à un suppléant
 
 ### Corrections
 
+- Enregistrement de l'images de signature
+- Doublon de dossiers dans les notifications groupées
+- Gestion du caractère `:` dans l'API SOAP
+- Modification d'une permission de création d'un sous-type
+- Affichage d'un nom long de type/sous-type
 - Changement de modèle sur une signature PAdES en cours
 - Affichage du document lors d'un avis complémentaire
 - Label de rejet dans le journal des évènements
@@ -26,25 +32,32 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Signature et rejets via délégation
 - Ajout d'un commentaire PDF
 - Gestion de la suppression d'un champ dans le formulaire de création de calque
-- Info-bulle incorrecte
+- Info-bulle incorrecte dans le champ complémentaire de l'utilisateur
 - Gestion de la métadonnée booléenne à `false` sur l'évaluation du script de sélection
 
 ### Suppression
 
 - Actions instantanées sur les formulaires contenant une image de signature
-- Avis complémentaire et transfert sur un dossier en brouillon
-- Avis complémentaire et transfert sur un dossier en fin de circuit
+- Avis complémentaire et transfert d'un dossier en brouillon
+- Avis complémentaire et transfert d'un dossier en fin de circuit
 
 
-## [5.0.23] - 2024-02-16
+## [5.0.23] - 2024-02-22
 [5.0.23]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.23.tar.gz
 
 ### Ajouts
 
 - Message lorsque l'utilisateur ne possède aucun bureau
+- Mention "en l'absence de" lors d'une notification à un suppléant
 
 ### Corrections
 
+- Enregistrement de l'images de signature
+- Doublon de dossiers dans les notifications groupées
+- Gestion du caractère `:` dans l'API SOAP
+- Modification d'une permission de création d'un sous-type
+- Affichage d'un nom long de type/sous-type
+- Changement de modèle sur une signature PAdES en cours
 - Affichage du document lors d'un avis complémentaire
 - Label de rejet dans le journal des évènements
 - Action de l'avis complémentaire depuis le tableau de bord
