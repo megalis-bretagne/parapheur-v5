@@ -34,12 +34,15 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Gestion de la suppression d'un champ dans le formulaire de création de calque
 - Info-bulle incorrecte dans le champ complémentaire de l'utilisateur
 - Gestion de la métadonnée booléenne à `false` sur l'évaluation du script de sélection
+- Message d'erreur à l'édition d'un bureau avec un mauvais paramètre
+- Validité de la signature avec le modèle de signature alternatif (signature personnalisée)
 
 ### Suppression
 
 - Actions instantanées sur les formulaires contenant une image de signature
 - Avis complémentaire et transfert d'un dossier en brouillon
 - Avis complémentaire et transfert d'un dossier en fin de circuit
+- Boutons en double dans la popup de signature
 
 
 ## [5.0.23] - 2024-02-22
@@ -69,12 +72,14 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Gestion de la suppression d'un champ dans le formulaire de création de calque
 - Info-bulle incorrecte
 - Gestion de la métadonnée booléenne à `false` sur l'évaluation du script de sélection
+- Message d'erreur à l'édition d'un bureau avec un mauvais paramètre
 
 ### Suppression
 
 - Actions instantanées sur les formulaires contenant une image de signature
 - Avis complémentaire et transfert sur un dossier en brouillon
 - Avis complémentaire et transfert sur un dossier en fin de circuit
+- Boutons en double dans la popup de signature
 
 
 ## [5.1.0] - 2023-02-07
