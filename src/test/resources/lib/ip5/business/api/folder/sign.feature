@@ -23,6 +23,7 @@ Feature: IP v.5 REST folder lib
         * path "/api/v1/tenant/" + tenant.id + "/folder/" + folder.id + "/dataToSign"
         * param deskId = desktop.id
         * param certBase64 = certBase64
+        * param customSignatureField = ''
         * header Accept = "application/json"
         * method GET
         * status 200
