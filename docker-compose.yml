@@ -230,7 +230,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.26
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.27
     restart: unless-stopped
     tty: true
     deploy:
