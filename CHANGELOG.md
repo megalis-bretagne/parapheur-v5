@@ -7,6 +7,48 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.2] - 2024-03-15
+[5.1.2]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.2.tar.gz
+
+### Ajouts
+
+- Vérification du certificat présenté par Pastell sur un mail-sécurisé
+
+### Corrections
+
+- Surcharge de titre contenant une virgule
+- Différence v4-v5 sur le getHistoDossier via l'API SOAP
+- Permission de création de sous-type vide
+- Compatibilité LemonLDAP
+
+### Suppressions
+
+- Onglet IPNG dans l'administration avancée
+- Étapes IPNG dans l'administration d'un circuit
+- Onglet "Permissions en filtre" dans l'administration d'un sous-type
+
+
+## [5.0.24] - 2024-03-15
+[5.0.24]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.24.tar.gz
+
+### Ajouts
+
+- Vérification du certificat présenté par Pastell sur un mail-sécurisé
+
+### Corrections
+
+- Surcharge de titre contenant une virgule
+- Différence v4-v5 sur le getHistoDossier via l'API SOAP
+- Permission de création de sous-type vide
+- Compatibilité LemonLDAP
+
+### Suppressions
+
+- Onglet IPNG dans l'administration avancée
+- Étapes IPNG dans l'administration d'un circuit
+- Onglet "Permissions en filtre" dans l'administration d'un sous-type
+
+
 ## [5.1.1] - 2024-02-22
 [5.1.1]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.1.tar.gz
 
