@@ -17,9 +17,9 @@
  */
 
 plugins {
-    id 'io.gatling.gradle' version '3.6.0'
-    id 'java'
     id 'idea'
+    id 'java'
+    id 'io.gatling.gradle' version '3.6.0'
 }
 
 
