@@ -157,7 +157,7 @@ acceptance-deploy:
       when: always
     - when: manual
   variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.recette.libriciel.net
     SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
 
 
@@ -197,7 +197,7 @@ test-deploy:
       when: manual
     - when: manual
   variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.test.libriciel.net
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.test.libriciel.net
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
 
 
@@ -210,7 +210,7 @@ partner-deploy:
       when: manual
     - when: manual
   variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.partenaire.libriciel.fr
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.partenaire.libriciel.fr
     SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
 
 
