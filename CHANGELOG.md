@@ -20,6 +20,13 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Différence v4-v5 sur le getHistoDossier via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
+- "Bordereau d'impression" renommé en "Bordereau" dans l'administration
+- Script de sélection de circuits avec Bureaux variables
+- Persistence des valeurs de métadonnées sur plusieurs exécution de scripts de sélections
+- Limite du nombre de caractères pour les annotations
+- Affichage du sélecteur pour l'association du calque au type de document
+- Langage de la page
+- Métadonnées non renseignées dans le pdf d'impression
 
 ### Suppressions
 
@@ -41,6 +48,13 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Différence v4-v5 sur le getHistoDossier via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
+- "Bordereau d'impression" renommé en "Bordereau" dans l'administration
+- Script de sélection de circuits avec Bureaux variables
+- Persistence des valeurs de métadonnées sur plusieurs exécution de scripts de sélections
+- Limite du nombre de caractères pour les annotations
+- Affichage du sélecteur pour l'association du calque au type de document
+- Langage de la page
+- Métadonnées non renseignées dans le pdf d'impression
 
 ### Suppressions
 
