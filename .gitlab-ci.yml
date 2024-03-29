@@ -79,7 +79,7 @@ package_tar_gz:
 
 
 publish:
-  stage: publish
+  stage: deploy
   dependencies: [ package_tar_gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
