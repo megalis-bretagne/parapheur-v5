@@ -25,7 +25,7 @@ include:
 
 stages:
   - package
-  - publish
+  - test
   - deploy
   - e2e-tests-setup
   - e2e-tests-strict
@@ -75,7 +75,7 @@ package_tar_gz:
 # </editor-fold desc="Package">
 
 
-# <editor-fold desc="Publish">
+# <editor-fold desc="Deploy">
 
 
 publish:
@@ -94,12 +94,6 @@ publish:
   script:
     - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
     - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-
-
-# </editor-fold desc="Publish">
-
-
-# <editor-fold desc="Deploy">
 
 
 .iparapheur_deploy:
