@@ -208,7 +208,7 @@ partner-deploy:
 # </editor-fold desc="Deploy">
 
 
-# <editor-fold desc="E2e tests">
+# <editor-fold desc=".post">
 
 
 .e2e-tests:
@@ -235,7 +235,7 @@ partner-deploy:
 
 setup-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-setup
+  stage: .post
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
@@ -247,7 +247,7 @@ setup-e2e-tests:
 
 strict-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-strict
+  stage: .post
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
@@ -262,7 +262,7 @@ strict-e2e-tests:
 
 tolerant-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-tolerant
+  stage: .post
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
@@ -277,4 +277,4 @@ tolerant-e2e-tests:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 
-# </editor-fold desc="E2e tests">
+# </editor-fold desc=".post">
