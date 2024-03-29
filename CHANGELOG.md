@@ -13,23 +13,26 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Ajouts
 
 - Vérification du certificat présenté par Pastell sur un mail-sécurisé
+- Limite du nombre de caractères pour les annotations
 
 ### Corrections
 
+- Notifications
+- Mention "En l'absence de" à la signature
 - Surcharge de titre contenant une virgule
-- Différence v4-v5 sur le getHistoDossier via l'API SOAP
+- Différence v4-v5 sur le `getHistoDossier` via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
 - "Bordereau d'impression" renommé en "Bordereau" dans l'administration
 - Script de sélection de circuits avec Bureaux variables
 - Persistence des valeurs de métadonnées sur plusieurs exécution de scripts de sélections
-- Limite du nombre de caractères pour les annotations
 - Affichage du sélecteur pour l'association du calque au type de document
-- Langage de la page
-- Métadonnées non renseignées dans le pdf d'impression
+- Métadonnées non renseignées dans le PDF d'impression
+- Ordre des modèles
 
 ### Suppressions
 
+- Propositions de traduction des navigateurs.
 - Onglet IPNG dans l'administration avancée
 - Étapes IPNG dans l'administration d'un circuit
 - Onglet "Permissions en filtre" dans l'administration d'un sous-type
