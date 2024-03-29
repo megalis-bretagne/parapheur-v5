@@ -21,14 +21,14 @@ services:
 
 
   nginx:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx/develop:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
     memswap_limit: 256M
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core/develop:latest
     extra_hosts:
       - "${APPLICATION_HOST}:host-gateway"
     volumes:
@@ -41,7 +41,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web/develop:latest
     memswap_limit: 64M
     environment:
       - VERSION=5.0.22-develop
@@ -50,7 +50,7 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow/develop:latest
     memswap_limit: 768M
     volumes:
       - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
@@ -59,7 +59,7 @@ services:
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector/develop:latest
     ports:
       - "8002:8080"
 
@@ -107,7 +107,7 @@ services:
 
 
   alfresco:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco/develop:latest
     memswap_limit: 1536M
     ports:
       - "9009:8080"
@@ -126,7 +126,7 @@ services:
 
 
   postgres:
-    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql/develop:latest
     memswap_limit: 1G
     ports:
       - "5432:5432"
@@ -166,7 +166,7 @@ services:
 
 
   vault:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault/develop:latest
     ports:
       - "8200:8200"
 

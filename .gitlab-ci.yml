@@ -147,7 +147,6 @@ strict-e2e-tests-deploy:
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
 
 
-
 acceptance-deploy:
   extends: [ .iparapheur_deploy ]
   rules:

@@ -20,13 +20,13 @@ services:
 
 
   nginx:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx/develop:latest
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
 
   core:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-core/develop:latest
     environment:
       - JAVA_OPTS=-Dspring.profiles.active=dev
     ports:
@@ -34,7 +34,7 @@ services:
 
 
   web:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-web/develop:latest
     environment:
       - VERSION=5.0.6-develop
     ports:
@@ -54,13 +54,13 @@ services:
 
 
   workflow:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/workflow/develop:latest
     ports:
       - "10080:8080"
 
 
   pastell-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector/develop:latest
     ports:
       - "8002:8080"
 
@@ -84,7 +84,7 @@ services:
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif:develop
     ports:
       - "8079:80"
 
@@ -96,7 +96,7 @@ services:
 
 
   alfresco:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco/develop:latest
     ports:
       - "9009:8080"
 
@@ -122,12 +122,13 @@ services:
 
 
   postgres:
-    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql:develop
+    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql/develop:latest
     ports:
       - "5432:5432"
 
 
   keycloak:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
     ports:
       - "9090:8080"
     environment:
@@ -146,6 +147,7 @@ services:
 
 
   vault:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault/develop:latest
     # For some reasons, macOS' Docker uses kebab-case in container names.
     # We want to ease the copy/paste from the README file.
     container_name: 'compose_vault_1'
