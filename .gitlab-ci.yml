@@ -17,6 +17,7 @@
 #
 
 include:
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
   - project: "libriciel/integration-continue/templates"
     ref: update-software-on-server@1.0.0
     file: '/jobs/update-software-on-server/update-software-on-server.yml'
@@ -48,18 +49,15 @@ variables:
 package_tar_gz:
   stage: package
   script:
-    - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     - mkdir ${PACKAGE_NAME}
     - >
       mv -t ${PACKAGE_NAME} \
          docker-compose.yml \
-         docker-compose.override.init.yml \
          .env.dist
     - mkdir ${PACKAGE_NAME}/docker-resources
     - >
       mv -t ${PACKAGE_NAME}/docker-resources \
-         src/main/resources/nginx/iparapheur.init.conf.template \
          backup.sh \
          backup_rotation.sh \
          cron.sh
