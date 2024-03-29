@@ -23,15 +23,6 @@ include:
     file: '/jobs/update-software-on-server/update-software-on-server.yml'
 
 
-stages:
-  - build
-  - test
-  - deploy
-  - e2e-tests-setup
-  - e2e-tests-strict
-  - e2e-tests-tolerant
-
-
 variables:
   NIGHTLY:
     value: "FALSE"
