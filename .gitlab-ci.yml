@@ -24,7 +24,7 @@ include:
 
 
 stages:
-  - package
+  - build
   - test
   - deploy
   - e2e-tests-setup
@@ -47,7 +47,7 @@ variables:
 
 
 package_tar_gz:
-  stage: package
+  stage: build
   script:
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     - mkdir ${PACKAGE_NAME}
