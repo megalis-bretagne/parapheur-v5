@@ -156,7 +156,7 @@ services:
 
 
   prometheus:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus/develop:latest
     ports:
       - "9091:9090"
     volumes:
