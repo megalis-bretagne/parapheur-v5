@@ -34,7 +34,21 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
-# <editor-fold desc="Package">
+# Local generic deploy job, the remote one is software-agnostic.
+# This is where we make it iparapheur-specific. All the following deploy jobs will extend this one.
+# Note that we have deploys in the deploy AND the test stages.
+.iparapheur_deploy:
+  extends: [ .update-software-on-server ]
+  needs: [ package_tar_gz ]
+  tags: [ runner-signature-shell ]
+  variables:
+    INIT_SCRIPT: "ip5-compose-dev.sh"
+    TARGETED_SOFTWARE: iparapheur
+    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
+    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
+
+
+# <editor-fold desc="Build">
 
 
 package_tar_gz:
@@ -63,10 +77,40 @@ package_tar_gz:
       - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
-# </editor-fold desc="Package">
+# </editor-fold desc="Build">
 
 
 # <editor-fold desc="Test">
+
+
+strict-e2e-tests-deploy:
+  extends: [ .iparapheur_deploy ]
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $NIGHTLY == "TRUE"
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
+    - if: $CI_COMMIT_BRANCH == 'develop'
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
+    - if: $CI_COMMIT_TAG != null
+      when: always
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.e2e-tag.yml"
+    - when: manual
+      variables:
+        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
+  allow_failure: false
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+    RESET_DATA: "TRUE"
+    OVERWRITE_ADMIN_PASSWORD: "TRUE"
 
 
 .e2e-tests:
@@ -155,49 +199,6 @@ publish:
   script:
     - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
     - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-
-
-.iparapheur_deploy:
-  # Local generic deploy job, the remote one is software-agnostic.
-  # This is where we make it iparapheur-specific.
-  # All the following deploy jobs will extend this one.
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
-  variables:
-    INIT_SCRIPT: "ip5-compose-dev.sh"
-    TARGETED_SOFTWARE: iparapheur
-    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
-    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-
-
-strict-e2e-tests-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $NIGHTLY == "TRUE"
-      when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
-    - if: $CI_COMMIT_BRANCH == 'develop'
-      when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
-    - if: $CI_COMMIT_TAG != null
-      when: always
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.e2e-tag.yml"
-    - when: manual
-      variables:
-        OVERRIDE_DOCKER_COMPOSE_FILE: "overrides/docker-compose.override.dev.yml"
-  allow_failure: false
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: charge.iparapheurubu22-5-0.recette.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${E2E_TESTS_SSH_PRIVATE_KEY_B64}
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-    RESET_DATA: "TRUE"
-    OVERWRITE_ADMIN_PASSWORD: "TRUE"
 
 
 acceptance-deploy:
