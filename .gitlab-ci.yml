@@ -18,6 +18,8 @@
 
 
 include:
+  # Container-Scanning here are redundant, since they already are in every project.
+  # We don't want duplicate vulnerability warnings.
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - project: "libriciel/integration-continue/templates"
     ref: update-software-on-server@1.0.0
