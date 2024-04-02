@@ -73,7 +73,7 @@ package_tar_gz:
   image: markhobson/maven-chrome:jdk-11
   variables:
     LANG: fr_FR.UTF-8
-  stage: e2e-tests
+  stage: test
   needs: [ strict-e2e-tests-deploy ]
   script:
     - set -eo pipefail
@@ -94,7 +94,6 @@ package_tar_gz:
 
 setup-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: .post
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
@@ -106,7 +105,6 @@ setup-e2e-tests:
 
 strict-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: .post
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
@@ -121,7 +119,6 @@ strict-e2e-tests:
 
 tolerant-e2e-tests:
   extends: [ .e2e-tests ]
-  stage: .post
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
