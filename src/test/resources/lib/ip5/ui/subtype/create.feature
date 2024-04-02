@@ -13,7 +13,7 @@ Feature: UI subtype lib
     * waitFor("//tbody//td[contains(text(),'" + type + "')]/ancestor::tr//button[@title='Ajouter un sous-type']").click()
     * input("#popupNameInput", [name, Key.ENTER], 200)
     * input("{^}Description", [description, Key.ENTER], 200)
-    * waitFor("#ngb-nav-3").click()
+    * waitFor("#ngb-nav-2").click()
     * ip.pause(1)
     * waitForEnabled("#selectValidationWorkflow input").input(workflow)
     * waitForEnabled("//*[contains(@class, 'ng-option ')]").click()
