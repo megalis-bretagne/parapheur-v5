@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - project: "libriciel/integration-continue/templates"
@@ -83,7 +84,7 @@ package_tar_gz:
 # <editor-fold desc="Test">
 
 
-strict-e2e-tests-deploy:
+e2e-deploy:
   extends: [ .iparapheur_deploy ]
   stage: test
   rules:
@@ -118,7 +119,7 @@ strict-e2e-tests-deploy:
   variables:
     LANG: fr_FR.UTF-8
   stage: test
-  needs: [ strict-e2e-tests-deploy ]
+  needs: [ e2e-deploy ]
   script:
     - set -eo pipefail
     - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libpoppler118=22.02.* libxml2-utils=2.9.* locales=2.35-* locales-all=2.35-* python3-pip=22.0.* poppler-utils=22.02.* xmlsec1=1.2.* zip=3.0-12build2 && pip3 install jsonpath-ng==1.5.3 Pillow==9.2.0 PyPDF2==2.10.0 && locale-gen fr_FR.UTF-8
@@ -136,24 +137,24 @@ strict-e2e-tests-deploy:
       - build/karate-tests-fixme-ip-tag.txt
 
 
-setup-e2e-tests:
+e2e-setup:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
   needs:
-    - job: strict-e2e-tests-deploy
+    - job: e2e-deploy
       optional: true
   allow_failure: false
 
 
-strict-e2e-tests:
+e2e-strict-tests:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
   needs:
-    - job: setup-e2e-tests
+    - job: e2e-setup
       optional: true
   allow_failure: false
   parallel:
@@ -161,12 +162,12 @@ strict-e2e-tests:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 
-tolerant-e2e-tests:
+e2e-tolerant-tests:
   extends: [ .e2e-tests ]
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
-  needs: [ strict-e2e-tests ]
+  needs: [ e2e-strict-tests ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
