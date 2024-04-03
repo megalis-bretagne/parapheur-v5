@@ -128,7 +128,7 @@ services:
 
 
   keycloak:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak/develop:latest
     ports:
       - "9090:8080"
     environment:

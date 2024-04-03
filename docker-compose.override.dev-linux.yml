@@ -133,7 +133,7 @@ services:
 
 
   keycloak:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak/develop:latest
     command: start  --import-realm
     memswap_limit: 1536M
     ports:
