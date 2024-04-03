@@ -21,7 +21,7 @@ services:
 
 
   nginx:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx/develop:latest-dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
     memswap_limit: 256M
