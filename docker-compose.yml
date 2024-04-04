@@ -350,7 +350,7 @@ services:
 
 
   redis:
-    image: hubdocker.libriciel.fr/redis:6.2.12-alpine
+    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.0
     restart: unless-stopped
     tty: true
     deploy:
