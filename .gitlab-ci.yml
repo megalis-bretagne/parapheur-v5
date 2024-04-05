@@ -57,7 +57,7 @@ variables:
 package-tar-gz:
   stage: build
   script:
-    - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
+    - sed --in-place "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     - mkdir ${PACKAGE_NAME}
     - mv --target-directory ${PACKAGE_NAME} docker-compose.yml .env.dist
     - mkdir ${PACKAGE_NAME}/docker-resources
@@ -194,7 +194,7 @@ publish:
         NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
   script:
     - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
-    - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+    - curl --user ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
 
 
 acceptance-deploy:
