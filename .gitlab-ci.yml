@@ -224,19 +224,6 @@ dev-deploy:
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
 
 
-formation-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
-    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
-
-
 test-deploy:
   extends: [ .iparapheur_deploy ]
   rules:
@@ -248,19 +235,6 @@ test-deploy:
   variables:
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.test.libriciel.net
     SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-
-
-partner-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.partenaire.libriciel.fr
-    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
 
 
 # </editor-fold desc="Deploy">
