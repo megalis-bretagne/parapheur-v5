@@ -147,7 +147,6 @@ services:
 
 
   redis:
-    image: redis:6.2.1-alpine
     memswap_limit: 128M
     ports:
       - "6379:6379"

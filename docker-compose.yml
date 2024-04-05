@@ -32,7 +32,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.24.0.5
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.24.0.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -350,7 +350,7 @@ services:
 
 
   redis:
-    image: hubdocker.libriciel.fr/redis:6.2.12-alpine
+    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.0
     restart: unless-stopped
     tty: true
     deploy:
