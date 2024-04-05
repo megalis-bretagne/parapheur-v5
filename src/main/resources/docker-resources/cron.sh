@@ -33,6 +33,7 @@ else
 fi
 
 ./backup_rotation.sh
+
 # Restart the app...
 
 cd /opt/iparapheur/current/
