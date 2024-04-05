@@ -42,7 +42,7 @@ variables:
 # Note that we have deploys in the deploy AND the test stages.
 .iparapheur_deploy:
   extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
+  needs: [ package-tar-gz ]
   tags: [ runner-signature-shell ]
   variables:
     INIT_SCRIPT: "ip5-compose-dev.sh"
@@ -54,7 +54,7 @@ variables:
 # <editor-fold desc="Build">
 
 
-package_tar_gz:
+package-tar-gz:
   stage: build
   script:
     - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
@@ -181,7 +181,7 @@ e2e-tolerant-tests:
 
 publish:
   stage: deploy
-  dependencies: [ package_tar_gz ]
+  dependencies: [ package-tar-gz ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
