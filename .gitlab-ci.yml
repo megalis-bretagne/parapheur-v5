@@ -61,7 +61,7 @@ package_tar_gz:
     - mkdir ${PACKAGE_NAME}
     - mv --target-directory ${PACKAGE_NAME} docker-compose.yml .env.dist
     - mkdir ${PACKAGE_NAME}/docker-resources
-    - mv --target-directory ${PACKAGE_NAME}/docker-resources src/main/docker-resources/*
+    - mv --target-directory ${PACKAGE_NAME}/docker-resources src/main/resources/docker-resources/*
     - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
   artifacts:
     # The package is only needed for a while, to be used on the next deploy jobs.
