@@ -40,7 +40,7 @@ variables:
 # Local generic deploy job, the remote one is software-agnostic.
 # This is where we make it iparapheur-specific. All the following deploy jobs will extend this one.
 # Note that we have deploys in the deploy AND the test stages.
-.iparapheur_deploy:
+.iparapheur-deploy:
   extends: [ .update-software-on-server ]
   needs: [ package-tar-gz ]
   tags: [ runner-signature-shell ]
@@ -80,7 +80,7 @@ package-tar-gz:
 
 
 e2e-deploy:
-  extends: [ .iparapheur_deploy ]
+  extends: [ .iparapheur-deploy ]
   stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -198,7 +198,7 @@ publish:
 
 
 acceptance-deploy:
-  extends: [ .iparapheur_deploy ]
+  extends: [ .iparapheur-deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -211,7 +211,7 @@ acceptance-deploy:
 
 
 dev-deploy:
-  extends: [ .iparapheur_deploy ]
+  extends: [ .iparapheur-deploy ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -222,19 +222,6 @@ dev-deploy:
     TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
     SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
     SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-
-
-test-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.test.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
 
 
 # </editor-fold desc="Deploy">
