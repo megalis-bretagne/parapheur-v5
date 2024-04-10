@@ -184,7 +184,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.12
+    image: registry.libriciel.fr/public/signature/crypto:3.0.13
     restart: unless-stopped
     tty: true
     deploy:

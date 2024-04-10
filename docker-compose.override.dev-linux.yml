@@ -77,7 +77,7 @@ services:
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto/develop:latest
     memswap_limit: 3G
     ports:
       - "8085:8080"
