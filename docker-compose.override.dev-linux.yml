@@ -114,7 +114,7 @@ services:
 
 
   transform-core-aio:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio/develop:latest
     # ports:
     #   - "8090:8090"
 
@@ -147,9 +147,14 @@ services:
 
 
   redis:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-redis/develop:latest
     memswap_limit: 128M
     ports:
       - "6379:6379"
+
+
+  activemq:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-activemq/develop:latest
 
 
   smtp:

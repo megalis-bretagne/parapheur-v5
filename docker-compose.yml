@@ -311,7 +311,7 @@ services:
 
   activemq:
     # TODO: Fix the weird ClassNotFoundException on the native Alfresco's Docker image, and upgrade this
-    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-rockylinux8
+    image: registry.libriciel.fr:443/public/signature/ip-activemq:5.16.5.0
     restart: unless-stopped
     tty: true
     deploy:
