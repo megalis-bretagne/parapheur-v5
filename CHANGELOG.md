@@ -19,7 +19,6 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Notifications
 - Mention "En l'absence de" à la signature
-- Surcharge de titre contenant une virgule
 - Différence v4-v5 sur le `getHistoDossier` via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
@@ -47,8 +46,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 ### Corrections
 
-- Surcharge de titre contenant une virgule
-- Différence v4-v5 sur le getHistoDossier via l'API SOAP
+- Différence v4-v5 sur le `getHistoDossier` via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
 - "Bordereau d'impression" renommé en "Bordereau" dans l'administration
