@@ -97,7 +97,7 @@ services:
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp/develop:latest
     memswap_limit: 1G
     ports:
       - "8889:8080"

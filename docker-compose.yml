@@ -194,7 +194,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.4
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.5
     restart: unless-stopped
     tty: true
     deploy:
