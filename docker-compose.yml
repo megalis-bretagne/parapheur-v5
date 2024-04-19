@@ -1,6 +1,6 @@
 #
 # iparapheur
-# Copyright (C) 2019-2023 Libriciel-SCOP
+# Copyright (C) 2019-2024 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -32,7 +32,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.24.0.5
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.24.0.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -51,7 +51,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.2
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -128,7 +128,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.6
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.7
     restart: unless-stopped
     tty: true
     deploy:
@@ -144,7 +144,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.11.6
+    image: registry.libriciel.fr/public/signature/workflow:1.11.7
     restart: unless-stopped
     tty: true
     deploy:
@@ -162,7 +162,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.10
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -184,7 +184,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.0.12
+    image: registry.libriciel.fr/public/signature/crypto:3.1.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -194,7 +194,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.4
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.5
     restart: unless-stopped
     tty: true
     deploy:
@@ -204,7 +204,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.1
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -220,7 +220,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.2
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -230,7 +230,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.29
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.31
     restart: unless-stopped
     tty: true
     deploy:
@@ -255,7 +255,7 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.1.0.3
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.1.0.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -297,7 +297,7 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.4.1
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.4.2
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
@@ -311,7 +311,7 @@ services:
 
   activemq:
     # TODO: Fix the weird ClassNotFoundException on the native Alfresco's Docker image, and upgrade this
-    image: hubdocker.libriciel.fr/alfresco/alfresco-activemq:5.16.5-jre11-rockylinux8
+    image: registry.libriciel.fr:443/public/signature/ip-activemq:5.16.5.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -350,7 +350,7 @@ services:
 
 
   redis:
-    image: hubdocker.libriciel.fr/redis:6.2.12-alpine
+    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.0
     restart: unless-stopped
     tty: true
     deploy:

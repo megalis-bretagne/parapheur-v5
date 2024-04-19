@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
-
 #
 # iparapheur
-# Copyright (C) 2019-2023 Libriciel SCOP
+# Copyright (C) 2019-2024 Libriciel SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,22 +16,18 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This script should be called every night, by the crontab:
-#   05 01 * * * /opt/iparapheur/dist/docker-resources/cron.sh
+BACKUPS_ROOT_DIR=${BACKUPS_ROOT_DIR:-/data/iparapheur_backups}
+# Keep the 2 most recent backups. We'll bow to the 3-2-1 backup strategy
+# Note that we should skip saturday and sunday backups in the crontab
 
-cd /opt/iparapheur/dist/docker-resources
+# Delete *_pending backups
+rm ${BACKUPS_ROOT_DIR}/*_pending.tar.gz
 
-# Backup...
+# Number of backups
+backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
 
-./backup.sh
-if [ $? -eq 0 ]; then
-  echo "Backup completed successfully."
-else
-  echo -e "\e[31mBackup failed with exit code $?.\e[0m"
+# Check if at least 2 backups are present
+if [ $backup_count -gt 1 ]; then
+  # Deleting all backups exept the last 2
+  ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
 fi
-
-./backup_rotation.sh
-# Restart the app...
-
-cd /opt/iparapheur/current/
-docker compose up -d

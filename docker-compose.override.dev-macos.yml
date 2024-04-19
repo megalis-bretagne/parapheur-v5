@@ -1,6 +1,6 @@
 #
 # iparapheur
-# Copyright (C) 2019-2023 Libriciel-SCOP
+# Copyright (C) 2019-2024 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -20,7 +20,7 @@ services:
 
 
   nginx:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx/develop:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/nginx/develop:latest-dev
     volumes:
       - ./src/main/resources/nginx/iparapheur.develop.conf.template:/etc/nginx/templates/iparapheur.conf.template
 
@@ -42,13 +42,13 @@ services:
 
 
   redis:
-    image: redis:6.0-alpine
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-redis/develop:latest
     ports:
       - "6379:6379"
 
 
   pes-viewer:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer/develop:latest
     ports:
       - "8888:8888"
 
@@ -66,19 +66,19 @@ services:
 
 
   external-signature-connector:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector/develop:latest
     ports:
       - "2757:8080"
 
 
   legacy-bridge:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge/develop:latest
     ports:
       - "2758:8080"
 
 
   crypto:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto/develop:latest
     ports:
       - "8085:8080"
 
@@ -90,7 +90,7 @@ services:
 
 
   pdf-stamp:
-    image: gitlab.libriciel.fr:4567/outils/pdf-stamp:develop
+    image: gitlab.libriciel.fr:4567/outils/pdf-stamp/develop:latest
     ports:
       - "8889:8080"
 
@@ -102,18 +102,19 @@ services:
 
 
   transform-core-aio:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio:develop
-    # ports:
-    #  - "8090:8090"
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio/develop:latest
+    ports:
+      - "8091:8090"
 
 
   libriciel-engine-extractors:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors/develop:latest
     ports:
       - "8090:8090"
 
 
   activemq:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-activemq/develop:latest
     ports:
       - "8161:8161"   # Web Console
       - "5672:5672"   # AMQP
@@ -128,7 +129,7 @@ services:
 
 
   keycloak:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/keycloak/develop:latest
     ports:
       - "9090:8080"
     environment:
@@ -156,7 +157,7 @@ services:
 
 
   prometheus:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus/develop:latest
     ports:
       - "9091:9090"
     volumes:

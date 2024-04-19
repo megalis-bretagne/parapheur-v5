@@ -1,6 +1,6 @@
 #
 # iparapheur
-# Copyright (C) 2019-2023 Libriciel-SCOP
+# Copyright (C) 2019-2024 Libriciel-SCOP
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,19 +16,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+
 include:
+  # Container-Scanning here are redundant, since they already are in every project.
+  # We don't want duplicate vulnerability warnings.
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
   - project: "libriciel/integration-continue/templates"
     ref: update-software-on-server@1.0.0
     file: '/jobs/update-software-on-server/update-software-on-server.yml'
-
-
-stages:
-  - package
-  - publish
-  - deploy
-  - e2e-tests-setup
-  - e2e-tests-strict
-  - e2e-tests-tolerant
 
 
 variables:
@@ -42,27 +37,32 @@ variables:
   PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
-# <editor-fold desc="Package">
+# Local generic deploy job, the remote one is software-agnostic.
+# This is where we make it iparapheur-specific. All the following deploy jobs will extend this one.
+# Note that we have deploys in the deploy AND the test stages.
+.iparapheur-deploy:
+  extends: [ .update-software-on-server ]
+  needs: [ package-tar-gz ]
+  tags: [ runner-signature-shell ]
+  variables:
+    INIT_SCRIPT: "ip5-compose-dev.sh"
+    TARGETED_SOFTWARE: iparapheur
+    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
+    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
 
 
-package_tar_gz:
-  stage: package
+# <editor-fold desc="Build">
+
+
+package-tar-gz:
+  stage: build
   script:
-    - echo -e "📦📦📦 \e[42mPackaging ${PACKAGE_NAME}\e[0m 📦📦📦"
-    - sed -i "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
+    - sed --in-place "s/%CI_COMMIT_REF_NAME%/$CI_COMMIT_REF_NAME/g" docker-compose.yml
     - mkdir ${PACKAGE_NAME}
-    - >
-      mv -t ${PACKAGE_NAME} \
-         docker-compose.yml \
-         docker-compose.override.init.yml \
-         .env.dist
+    - mv --target-directory ${PACKAGE_NAME} docker-compose.yml .env.dist
     - mkdir ${PACKAGE_NAME}/docker-resources
-    - >
-      mv -t ${PACKAGE_NAME}/docker-resources \
-         src/main/resources/nginx/iparapheur.init.conf.template \
-         backup.sh \
-         backup_rotation.sh \
-         cron.sh
+    - mv --target-directory ${PACKAGE_NAME}/docker-resources src/main/resources/docker-resources/*
+    - chmod +x ${PACKAGE_NAME}/docker-resources/*.sh
     - tar --create --gzip --file ${PACKAGE_NAME_WITH_EXTENSION} ${PACKAGE_NAME}
   artifacts:
     # The package is only needed for a while, to be used on the next deploy jobs.
@@ -74,52 +74,15 @@ package_tar_gz:
       - ${PACKAGE_NAME_WITH_EXTENSION}
 
 
-# </editor-fold desc="Package">
+# </editor-fold desc="Build">
 
 
-# <editor-fold desc="Publish">
+# <editor-fold desc="Test">
 
 
-publish:
-  stage: publish
-  dependencies: [ package_tar_gz ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: always
-      variables:
-        NEXUS_FINAL_PATH: ${NEXUS_PUBLIC_PATH}
-    - when: manual
-      variables:
-        NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
-  script:
-    - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
-    - curl -v -u ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
-
-
-# </editor-fold desc="Publish">
-
-
-# <editor-fold desc="Deploy">
-
-
-.iparapheur_deploy:
-  # Local generic deploy job, the remote one is software-agnostic.
-  # This is where we make it iparapheur-specific.
-  # All the following deploy jobs will extend this one.
-  extends: [ .update-software-on-server ]
-  needs: [ package_tar_gz ]
-  tags: [ runner-signature-shell ]
-  variables:
-    INIT_SCRIPT: "ip5-compose-dev.sh"
-    TARGETED_SOFTWARE: iparapheur
-    TARGETED_ACTUATOR_SUB_PATH: /api/actuator/info
-    PACKAGE_NAME_WITH_EXTENSION: ${PACKAGE_NAME}.tar.gz
-
-
-strict-e2e-tests-deploy:
-  extends: [ .iparapheur_deploy ]
+e2e-deploy:
+  extends: [ .iparapheur-deploy ]
+  stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -147,83 +110,12 @@ strict-e2e-tests-deploy:
     OVERWRITE_ADMIN_PASSWORD: "TRUE"
 
 
-acceptance-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: always
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.recette.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
-
-
-dev-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $NIGHTLY == "TRUE"
-      when: always
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
-    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
-
-
-formation-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur.formation.libriciel.fr
-    SSH_PRIVATE_KEY_B64: ${FORMATION_SSH_PRIVATE_KEY_B64}
-
-
-test-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.test.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${TEST_SSH_PRIVATE_KEY_B64}
-
-
-partner-deploy:
-  extends: [ .iparapheur_deploy ]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_COMMIT_TAG != null
-      when: manual
-    - when: manual
-  variables:
-    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.partenaire.libriciel.fr
-    SSH_PRIVATE_KEY_B64: ${PARTNER_SSH_PRIVATE_KEY_B64}
-
-
-# </editor-fold desc="Deploy">
-
-
-# <editor-fold desc="E2e tests">
-
-
 .e2e-tests:
   image: markhobson/maven-chrome:jdk-11
   variables:
     LANG: fr_FR.UTF-8
-  stage: e2e-tests
+  stage: test
+  needs: [ e2e-deploy ]
   script:
     - set -eo pipefail
     - apt-get update && apt-get install --assume-yes --no-install-recommends --show-upgraded libpoppler118=22.02.* libxml2-utils=2.9.* locales=2.35-* locales-all=2.35-* python3-pip=22.0.* poppler-utils=22.02.* xmlsec1=1.2.* zip=3.0-12build2 && pip3 install jsonpath-ng==1.5.3 Pillow==9.2.0 PyPDF2==2.10.0 && locale-gen fr_FR.UTF-8
@@ -241,26 +133,24 @@ partner-deploy:
       - build/karate-tests-fixme-ip-tag.txt
 
 
-setup-e2e-tests:
+e2e-setup:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-setup
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @before --tags ~@ignore "
   needs:
-    - job: strict-e2e-tests-deploy
+    - job: e2e-deploy
       optional: true
   allow_failure: false
 
 
-strict-e2e-tests:
+e2e-strict-tests:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-strict
   variables:
     REPORT_NAME: "Karate - tests strict - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags ~@fixme-ip5 --tags ~@ignore "
   needs:
-    - job: setup-e2e-tests
+    - job: e2e-setup
       optional: true
   allow_failure: false
   parallel:
@@ -268,13 +158,12 @@ strict-e2e-tests:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 
-tolerant-e2e-tests:
+e2e-tolerant-tests:
   extends: [ .e2e-tests ]
-  stage: e2e-tests-tolerant
   variables:
     REPORT_NAME: "Karate - tests tolerant - ${KARATE_TEST_SET}"
     KARATE_ADDITIONAL_TAGS: "--tags @ip5 --tags @${KARATE_TEST_SET} --tags @fixme-ip5 --tags ~@ignore "
-  needs: [ strict-e2e-tests ]
+  needs: [ e2e-strict-tests ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
@@ -285,4 +174,55 @@ tolerant-e2e-tests:
       - KARATE_TEST_SET: [ "demo-simple-bde", "formats-de-signature", "legacy-bridge", "metadonnees" ]
 
 
-# </editor-fold desc="E2e tests">
+# </editor-fold desc="Test">
+
+
+# <editor-fold desc="Deploy">
+
+
+publish:
+  stage: deploy
+  dependencies: [ package-tar-gz ]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: always
+      variables:
+        NEXUS_FINAL_PATH: ${NEXUS_PUBLIC_PATH}
+    - when: manual
+      variables:
+        NEXUS_FINAL_PATH: ${NEXUS_PRIVATE_PATH}
+  script:
+    - echo "Publishing ${PACKAGE_NAME_WITH_EXTENSION} to https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}"
+    - curl --user ${REGISTRY_CONTAINER_USER}:${REGISTRY_CONTAINER_PASSWORD} --upload-file ${PACKAGE_NAME_WITH_EXTENSION} https://${NEXUS_HOST}/repository/${NEXUS_FINAL_PATH}/${PACKAGE_NAME_WITH_EXTENSION}
+
+
+acceptance-deploy:
+  extends: [ .iparapheur-deploy ]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG != null
+      when: always
+    - when: manual
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-1.recette.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+
+
+dev-deploy:
+  extends: [ .iparapheur-deploy ]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $NIGHTLY == "TRUE"
+      when: always
+    - when: manual
+  variables:
+    TARGETED_ENVIRONNEMENT_URL: iparapheur-5-0.dev.libriciel.net
+    SSH_PRIVATE_KEY_B64: ${DEV_SSH_PRIVATE_KEY_B64}
+    SERVER_DIST_PATH: "/opt/iparapheur/dist-${CI_COMMIT_REF_NAME}-${CI_JOB_STARTED_AT}"
+
+
+# </editor-fold desc="Deploy">
