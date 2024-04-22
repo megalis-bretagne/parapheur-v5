@@ -60,7 +60,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -139,7 +139,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.7
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -241,7 +241,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.31
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.32
     restart: unless-stopped
     tty: true
     deploy:
@@ -470,7 +470,7 @@ services:
 
 
   prometheus:
-    image: registry.libriciel.fr/public/signature/ip-prometheus:2.47.1.1
+    image: registry.libriciel.fr/public/signature/ip-prometheus:2.47.1.2
     deploy:
       resources:
         limits:
