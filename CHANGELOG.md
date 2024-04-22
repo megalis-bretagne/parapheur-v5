@@ -7,6 +7,59 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.3] - 2024-04-19
+[5.1.3]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.3.tar.gz
+
+### Ajouts
+
+ - Nouvel éditeur de circuit
+ - Nouveau modèle de notifications groupées
+
+### Corrections
+
+ - Annulation de modification dans l'éditeur de configuration de signature externe
+ - Métadonnées dupliquées dans les sous-type
+ - Bureaux notifiés à l'étape
+ - Problèmes de suppression de l'image de signature, depuis les préférences utilisateurs et depuis l'admin
+ - Problèmes de visualisation de l'image de signature avec un admin d'entité
+ - Ajout des métadonnées du dossier pour le téléchargement au format premis
+ - Enchaînement de circuit
+ - Ajout de document en annexe
+ - Mention "en l'absence de" dans le tampon de signature quand le placeholder y figure
+ - Unicité des noms de définitions de circuits en modification
+ - Limite de caractères des annotations
+ - Image du cachet pixelisée
+ - Affichage des actions après modification du brouillon
+ - Affichage des url longues en metadonnées
+
+
+
+## [5.0.25] - 2024-04-19
+[5.0.25]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.25.tar.gz
+
+### Ajouts
+
+ - Nouvel éditeur de circuit
+ - Nouveau modèle de notifications groupées
+
+### Corrections
+
+ - Annulation de modification dans l'éditeur de configuration de signature externe
+ - Métadonnées dupliquées dans les sous-type
+ - Bureaux notifiés à l'étape
+ - Problèmes de suppression de l'image de signature, depuis les préférences utilisateurs et depuis l'admin
+ - Problèmes de visualisation de l'image de signature avec un admin d'entité
+ - Ajout des métadonnées du dossier pour le téléchargement au format premis
+ - Enchaînement de circuit
+ - Ajout de document en annexe
+ - Mention "en l'absence de" dans le tampon de signature quand le placeholder y figure
+ - Unicité des noms de définitions de circuits en modification
+ - Limite de caractères des annotations
+ - Image du cachet pixelisée
+ - Affichage des actions après modification du brouillon
+ - Affichage des url longues en metadonnées
+
+
 ## [5.1.2] - 2024-03-15
 [5.1.2]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.2.tar.gz
 
@@ -19,7 +72,6 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Notifications
 - Mention "En l'absence de" à la signature
-- Surcharge de titre contenant une virgule
 - Différence v4-v5 sur le `getHistoDossier` via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
@@ -47,8 +99,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 ### Corrections
 
-- Surcharge de titre contenant une virgule
-- Différence v4-v5 sur le getHistoDossier via l'API SOAP
+- Différence v4-v5 sur le `getHistoDossier` via l'API SOAP
 - Permission de création de sous-type vide
 - Compatibilité LemonLDAP
 - "Bordereau d'impression" renommé en "Bordereau" dans l'administration
