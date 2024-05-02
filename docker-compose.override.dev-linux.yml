@@ -120,7 +120,7 @@ services:
 
 
   libriciel-engine-extractors:
-    # image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors/develop:latest
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors/develop:latest
     ports:
       - "8090:8090"
 
@@ -179,6 +179,10 @@ services:
     volumes:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
+  pades-valid:
+    image: gitlab.libriciel.fr:4567/outils/pades-valid:develop
+    ports:
+      - "8084:8080"
 
 #  filetransfer:
 #    ports:
