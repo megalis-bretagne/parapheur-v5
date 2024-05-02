@@ -51,7 +51,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.5
     restart: unless-stopped
     tty: true
     deploy:
@@ -204,7 +204,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.2
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -397,7 +397,7 @@ services:
 
 
   vault:
-    image: registry.libriciel.fr/public/signature/ip-vault:1.15.6.0
+    image: registry.libriciel.fr/public/signature/ip-vault:1.15.6.1
     restart: unless-stopped
     tty: true
     deploy:
