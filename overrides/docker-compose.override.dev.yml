@@ -90,8 +90,8 @@ services:
   prometheus:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus/develop:latest
 
-  redis:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-redis/develop:latest
+  # redis:
+  #   image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-redis/develop:latest
 
   # activemq:
   #   image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-activemq/develop:latest
