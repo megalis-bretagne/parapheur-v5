@@ -16,6 +16,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Nouveau modèle de notifications groupées
 - Signatures détachées dans la création d'un dossier dans l'API REST
 - Signatures détachées en fichiers dans le ZIP, en plus du PREMIS
+- Suppression du fichier stocké sur le serveur si une transformation en PDF échoue à la création d'un dossier
+- Le menu d'administration peut s'ouvrir dans un nouvel onglet avec un Ctrl+click
 
 ### Corrections
 
@@ -32,11 +34,19 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Limite de caractères des annotations
 - Image du cachet pixelisée
 - Affichage des actions après modification du brouillon
-- Affichage des url longues en métadonnées
+- Affichage des URL longues en métadonnées
 - Blocage des doublons de noms de circuits
 - Gestion des bureaux multiples dans l'éditeur de circuits
 - Éllipse d'une longe métadonnée
 - Modification d'un token à l'édition d'un connecteur de signature externe
+- La prévisualisation du cachet utilise l'image du sceau du cachet, et non scan de signature
+- Message d'erreur lors d'une signature avec un modèle personnalisé invalide
+- Lien vers le dossier dans la notification, lorsque le dossier est en délégation
+- Gestion des noms de fichiers trop longs dans l'affichage
+- Métadonnée du bureau délégataire sur le modèle personnalisé de signature
+- Validation multiple depuis le tableau de bord, lorsqu'un des dossier est en lecture obligatoire
+- Application du modèle de signature personnalisé sur un tag de signature
+- Position de signature sur un PDF avec une rotation
 
 
 ## [5.0.25] - 2024-04-22
@@ -64,7 +74,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Limite de caractères des annotations
 - Image du cachet pixelisée
 - Affichage des actions après modification du brouillon
-- Affichage des url longues en métadonnées
+- Affichage des URL longues en métadonnées
 - Blocage des doublons de noms de circuits
 - Gestion des bureaux multiples dans l'éditeur de circuits
 - Éllipse d'une longe métadonnée
