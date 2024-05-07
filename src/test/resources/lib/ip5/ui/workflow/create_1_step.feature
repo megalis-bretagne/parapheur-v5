@@ -11,9 +11,9 @@ Feature: UI workflow lib
 
     # Create workflow
     * waitFor("{^}Créer un circuit").click()
-    * input(ip5.ui.locator.input("Nom du circuit"), [name, Key.ENTER], 200)
-    * waitFor("//i[contains(@class, "fa fa-plus-circle")]").click()
-    * waitFor("{^}Ajout d'une étape")
+    * input(ip5.ui.locator.input("Nom du circuit"), [name, Key.TAB], 200)
+    * waitFor("//i[contains(@class, 'fa fa-plus-circle')]").click()
+    * waitFor("{^}Enregistrer")
     * waitFor("{^}" + type).click()
     * waitFor("{^}Étape simple").click()
     * input("//*[@id='validatorDeskList']//input[@type='text']", desk)
