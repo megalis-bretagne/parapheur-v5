@@ -58,32 +58,48 @@ function fn(config) {
         waitFor("{label}Annotation publique").input(ip.templates.annotations.getPublic(username, action, folder));
         waitFor("{label}Annotation privée").input(ip.templates.annotations.getPrivate(username, action, folder));
     };
-    config.ip5.ui.folder['getAnnotations'] = function(singular, plural) {
+    config.ip5.ui.folder['getAnnotations'] = function(fetchPrivateAnnotation = false) {
+        let singular = 'Annotation publique';
+        let plural = 'Annotations publiques';
+        if (fetchPrivateAnnotation) {
+            singular = 'Annotation privée';
+            plural = 'Annotations privées';
+        }
+
         var actual = [],
             idx,
             linePrefix,
             lines,
             row,
-            annotationXpath = '//*[normalize-space(text())=\'' + singular + '\' or normalize-space(text())=\'' + plural + '\']/ancestor::app-annotation-display',
-            xpath;
+            annotationXpath = '//*[normalize-space(text())=\'' + singular + '\' or normalize-space(text())=\'' + plural + '\']/ancestor::app-annotation-display';
 
         waitFor(annotationXpath);
 
+        // match the user name + date text ("Le ... à ..."), capturing the user name as first group
+        const userWithDateRegexp = /^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ *[à,] [0-9]+:[0-9]+:[0-9]+$/i;
+
         linePrefix = annotationXpath + '/div/div[2]/div';
-        lines = karate.sizeOf(locateAll(linePrefix));
-        for (idx = 1;idx <= lines;idx++) {
+        if (fetchPrivateAnnotation) {
             row = {};
-            row[singular] = text(linePrefix + "[" + idx + "]/text()").trim();
-            row['Utilisateur'] = text(linePrefix + "[" + idx + "]/div").trim().replace(/^(.*) +Le +[0-9]+ +[^ ]+ [0-9]+ *[à,] [0-9]+:[0-9]+:[0-9]+$/i, '$1');
+            row[singular] = text(linePrefix +"/text()").trim();
+            row['Utilisateur'] = text(linePrefix + "[2]/text()").trim().replace(userWithDateRegexp, '$1');
             actual.push(row);
+        } else {
+            lines = karate.sizeOf(locateAll(linePrefix));
+            for (idx = 1 ; idx <= lines ; idx++) {
+                row = {};
+                row[singular] = text(linePrefix + "[" + idx + "]/div/text()").trim();
+                row['Utilisateur'] = text(linePrefix + "[" + idx + "]/div[2]/text()").trim().replace(userWithDateRegexp, '$1');
+                actual.push(row);
+            }
         }
         return actual;
     };
     config.ip5.ui.folder['getPrivateAnnotations'] = function() {
-        return ip5.ui.folder.getAnnotations('Annotation privée', 'Annotations privées');
+        return ip5.ui.folder.getAnnotations(true);
     };
     config.ip5.ui.folder['getPublicAnnotations'] = function() {
-        return ip5.ui.folder.getAnnotations('Annotation publique', 'Annotations publiques');
+        return ip5.ui.folder.getAnnotations(false);
     };
 
     /**

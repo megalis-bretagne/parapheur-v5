@@ -11,14 +11,14 @@ Feature: UI workflow lib
 
     # Create workflow
     * waitFor("{^}Créer un circuit").click()
-    * input(ip5.ui.locator.input("Nom du circuit"), [name, Key.ENTER], 200)
-    * waitFor("{^}Ajouter une étape").click()
-    * waitFor("{^}Nouvelle étape iparapheur")
+    * input(ip5.ui.locator.input("Nom du circuit"), [name, Key.TAB], 200)
+    * waitFor("//i[contains(@class, 'fa fa-plus-circle')]").click()
+    * waitFor("{^}Enregistrer")
     * waitFor("{^}" + type).click()
-    * waitFor("{^}Simple").click()
+    * waitFor("{^}Étape simple").click()
     * input("//*[@id='validatorDeskList']//input[@type='text']", desk)
     * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
-    * waitForEnabled(ip5.ui.locator.button("Ajouter")).click()
+    * waitForEnabled(ip5.ui.locator.button("Enregistrer")).click()
     * waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()
 
 #    * eval if(exists(ip5.ui.locator.button("Créer le circuit")) === true) waitForEnabled(ip5.ui.locator.button("Créer le circuit")).click()

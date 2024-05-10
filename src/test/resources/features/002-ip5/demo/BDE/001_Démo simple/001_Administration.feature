@@ -1,8 +1,8 @@
-@ip5 @ip-web @l10n @demo-simple-bde @setup
+@ip5 @ip-web @l10n @demo-simple-bde @setup @this
 Feature: 001 - Scénario de démo simple, partie administration
 
   Background:
-    # * configure driver = ip.ui.driver.configure
+    * configure driver = ip.ui.driver.configure
     * driver baseUrl + ip5.ui.url.logout
     * waitFor('#kc-logout').click()
 
