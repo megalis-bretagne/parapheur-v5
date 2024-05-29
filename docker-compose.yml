@@ -174,7 +174,7 @@ services:
 
 
   libersign:
-    image: registry.libriciel.fr/public/signature/libersign:3.1.0
+    image: registry.libriciel.fr/public/signature/libersign:3.1.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -194,7 +194,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.6.5
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.0
     restart: unless-stopped
     tty: true
     deploy:
