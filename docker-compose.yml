@@ -255,7 +255,7 @@ services:
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.1.0.4
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.2.1.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -285,9 +285,8 @@ services:
 
 
   transform-core-aio:
-    # TODO: Fix the internal API call into Core, and bump this image to the 4.0.1
-    # TODO: (Better) Merge the Core logic into Alfresco
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:3.1.1.0
+    # TODO: Merge the Core logic into Alfresco
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-core-aio:5.1.2.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -297,7 +296,7 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.4.2
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.6.0
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
@@ -311,7 +310,7 @@ services:
 
   activemq:
     # TODO: Fix the weird ClassNotFoundException on the native Alfresco's Docker image, and upgrade this
-    image: registry.libriciel.fr:443/public/signature/ip-activemq:5.16.5.0
+    image: registry.libriciel.fr:443/public/signature/ip-activemq:5.16.7.0
     restart: unless-stopped
     tty: true
     deploy:
