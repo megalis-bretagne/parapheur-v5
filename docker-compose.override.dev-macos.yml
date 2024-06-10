@@ -84,7 +84,7 @@ services:
 
 
   libersign:
-    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif:develop
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif/develop:latest
     ports:
       - "8079:80"
 
