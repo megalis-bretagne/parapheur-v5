@@ -32,6 +32,31 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Possibilité de créer par erreur une étape externe parallèle dans l'éditeur de circuit
 
 
+## [5.0.26] - 2024-06-10
+
+### Ajouts
+
+- Vérification de la casse à la création d'un circuit
+- Recherche de bureaux par nom court dans l'administration
+
+### Corrections
+
+- Icônes manquantes dans l'éditeur de circuits
+- Suppressions des fichiers stockés en cas d'échec de création du brouillon
+- Augmentation des timeout des requêtes
+- Logo pixélisé
+- Message d'erreur lors de la création d'un utilisateur existant sur une autre entité
+- Labels
+- Message d'erreur sur l'API SOAP lorsqu'un dossier a été supprimé
+- Status d'un dossier transféré dans l'API SOAP
+- Encodage des caractères spéciaux, et catégories des notifications dans le mail groupé
+- Affichage des calques "Après signature"
+
+### Suppressions
+
+- Possibilité de créer par erreur une étape externe parallèle dans l'éditeur de circuit
+
+
 ## [5.1.3] - 2024-04-22
 [5.1.3]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.3.tar.gz
 
