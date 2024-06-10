@@ -51,7 +51,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.5
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -128,7 +128,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.10
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -144,7 +144,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.11.8
+    image: registry.libriciel.fr/public/signature/workflow:1.11.9
     restart: unless-stopped
     tty: true
     deploy:
@@ -184,7 +184,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.1.2
+    image: registry.libriciel.fr/public/signature/crypto:3.1.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -204,7 +204,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.3
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -230,7 +230,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.34
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.5.35
     restart: unless-stopped
     tty: true
     deploy:
@@ -296,7 +296,7 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.6.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:1.6.1
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
@@ -349,7 +349,7 @@ services:
 
 
   redis:
-    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.0
+    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -393,6 +393,9 @@ services:
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 
   vault:
