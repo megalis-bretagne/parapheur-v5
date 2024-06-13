@@ -122,6 +122,8 @@ services:
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
     depends_on:
+      ca-certs:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       alfresco:
@@ -224,6 +226,9 @@ services:
       - REDIS_PORT=6379
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
+    depends_on:
+      ca-certs:
+        condition: service_completed_successfully
 
 
   external-signature-connector:
@@ -245,7 +250,10 @@ services:
         limits:
           memory: 3G
     depends_on:
-      - core
+      core:
+        condition: service_started
+      ca-certs:
+        condition: service_completed_successfully
     external_links:
       - nginx:${APPLICATION_HOST}
     environment:
@@ -403,6 +411,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      ca-certs:
+        condition: service_completed_successfully
 
 
   vault:
