@@ -121,6 +121,8 @@ services:
       - GDPR_MAINTENANCE_ENTITY_NAME
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
     depends_on:
       ca-certs:
         condition: service_completed_successfully
@@ -134,6 +136,8 @@ services:
         condition: service_started
     external_links:
       - nginx:${APPLICATION_HOST}
+    volumes:
+      - ${DATA_ROOT_DIR}/certificates/cacerts/java/cacerts:/truststore.jks
 
 
   web:
@@ -226,6 +230,10 @@ services:
       - REDIS_PORT=6379
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
+    volumes:
+      - ${DATA_ROOT_DIR}/certificates/cacerts/java/cacerts:/truststore.jks
     depends_on:
       ca-certs:
         condition: service_completed_successfully
@@ -267,6 +275,10 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
+    volumes:
+      - ${DATA_ROOT_DIR}/certificates/cacerts/java/cacerts:/truststore.jks
 
 
   alfresco:
@@ -407,12 +419,15 @@ services:
       - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KC_HOSTNAME=${APPLICATION_HOST}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
-      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
+      # TODO: Integrate default values into the root Dockerfile, somehow
+      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
     depends_on:
       postgres:
         condition: service_healthy
       ca-certs:
         condition: service_completed_successfully
+    volumes:
+      - ${DATA_ROOT_DIR}/certificates/cacerts/java/cacerts:/truststore.jks
 
 
   vault:
