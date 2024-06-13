@@ -31,6 +31,13 @@ name: iparapheur
 services:
 
 
+  ca-certs:
+    image: registry.libriciel.fr:443/public/libriciel:0.1.0
+    volumes:
+      - ${DATA_ROOT_DIR}/certificates/cacerts:/etc/ssl/certs/
+      - ${DATA_ROOT_DIR}/certificates/local:/usr/local/share/ca-certificates
+
+
   nginx:
     image: registry.libriciel.fr:443/public/signature/ip-nginx:1.24.0.6
     restart: unless-stopped
