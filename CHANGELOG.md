@@ -13,6 +13,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
+- Modification d'un sous-type à l'étape brouillon
 
 ### Corrections
 
@@ -26,6 +27,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Status d'un dossier transféré dans l'API SOAP
 - Encodage des caractères spéciaux, et catégories des notifications dans le mail groupé
 - Affichage des calques "Après signature"
+- Acteur variable en fin de circuit, via les scripts de sélections
+- Timeout lors d'une grande page via l'API SOAP
 
 ### Suppressions
 
@@ -38,6 +41,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
+- Modification d'un sous-type à l'étape brouillon
 
 ### Corrections
 
@@ -51,6 +55,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Status d'un dossier transféré dans l'API SOAP
 - Encodage des caractères spéciaux, et catégories des notifications dans le mail groupé
 - Affichage des calques "Après signature"
+- Acteur variable en fin de circuit, via les scripts de sélections
+- Timeout lors d'une grande page via l'API SOAP
 
 ### Suppressions
 
