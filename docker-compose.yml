@@ -60,7 +60,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.7
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.11.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -139,7 +139,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.12
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.10.13
     restart: unless-stopped
     tty: true
     deploy:
@@ -155,7 +155,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.11.10
+    image: registry.libriciel.fr/public/signature/workflow:1.11.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -195,7 +195,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.1.5
+    image: registry.libriciel.fr/public/signature/crypto:3.1.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -215,7 +215,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.5
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -231,7 +231,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.5
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -241,7 +241,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.0
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -455,7 +455,7 @@ services:
 
 
   vault:
-    image: registry.libriciel.fr/public/signature/ip-vault:1.15.6.1
+    image: registry.libriciel.fr/public/signature/ip-vault:1.15.6.2
     restart: unless-stopped
     tty: true
     deploy:
