@@ -208,7 +208,7 @@ acceptance-deploy:
     - when: manual
   variables:
     TARGETED_ENVIRONNEMENT_URL: iparapheurubu22-5-0.recette.libriciel.net
-    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_SSH_PRIVATE_KEY_B64}
+    SSH_PRIVATE_KEY_B64: ${ACCEPTANCE_5_0_SSH_PRIVATE_KEY_B64}
 
 
 dev-deploy:
