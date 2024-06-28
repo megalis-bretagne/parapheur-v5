@@ -14,6 +14,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
 - Modification d'un sous-type à l'étape brouillon
+- Nom du dossier dans le titre de l'onglet du navigateur
 - Fusion des colonnes "action" et "état" dans l'historique d'un dossier
 - Passage automatique dossier suivant après une action
 
@@ -31,6 +32,12 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage des calques "Après signature"
 - Acteur variable en fin de circuit, via les scripts de sélections
 - Timeout lors d'une grande page via l'API SOAP
+- Création d'un dossier avec un titre contenant un saut de ligne
+- Affichage du bouton d'ajout d'une signature détachée
+- Icône de cachet manquante dans l'éditeur de circuit
+- Évènement de démarrage d'un dossier transmis à un outil de statistique externe
+- Ajout d'une image de signature
+- Affichage de la page RGPD bloquée
 - Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
 - Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
 - Affichage de la liste des destinataire pour le mail sécurisé
@@ -48,6 +55,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
 - Modification d'un sous-type à l'étape brouillon
+- Nom du dossier dans le titre de l'onglet du navigateur
 - Fusion des colonnes "action" et "état" dans l'historique d'un dossier
 - Passage automatique dossier suivant après une action
 
@@ -65,6 +73,12 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage des calques "Après signature"
 - Acteur variable en fin de circuit, via les scripts de sélections
 - Timeout lors d'une grande page via l'API SOAP
+- Création d'un dossier avec un titre contenant un saut de ligne
+- Affichage du bouton d'ajout d'une signature détachée
+- Icône de cachet manquante dans l'éditeur de circuit
+- Évènement de démarrage d'un dossier transmis à un outil de statistique externe
+- Ajout d'une image de signature
+- Affichage de la page RGPD bloquée
 - Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
 - Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
 - Affichage de la liste des destinataire pour le mail sécurisé
