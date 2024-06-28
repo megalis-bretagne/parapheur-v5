@@ -15,6 +15,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Recherche de bureaux par nom court dans l'administration
 - Modification d'un sous-type à l'étape brouillon
 - Nom du dossier dans le titre de l'onglet du navigateur
+- Fusion des colonnes "action" et "état" dans l'historique d'un dossier
+- Passage automatique dossier suivant après une action
 
 ### Corrections
 
@@ -36,6 +38,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Évènement de démarrage d'un dossier transmis à un outil de statistique externe
 - Ajout d'une image de signature
 - Affichage de la page RGPD bloquée
+- Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
+- Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
+- Affichage de la liste des destinataire pour le mail sécurisé
+- Couleur du toaster en cas d'erreur sur un mail sécurisé
 
 ### Suppressions
 
@@ -50,6 +56,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Recherche de bureaux par nom court dans l'administration
 - Modification d'un sous-type à l'étape brouillon
 - Nom du dossier dans le titre de l'onglet du navigateur
+- Fusion des colonnes "action" et "état" dans l'historique d'un dossier
+- Passage automatique dossier suivant après une action
 
 ### Corrections
 
@@ -71,6 +79,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Évènement de démarrage d'un dossier transmis à un outil de statistique externe
 - Ajout d'une image de signature
 - Affichage de la page RGPD bloquée
+- Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
+- Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
+- Affichage de la liste des destinataire pour le mail sécurisé
+- Couleur du toaster en cas d'erreur sur un mail sécurisé
 
 ### Suppressions
 
