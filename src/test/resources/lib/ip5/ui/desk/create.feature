@@ -37,7 +37,7 @@ Feature: UI desk lib
     * def selectAssociated =
     """
     (associatedDesks) => {
-      let selector = "//input[normalize-space(@placeholder)='Rechercher un bureau']";
+      let selector = "//input[contains(normalize-space(@placeholder), 'Rechercher un bureau')]";
 
       for(let i = 0; i < associatedDesks.length; i++) {
         value(selector, '');
