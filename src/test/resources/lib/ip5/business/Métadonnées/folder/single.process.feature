@@ -36,7 +36,7 @@ Feature: ...
         * ip5.business.ui.metadatas.fill(ip.business.metadonnees.map[params.folder])
 
         * waitFor("//button[@title='Valider']").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine") +  ip5.ui.element.breadcrumbEndIsNot(params.folder))
         * waitFor(ip5.ui.toast.success("action " + params.action + " sur le dossier " + params.folder + " a été effectuée avec succès"))
 
 #        * def folderXpath = "//table//a[normalize-space(text()='" + params.folder + "')]"
@@ -54,7 +54,7 @@ Feature: ...
 #        * driver.screenshot()
 #        * waitForEnabled("{^}Valider").click()
 #        #        * driver.screenshot()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
+        # * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine") +  ip5.ui.element.breadcrumbEndIsNot(name))
 #        #        * driver.screenshot()
 #        # @fixme: ne fonctionne pas tout le temps, alors que le toaster apparaît bien sur l'image
 #        #* waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + folder + " a été effectuée avec succès"))

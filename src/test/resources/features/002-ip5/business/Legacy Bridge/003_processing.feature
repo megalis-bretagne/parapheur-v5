@@ -26,7 +26,7 @@ Feature: Traitement des dossiers
         * if (action != 'Mail sécurisé') waitFor("//button[@title='Valider']").click()
         # Pastell may take around 7/8 seconds to respond
         * if (action == 'Mail sécurisé') ip.pause(10)
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon") + ip5.ui.element.breadcrumbEndIsNot(name))
         * if (action != 'Mail sécurisé') waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:

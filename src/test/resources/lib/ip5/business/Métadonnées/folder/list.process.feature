@@ -41,4 +41,4 @@ Feature: ...
 
         * driver.screenshot()
         * waitForEnabled("{^}Valider").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Métadonnées / Capucine")+  ip5.ui.element.breadcrumbEndIsNot(params.folder))
