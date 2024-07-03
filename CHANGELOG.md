@@ -42,6 +42,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
 - Affichage de la liste des destinataire pour le mail sécurisé
 - Couleur du toaster en cas d'erreur sur un mail sécurisé
+- Crash dans le mécanisme de purge
 
 ### Suppressions
 
