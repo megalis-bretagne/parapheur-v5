@@ -196,6 +196,11 @@ function fn(config) {
         return result;
     };
 
+    config.ip5.ui.element['breadcrumbEndIsNot'] = function(name) {
+        result = "/ancestor::li/following-sibling::li//*[not(contains(normalize-space(text()), '" + name + "'))]";
+        return result;
+    };
+
     /**
      * Toast
      **/
