@@ -37,7 +37,8 @@ services:
       - JAVA_OPTS=-Dspring.profiles.active=dev-container
     memswap_limit: 2G
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
+      - "172.17.0.1:8080:8080"
 
 
   web:
@@ -46,7 +47,8 @@ services:
     environment:
       - VERSION=5.1.3-develop
     ports:
-      - "4200:80"
+      - "127.0.0.1:4200:80"
+      - "172.17.0.1:4200:80"
 
 
   workflow:
@@ -55,52 +57,60 @@ services:
     volumes:
       - ./src/main/resources/workflow/application-dev-docker.yml:/application.yml
     ports:
-      - "10080:8080"
+      - "127.0.0.1:10080:8080"
+      - "172.17.0.1:10080:8080"
 
 
   pastell-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pastell-connector/develop:latest
     ports:
-      - "8002:8080"
+      - "127.0.0.1:8002:8080"
+      - "172.17.0.1:8002:8080"
 
 
   external-signature-connector:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/external-signature-connector/develop:latest
     ports:
-      - "2757:8080"
+      - "127.0.0.1:2757:8080"
+      - "172.17.0.1:2757:8080"
 
 
   legacy-bridge:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/legacy-bridge/develop:latest
     ports:
-      - "2758:8080"
+      - "127.0.0.1:2758:8080"
+      - "172.17.0.1:2758:8080"
 
 
   crypto:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-crypto/develop:latest
     memswap_limit: 3G
     ports:
-      - "8085:8080"
+      - "127.0.0.1:8085:8080"
+      - "172.17.0.1:8085:8080"
 
 
   libersign:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/signature/libersign-natif/develop:latest
     ports:
-      - "8079:80"
+      - "127.0.0.1:8079:80"
+      - "172.17.0.1:8079:80"
 
 
   pes-viewer:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/pes-viewer/develop:latest
     memswap_limit: 1536M
     ports:
-      - "8888:8888"
+      - "127.0.0.1:8888:8888"
+      - "172.17.0.1:8888:8888"
 
 
   pdf-stamp:
     image: gitlab.libriciel.fr:4567/outils/pdf-stamp/develop:latest
     memswap_limit: 1G
     ports:
-      - "8889:8080"
+      - "127.0.0.1:8889:8080"
+      - "172.17.0.1:8889:8080"
 
 
   # Non-libriciel services
@@ -110,26 +120,30 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco/develop:latest
     memswap_limit: 1536M
     ports:
-      - "9009:8080"
+      - "127.0.0.1:9009:8080"
+      - "172.17.0.1:9009:8080"
 
 
   transform-core-aio:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/alfresco-transform-core-aio/develop:latest
     ports:
-      - "8091:8090"
+      - "127.0.0.1:8091:8090"
+      - "172.17.0.1:8091:8090"
 
 
   libriciel-engine-extractors:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-alfresco-transform-extractors/develop:latest
     ports:
-      - "8090:8090"
+      - "127.0.0.1:8090:8090"
+      - "172.17.0.1:8090:8090"
 
 
   postgres:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-postgresql/develop:latest
     memswap_limit: 1G
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+      - "172.17.0.1:5432:5432"
 
 
   keycloak:
@@ -137,7 +151,8 @@ services:
     command: start  --import-realm
     memswap_limit: 1536M
     ports:
-      - "9090:8080"
+      - "127.0.0.1:9090:8080"
+      - "172.17.0.1:9090:8080"
     environment:
       - KC_HOSTNAME_STRICT_BACKCHANNEL=true
       - KC_HOSTNAME_STRICT_HTTPS=false
@@ -150,7 +165,8 @@ services:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-redis/develop:latest
     memswap_limit: 128M
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
+      - "172.17.0.1:6379:6379"
 
 
   activemq:
@@ -160,14 +176,17 @@ services:
   smtp:
     image: tophfr/mailcatcher:0.7.1
     ports:
-      - "1025:25"
-      - "1080:80"
+      - "127.0.0.1:1025:25"
+      - "127.0.0.1:1080:80"
+      - "172.17.0.1:1025:25"
+      - "172.17.0.1:1080:80"
 
 
   vault:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-vault/develop:latest
     ports:
-      - "8200:8200"
+      - "127.0.0.1:8200:8200"
+      - "172.17.0.1:8200:8200"
 
 
   prometheus:
@@ -175,14 +194,15 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "9091:9090"
+      - "127.0.0.1:9091:9090"
+      - "172.17.0.1:9091:9090"
     volumes:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
   pades-valid:
     image: gitlab.libriciel.fr:4567/outils/pades-valid:develop
     ports:
-      - "8084:8080"
+      - "127.0.0.1:8084:8080"
 
 #  filetransfer:
 #    ports:
