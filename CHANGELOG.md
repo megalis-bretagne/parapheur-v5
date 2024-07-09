@@ -7,6 +7,20 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.5] - 2024-07-09
+
+### Corrections
+
+ - Signature externe Yousign v3 (payload invalide)
+
+
+## [5.0.27] - 2024-07-09
+
+### Corrections
+
+ - Signature externe Yousign v3 (payload invalide)
+
+
 ## [5.1.4] - 2024-06-10
 
 ### Ajouts
