@@ -7,6 +7,20 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.6] - 2024-07-11
+
+### Corrections
+
+- Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+
+
+## [5.0.28] - 2024-07-11
+
+### Corrections
+
+- Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+
+
 ## [5.1.5] - 2024-07-09
 
 ### Corrections
