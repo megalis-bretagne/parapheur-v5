@@ -12,6 +12,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Corrections
 
 - Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+- Ralentissement en cas de création de dossier massive
 
 
 ## [5.0.28] - 2024-07-11
@@ -19,6 +20,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 ### Corrections
 
 - Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+- Ralentissement en cas de création de dossier massive
 
 
 ## [5.1.5] - 2024-07-09
