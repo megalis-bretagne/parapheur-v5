@@ -47,7 +47,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * waitFor("//button[@title='Valider']").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président") +  ip5.ui.element.breadcrumbEndIsNot(name))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:
@@ -81,7 +81,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * input("//*[@id='validator']//input[@type='text']", desk)
         * waitFor("//*[contains(@class, 'ng-option')]//*[normalize-space(text())='" + desk + "']/ancestor::*[contains(@class, 'ng-option')]").click()
         * waitFor("//span[contains(normalize-space(text()),'avis complémentaire')]/ancestor::button").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président") +  ip5.ui.element.breadcrumbEndIsNot(name))
         #* waitFor(ip5.ui.toast.success("avis complémentaire a été effectuée avec succès"))
         * ip5.ui.user.logout()
 
@@ -99,7 +99,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("mpiaumier@demo-simple", "avis complémentaire", name)
 
         * waitFor("//button[@title='Valider']").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / DGS") + ip5.ui.element.breadcrumbEndIsNot(name))
         * waitFor(ip5.ui.toast.success("action Avis complémentaire sur le dossier " + name + " a été effectuée avec succès"))
         * ip5.ui.user.logout()
 
@@ -117,7 +117,7 @@ Feature: 002 - Scénario de démo simple, partie utilisation
         * ip5.ui.folder.annotate.both("flosserand@demo-simple", action, name)
 
         * waitFor("//button[@title='Valider']").click()
-        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président / Dossiers à traiter"))
+        * waitFor(ip5.ui.element.breadcrumb("Accueil / Démo simple / Président") +  ip5.ui.element.breadcrumbEndIsNot(name))
         * waitFor(ip5.ui.toast.success("action " + action + " sur le dossier " + name + " a été effectuée avec succès"))
 
         Examples:

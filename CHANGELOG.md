@@ -7,12 +7,46 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.6] - 2024-07-11
+
+### Corrections
+
+- Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+- Ralentissement en cas de création de dossier massive
+
+
+## [5.0.28] - 2024-07-11
+
+### Corrections
+
+- Recherche de dossier par ID depuis les webservice SOAP quand le nombre de dossiers accessibles est > 200
+- Ralentissement en cas de création de dossier massive
+
+
+## [5.1.5] - 2024-07-09
+
+### Corrections
+
+ - Signature externe Yousign v3 (payload invalide)
+
+
+## [5.0.27] - 2024-07-09
+
+### Corrections
+
+ - Signature externe Yousign v3 (payload invalide)
+
+
 ## [5.1.4] - 2024-06-10
 
 ### Ajouts
 
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
+- Modification d'un sous-type à l'étape brouillon
+- Nom du dossier dans le titre de l'onglet du navigateur
+- Fusion des colonnes "action" et "état" dans l'historique d'un dossier
+- Passage automatique dossier suivant après une action
 
 ### Corrections
 
@@ -26,6 +60,19 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Status d'un dossier transféré dans l'API SOAP
 - Encodage des caractères spéciaux, et catégories des notifications dans le mail groupé
 - Affichage des calques "Après signature"
+- Acteur variable en fin de circuit, via les scripts de sélections
+- Timeout lors d'une grande page via l'API SOAP
+- Création d'un dossier avec un titre contenant un saut de ligne
+- Affichage du bouton d'ajout d'une signature détachée
+- Icône de cachet manquante dans l'éditeur de circuit
+- Évènement de démarrage d'un dossier transmis à un outil de statistique externe
+- Ajout d'une image de signature
+- Affichage de la page RGPD bloquée
+- Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
+- Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
+- Affichage de la liste des destinataire pour le mail sécurisé
+- Couleur du toaster en cas d'erreur sur un mail sécurisé
+- Crash dans le mécanisme de purge
 
 ### Suppressions
 
@@ -38,6 +85,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 - Vérification de la casse à la création d'un circuit
 - Recherche de bureaux par nom court dans l'administration
+- Modification d'un sous-type à l'étape brouillon
+- Nom du dossier dans le titre de l'onglet du navigateur
+- Fusion des colonnes "action" et "état" dans l'historique d'un dossier
+- Passage automatique dossier suivant après une action
 
 ### Corrections
 
@@ -51,6 +102,18 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Status d'un dossier transféré dans l'API SOAP
 - Encodage des caractères spéciaux, et catégories des notifications dans le mail groupé
 - Affichage des calques "Après signature"
+- Acteur variable en fin de circuit, via les scripts de sélections
+- Timeout lors d'une grande page via l'API SOAP
+- Création d'un dossier avec un titre contenant un saut de ligne
+- Affichage du bouton d'ajout d'une signature détachée
+- Icône de cachet manquante dans l'éditeur de circuit
+- Évènement de démarrage d'un dossier transmis à un outil de statistique externe
+- Ajout d'une image de signature
+- Affichage de la page RGPD bloquée
+- Les dossiers n'étaient pas marqués comme lus quand ouverts depuis un mail de notification
+- Rafraîchissement automatique du PDF dans l'interface après ajout d'un commentaire
+- Affichage de la liste des destinataire pour le mail sécurisé
+- Couleur du toaster en cas d'erreur sur un mail sécurisé
 
 ### Suppressions
 
