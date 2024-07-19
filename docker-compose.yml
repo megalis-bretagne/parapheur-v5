@@ -34,10 +34,12 @@ services:
   ca-certs:
     # FIXME: Set a v1.0.0 tagged image here
     image: gitlab.libriciel.fr:4567/libriciel/direction-du-developpement/bibliotheque/ls-docker-cacerts/password-on-truststore:latest
+    environment:
+      - TRUSTSTORE_PASSWORD
     volumes:
       - ${DATA_ROOT_DIR:?}/certificate/cacerts:/etc/ssl/certs/
       - ${DATA_ROOT_DIR:?}/certificate/local-cacerts:/usr/local/share/ca-certificates
-      - ${CERTIFICATE_FULLCHAIN_PATH}:/usr/local/share/ca-certificates/local-iparapheur-certificate.pem
+      - ${CERTIFICATE_FULLCHAIN_PATH}:/usr/local/share/ca-certificates/local-iparapheur-certificate.crt
 
 
   nginx:
@@ -123,8 +125,9 @@ services:
       - GDPR_MAINTENANCE_ENTITY_NAME
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
+      - TRUSTSTORE_PASSWORD
       # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     depends_on:
       ca-certs:
         condition: service_completed_successfully
@@ -232,8 +235,9 @@ services:
       - REDIS_PORT=6379
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
+      - TRUSTSTORE_PASSWORD
       # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR}/certificate/cacerts/java/cacerts:/truststore.jks
     depends_on:
@@ -277,8 +281,9 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
+      - TRUSTSTORE_PASSWORD
       # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=''
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
@@ -415,7 +420,7 @@ services:
       - KC_HOSTNAME=${APPLICATION_HOST:?}
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST:?}
       - KC_SPI_TRUSTSTORE_FILE_FILE=/truststore.jks
-      - KC_SPI_TRUSTSTORE_FILE_PASSWORD=
+      - KC_SPI_TRUSTSTORE_FILE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
       # TODO: Integrate default values into the root Dockerfile, somehow
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     depends_on:
