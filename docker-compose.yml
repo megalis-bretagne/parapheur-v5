@@ -32,8 +32,7 @@ services:
 
 
   ca-certs:
-    # FIXME: Set a v1.0.0 tagged image here
-    image: gitlab.libriciel.fr:4567/libriciel/direction-du-developpement/bibliotheque/ls-docker-cacerts/password-on-truststore:latest
+    image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.2.0
     environment:
       - TRUSTSTORE_PASSWORD
     volumes:
