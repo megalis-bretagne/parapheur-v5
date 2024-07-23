@@ -31,6 +31,16 @@ name: iparapheur
 services:
 
 
+  ca-certs:
+    image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.2.0
+    environment:
+      - TRUSTSTORE_PASSWORD
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts:/etc/ssl/certs/
+      - ${DATA_ROOT_DIR:?}/certificate/local-cacerts:/usr/local/share/ca-certificates
+      - ${CERTIFICATE_FULLCHAIN_PATH}:/usr/local/share/ca-certificates/local-iparapheur-certificate.crt
+
+
   nginx:
     image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.1.0
     restart: unless-stopped
@@ -114,7 +124,12 @@ services:
       - GDPR_MAINTENANCE_ENTITY_NAME
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     depends_on:
+      ca-certs:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       alfresco:
@@ -124,7 +139,9 @@ services:
       keycloak:
         condition: service_started
     external_links:
-      - nginx:${APPLICATION_HOST}
+      - nginx:${APPLICATION_HOST:?}
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   web:
@@ -136,11 +153,11 @@ services:
         limits:
           memory: 64M
     environment:
-      - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
+      - APPLICATION_URL=${APPLICATION_PROTOCOL:?}://${APPLICATION_HOST:?}
       - VERSION=%CI_COMMIT_REF_NAME%
-      - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
+      - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL:?}://${APPLICATION_HOST:?}/auth
       - KEYCLOAK_REALM
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID:?}
 
 
   workflow:
@@ -170,7 +187,7 @@ services:
         limits:
           memory: 1536M
     volumes:
-      - ${DATA_ROOT_DIR}/pes-viewer/pesPJ:/pesPJ/
+      - ${DATA_ROOT_DIR:?}/pes-viewer/pesPJ:/pesPJ/
 
 
   libersign:
@@ -217,6 +234,14 @@ services:
       - REDIS_PORT=6379
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
+    volumes:
+      - ${DATA_ROOT_DIR}/certificate/cacerts/java/cacerts:/truststore.jks
+    depends_on:
+      ca-certs:
+        condition: service_completed_successfully
 
 
   external-signature-connector:
@@ -238,9 +263,12 @@ services:
         limits:
           memory: 3G
     depends_on:
-      - core
+      core:
+        condition: service_started
+      ca-certs:
+        condition: service_completed_successfully
     external_links:
-      - nginx:${APPLICATION_HOST}
+      - nginx:${APPLICATION_HOST:?}
     environment:
       - KEYCLOAK_HOST
       - KEYCLOAK_PORT
@@ -252,6 +280,11 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   alfresco:
@@ -281,7 +314,7 @@ services:
       libriciel-engine-extractors:
         condition: service_healthy
     volumes:
-      - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
+      - ${DATA_ROOT_DIR:?}/alfresco:/usr/local/tomcat/alf_data
 
 
   transform-core-aio:
@@ -345,7 +378,7 @@ services:
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
     volumes:
-      - ${DATA_ROOT_DIR}/postgres:/var/lib/postgresql/data
+      - ${DATA_ROOT_DIR:?}/postgres:/var/lib/postgresql/data
 
 
   redis:
@@ -357,7 +390,7 @@ services:
         limits:
           memory: 128M
     volumes:
-      - ${DATA_ROOT_DIR}/redis:/data
+      - ${DATA_ROOT_DIR:?}/redis:/data
 
 
   keycloak:
@@ -380,22 +413,22 @@ services:
       - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
       - KEYCLOAK_RESTADMIN_PASSWORD
       - KEYCLOAK_SOAPUI_PASSWORD
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USER
-      - SMTP_PASSWORD
-      - SMTP_ENABLE_AUTH
       - SMTP_MAIL_FROM
-      - SMTP_ENABLE_SSL
-      - SMTP_ENABLE_START_TLS
-      - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
-      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
-      - KC_HOSTNAME=${APPLICATION_HOST}
-      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
+      - KC_DB_USERNAME=${KEYCLOAK_DB_USER:?}
+      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD:?}
+      - KC_HOSTNAME=${APPLICATION_HOST:?}
+      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST:?}
+      - KC_SPI_TRUSTSTORE_FILE_FILE=/truststore.jks
+      - KC_SPI_TRUSTSTORE_FILE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
+      # TODO: Integrate default values into the root Dockerfile, somehow
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     depends_on:
       postgres:
         condition: service_healthy
+      ca-certs:
+        condition: service_completed_successfully
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   vault:
@@ -407,12 +440,12 @@ services:
         limits:
           memory: 512M
     environment:
-      - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
-      - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+      - VAULT_ADDR=${SECRET_PROTOCOL:?}://${SECRET_HOST:?}:${SECRET_PORT:?}
+      - VAULT_API_ADDR=${SECRET_PROTOCOL:?}://${SECRET_HOST:?}:${SECRET_PORT:?}
     cap_add:
       - IPC_LOCK
     volumes:
-      - ${DATA_ROOT_DIR}/vault/data:/vault/data
+      - ${DATA_ROOT_DIR:?}/vault/data:/vault/data
 
 
   prometheus:
