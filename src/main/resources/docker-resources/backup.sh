@@ -49,14 +49,14 @@ DATA_ROOT_DIR=${DATA_ROOT_DIR%%+(/)}
 
 __main__() {
 
-  mkdir -p "${BACKUPS_ROOT_DIR:?}"
+  mkdir --parents "${BACKUPS_ROOT_DIR:?}"
 
   printf "Shutting down iparapheur -\n"
   cd ${IP_CURRENT_INSTALL_DIR}
-  docker compose down -v --remove-orphans
+  docker compose down --volumes --remove-orphans
 
   printf "Starting database -\n"
-  docker compose up -d postgres
+  docker compose up --detach postgres
 
   # TODO check if service is healthy
   #  using some kind of docker inspect?
