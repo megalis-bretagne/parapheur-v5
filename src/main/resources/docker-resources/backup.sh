@@ -43,18 +43,13 @@ CURRENT_DATE=${CURRENT_DATE//:/-}
 CURRENT_SAVE_FOLDER_NAME="/backup_${CURRENT_DATE}"
 DB_NAMES=("alfresco" "flowable" "keycloak" "ipcore" "quartz" "pastellconnector")
 
-# TODO : Simply crash if one of these values is not set.
-#  We actually should not use any default values
-DATA_ROOT_DIR=${DATA_ROOT_DIR:-/data/iparapheur}
-BACKUPS_ROOT_DIR=${BACKUPS_ROOT_DIR:-/data/iparapheur_backups}
-
 # The tar command poorly manages the double slashes in paths.
 # We remove the trailing ones.
 DATA_ROOT_DIR=${DATA_ROOT_DIR%%+(/)}
 
 __main__() {
 
-  mkdir -p "${BACKUPS_ROOT_DIR}"
+  mkdir -p "${BACKUPS_ROOT_DIR:?}"
 
   printf "Shutting down iparapheur -\n"
   cd ${IP_CURRENT_INSTALL_DIR}
@@ -72,9 +67,9 @@ __main__() {
   for DB_NAME in "${DB_NAMES[@]}"; do
     printf "Dumping %s -\n" "${DB_NAME}"
     docker compose exec postgres /bin/bash -c \
-        "export PGPASSWORD=${POSTGRES_PASSWORD}"
+        "export PGPASSWORD=${POSTGRES_PASSWORD:?}"
     docker compose exec postgres /bin/bash -c \
-          "pg_dump --username ${POSTGRES_USER} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
+          "pg_dump --username ${POSTGRES_USER:?} ${DB_NAME}" > "/tmp/${CURRENT_SAVE_FOLDER_NAME}_${DB_NAME}.sql"
   done
 
   cp ${IP_CURRENT_INSTALL_DIR}.env /tmp/${CURRENT_SAVE_FOLDER_NAME}.env
@@ -103,11 +98,11 @@ __main__() {
       --exclude=${DATA_ROOT_DIR}/postgres \
       -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"_pending.tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
-  printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"
+  printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR:?}/${CURRENT_SAVE_FOLDER_NAME}"
 
   printf "Clean up temp & old files -\n"
   rm /tmp/${CURRENT_SAVE_FOLDER_NAME}*
-  mv "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}_pending.tar.gz" "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}.tar.gz"
+  mv "${BACKUPS_ROOT_DIR:?}/${CURRENT_SAVE_FOLDER_NAME}_pending.tar.gz" "${BACKUPS_ROOT_DIR:?}/${CURRENT_SAVE_FOLDER_NAME}.tar.gz"
 }
 
 __main__ "${@}"
