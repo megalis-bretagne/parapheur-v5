@@ -37,4 +37,4 @@ fi
 # Restart the app...
 
 cd /opt/iparapheur/current/
-docker compose up -d
+docker compose up --detach
