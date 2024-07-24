@@ -92,11 +92,14 @@ __main__() {
 
   tar --transform="flags=r;s|data|${CURRENT_SAVE_FOLDER_NAME}_data|" \
       --transform="flags=r;s|tmp||" \
-      --exclude=${DATA_ROOT_DIR}/alfresco/contentstore.deleted \
-      --exclude=${DATA_ROOT_DIR}/pes-viewer \
-      --exclude=${DATA_ROOT_DIR}/nginx \
-      --exclude=${DATA_ROOT_DIR}/postgres \
-      -czf "${BACKUPS_ROOT_DIR}/${CURRENT_SAVE_FOLDER_NAME}"_pending.tar.gz /tmp/${CURRENT_SAVE_FOLDER_NAME}.env ${DATA_ROOT_DIR} /tmp/${CURRENT_SAVE_FOLDER_NAME}*
+      --exclude=${DATA_ROOT_DIR:?}/alfresco/contentstore.deleted \
+      --exclude=${DATA_ROOT_DIR:?}/pes-viewer \
+      --exclude=${DATA_ROOT_DIR:?}/nginx \
+      --exclude=${DATA_ROOT_DIR:?}/postgres \
+      --create --gzip --file "${BACKUPS_ROOT_DIR:?}/${CURRENT_SAVE_FOLDER_NAME}"_pending.tar.gz \
+      --add-file /tmp/${CURRENT_SAVE_FOLDER_NAME}.env \
+      --add-file ${DATA_ROOT_DIR:?} \
+      --add-file /tmp/${CURRENT_SAVE_FOLDER_NAME}*
 
   printf "DUMP complete -> %s -\n" "${BACKUPS_ROOT_DIR:?}/${CURRENT_SAVE_FOLDER_NAME}"
 
