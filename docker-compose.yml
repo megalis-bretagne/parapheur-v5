@@ -35,6 +35,16 @@ volumes:
 services:
 
 
+  ca-certs:
+    image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.3.0
+    environment:
+      - TRUSTSTORE_PASSWORD
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/:/etc/ssl/certs/
+      - ${DATA_ROOT_DIR:?}/certificate/local-cacerts/:/usr/local/share/ca-certificates/
+      - ${CERTIFICATE_FULLCHAIN_PATH:?}:/tmp/local-application-certificate.crt
+
+
   nginx:
     image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.1.0
     restart: unless-stopped
@@ -48,10 +58,10 @@ services:
       - KEYCLOAK_HOST
     volumes:
       - matomo_internal_files:/var/www/html
-      - ${DATA_ROOT_DIR}/matomo/config/:/var/www/html/config/
-      - ${DATA_ROOT_DIR}/matomo/plugins/:/var/www/html/plugins/
-      - ${CERTIFICATE_FULLCHAIN_PATH}:/etc/nginx/ssl/fullchain.pem
-      - ${CERTIFICATE_PRIVKEY_PATH}:/etc/nginx/ssl/privkey.pem
+      - ${DATA_ROOT_DIR:?}/matomo/config/:/var/www/html/config/
+      - ${DATA_ROOT_DIR:?}/matomo/plugins/:/var/www/html/plugins/
+      - ${CERTIFICATE_FULLCHAIN_PATH:?}:/etc/nginx/ssl/fullchain.pem
+      - ${CERTIFICATE_PRIVKEY_PATH?:}:/etc/nginx/ssl/privkey.pem
     ports:
       - "80:80"
       - "443:443"
@@ -60,7 +70,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.12.4
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -125,7 +135,12 @@ services:
       - GDPR_MAINTENANCE_ENTITY_NAME
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     depends_on:
+      ca-certs:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       alfresco:
@@ -135,11 +150,13 @@ services:
       keycloak:
         condition: service_started
     external_links:
-      - nginx:${APPLICATION_HOST}
+      - nginx:${APPLICATION_HOST:?}
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.0
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -147,15 +164,15 @@ services:
         limits:
           memory: 64M
     environment:
-      - APPLICATION_URL=${APPLICATION_PROTOCOL}://${APPLICATION_HOST}
+      - APPLICATION_URL=${APPLICATION_PROTOCOL:?}://${APPLICATION_HOST:?}
       - VERSION=%CI_COMMIT_REF_NAME%
-      - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL}://${APPLICATION_HOST}/auth
+      - KEYCLOAK_URL=${KEYCLOAK_AUTH_PROTOCOL:?}://${APPLICATION_HOST:?}/auth
       - KEYCLOAK_REALM
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_WEB_CLIENT_ID:?}
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.11.12
+    image: registry.libriciel.fr/public/signature/workflow:1.11.13
     restart: unless-stopped
     tty: true
     deploy:
@@ -173,7 +190,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.12
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.13
     restart: unless-stopped
     tty: true
     deploy:
@@ -181,7 +198,7 @@ services:
         limits:
           memory: 1536M
     volumes:
-      - ${DATA_ROOT_DIR}/pes-viewer/pesPJ:/pesPJ/
+      - ${DATA_ROOT_DIR:?}/pes-viewer/pesPJ:/pesPJ/
 
 
   libersign:
@@ -195,7 +212,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.1.6
+    image: registry.libriciel.fr/public/signature/crypto:3.1.7
     restart: unless-stopped
     tty: true
     deploy:
@@ -205,7 +222,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.0
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -215,7 +232,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.7
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -228,10 +245,18 @@ services:
       - REDIS_PORT=6379
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
+    volumes:
+      - ${DATA_ROOT_DIR}/certificate/cacerts/java/cacerts:/truststore.jks
+    depends_on:
+      ca-certs:
+        condition: service_completed_successfully
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.7
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.9
     restart: unless-stopped
     tty: true
     deploy:
@@ -241,7 +266,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.2
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -249,9 +274,12 @@ services:
         limits:
           memory: 3G
     depends_on:
-      - core
+      core:
+        condition: service_started
+      ca-certs:
+        condition: service_completed_successfully
     external_links:
-      - nginx:${APPLICATION_HOST}
+      - nginx:${APPLICATION_HOST:?}
     environment:
       - KEYCLOAK_HOST
       - KEYCLOAK_PORT
@@ -263,6 +291,11 @@ services:
       - KEYCLOAK_CLIENT_SECRET
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
+      - TRUSTSTORE_PASSWORD
+      # TODO: Integrate it into the root Dockerfile, somehow
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   alfresco:
@@ -292,7 +325,7 @@ services:
       libriciel-engine-extractors:
         condition: service_healthy
     volumes:
-      - ${DATA_ROOT_DIR}/alfresco:/usr/local/tomcat/alf_data
+      - ${DATA_ROOT_DIR:?}/alfresco:/usr/local/tomcat/alf_data
 
 
   transform-core-aio:
@@ -356,7 +389,7 @@ services:
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
     volumes:
-      - ${DATA_ROOT_DIR}/postgres:/var/lib/postgresql/data
+      - ${DATA_ROOT_DIR:?}/postgres:/var/lib/postgresql/data
 
 
   redis:
@@ -368,11 +401,11 @@ services:
         limits:
           memory: 128M
     volumes:
-      - ${DATA_ROOT_DIR}/redis:/data
+      - ${DATA_ROOT_DIR:?}/redis:/data
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:23.0.7.1
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:23.0.7.2
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -391,22 +424,22 @@ services:
       - INITIAL_IPARAPHEUR_ADMIN_PASSWORD
       - KEYCLOAK_RESTADMIN_PASSWORD
       - KEYCLOAK_SOAPUI_PASSWORD
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USER
-      - SMTP_PASSWORD
-      - SMTP_ENABLE_AUTH
       - SMTP_MAIL_FROM
-      - SMTP_ENABLE_SSL
-      - SMTP_ENABLE_START_TLS
-      - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
-      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
-      - KC_HOSTNAME=${APPLICATION_HOST}
-      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST}
+      - KC_DB_USERNAME=${KEYCLOAK_DB_USER:?}
+      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD:?}
+      - KC_HOSTNAME=${APPLICATION_HOST:?}
+      - KC_HOSTNAME_ADMIN=${APPLICATION_HOST:?}
+      - KC_SPI_TRUSTSTORE_FILE_FILE=/truststore.jks
+      - KC_SPI_TRUSTSTORE_FILE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
+      # TODO: Integrate default values into the root Dockerfile, somehow
       - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     depends_on:
       postgres:
         condition: service_healthy
+      ca-certs:
+        condition: service_completed_successfully
+    volumes:
+      - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   matomo:
@@ -463,12 +496,12 @@ services:
         limits:
           memory: 512M
     environment:
-      - VAULT_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
-      - VAULT_API_ADDR=${SECRET_PROTOCOL}://${SECRET_HOST}:${SECRET_PORT}
+      - VAULT_ADDR=${SECRET_PROTOCOL:?}://${SECRET_HOST:?}:${SECRET_PORT:?}
+      - VAULT_API_ADDR=${SECRET_PROTOCOL:?}://${SECRET_HOST:?}:${SECRET_PORT:?}
     cap_add:
       - IPC_LOCK
     volumes:
-      - ${DATA_ROOT_DIR}/vault/data:/vault/data
+      - ${DATA_ROOT_DIR:?}/vault/data:/vault/data
 
 
   prometheus:
