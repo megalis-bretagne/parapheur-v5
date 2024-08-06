@@ -420,8 +420,6 @@ services:
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST:?}
       - KC_SPI_TRUSTSTORE_FILE_FILE=/truststore.jks
       - KC_SPI_TRUSTSTORE_FILE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
-      # TODO: Integrate default values into the root Dockerfile, somehow
-      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     depends_on:
       postgres:
         condition: service_healthy
