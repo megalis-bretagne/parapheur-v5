@@ -29,5 +29,5 @@ backup_count=$(find ${BACKUPS_ROOT_DIR} -name 'backup_*.tar.gz' | wc -l)
 # Check if at least 2 backups are present
 if [ $backup_count -gt 1 ]; then
   # Deleting all backups exept the last 2
-  ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort -r | tail -n +3 | xargs rm > /dev/null 2>&1
+  ls -1t ${BACKUPS_ROOT_DIR}/backup_*.tar.gz | sort --reverse | tail -n +3 | xargs rm > /dev/null 2>&1
 fi

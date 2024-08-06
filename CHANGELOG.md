@@ -7,6 +7,58 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.7] - 2024-08-06
+
+### Ajouts
+
+- Healthcheck sur le service `external-signature-connector`
+- Mise en étape manuelle d'un cachet automatique, si la recherche d'emplacement de tags de signature a échoué
+- Entropie de 80 (par défaut) lors de la création/modification d'un mot de passe
+
+### Corrections
+
+- Amélioration des performances à la suppression en masse de circuits
+- Blocage d'un bouton "Enregistrer" à la création d'un nouvel utilisateur
+- Erreur dans le service `legacy-bridge` lorsqu'un mot de passe contient le caractère `:`
+- Enregistrement d'une métadonnée booléenne dans un brouillon
+- Affichage de parties du dossier précédent, après la redirection post-signature
+- Redirection post-signature dans la bannette des dossiers délégués
+- Modification du sous-type dans une étape de brouillon
+- Prise en compte de la métadonnée dans le brouillon lors d'un script de sélection
+- Affichage "d'actions inconnues" dans l'historique via l'API SOAP
+- Status des étapes externes dans l'historique via l'API SOAP
+- Affichage du bureau en cours via l'API SOAP
+- Enregistrement de bureaux notifiés dans l'éditeur de circuit
+- Amélioration du message d'erreur lors d'un fallback-v4
+- Typos
+
+
+## [5.0.29] - 2024-08-06
+
+### Ajouts
+
+- Healthcheck sur le service `external-signature-connector`
+- Mise en étape manuelle d'un cachet automatique, si la recherche d'emplacement de tags de signature a échoué
+- Entropie de 80 (par défaut) lors de la création/modification d'un mot de passe
+
+### Corrections
+
+- Amélioration des performances à la suppression en masse de circuits
+- Blocage d'un bouton "Enregistrer" à la création d'un nouvel utilisateur
+- Erreur dans le service `legacy-bridge` lorsqu'un mot de passe contient le caractère `:`
+- Enregistrement d'une métadonnée booléenne dans un brouillon
+- Affichage de parties du dossier précédent, après la redirection post-signature
+- Redirection post-signature dans la bannette des dossiers délégués
+- Modification du sous-type dans une étape de brouillon
+- Prise en compte de la métadonnée dans le brouillon lors d'un script de sélection
+- Affichage "d'actions inconnues" dans l'historique via l'API SOAP
+- Status des étapes externes dans l'historique via l'API SOAP
+- Affichage du bureau en cours via l'API SOAP
+- Enregistrement de bureaux notifiés dans l'éditeur de circuit
+- Amélioration du message d'erreur lors d'un fallback-v4
+- Typos
+
+
 ## [5.1.6] - 2024-07-11
 
 ### Corrections
