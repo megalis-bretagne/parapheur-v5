@@ -27,7 +27,7 @@ Feature: creation en masse de type
 
     Examples:
       | tenant      | username                 | lastName  | firstName | email                    | password | role                    |
-      | multiType | jdoe@multiType   | Doe  | John  | jdoe@dom.local | a123456a123456  | Aucun privilège        |
+      | multiType | jdoe@multiType   | Doe  | John  | jdoe@dom.local | Ilenfautpeupouretreheureux  | Aucun privilège        |
 
 
   Scenario Outline: Créer un bureau ${title} pour ${description} utilisateur sans droit

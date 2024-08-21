@@ -16,8 +16,8 @@ Feature: Paramétrage métier "Métadonnées"
 
         Examples:
             | tenant      | userName  | email               | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Métadonnées | ecapucine | ecapucine@dom.local | Eliott    | Capucine | a123456a123456  | NONE      | disabled                   |  |
-            | Métadonnées | ws-meta   | ws-meta@dom.local   | Service   | Web      | a123456a123456  | NONE      | disabled                   |  |
+            | Métadonnées | ecapucine | ecapucine@dom.local | Eliott    | Capucine | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
+            | Métadonnées | ws-meta   | ws-meta@dom.local   | Service   | Web      | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
 
     Scenario Outline: Create metadata "${name}" of type ${type}
         * call read('classpath:lib/ip5/api/setup/metadata.create.feature') __row

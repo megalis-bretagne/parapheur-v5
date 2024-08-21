@@ -7,10 +7,10 @@ Feature: POST /auth/realms/api/v1/protocol/openid-connect/token (Authentication)
 
 		Examples:
 			| role             | username     | password |
-			| ADMIN            | cnoir        | a123456a123456  |
-			| TENANT_ADMIN     | vgris        | a123456a123456  |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456a123456  |
-			| NONE             | ltransparent | a123456a123456  |
+			| ADMIN            | cnoir        | Ilenfautpeupouretreheureux  |
+			| TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  |
+			| FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  |
+			| NONE             | ltransparent | Ilenfautpeupouretreheureux  |
 
 	@authentication
 	Scenario Outline: Unsuccessful authentication with "${username === null ? '' : username}" and "${password === null ? '' : password}"

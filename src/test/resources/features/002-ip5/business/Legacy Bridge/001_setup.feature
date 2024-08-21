@@ -37,8 +37,8 @@ Feature: Paramétrage métier "Legacy Bridge"
 
         Examples:
             | tenant        | userName                 | email                                                | firstName | lastName  | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Legacy Bridge | lvermillon@legacy-bridge | cbuffin+lvermillon-legacy-bridge@libriciel.net       | Lukas     | Vermillon | a123456a123456  | NONE      | disabled                   |  |
-            | Legacy Bridge | ws@legacy-bridge         | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net | Service   | Web       | a123456a123456  | NONE      | disabled                   |  |
+            | Legacy Bridge | lvermillon@legacy-bridge | cbuffin+lvermillon-legacy-bridge@libriciel.net       | Lukas     | Vermillon | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
+            | Legacy Bridge | ws@legacy-bridge         | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net | Service   | Web       | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

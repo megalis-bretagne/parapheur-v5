@@ -125,7 +125,7 @@ function fn(config) {
     config.ip5.business.formatsDeSignature['download'] = function(state, name) {
         var desktop;
         if (state === "finished") {
-            ip5.api.v1.auth.login("ws-fds", "a123456a123456");
+            ip5.api.v1.auth.login("ws-fds", "Ilenfautpeupouretreheureux");
             desktop = "WebService";
         } else {
             // @todo

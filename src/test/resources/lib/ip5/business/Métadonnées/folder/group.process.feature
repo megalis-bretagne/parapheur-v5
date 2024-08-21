@@ -8,7 +8,7 @@ Feature: ...
     tenant: "Métadonnées",
     annotation: "visa",
     username: "ecapucine",
-    password: "a123456a123456",
+    password: "Ilenfautpeupouretreheureux",
     desktop: "Capucine"
 }
 """

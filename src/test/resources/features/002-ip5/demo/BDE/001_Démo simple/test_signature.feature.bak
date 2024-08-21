@@ -29,10 +29,10 @@ Feature: Test signatures IP 5
 
         Examples:
             | tenant      | username       | password | desktop    | mainFile!                                                                                            | type        | subtype      | nameTemplate | annotation |
-            | Démo simple | ws@demo-simple | a123456a123456  | WebService | ip.commonpath.get("PDF_avec_tags.pdf")                                                                       | ACTES       | Délibération | xxx          | démarrage  |
-            | Démo simple | ws@demo-simple | a123456a123456  | WebService | 'classpath:files/formats/PDF_avec_tags/PDF_avec_tags-signature_pades.pdf'                            | ACTES       | Délibération | yyy          | démarrage  |
-            | Démo simple | ws@demo-simple | a123456a123456  | WebService | {'file': ip.commonpath.get("PDF_avec_tags.pdf"), 'detached': ip.commonpath.get("PDF_avec_tags/signature_cades.p7s")} | Automatique | Signature    | aaa          | démarrage  |
-            | Démo simple | ws@demo-simple | a123456a123456  | WebService | {'file': ip.commonpath.get("PDF_avec_tags.pdf"), 'detached': ip.commonpath.get("PDF_avec_tags/signature_xades.xml")} | Automatique | Signature    | bbb          | démarrage  |
+            | Démo simple | ws@demo-simple | Ilenfautpeupouretreheureux  | WebService | ip.commonpath.get("PDF_avec_tags.pdf")                                                                       | ACTES       | Délibération | xxx          | démarrage  |
+            | Démo simple | ws@demo-simple | Ilenfautpeupouretreheureux  | WebService | 'classpath:files/formats/PDF_avec_tags/PDF_avec_tags-signature_pades.pdf'                            | ACTES       | Délibération | yyy          | démarrage  |
+            | Démo simple | ws@demo-simple | Ilenfautpeupouretreheureux  | WebService | {'file': ip.commonpath.get("PDF_avec_tags.pdf"), 'detached': ip.commonpath.get("PDF_avec_tags/signature_cades.p7s")} | Automatique | Signature    | aaa          | démarrage  |
+            | Démo simple | ws@demo-simple | Ilenfautpeupouretreheureux  | WebService | {'file': ip.commonpath.get("PDF_avec_tags.pdf"), 'detached': ip.commonpath.get("PDF_avec_tags/signature_xades.xml")} | Automatique | Signature    | bbb          | démarrage  |
 
     Scenario Outline: Création du dossier "${name}" de type "${type} / ${subtype}" avec 2 annexes par ${username}
         * ip5.api.v1.auth.login("<username>", "<password>")
@@ -56,7 +56,7 @@ Feature: Test signatures IP 5
 
         Examples:
             | tenant      | username       | password | desktop    | mainFiles!                       | type  | subtype      | name | annotation | annexes!                                                                |
-            | Démo simple | ws@demo-simple | a123456a123456  | WebService | [ip.commonpath.get("PDF_avec_tags.pdf")] | ACTES | Délibération | ccc  | démarrage  | [ip.commonpath.get("document_libre_office.odt"), ip.commonpath.get("document_rtf.rtf")] |
+            | Démo simple | ws@demo-simple | Ilenfautpeupouretreheureux  | WebService | [ip.commonpath.get("PDF_avec_tags.pdf")] | ACTES | Délibération | ccc  | démarrage  | [ip.commonpath.get("document_libre_office.odt"), ip.commonpath.get("document_rtf.rtf")] |
 
     Scenario Outline: Signature du dossier "${folder}" par ${username}
         * ip5.api.v1.auth.login("<username>", "<password>")
@@ -65,14 +65,14 @@ Feature: Test signatures IP 5
 
         Examples:
             | tenant      | username               | password | desktop   | folder | certificate | annotation |
-            | Démo simple | flosserand@demo-simple | a123456a123456  | Président | xxx    | signature   | signature  |
-            | Démo simple | flosserand@demo-simple | a123456a123456  | Président | yyy    | signature   | signature  |
-            | Démo simple | flosserand@demo-simple | a123456a123456  | Président | aaa    | signature   | signature  |
-            | Démo simple | flosserand@demo-simple | a123456a123456  | Président | bbb    | signature   | signature  |
-            | Démo simple | flosserand@demo-simple | a123456a123456  | Président | ccc    | signature   | signature  |
+            | Démo simple | flosserand@demo-simple | Ilenfautpeupouretreheureux  | Président | xxx    | signature   | signature  |
+            | Démo simple | flosserand@demo-simple | Ilenfautpeupouretreheureux  | Président | yyy    | signature   | signature  |
+            | Démo simple | flosserand@demo-simple | Ilenfautpeupouretreheureux  | Président | aaa    | signature   | signature  |
+            | Démo simple | flosserand@demo-simple | Ilenfautpeupouretreheureux  | Président | bbb    | signature   | signature  |
+            | Démo simple | flosserand@demo-simple | Ilenfautpeupouretreheureux  | Président | ccc    | signature   | signature  |
 
     Scenario: Vérifications des documents du dossier "aaa"
-        * ip5.api.v1.auth.login("ws@demo-simple", "a123456a123456")
+        * ip5.api.v1.auth.login("ws@demo-simple", "Ilenfautpeupouretreheureux")
         * def files = ip5.business.api.folder.downloadFiles("Démo simple", "WebService", "finished", "aaa")
 
         * match files ==
@@ -99,7 +99,7 @@ Feature: Test signatures IP 5
         * ip.signature.cades.check(karate.toAbsolutePath(ip.commonpath.get("PDF_avec_tags.pdf")), ip5.downloadpath.detached(files, "PDF_avec_tags-1-Frédéric Losserand.p7s", ""))
 
     Scenario: Vérifications des documents du dossier "xxx"
-        * ip5.api.v1.auth.login("ws@demo-simple", "a123456a123456")
+        * ip5.api.v1.auth.login("ws@demo-simple", "Ilenfautpeupouretreheureux")
         * def files = ip5.business.api.folder.downloadFiles("Démo simple", "WebService", "finished", "xxx")
         * match files ==
 """
@@ -131,7 +131,7 @@ Feature: Test signatures IP 5
         * match ip.signature.pades.certificates.read(ip5.downloadpath.document(files, "PDF_avec_tags.pdf")) == expectedSignatures
 
     Scenario: Vérifications des documents du dossier "yyy"
-        * ip5.api.v1.auth.login("ws@demo-simple", "a123456a123456")
+        * ip5.api.v1.auth.login("ws@demo-simple", "Ilenfautpeupouretreheureux")
         * def files = ip5.business.api.folder.downloadFiles("Démo simple", "WebService", "finished", "yyy")
         * match files ==
 """
@@ -171,7 +171,7 @@ Feature: Test signatures IP 5
         * match ip.signature.pades.certificates.read(ip5.downloadpath.document(files, "PDF_avec_tags-signature_pades.pdf")) == expectedSignatures
 
     Scenario: Vérifications des fichiers du dossier "ccc"
-        * ip5.api.v1.auth.login("ws@demo-simple", "a123456a123456")
+        * ip5.api.v1.auth.login("ws@demo-simple", "Ilenfautpeupouretreheureux")
         * def files = ip5.business.api.folder.downloadFiles("Démo simple", "WebService", "finished", "ccc")
 
         # Vérification des fichiers présents dans le dossier

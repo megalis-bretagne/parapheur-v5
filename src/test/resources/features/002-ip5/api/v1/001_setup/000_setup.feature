@@ -23,11 +23,11 @@ Feature: Basic setup
 
 		Examples:
 			| tenant          | userName     | email                  | firstName | lastName    | password | privilege        | notificationsCronFrequency | administeredDesk |
-			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | a123456a123456  | SUPER_ADMIN      | disabled                   | 				  |
-			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | a123456a123456  | TENANT_ADMIN     | disabled                   |                  |
-			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | a123456a123456  | FUNCTIONAL_ADMIN | disabled                   | null_desk        |
-			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | a123456a123456  | NONE             | disabled                   |                  |
-			| Entité initiale | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | a123456a123456  | NONE             | disabled                   |                  |
+			| Entité initiale | cnoir        | cnoir@dom.local        | Christian | Noir        | Ilenfautpeupouretreheureux  | SUPER_ADMIN      | disabled                   | 				  |
+			| Entité initiale | vgris        | vgris@dom.local        | Virginie  | Gris        | Ilenfautpeupouretreheureux  | TENANT_ADMIN     | disabled                   |                  |
+			| Entité initiale | ablanc       | ablanc@dom.local       | Aurélie   | Blanc       | Ilenfautpeupouretreheureux  | FUNCTIONAL_ADMIN | disabled                   | null_desk        |
+			| Entité initiale | ltransparent | ltransparent@dom.local | Laetitia  | Transparent | Ilenfautpeupouretreheureux  | NONE             | disabled                   |                  |
+			| Entité initiale | stranslucide | stranslucide@dom.local | Sandrine  | Translucide | Ilenfautpeupouretreheureux  | NONE             | disabled                   |                  |
 
 	Scenario Outline: Associate user "${email}" with tenant "${tenant}"
 		* call read('classpath:lib/ip5/api/setup/tenant.user.associate.feature') __row
