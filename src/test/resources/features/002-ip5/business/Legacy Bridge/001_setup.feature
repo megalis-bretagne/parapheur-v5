@@ -23,7 +23,7 @@ Feature: Paramétrage métier "Legacy Bridge"
 
         Examples:
             | tenant        | path                                                  | password                        | image!                                           |
-            | Legacy Bridge | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - benoit xvi.png' |
+            | Legacy Bridge | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | 'classpath:files/images/cachet - benoit xvi.png' |
 
     Scenario Outline: Create a secure mail configuration "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/secure-mail.create.feature') __row
@@ -37,8 +37,8 @@ Feature: Paramétrage métier "Legacy Bridge"
 
         Examples:
             | tenant        | userName                 | email                                                | firstName | lastName  | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Legacy Bridge | lvermillon@legacy-bridge | cbuffin+lvermillon-legacy-bridge@libriciel.net       | Lukas     | Vermillon | a123456a123456  | NONE      | disabled                   |  |
-            | Legacy Bridge | ws@legacy-bridge         | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net | Service   | Web       | a123456a123456  | NONE      | disabled                   |  |
+            | Legacy Bridge | lvermillon@legacy-bridge | cbuffin+lvermillon-legacy-bridge@libriciel.net       | Lukas     | Vermillon | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
+            | Legacy Bridge | ws@legacy-bridge         | cbuffin+ws-legacy-bridge-legacy-bridge@libriciel.net | Service   | Web       | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

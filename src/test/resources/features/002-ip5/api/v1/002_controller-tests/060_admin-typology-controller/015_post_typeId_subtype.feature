@@ -61,13 +61,13 @@ function() {
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 201    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 201    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 201    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 201    |
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -91,13 +91,13 @@ function() {
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -121,13 +121,13 @@ function() {
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -151,13 +151,13 @@ function() {
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
@@ -169,7 +169,7 @@ function() {
         * def payload = getCleanPayload()
         * payload[field] = ip.utils.eval(value)
 
-        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
+        * ip5.api.v1.auth.login('cnoir', 'Ilenfautpeupouretreheureux')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, 'typology/type/', existingTypeId, '/subtype'

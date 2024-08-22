@@ -39,16 +39,16 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Examples:
       | tenant      | username                 | lastName  | firstName | email                    | password | role                    |
-      | Démo simple | admin@demo-simple        | Demortain | Benoit    | admin@dom.local          | a123456a123456  | Administrateur          |
-      | Démo simple | admin-entite@demo-simple | Buffin    | Christian | admin-entite@dom.local   | a123456a123456  | Administrateur d'entité |
-      | Démo simple | mpiaumier@demo-simple    | Piaumier  | Matthieu  | mpiaumier-demo@dom.local | a123456a123456  | Aucun privilège         |
-      | Démo simple | ws@demo-simple           | Service   | Web       | ws-demo@dom.local        | a123456a123456  | Aucun privilège         |
+      | Démo simple | admin@demo-simple        | Demortain | Benoit    | admin@dom.local          | Ilenfautpeupouretreheureux  | Administrateur          |
+      | Démo simple | admin-entite@demo-simple | Buffin    | Christian | admin-entite@dom.local   | Ilenfautpeupouretreheureux  | Administrateur d'entité |
+      | Démo simple | mpiaumier@demo-simple    | Piaumier  | Matthieu  | mpiaumier-demo@dom.local | Ilenfautpeupouretreheureux  | Aucun privilège         |
+      | Démo simple | ws@demo-simple           | Service   | Web       | ws-demo@dom.local        | Ilenfautpeupouretreheureux  | Aucun privilège         |
 
 
   @issue-ip-compose-537 @basic
   Scenario Outline: Créer un user sans droit avec notif unitaire et image de signature
     # User creation
-    * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
+    * ip5.ui.user.login("admin-entite@demo-simple", "Ilenfautpeupouretreheureux")
     * call read('classpath:lib/ip5/ui/user/create.feature') __row
     * ip5.ui.user.logout()
 
@@ -78,10 +78,10 @@ Feature: 001 - Scénario de démo simple, partie administration
 
     Examples:
       | tenant      | username               | lastName  | firstName | email                     | password       | role            |
-      | Démo simple | flosserand@demo-simple | Losserand | Frédéric  | flosserand-demo@dom.local | a123456a123456 | Aucun privilège |
+      | Démo simple | flosserand@demo-simple | Losserand | Frédéric  | flosserand-demo@dom.local | Ilenfautpeupouretreheureux | Aucun privilège |
 
   Scenario Outline: Créer un bureau ${title} pour ${description} utilisateur sans droit
-    * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
+    * ip5.ui.user.login("admin-entite@demo-simple", "Ilenfautpeupouretreheureux")
     * call read('classpath:lib/ip5/ui/desk/create.feature') __row
 
     Examples:
@@ -91,7 +91,7 @@ Feature: 001 - Scénario de démo simple, partie administration
       | Démo simple | Président  | Président  | ['flosserand@demo-simple'] | ['Traiter des dossiers']                                                                 | ['DGS']          | utilisateur sans droit et association avec le bureau DGS |
 
   Scenario Outline: Créer un circuit 1 étape de ${type} du bureau ${desk}
-    * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
+    * ip5.ui.user.login("admin-entite@demo-simple", "Ilenfautpeupouretreheureux")
     * call read('classpath:lib/ip5/ui/workflow/create_1_step.feature') __row
 
     Examples:
@@ -100,7 +100,7 @@ Feature: 001 - Scénario de démo simple, partie administration
       | Démo simple | Visa      | Visa      | Président |
 
   Scenario Outline: Créer un type ACTES/PAdES
-    * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
+    * ip5.ui.user.login("admin-entite@demo-simple", "Ilenfautpeupouretreheureux")
     * call read('classpath:lib/ip5/ui/type/create.feature') __row
 
     Examples:
@@ -108,7 +108,7 @@ Feature: 001 - Scénario de démo simple, partie administration
       | Démo simple | ACTES | ACTES       | ACTES    | PAdES  | Pont-à-Mousson | true   |
 
   Scenario Outline: Créer un sous-type ${type} / ${name} pour le circuit ${workflow}
-    * ip5.ui.user.login("admin-entite@demo-simple", "a123456a123456")
+    * ip5.ui.user.login("admin-entite@demo-simple", "Ilenfautpeupouretreheureux")
     * call read('classpath:lib/ip5/ui/subtype/create.feature') __row
 
     Examples:

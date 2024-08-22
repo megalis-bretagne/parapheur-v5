@@ -11,7 +11,7 @@ Feature: ...
 {
     tenant: "Métadonnées",
     username: "ws-meta",
-    password: "a123456a123456",
+    password: "Ilenfautpeupouretreheureux",
     date: "2022-09-01",
     desktop: "WebService"
 }

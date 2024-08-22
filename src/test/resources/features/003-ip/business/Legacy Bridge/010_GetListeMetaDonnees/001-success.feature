@@ -2,7 +2,7 @@
 Feature: GetListeMetaDonnees
     @fixme-ip5
     Scenario: Récupération des méta-données
-        Given def params = { username: "ws@legacy-bridge", password: "a123456a123456" }
+        Given def params = { username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" }
         When def rv = call read('classpath:lib/ip/api/soap/requests/GetListeMetaDonnees/simple.feature') params
             And match karate.xmlPath(rv.response, 'count(/Envelope/Body/GetListeMetaDonneesResponse/MetaDonnee)') == 1
             And match rv.response /Envelope/Body/GetListeMetaDonneesResponse/MetaDonnee/nomCourt == 'mameta_bool'
