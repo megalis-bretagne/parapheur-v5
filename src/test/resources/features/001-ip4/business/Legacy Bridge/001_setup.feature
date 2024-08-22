@@ -18,7 +18,7 @@ Feature: Paramétrage IP 4 pour l'entité legacy-bridge
 
         Examples:
             | title  | certificate                                           | password                        | image                                          | text |
-            | Cachet | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | classpath:files/images/cachet - benoit xvi.png |      |
+            | Cachet | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | classpath:files/images/cachet - benoit xvi.png |      |
 
     Scenario Outline: Création de la méta-donnée "${id}" de type "${type}"
         * call read('classpath:lib/ip4/business/api/metadata/create.feature') __row

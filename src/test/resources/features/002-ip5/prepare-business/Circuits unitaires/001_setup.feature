@@ -41,7 +41,7 @@ Feature: Paramétrage métier "Circuits unitaires"
 
         Examples:
             | tenant             | path                                                  | password                        | image!                                                   |
-            | Circuits unitaires | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - circuits unitaires.png' |
+            | Circuits unitaires | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | 'classpath:files/images/cachet - circuits unitaires.png' |
 
     Scenario Outline:
         * call read('classpath:lib/ip5/api/setup/secure-mail.create.feature') __row

@@ -51,7 +51,7 @@ Feature: Basic setup
 
 		Examples:
 			| tenant         | path                                                  | password                        | image! |
-			| Entité initiale | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | ''     |
+			| Entité initiale | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | ''     |
 
 	@todo-karate
 	# MAIL returns a 400 (Web or API), check if the same happens when it is configured

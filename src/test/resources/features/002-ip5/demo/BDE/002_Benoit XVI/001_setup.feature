@@ -38,7 +38,7 @@ Feature: Paramétrage métier "Benoit XVI"
 
         Examples:
             | tenant     | path                                                  | password                        | image!                                           |
-            | Benoit XVI | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - benoit xvi.png' |
+            | Benoit XVI | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | 'classpath:files/images/cachet - benoit xvi.png' |
 
     Scenario Outline: Create a secure mail configuration "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/secure-mail.create.feature') __row
