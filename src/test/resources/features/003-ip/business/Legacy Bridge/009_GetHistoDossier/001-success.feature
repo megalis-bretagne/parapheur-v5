@@ -2,7 +2,7 @@
 Feature: GetHistoDossier
 
   Background:
-    * def defaults = { username: "ws@legacy-bridge", password: "a123456a123456" }
+    * def defaults = { username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" }
 
   Scenario: Récupération du journal des événements du dossier "Auto_sign_avec_meta_1"
     Given def params = { type: "Auto monodoc", sousType: "sign avec meta", status: "RejetSignataire", name: "Auto_sign_avec_meta_1" }

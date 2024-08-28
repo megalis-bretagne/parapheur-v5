@@ -42,7 +42,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.1.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -61,7 +61,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.0
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -125,8 +125,6 @@ services:
       - GDPR_MAINTENANCE_ENTITY_ADDRESS
       - GDPR_MAINTENANCE_ENTITY_SIRET
       - TRUSTSTORE_PASSWORD
-      # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     depends_on:
       ca-certs:
         condition: service_completed_successfully
@@ -145,7 +143,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.1
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -179,7 +177,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.13
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.14
     restart: unless-stopped
     tty: true
     deploy:
@@ -201,7 +199,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.1.7
+    image: registry.libriciel.fr/public/signature/crypto:3.1.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -211,7 +209,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.2
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.3
     restart: unless-stopped
     tty: true
     deploy:
@@ -221,7 +219,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.8
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.10
     restart: unless-stopped
     tty: true
     deploy:
@@ -235,8 +233,6 @@ services:
       - SECUREMAIL_DB_USER
       - SECUREMAIL_DB_PASSWORD
       - TRUSTSTORE_PASSWORD
-      # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR}/certificate/cacerts/java/cacerts:/truststore.jks
     depends_on:
@@ -245,7 +241,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.9
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.10
     restart: unless-stopped
     tty: true
     deploy:
@@ -255,7 +251,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.3
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.5
     restart: unless-stopped
     tty: true
     deploy:
@@ -281,14 +277,12 @@ services:
       - KEYCLOAK_SOAPUI_PASSWORD
       - MAIL_FROM
       - TRUSTSTORE_PASSWORD
-      # TODO: Integrate it into the root Dockerfile, somehow
-      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/truststore.jks -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR:?}/certificate/cacerts/java/cacerts:/truststore.jks
 
 
   alfresco:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.2.1.0
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco:23.2.1.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -394,7 +388,7 @@ services:
 
 
   keycloak:
-    image: registry.libriciel.fr:443/public/signature/ip-keycloak:23.0.7.2
+    image: registry.libriciel.fr:443/public/signature/ip-keycloak:23.0.7.3
     command: start --optimized --import-realm
     restart: unless-stopped
     tty: true
@@ -420,8 +414,6 @@ services:
       - KC_HOSTNAME_ADMIN=${APPLICATION_HOST:?}
       - KC_SPI_TRUSTSTORE_FILE_FILE=/truststore.jks
       - KC_SPI_TRUSTSTORE_FILE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
-      # TODO: Integrate default values into the root Dockerfile, somehow
-      - JAVA_OPTS=-Xmx1G -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8
     depends_on:
       postgres:
         condition: service_healthy

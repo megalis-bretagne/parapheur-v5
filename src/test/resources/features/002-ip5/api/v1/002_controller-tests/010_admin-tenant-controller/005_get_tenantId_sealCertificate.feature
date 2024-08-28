@@ -22,13 +22,13 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 200    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 200    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 200    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 200    |
         @fixme-ip5 @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -46,11 +46,11 @@ Feature: GET /api/v1/admin/tenant/{tenantId}/sealCertificate (List seal certific
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         @fixme-ip5 @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |

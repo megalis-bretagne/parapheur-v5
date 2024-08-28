@@ -22,4 +22,4 @@ Feature: Création de dossiers pour le paramétrage métier "Factures"
 
       Examples:
           | tenant   | username    | password | desktop    | type | subtype      | mainFile!                          | nameTemplate      | start! | count! | withOrWithout | extra! | annotation |
-          | Factures | ws-factures | a123456a123456  | WebService | VISA | VISA_MONODOC | 'classpath:files/pdf/main-1_1.pdf' | Facture_%counter% | 1      | 10     | without       | {}     | démarrage  |
+          | Factures | ws-factures | Ilenfautpeupouretreheureux  | WebService | VISA | VISA_MONODOC | 'classpath:files/pdf/main-1_1.pdf' | Facture_%counter% | 1      | 10     | without       | {}     | démarrage  |
