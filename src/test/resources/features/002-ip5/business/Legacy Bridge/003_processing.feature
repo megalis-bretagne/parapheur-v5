@@ -6,7 +6,7 @@ Feature: Traitement des dossiers
         * driver baseUrl + ip5.ui.url.logout
 
     Scenario Outline: Traitement du dossier "${name}" par lvermillon@legacy-bridge
-        * ip5.ui.user.login("lvermillon@legacy-bridge", "a123456a123456")
+        * ip5.ui.user.login("lvermillon@legacy-bridge", "Ilenfautpeupouretreheureux")
         #* match ip5.ui.desk.getTileBadges('Vermillon') == { pending: #(pending) }
 
         * waitFor(ip5.ui.element.breadcrumb("Accueil / Legacy Bridge / Vermillon / Dossiers à traiter"))

@@ -16,9 +16,9 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | userName | email              | firstName | lastName | password | privilege | notificationsCronFrequency | complementaryField                                               | administeredDesk |
-            | Formats de signature | fgarance | fgarance@dom.local | Florence  | Garance  | a123456a123456  | NONE      | disabled                   |                                                                  |  |
-            | Formats de signature | gnacarat | gnacarat@dom.local | Gilles    | Nacarat  | a123456a123456  | NONE      | disabled                   | TITRE="Responsable des méthodes",VILLE="Agde",CODEPOSTAL="34300" |  |
-            | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | a123456a123456  | NONE      | disabled                   |                                                                  |  |
+            | Formats de signature | fgarance | fgarance@dom.local | Florence  | Garance  | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                                                                  |  |
+            | Formats de signature | gnacarat | gnacarat@dom.local | Gilles    | Nacarat  | Ilenfautpeupouretreheureux  | NONE      | disabled                   | TITRE="Responsable des méthodes",VILLE="Agde",CODEPOSTAL="34300" |  |
+            | Formats de signature | ws-fds   | ws-fds@dom.local   | Service   | Web      | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                                                                  |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
@@ -33,7 +33,7 @@ Feature: Paramétrage métier "Formats de signature"
 
         Examples:
             | tenant               | path                                                  | password                        | image!                                                     |
-            | Formats de signature | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - formats de signature.png' |
+            | Formats de signature | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | 'classpath:files/images/cachet - formats de signature.png' |
 
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/one-step-workflow.create.feature') __row

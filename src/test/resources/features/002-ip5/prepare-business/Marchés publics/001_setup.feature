@@ -15,11 +15,11 @@ Feature: Paramétrage métier "Marchés publics"
 
         Examples:
             | tenant          | userName   | email                | firstName | lastName  | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Marchés publics | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | a123456a123456  | NONE      | disabled                   |                  |
-            | Marchés publics | sorange    | sorange@dom.local    | Stéphanie | Orange    | a123456a123456  | NONE      | disabled                   |                  |
-            | Marchés publics | smandarine | smandarine@dom.local | Sabrina   | Mandarine | a123456a123456  | NONE      | disabled                   |                  |
-            | Marchés publics | vsafran    | vsafran@dom.local    | Vincent   | Safran    | a123456a123456  | NONE      | disabled                   |                  |
-            | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | a123456a123456  | NONE      | disabled                   |                  |
+            | Marchés publics | ncorail    | ncorail@dom.local    | Nicolas   | Corail    | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
+            | Marchés publics | sorange    | sorange@dom.local    | Stéphanie | Orange    | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
+            | Marchés publics | smandarine | smandarine@dom.local | Sabrina   | Mandarine | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
+            | Marchés publics | vsafran    | vsafran@dom.local    | Vincent   | Safran    | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
+            | Marchés publics | ws-mp      | ws-mp@dom.local      | Service   | Web       | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row

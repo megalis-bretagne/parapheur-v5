@@ -16,8 +16,8 @@ Feature: Paramétrage métier "Circuits unitaires"
 
         Examples:
             | tenant             | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
-            | Circuits unitaires | nmarron  | nmarron@dom.local | Nadine    | Marron   | a123456a123456  | NONE      | disabled                   |  |
-            | Circuits unitaires | ws-cu    | ws-cu@dom.local   | Service   | Web      | a123456a123456  | NONE      | disabled                   |  |
+            | Circuits unitaires | nmarron  | nmarron@dom.local | Nadine    | Marron   | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
+            | Circuits unitaires | ws-cu    | ws-cu@dom.local   | Service   | Web      | Ilenfautpeupouretreheureux  | NONE      | disabled                   |  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
@@ -41,14 +41,14 @@ Feature: Paramétrage métier "Circuits unitaires"
 
         Examples:
             | tenant             | path                                                  | password                        | image!                                                   |
-            | Circuits unitaires | classpath:files/Default tenant - Seal Certificate.p12 | christian.buffin@libriciel.coop | 'classpath:files/images/cachet - circuits unitaires.png' |
+            | Circuits unitaires | classpath:files/certificates/signature/certificate.p12 | RYLhdwF6KT3ttc2LQxtmMfRcfC8FbePCHrsj6inANNQ5j8wNY3j9LgYZXVCcz3Fv | 'classpath:files/images/cachet - circuits unitaires.png' |
 
     Scenario Outline:
         * call read('classpath:lib/ip5/api/setup/secure-mail.create.feature') __row
 
         Examples:
             | tenant             | name                           | url                                      | login                                 | password | entity |
-            | Circuits unitaires | Mail securise Pastell cbuffin | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | a123456a123456  | 116    |
+            | Circuits unitaires | Mail securise Pastell cbuffin | https://pastell.partenaire.libriciel.fr/ | ws-pa-cbuffin-recette-ip500ea-mailsec | Ilenfautpeupouretreheureux  | 116    |
 
     # @todo: métadonnée (+obligatoire en cas de refus)
     Scenario Outline: Create "${name}" one-step-workflow and associate it to the "${deskName}" desk in "${tenant}"

@@ -6,7 +6,7 @@ Feature: RechercherDossiers
         * if (expected == 1) karate.set("schema", "OK-1-result.xml")
         * if (expected > 1) karate.set("schema", "OK.xml")
 
-        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/RechercherDossiers/simple.feature') params
             And match ip.utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
             And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
@@ -49,7 +49,7 @@ Feature: RechercherDossiers
             * if (expected == 1) karate.set("schema", "OK-1-result.xml")
             * if (expected > 1) karate.set("schema", "OK.xml")
 
-            Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
+            Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" })
             When def rv = call read('classpath:lib/ip/api/soap/requests/RechercherDossiers/simple.feature') params
             And match ip.utils.xmlPathSortedUnique(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/status') == statuses
             And match karate.xmlPath(rv.response, 'count(/Envelope/Body/RechercherDossiersResponse/LogDossier)') == expected
@@ -61,14 +61,14 @@ Feature: RechercherDossiers
 
     Scenario: Récupération des dossiers par DossierID
         # 1. Récupération de la liste de DossierID pour le status "Archive"
-        Given def params = { status: "Archive", username: "ws@legacy-bridge", password: "a123456a123456" }
+        Given def params = { status: "Archive", username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" }
         When def rv = call read('classpath:lib/ip/api/soap/requests/RechercherDossiers/simple.feature') params
         Then def dossierIds = karate.xmlPath(rv.response, '/Envelope/Body/RechercherDossiersResponse/LogDossier/nom')
 
         # 2. Récupération de la liste de dossiers par DossierID
         Given configure cookies = null
             And url ip.api.soap.url()
-            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "a123456a123456")
+            And header Authorization = ip.api.soap.user.authorization("ws@legacy-bridge", "Ilenfautpeupouretreheureux")
             And request
 """
 <?xml version='1.0' encoding='utf-8'?>

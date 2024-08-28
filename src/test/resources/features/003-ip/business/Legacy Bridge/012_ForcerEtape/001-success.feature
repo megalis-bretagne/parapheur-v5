@@ -3,7 +3,7 @@ Feature: ForcerEtape
 
     Scenario Outline: Création du dossier "${nom}" et forçage de l'étape de visa (${codeTransition})
         # 1. Création d'un dossier
-        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "a123456a123456" })
+        Given def params = karate.merge(__row, { username: "ws@legacy-bridge", password: "Ilenfautpeupouretreheureux" })
         When def rv = call read('classpath:lib/ip/api/soap/requests/CreerDossier/simple_success.feature') params
         Then def dossierId = rv.dossierId
 
@@ -14,7 +14,7 @@ Feature: ForcerEtape
 """
 {
     username: "lvermillon@legacy-bridge",
-    password: "a123456a123456",
+    password: "Ilenfautpeupouretreheureux",
     dossierId: "#(dossierId)",
     codeTransition: "<codeTransition>"
 }

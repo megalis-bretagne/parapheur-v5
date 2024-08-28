@@ -25,15 +25,15 @@ Feature: POST /api/v1/admin/tenant (Create tenant)
 
 		Examples:
 			| role             | username     | password | status |
-			| ADMIN            | cnoir        | a123456a123456  | 201    |
-			| TENANT_ADMIN     | vgris        | a123456a123456  | 403    |
-			| FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-			| NONE             | ltransparent | a123456a123456  | 403    |
+			| ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 201    |
+			| TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 403    |
+			| FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+			| NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
 			|                  |              |          | 401    |
 
 	@data-validation
 	Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'create a tenant', status, data)}
-		* ip5.api.v1.auth.login('cnoir', 'a123456a123456')
+		* ip5.api.v1.auth.login('cnoir', 'Ilenfautpeupouretreheureux')
 		* def requestData = cleanRequestData
 		* requestData[field] = ip.utils.eval(value)
 

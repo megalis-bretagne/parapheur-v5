@@ -15,8 +15,8 @@ Feature: Paramétrage métier "ACTES HELIOS - petites collectivités"
 
         Examples:
             | tenant                               | userName | email             | firstName | lastName | password | privilege | notificationsCronFrequency | administeredDesk |
-            | ACTES HELIOS - petites collectivités | kmauve   | kmauve@dom.local  | Karima    | Mauve    | a123456a123456  | NONE      | disabled                   |                  |
-            | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | a123456a123456  | NONE      | disabled                   |                  |
+            | ACTES HELIOS - petites collectivités | kmauve   | kmauve@dom.local  | Karima    | Mauve    | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
+            | ACTES HELIOS - petites collectivités | ws-ahpc  | ws-ahpc@dom.local | Service   | Web      | Ilenfautpeupouretreheureux  | NONE      | disabled                   |                  |
 
     Scenario Outline: Create desk "${name}" in "${tenant}"
         * call read('classpath:lib/ip5/api/setup/desk.create.feature') __row
