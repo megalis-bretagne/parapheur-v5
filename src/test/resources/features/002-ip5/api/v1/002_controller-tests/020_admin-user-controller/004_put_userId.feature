@@ -27,10 +27,10 @@ Feature: PUT /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId} (Update 
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 200    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 200    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 200    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 200    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -47,10 +47,10 @@ Feature: PUT /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId} (Update 
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
-            | NONE             | ltransparent | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 404    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 404    |
             |                  |              |          | 404    |
 
     @permissions
@@ -68,12 +68,12 @@ Feature: PUT /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId} (Update 
         @fixme-ip5 @issue-ip-core-78 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -90,16 +90,16 @@ Feature: PUT /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId} (Update 
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
-            | NONE             | ltransparent | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 404    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 404    |
             |                  |              |          | 404    |
 
     # @fixme: status 400 missing from swagger
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'edit an existing user in an existing tenant', status, data)}
-        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
+        * ip5.api.v1.auth.login('cnoir', 'Ilenfautpeupouretreheureux')
         * def requestData = existingUserData
         * requestData[field] = ip.utils.eval(value)
 

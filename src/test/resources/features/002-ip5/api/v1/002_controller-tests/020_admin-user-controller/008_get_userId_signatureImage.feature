@@ -26,12 +26,12 @@ Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/signatur
 
         Examples:
             | role             | username     | password | email                  | status | path                                                |
-            | ADMIN            | cnoir        | a123456a123456  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
-            | ADMIN            | cnoir        | a123456a123456  | cnoir@dom.local        | 404    |                                                     |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | cnoir@dom.local        | 404    |                                                     |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | ltransparent@dom.local | 403    |                                                     |
-            | NONE             | ltransparent | a123456a123456  | ltransparent@dom.local | 403    |                                                     |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | cnoir@dom.local        | 404    |                                                     |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 200    | classpath:files/images/signature - ltransparent.png |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | cnoir@dom.local        | 404    |                                                     |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 403    |                                                     |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 403    |                                                     |
             |                  |              |          | ltransparent@dom.local | 401    |                                                     |
 
     @permissions
@@ -48,12 +48,12 @@ Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/signatur
         @fixme-ip5 @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions
@@ -70,10 +70,10 @@ Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/signatur
 
         Examples:
             | role             | username     | password | email                  | status |
-            | ADMIN            | cnoir        | a123456a123456  | ne-pas-repondre@dom.local  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | ltransparent@dom.local | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | ltransparent@dom.local | 404    |
-            | NONE             | ltransparent | a123456a123456  | ltransparent@dom.local | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | ne-pas-repondre@dom.local  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 404    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | ltransparent@dom.local | 404    |
             |                  |              |          | ltransparent@dom.local | 404    |
 
     @permissions
@@ -89,8 +89,8 @@ Feature: GET /api/provisioning/v1/admin/tenant/{tenantId}/user/{userId}/signatur
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 404    |
-            | NONE             | ltransparent | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 404    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 404    |
             |                  |              |          | 404    |

@@ -28,13 +28,13 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
 
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 201    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 201    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 201    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 201    |
         @fixme-ip5 @issue-ip-core-78
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @permissions @fixme-ip5
@@ -54,17 +54,17 @@ Feature: POST /api/v1/admin/tenant/{tenantId}/sealCertificate (Import a new seal
         @issue-todo
         Examples:
             | role             | username     | password | status |
-            | ADMIN            | cnoir        | a123456a123456  | 404    |
-            | TENANT_ADMIN     | vgris        | a123456a123456  | 404    |
+            | ADMIN            | cnoir        | Ilenfautpeupouretreheureux  | 404    |
+            | TENANT_ADMIN     | vgris        | Ilenfautpeupouretreheureux  | 404    |
         Examples:
             | role             | username     | password | status |
-            | FUNCTIONAL_ADMIN | ablanc       | a123456a123456  | 403    |
-            | NONE             | ltransparent | a123456a123456  | 403    |
+            | FUNCTIONAL_ADMIN | ablanc       | Ilenfautpeupouretreheureux  | 403    |
+            | NONE             | ltransparent | Ilenfautpeupouretreheureux  | 403    |
             |                  |              |          | 401    |
 
     @data-validation
     Scenario Outline: ${ip5.scenario.title.validation('ADMIN', 'import a new seal certificate into an existing tenant', status, data)}
-        * ip5.api.v1.auth.login('cnoir', 'a123456a123456')
+        * ip5.api.v1.auth.login('cnoir', 'Ilenfautpeupouretreheureux')
 
         Given url baseUrl
             And path '/api/v1/admin/tenant/', existingTenantId, '/sealCertificate'

@@ -9,7 +9,7 @@ Feature: Typology setup
 
     Examples:
       | tenant          | userName       | email          | firstName | lastName | password       | privilege | notificationsCronFrequency | administeredDesk |
-      | Entité initiale | kali_01_karate | kali@dom.local | kali      | kali     | a123456a123456 | NONE      | disabled                   |                  |
+      | Entité initiale | kali_01_karate | kali@dom.local | kali      | kali     | Ilenfautpeupouretreheureux | NONE      | disabled                   |                  |
 
 
   Scenario Outline: Create type "${name}"

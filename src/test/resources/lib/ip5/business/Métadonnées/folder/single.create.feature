@@ -11,7 +11,7 @@ Feature: ...
     mainFile: 'classpath:files/formats/PDF_sans_tags/PDF_sans_tags.pdf',
     annotation: 'démarrage',
     username: "ws-meta",
-    password: "a123456a123456"
+    password: "Ilenfautpeupouretreheureux"
 }
 """
         * def params = karate.merge(defaults, __arg)
