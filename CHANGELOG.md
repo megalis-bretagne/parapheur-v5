@@ -7,13 +7,14 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.1.7] - 2024-08-06
+## [5.1.7] - 2024-09-09
 
 ### Ajouts
 
 - Healthcheck sur le service `external-signature-connector`
 - Mise en étape manuelle d'un cachet automatique, si la recherche d'emplacement de tags de signature a échoué
 - Entropie de 80 (par défaut) lors de la création/modification d'un mot de passe
+- Auto-truststore avec les certificats ajoutés dans le dossier `/data/certificate/local-cacerts`
 
 ### Corrections
 
@@ -30,16 +31,21 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage du bureau en cours via l'API SOAP
 - Enregistrement de bureaux notifiés dans l'éditeur de circuit
 - Amélioration du message d'erreur lors d'un fallback-v4
+- Porosité de contexte d'un script de sélection de circuit
+- Affichage des métadonnées "Dernier validateur/signataire"
+- Ordre de la redirection automatique lors d'une action
+- Récupération du status des dossiers via Yousign v2
 - Typos
 
 
-## [5.0.29] - 2024-08-06
+## [5.0.29] - 2024-09-09
 
 ### Ajouts
 
 - Healthcheck sur le service `external-signature-connector`
 - Mise en étape manuelle d'un cachet automatique, si la recherche d'emplacement de tags de signature a échoué
 - Entropie de 80 (par défaut) lors de la création/modification d'un mot de passe
+- Auto-truststore avec les certificats ajoutés dans le dossier `/data/certificate/local-cacerts`
 
 ### Corrections
 
@@ -56,6 +62,10 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Affichage du bureau en cours via l'API SOAP
 - Enregistrement de bureaux notifiés dans l'éditeur de circuit
 - Amélioration du message d'erreur lors d'un fallback-v4
+- Porosité de contexte d'un script de sélection de circuit
+- Affichage des métadonnées "Dernier validateur/signataire"
+- Ordre de la redirection automatique lors d'une action
+- Récupération du status des dossiers via Yousign v2
 - Typos
 
 
