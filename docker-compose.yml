@@ -32,7 +32,7 @@ services:
 
 
   ca-certs:
-    image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.3.0
+    image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.4.0
     environment:
       - TRUSTSTORE_PASSWORD
     volumes:
@@ -50,6 +50,7 @@ services:
         limits:
           memory: 256M
     environment:
+      - APPLICATION_PROTOCOL
       - APPLICATION_HOST
       - KEYCLOAK_HOST
     volumes:
@@ -159,7 +160,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.11.13
+    image: registry.libriciel.fr/public/signature/workflow:1.11.14
     restart: unless-stopped
     tty: true
     deploy:
@@ -323,7 +324,7 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:2.0.1
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:2.1.1
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
@@ -376,7 +377,7 @@ services:
 
 
   redis:
-    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.1
+    image: registry.libriciel.fr:443/public/signature/ip-redis:6.2.14.2
     restart: unless-stopped
     tty: true
     deploy:
