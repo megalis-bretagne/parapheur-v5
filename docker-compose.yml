@@ -71,7 +71,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.3
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -155,7 +155,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.3
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.4
     restart: unless-stopped
     tty: true
     deploy:
@@ -263,7 +263,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.6
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.7
     restart: unless-stopped
     tty: true
     deploy:
