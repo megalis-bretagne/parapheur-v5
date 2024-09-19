@@ -36,6 +36,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Ordre de la redirection automatique lors d'une action
 - Récupération du status des dossiers via Yousign v2
 - Typos
+- Récupération des status Lu / non lu depuis les webservice SOAP (y compris Pastell)
 
 
 ## [5.0.29] - 2024-09-09
