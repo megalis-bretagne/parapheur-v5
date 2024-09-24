@@ -7,7 +7,8 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
-## [5.1.7] - 2024-09-09
+## [5.1.7] - 2024-09-24
+[5.1.7]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.7.tar.gz
 
 ### Ajouts
 
@@ -40,7 +41,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Récupération des signatures détachées par l'API SOAP
 
 
-## [5.0.29] - 2024-09-09
+## [5.0.29] - 2024-09-24
+[5.0.29]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.29.tar.gz
 
 ### Ajouts
 
@@ -72,6 +74,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.1.6] - 2024-07-11
+[5.1.6]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.6.tar.gz
 
 ### Corrections
 
@@ -80,6 +83,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.0.28] - 2024-07-11
+[5.0.28]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.28.tar.gz
 
 ### Corrections
 
@@ -88,6 +92,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.1.5] - 2024-07-09
+[5.1.5]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.5.tar.gz
 
 ### Corrections
 
@@ -95,6 +100,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.0.27] - 2024-07-09
+[5.0.27]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.27.tar.gz
 
 ### Corrections
 
@@ -102,6 +108,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.1.4] - 2024-06-10
+[5.1.4]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.4.tar.gz
 
 ### Ajouts
 
@@ -144,6 +151,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
 ## [5.0.26] - 2024-06-10
+[5.0.26]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.26.tar.gz
 
 ### Ajouts
 
