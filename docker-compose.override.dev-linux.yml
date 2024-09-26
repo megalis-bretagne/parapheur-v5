@@ -191,8 +191,6 @@ services:
 
   prometheus:
     image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/ip-prometheus/develop:latest
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     ports:
       - "127.0.0.1:9091:9090"
       - "172.17.0.1:9091:9090"
