@@ -53,6 +53,9 @@ services:
       - APPLICATION_PROTOCOL
       - APPLICATION_HOST
       - KEYCLOAK_HOST
+    depends_on:
+      ca-certs:
+        condition: service_completed_successfully
     volumes:
       - ${CERTIFICATE_FULLCHAIN_PATH:?}:/etc/nginx/ssl/fullchain.pem
       - ${CERTIFICATE_PRIVKEY_PATH?:}:/etc/nginx/ssl/privkey.pem
@@ -62,7 +65,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.5
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -144,7 +147,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.5
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.6
     restart: unless-stopped
     tty: true
     deploy:
