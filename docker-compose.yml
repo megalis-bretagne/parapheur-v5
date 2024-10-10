@@ -57,6 +57,9 @@ services:
       - APPLICATION_PROTOCOL
       - APPLICATION_HOST
       - KEYCLOAK_HOST
+    depends_on:
+      ca-certs:
+        condition: service_completed_successfully
     volumes:
       - matomo_internal_files:/var/www/html
       - ${DATA_ROOT_DIR:?}/matomo/config/:/var/www/html/config/
@@ -71,7 +74,7 @@ services:
 
 
   core:
-    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.5
+    image: registry.libriciel.fr:443/public/signature/ip-core:1.13.6
     restart: unless-stopped
     tty: true
     deploy:
@@ -155,7 +158,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.5
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.6
     restart: unless-stopped
     tty: true
     deploy:
