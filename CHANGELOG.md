@@ -7,6 +7,24 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.1.8] - 2024-10-10
+[5.1.8]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.8.tar.gz
+
+### Corrections
+
+- Enregistrement des préférences utilisateurs
+- Calque du "Nom du dernier validateur"
+
+
+## [5.0.30] - 2024-10-10
+[5.0.30]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.30.tar.gz
+
+### Corrections
+
+- Enregistrement des préférences utilisateurs
+- Calque du "Nom du dernier validateur"
+
+
 ## [5.1.7] - 2024-09-24
 [5.1.7]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.7.tar.gz
 
