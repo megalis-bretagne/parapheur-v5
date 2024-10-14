@@ -197,6 +197,10 @@ services:
     volumes:
       - ./src/main/resources/prometheus/prometheus-dev.yml:/etc/prometheus/prometheus.yml
 
+
+  postgres-periodic-tasks:
+    image: gitlab.libriciel.fr:4567/libriciel/pole-signature/i-parapheur-v5/i-parapheur/postgres-periodic-tasks/develop:latest
+
   pades-valid:
     image: gitlab.libriciel.fr:4567/outils/pades-valid:develop
     ports:
