@@ -456,7 +456,7 @@ services:
 
 
   postgres-periodic-tasks:
-    image: 	registry.libriciel.fr/public/signature/postgres-periodic-tasks:0.0.1
+    image: registry.libriciel.fr/public/signature/postgres-periodic-tasks:0.0.1
     environment:
       - CORE_DB_USER
       - CORE_DB_PASSWORD
