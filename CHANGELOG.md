@@ -7,6 +7,108 @@ Le format est basé sur le modèle [Keep a Changelog](http://keepachangelog.com/
 et adhère aux principes du [Semantic Versioning](http://semver.org/).
 
 
+## [5.2.0]
+[5.2.0]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.2.0.tar.gz
+
+# Ajouts
+
+- Limitations des ressources par entité
+- Envoi des signatures externes vers plusieurs destinataires
+- Tri des dossiers par type/sous-type
+- Transformation des documents en PDF après le circuit de création
+- Signature externe via OODriveSign
+- Signature externe via Docage
+- Attestation de signature via Piste/Chorus Pro
+- Colonne "Utilisateur émetteur" dans la liste des dossiers
+- Colonne "Métadonnée" dans la liste des dossiers
+- Import/export de configuration v5 à v5
+- Personnalisation des colonnes
+
+
+## [5.1.9] - 2024-10-24
+[5.1.9]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.9.tar.gz
+
+# Ajouts
+
+- Image de signature dans l'API de provisioning
+- Encodage en UTF-8 des requêtes sortantes des statistiques
+- Étape de création dans le bordereau
+- Augmentation du nombre de caractères maximums dans les annotations à 512
+- Date limite dans le PREMIS
+
+# Corrections
+
+- Suppression d'un bureau favoris
+- Fusion des PDF composant le bordereau via l'API SOAP
+- Redirection automatique en cas de délégation
+- Redirection automatique dans l'ordre des préférences
+- Redirection automatique au dernier dossier de la liste
+- Désactivation du bouton enregistrer sur un formulaire MdP incomplet
+- Marges incorrectes
+- Message d'erreur à la suppression d'un cachet utilisé
+- Message d'erreur à la suppression d'un circuit utilisé
+- Champs incomplets dans l'API bureaux
+- Filtre des bureaux en mode liste
+- Affichage du journal des évènements pour l'administrateur fonctionnel
+- Pagination de la liste des bureaux
+- Affichage du nombre de session actives
+- Ajout d'un utilisateur à plusieurs tenants via l'API
+- Affichage des transferts et avis complémentaires dans le bordereau
+- Suppression d'un tenant
+- Nom de l'utilisateur dans les commentaires PDF
+- Filtres des dossiers
+- Logo sur l'extension du navigateur
+- Gestion d'une virgule dans le champ "Informations complémentaires" d'un utilisateur
+- Affichage des annotations dans le journal des évènements
+- Gestion des annexes dans le bordereau
+
+# Suppressions
+
+- Utilisateurs interne dans la liste de tous les utilisateurs de l'instance
+
+
+## [5.0.31] - 2024-10-24
+[5.0.31]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.0.31.tar.gz
+
+# Ajouts
+
+- Image de signature dans l'API de provisioning
+- Encodage en UTF-8 des requêtes sortantes des statistiques
+- Étape de création dans le bordereau
+- Augmentation du nombre de caractères maximums dans les annotations à 512
+- Date limite dans le PREMIS
+
+# Corrections
+
+- Suppression d'un bureau favoris
+- Fusion des PDF composant le bordereau via l'API SOAP
+- Redirection automatique en cas de délégation
+- Redirection automatique dans l'ordre des préférences
+- Redirection automatique au dernier dossier de la liste
+- Désactivation du bouton enregistrer sur un formulaire MdP incomplet
+- Marges incorrectes
+- Message d'erreur à la suppression d'un cachet utilisé
+- Message d'erreur à la suppression d'un circuit utilisé
+- Champs incomplets dans l'API bureaux
+- Filtre des bureaux en mode liste
+- Affichage du journal des évènements pour l'administrateur fonctionnel
+- Pagination de la liste des bureaux
+- Affichage du nombre de session actives
+- Ajout d'un utilisateur à plusieurs tenants via l'API
+- Affichage des transferts et avis complémentaires dans le bordereau
+- Suppression d'un tenant
+- Nom de l'utilisateur dans les commentaires PDF
+- Filtres des dossiers
+- Logo sur l'extension du navigateur
+- Gestion d'une virgule dans le champ "Informations complémentaires" d'un utilisateur
+- Affichage des annotations dans le journal des évènements
+- Gestion des annexes dans le bordereau
+
+# Suppressions
+
+- Utilisateurs interne dans la liste de tous les utilisateurs de l'instance
+
+
 ## [5.1.8] - 2024-10-10
 [5.1.8]: https://nexus.libriciel.fr/repository/ls-raw/public/signature/iparapheur-5.1.8.tar.gz
 
