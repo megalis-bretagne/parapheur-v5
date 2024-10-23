@@ -42,7 +42,7 @@ services:
 
 
   nginx:
-    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.1.3
+    image: registry.libriciel.fr:443/public/signature/ip-nginx:1.26.2.0
     restart: unless-stopped
     tty: true
     deploy:
@@ -147,7 +147,7 @@ services:
 
 
   web:
-    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.6
+    image: registry.libriciel.fr:443/public/signature/ip-web:1.11.8
     restart: unless-stopped
     tty: true
     deploy:
@@ -163,7 +163,7 @@ services:
 
 
   workflow:
-    image: registry.libriciel.fr/public/signature/workflow:1.12.0
+    image: registry.libriciel.fr/public/signature/workflow:1.12.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -181,7 +181,7 @@ services:
 
 
   pes-viewer:
-    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.16
+    image: registry.libriciel.fr:443/public/signature/pes-viewer:2.0.18
     restart: unless-stopped
     tty: true
     deploy:
@@ -203,7 +203,7 @@ services:
 
 
   crypto:
-    image: registry.libriciel.fr/public/signature/crypto:3.1.9
+    image: registry.libriciel.fr/public/signature/crypto:3.1.11
     restart: unless-stopped
     tty: true
     deploy:
@@ -213,7 +213,7 @@ services:
 
 
   pdf-stamp:
-    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.4
+    image: registry.libriciel.fr/public/signature/pdf-stamp:2.7.7
     restart: unless-stopped
     tty: true
     deploy:
@@ -223,7 +223,7 @@ services:
 
 
   pastell-connector:
-    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.11
+    image: registry.libriciel.fr/public/signature/pastell-connector:2.0.13
     restart: unless-stopped
     tty: true
     deploy:
@@ -245,7 +245,7 @@ services:
 
 
   external-signature-connector:
-    image: registry.libriciel.fr/public/signature/external-signature-connector:1.7.10
+    image: registry.libriciel.fr/public/signature/external-signature-connector:1.8.1
     restart: unless-stopped
     tty: true
     deploy:
@@ -255,7 +255,7 @@ services:
 
 
   legacy-bridge:
-    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.9
+    image: registry.libriciel.fr/public/signature/legacy-bridge:1.6.10
     restart: unless-stopped
     tty: true
     deploy:
@@ -327,7 +327,7 @@ services:
 
 
   libriciel-engine-extractors:
-    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:2.1.3
+    image: registry.libriciel.fr:443/public/signature/ip-alfresco-transform-extractors:2.1.5
     environment:
       #FIXME !ISSUE_1037
       ACTIVEMQ_URL: "nio://activemq:61616"
@@ -353,7 +353,7 @@ services:
 
 
   postgres:
-    image: registry.libriciel.fr:443/public/signature/ip-postgresql:15.6.1
+    image: registry.libriciel.fr:443/public/signature/ip-postgresql:15.6.2
     restart: unless-stopped
     tty: true
     deploy:
@@ -456,7 +456,7 @@ services:
 
 
   postgres-periodic-tasks:
-    image: registry.libriciel.fr/public/signature/postgres-periodic-tasks:0.0.1
+    image: registry.libriciel.fr/public/signature/postgres-periodic-tasks:1.0.0
     environment:
       - CORE_DB_USER
       - CORE_DB_PASSWORD
