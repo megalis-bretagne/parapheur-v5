@@ -942,8 +942,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Point d'entrée de version
 - Nouveau logos Libriciel/iparapheur
 
-
 ### Corrections
+
 - Changement de page dans la visionneuse
 - Espaces dans les champs recherche
 - Supprimer une annexe dans les étapes de création

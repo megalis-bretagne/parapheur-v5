@@ -34,7 +34,7 @@ services:
   ca-certs:
     image: registry.libriciel.fr:443/public/libriciel/ls-docker-cacerts:0.4.0
     environment:
-      - TRUSTSTORE_PASSWORD
+      - TRUSTSTORE_PASSWORD=${TRUSTSTORE_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR:?}/certificate/cacerts/:/etc/ssl/certs/
       - ${DATA_ROOT_DIR:?}/certificate/local-cacerts/:/usr/local/share/ca-certificates/
@@ -83,8 +83,8 @@ services:
       - CONTENT_PORT
       - CONTENT_USER
       - CONTENT_PASSWORD
-      - VAULT_UNSEAL_KEY
-      - VAULT_TOKEN
+      - VAULT_UNSEAL_KEY=${VAULT_UNSEAL_KEY:?}
+      - VAULT_TOKEN=${VAULT_TOKEN:?}
       - APPLICATION_PROTOCOL
       - APPLICATION_HOST
       - KEYCLOAK_AUTH_PROTOCOL
@@ -362,19 +362,19 @@ services:
           memory: 1G
     environment:
       - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?}
       - KEYCLOAK_DB_USER
-      - KEYCLOAK_DB_PASSWORD
+      - KEYCLOAK_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD:?}
       - CONTENT_DB_USER
-      - CONTENT_DB_PASSWORD
+      - CONTENT_DB_PASSWORD=${CONTENT_DB_PASSWORD:?}
       - CORE_DB_USER
-      - CORE_DB_PASSWORD
+      - CORE_DB_PASSWORD=${CORE_DB_PASSWORD:?}
       - QUARTZ_DB_USER
-      - QUARTZ_DB_PASSWORD
+      - QUARTZ_DB_PASSWORD=${QUARTZ_DB_PASSWORD:?}
       - WORKFLOW_DB_USER
-      - WORKFLOW_DB_PASSWORD
+      - WORKFLOW_DB_PASSWORD=${WORKFLOW_DB_PASSWORD:?}
       - SECUREMAIL_DB_USER
-      - SECUREMAIL_DB_PASSWORD
+      - SECUREMAIL_DB_PASSWORD=${SECUREMAIL_DB_PASSWORD:?}
     volumes:
       - ${DATA_ROOT_DIR:?}/postgres:/var/lib/postgresql/data
 
