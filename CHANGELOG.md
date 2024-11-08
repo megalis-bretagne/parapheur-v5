@@ -35,6 +35,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Étape de création dans le bordereau
 - Augmentation du nombre de caractères maximums dans les annotations à 512
 - Date limite dans le PREMIS
+- Placeholder de l'annotation publique dans les mails de notifications
 
 # Corrections
 
@@ -61,6 +62,15 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Gestion d'une virgule dans le champ "Informations complémentaires" d'un utilisateur
 - Affichage des annotations dans le journal des évènements
 - Gestion des annexes dans le bordereau
+- Ajustement de la taille des colonnes, et ellipses
+- Correction de messages d'erreurs
+- Affichage du document original signé après une conversion DOC/PDF
+- Redirection après la dernière action de la liste
+- Droit de remords
+- Affichage des ids en mode débogage
+- Sous Chrome, le téléchargement d'un ZIP bloqué s'il contient une virgule
+- Pagination et taille de page non-appliqué
+- Modification du sous-type en brouillon
 
 # Suppressions
 
@@ -77,6 +87,7 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Étape de création dans le bordereau
 - Augmentation du nombre de caractères maximums dans les annotations à 512
 - Date limite dans le PREMIS
+- Placeholder de l'annotation publique dans les mails de notifications
 
 # Corrections
 
@@ -103,6 +114,15 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Gestion d'une virgule dans le champ "Informations complémentaires" d'un utilisateur
 - Affichage des annotations dans le journal des évènements
 - Gestion des annexes dans le bordereau
+- Ajustement de la taille des colonnes, et ellipses
+- Correction de messages d'erreurs
+- Affichage du document original signé après une conversion DOC/PDF
+- Redirection après la dernière action de la liste
+- Droit de remords
+- Affichage des ids en mode débogage
+- Sous Chrome, le téléchargement d'un ZIP bloqué s'il contient une virgule
+- Pagination et taille de page non-appliqué
+- Modification du sous-type en brouillon
 
 # Suppressions
 
@@ -942,8 +962,8 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Point d'entrée de version
 - Nouveau logos Libriciel/iparapheur
 
-
 ### Corrections
+
 - Changement de page dans la visionneuse
 - Espaces dans les champs recherche
 - Supprimer une annexe dans les étapes de création
