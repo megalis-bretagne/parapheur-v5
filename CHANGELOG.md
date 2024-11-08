@@ -36,10 +36,12 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Augmentation du nombre de caractères maximums dans les annotations à 512
 - Date limite dans le PREMIS
 - Placeholder de l'annotation publique dans les mails de notifications
+- Labels et infobulles au forçage d'une étape de signature externe déjà effectuée
 
 # Corrections
 
 - Suppression d'un bureau favoris
+- Ajustement de la taille des colonnes, et ellipses
 - Fusion des PDF composant le bordereau via l'API SOAP
 - Redirection automatique en cas de délégation
 - Redirection automatique dans l'ordre des préférences
@@ -88,10 +90,12 @@ et adhère aux principes du [Semantic Versioning](http://semver.org/).
 - Augmentation du nombre de caractères maximums dans les annotations à 512
 - Date limite dans le PREMIS
 - Placeholder de l'annotation publique dans les mails de notifications
+- Labels et infobulles au forçage d'une étape de signature externe déjà effectuée
 
 # Corrections
 
 - Suppression d'un bureau favoris
+- Ajustement de la taille des colonnes, et ellipses
 - Fusion des PDF composant le bordereau via l'API SOAP
 - Redirection automatique en cas de délégation
 - Redirection automatique dans l'ordre des préférences
